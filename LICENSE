@@ -1,21 +1,29 @@
-MIT License
-
 Copyright (c) 2024 pixel-frame
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+Proprietary Software License Agreement
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+This Proprietary Software License Agreement ("Agreement") is made and entered into as of [Insert Date] ("Effective Date") by and between [Your Company Name], a [Your Company Type, e.g., Corporation] with its principal place of business located at [Your Company Address] ("Licensor"), and [Licensee's Name], a [Licensee's Company Type, e.g., Corporation] with its principal place of business located at [Licensee's Address] ("Licensee").
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+1. **Grant of License.**
+   a. Subject to the terms and conditions of this Agreement, Licensor hereby grants to Licensee a non-exclusive, non-transferable, limited license to use the software titled [Software Name] ("Software") in object code form only for internal business operations. This license does not permit the Licensee to, and the Licensee shall not, modify, distribute, sell, or otherwise transfer the Software to any third party.
+
+2. **Ownership and Restrictions.**
+   a. The Software is the proprietary information and exclusive property of the Licensor. The Licensee agrees not to disclose, disseminate, or distribute any part of the Software to any third party without the prior written consent of Licensor.
+   b. All copies of the Software made by the Licensee shall include the same proprietary notices that appear on and in the Software.
+
+3. **No Reverse Engineering.**
+   a. Licensee shall not reverse engineer, decompile, or disassemble the Software, except and only to the extent that such activity is expressly permitted by applicable law notwithstanding this limitation.
+
+4. **Warranty Disclaimer.**
+   a. The Software is provided "AS IS" without warranty of any kind, either express or implied, including, but not limited to, the implied warranties of merchantability and fitness for a particular purpose. Licensor does not warrant that the Software will meet Licensee's requirements or operate without interruption or downtime.
+
+5. **Limitation of Liability.**
+   a. Licensor shall not be liable for any indirect, special, incidental, or consequential damages or loss (including damages for loss of business, loss of profits, litigation, or the like) whether based on breach of contract, tort (including negligence), product liability, or otherwise, even if Licensor has been advised of the possibility of such damages.
+
+6. **Term and Termination.**
+   a. This Agreement is effective from the Effective Date and shall continue unless terminated by either party upon thirty (30) days written notice to the other party.
+   b. Upon termination, Licensee shall destroy all copies of the Software and all of its component parts.
+
+7. **General Provisions.**
+   a. This Agreement shall be governed by the laws of [State/Country], without regard to its conflict of law principles.
+   b. This Agreement constitutes the entire agreement between the parties with respect to the Software licensed hereunder and supersedes all prior or contemporaneous understandings regarding such subject matter.

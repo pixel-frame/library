@@ -14,6 +14,8 @@ This project uses:
 - **SASS**: Advanced CSS preprocessing
 
 ## Folder Structure
+
+```
 pixelframe/
 ├── frontend/
 │ ├── src/ # Source code files
@@ -25,7 +27,7 @@ pixelframe/
 │ ├── node_modules/ # Project dependencies
 │ ├── package.json # Project configuration, the configuration of how the project runs.
 │ └── vite.config.js # Vite configuration, the configuration of how the project is built. 
-
+```
 
 ## How to Run Locally
 

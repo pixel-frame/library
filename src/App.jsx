@@ -1,35 +1,43 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [isInteractive, setIsInteractive] = useState(false);
+  useEffect(() => {
+    // Dynamically import model-viewer when component mounts
+    import("@google/model-viewer");
+  }, []);
+
+  const handleInteract = () => {
+    setIsInteractive(!isInteractive);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+    <div className="app">
+      <h1>PIXELFRAME</h1>{" "}
+      <button className="interact-button" onClick={handleInteract}>
+        {isInteractive ? "2D VIEW" : "INTERACT"}
+      </button>
+      <model-viewer
+        src="/pixel.gltf"
+        alt="A 3D pixel model"
+        shadow-intensity="1"
+        environment-image="neutral"
+        style={{ width: "96.5vw", height: "85vh" }}
+        camera-orbit={isInteractive ? "45deg 55deg 2.5m" : "0deg 0deg 2.5m"}
+        // Simple lighting setup
+        exposure="2"
+        environment-intensity="2"
+        auto-rotate={isInteractive}
+        camera-controls={isInteractive}
+      >
+        <button className="annotation" slot="hotspot-1" data-position="0.15 0.25 0.15" data-normal="0 1 0">
+          PXF-001-023
         </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+      </model-viewer>
+      <h2>MATERIAL PASTS | MATERIAL FUTURES</h2>
+    </div>
+  );
 }
 
-export default App
+export default App;

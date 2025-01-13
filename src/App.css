@@ -1,42 +1,68 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+body {
+  margin: 0;
+  padding: 0;
+  background-color: white;
+  font-family: "helvetica", sans-serif;
+  overflow: hidden;
+}
+
+.app {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+h1 {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  margin: 0;
+  z-index: 2;
+  color: black;
+  font-size: 24px;
+}
+
+h2 {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  z-index: 2;
+  color: black;
+  font-size: 18px;
+  width: 100%;
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+model-viewer {
+  --poster-color: transparent;
+  background-color: white;
+  width: 90vw;
+  height: 90vh;
+  margin: auto;
+  border: 1px solid black;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.interact-button {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid black;
+  padding: 12px 24px;
+  font-family: "helvetica", sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: white;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+.interact-button:hover {
+  background: rgba(0, 0, 0, 1);
 }

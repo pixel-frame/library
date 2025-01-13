@@ -30,10 +30,6 @@ const associativityRightToLeft = [
 	':'
 ];
 
-const glslToTSL = {
-	inversesqrt: 'inverseSqrt'
-};
-
 const spaceRegExp = /^((\t| )\n*)+/;
 const lineRegExp = /^\n+/;
 const commentRegExp = /^\/\*[\s\S]*?\*\//;
@@ -49,12 +45,6 @@ const operatorsRegExp = new RegExp( '^(\\' + [
 	'(', ')', '[', ']', '{', '}',
 	'.', ',', ';', '!', '=', '~', '*', '/', '%', '+', '-', '<', '>', '&', '^', '|', '?', ':', '#'
 ].join( '$' ).split( '' ).join( '\\' ).replace( /\\\$/g, '|' ) + ')' );
-
-function getFunctionName( str ) {
-
-	return glslToTSL[ str ] || str;
-
-}
 
 function getGroupDelta( str ) {
 
@@ -495,31 +485,53 @@ class GLSLDecoder {
 
 					// function call
 
-					const internalTokens = this.getTokensUntil( ')', tokens, 1 ).slice( 1, - 1 );
+					const paramsTokens = this.parseFunctionParametersFromTokens( tokens.slice( 2, tokens.length - 1 ) );
 
-					const paramsTokens = this.parseFunctionParametersFromTokens( internalTokens );
-
-					const functionCall = new FunctionCall( getFunctionName( firstToken.str ), paramsTokens );
-
-					const accessTokens = tokens.slice( 3 + internalTokens.length );
-
-					if ( accessTokens.length > 0 ) {
-
-						const elements = this.parseAccessorElementsFromTokens( accessTokens );
-
-						return new AccessorElements( functionCall, elements );
-
-					}
-
-					return functionCall;
+					return new FunctionCall( firstToken.str, paramsTokens );
 
 				} else if ( secondToken.str === '[' ) {
 
 					// array accessor
 
-					const elements = this.parseAccessorElementsFromTokens( tokens.slice( 1 ) );
+					const elements = [];
 
-					return new AccessorElements( new Accessor( firstToken.str ), elements );
+					let currentTokens = tokens.slice( 1 );
+
+					while ( currentTokens.length > 0 ) {
+
+						const token = currentTokens[ 0 ];
+
+						if ( token.str === '[' ) {
+
+							const accessorTokens = this.getTokensUntil( ']', currentTokens );
+
+							const element = this.parseExpressionFromTokens( accessorTokens.slice( 1, accessorTokens.length - 1 ) );
+
+							currentTokens = currentTokens.slice( accessorTokens.length );
+
+							elements.push( new DynamicElement( element ) );
+
+						} else if ( token.str === '.' ) {
+
+							const accessorTokens = currentTokens.slice( 1, 2 );
+
+							const element = this.parseExpressionFromTokens( accessorTokens );
+
+							currentTokens = currentTokens.slice( 2 );
+
+							elements.push( new StaticElement( element ) );
+
+						} else {
+
+							console.error( 'Unknown accessor expression', token );
+
+							break;
+
+						}
+
+					}
+
+					return new AccessorElements( firstToken.str, elements );
 
 				}
 
@@ -528,50 +540,6 @@ class GLSLDecoder {
 			return new Accessor( firstToken.str );
 
 		}
-
-	}
-
-	parseAccessorElementsFromTokens( tokens ) {
-
-		const elements = [];
-
-		let currentTokens = tokens;
-
-		while ( currentTokens.length > 0 ) {
-
-			const token = currentTokens[ 0 ];
-
-			if ( token.str === '[' ) {
-
-				const accessorTokens = this.getTokensUntil( ']', currentTokens );
-
-				const element = this.parseExpressionFromTokens( accessorTokens.slice( 1, accessorTokens.length - 1 ) );
-
-				currentTokens = currentTokens.slice( accessorTokens.length );
-
-				elements.push( new DynamicElement( element ) );
-
-			} else if ( token.str === '.' ) {
-
-				const accessorTokens = currentTokens.slice( 1, 2 );
-
-				const element = this.parseExpressionFromTokens( accessorTokens );
-
-				currentTokens = currentTokens.slice( 2 );
-
-				elements.push( new StaticElement( element ) );
-
-			} else {
-
-				console.error( 'Unknown accessor expression', token );
-
-				break;
-
-			}
-
-		}
-
-		return elements;
 
 	}
 

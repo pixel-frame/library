@@ -30,6 +30,8 @@ function App() {
         environment-intensity="2"
         auto-rotate={isInteractive}
         camera-controls={isInteractive}
+        ar
+        ar-modes="webxr scene-viewer quick-look"
       >
         <button className="annotation" slot="hotspot-1" data-position="0.15 0.25 0.15" data-normal="0 1 0">
           PXF-001-023

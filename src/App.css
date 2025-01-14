@@ -66,3 +66,22 @@ model-viewer {
 .interact-button:hover {
   background: rgba(0, 0, 0, 1);
 }
+
+/* .ar-button {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid black;
+  padding: 12px 24px;
+  font-family: "helvetica", sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: white;
+} */
+
+.ar-button:hover {
+  background: rgba(0, 0, 0, 1);
+}

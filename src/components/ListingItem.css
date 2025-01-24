@@ -1,0 +1,49 @@
+.listing-item {
+  border: 1px solid black;
+  margin-bottom: 10px;
+  padding: 10px;
+  max-height: 300px;
+  overflow: hidden;
+  font-family: "Courier New", monospace;
+  cursor: pointer;
+}
+
+.listing-metadata {
+  margin-top: 10px;
+}
+
+.listing-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.listing-title h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: normal;
+}
+
+.listing-title span {
+  font-size: 14px;
+}
+
+.listing-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.listing-details p {
+  margin: 0;
+  color: #666;
+  font-size: 14px;
+}
+
+model-viewer {
+  width: 100%;
+  height: 150px;
+  border: 1px solid black;
+  --poster-color: transparent;
+}

@@ -1,0 +1,26 @@
+.listing-page {
+  padding: 10px;
+  max-width: 400px;
+  margin: 0 auto;
+  position: relative;
+  min-height: 100%;
+}
+
+.explore-button {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: black;
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  font-family: "Courier New", monospace;
+  font-size: 16px;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.explore-button:hover {
+  opacity: 0.9;
+}

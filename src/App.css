@@ -1,19 +1,24 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: white;
-  font-family: "helvetica", sans-serif;
-  overflow: hidden;
+  font-family: helvetica, sans-serif;
+  background: white;
+  color: black;
 }
 
 .app {
   position: relative;
   width: 100vw;
   height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  overflow: hidden;
+}
+
+.annotation {
+  background: white;
+  border: 1px solid black;
+  padding: 8px;
+  font-family: helvetica, sans-serif;
+  font-size: 14px;
 }
 
 h1 {
@@ -37,15 +42,6 @@ h2 {
   font-size: 18px;
   width: 100%;
   text-align: center;
-}
-
-model-viewer {
-  --poster-color: transparent;
-  background-color: white;
-  width: 90vw;
-  height: 90vh;
-  margin: auto;
-  border: 1px solid black;
 }
 
 .interact-button {

@@ -1,0 +1,63 @@
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: white;
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Courier New", monospace;
+  z-index: 9999;
+  animation: fadeOut 0.5s ease-in-out 1.8s forwards;
+  overflow: hidden;
+}
+
+.ascii-art {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  opacity: 0.15;
+  pointer-events: none;
+  font-size: clamp(6px, 1.5vw, 10px);
+  line-height: 1;
+  white-space: pre;
+  letter-spacing: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-text {
+  font-size: clamp(24px, 5vw, 48px);
+  font-weight: bold;
+  text-align: center;
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
+  position: relative;
+  z-index: 2;
+  animation: pulse 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+  from {
+    opacity: 0.7;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}

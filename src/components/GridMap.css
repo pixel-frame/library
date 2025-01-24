@@ -1,0 +1,112 @@
+.grid-map {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100vh;
+  background: lightgray;
+  border-bottom: 1px solid black;
+  z-index: 0;
+  padding: 20px;
+  font-family: "Courier New", monospace;
+  position: relative;
+}
+
+/* Dot Grid Pattern */
+.dot-grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 20px);
+  grid-template-rows: repeat(auto-fill, 20px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.dot {
+  width: 2px;
+  height: 2px;
+  background-color: #333;
+  opacity: 0.3;
+  margin: 0px; /* Centers the 2px dot in 8px cell */
+}
+
+.grid-header {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.grid-header h2 {
+  margin: 0;
+  font-weight: normal;
+}
+
+.grid-controls button {
+  background: none;
+  border: 1px solid black;
+  padding: 8px 16px;
+  margin-left: 10px;
+  font-family: "Courier New", monospace;
+  cursor: pointer;
+}
+
+.grid-controls button.active {
+  background: black;
+  color: white;
+}
+
+.grid-container {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(8, 40px);
+  gap: 8px;
+  max-width: fit-content;
+  margin: 0 auto;
+}
+
+.pixel-box {
+  width: 40px;
+  height: 40px;
+  border: 1px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  cursor: pointer;
+  background: white;
+
+  /* Optimize animations */
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+}
+
+.pixel-box:hover {
+  background: #f5f5f5;
+}
+
+/* Add animation class */
+.pixel-box.animating {
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pixel-box.selected {
+  background: black;
+  color: white;
+  border-color: white;
+  z-index: 3; /* Make selected item appear above others */
+  transform: scale(1.1); /* Slightly larger */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Add shadow for emphasis */
+}
+
+.pixel-box.selected:hover {
+  background: black; /* Keep black background on hover */
+  color: white;
+}

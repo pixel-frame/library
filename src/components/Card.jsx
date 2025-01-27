@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setExpanded } from "../store/cardSlice";
 import "./Card.css";
 
-function Card({ children }) {
+function Card({ children, isModalActive }) {
   const dispatch = useDispatch();
   const { isExpanded, isDetailView } = useSelector((state) => state.card);
 
@@ -22,7 +22,10 @@ function Card({ children }) {
   };
 
   return (
-    <div className={`card ${isExpanded ? "expanded" : ""}`} onClick={handleClick}>
+    <div
+      className={`card ${isExpanded ? "expanded" : ""} ${isModalActive ? "modal-active" : ""}`}
+      onClick={handleClick}
+    >
       <div className="card-content" onScroll={handleScroll}>
         {children}
       </div>

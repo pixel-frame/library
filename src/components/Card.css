@@ -15,6 +15,14 @@
   transform: translateY(0);
 }
 
+.card.modal-active {
+  transform: translateY(95%); /* Push down more when modal is active */
+}
+
+.card.modal-active.expanded {
+  transform: translateY(0);
+}
+
 .card.initial-load {
   transition-delay: 0.8s; /* Delay the initial expansion */
 }

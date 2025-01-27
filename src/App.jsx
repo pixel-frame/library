@@ -13,6 +13,7 @@ function App() {
   const dispatch = useDispatch();
   const location = useLocation();
   const { hasShownIntro } = useSelector((state) => state.loading);
+  const [activeModal, setActiveModal] = useState(false);
 
   useEffect(() => {
     // Dynamically import model-viewer when component mounts
@@ -33,8 +34,13 @@ function App() {
         <LoadingScreen />
       ) : (
         <>
-          <GridMap selectedId={selectedId} />
-          <Card>
+          {/* Always render the base view */}
+          <GridMap
+            selectedId={selectedId}
+            onModalOpen={() => setActiveModal(true)}
+            onModalClose={() => setActiveModal(false)}
+          />
+          <Card isModalActive={activeModal}>
             <Routes>
               <Route path="/" element={<ListingPage />} />
               <Route path="/pixel/:id" element={<ListingDetailPage />} />

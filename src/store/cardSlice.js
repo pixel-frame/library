@@ -1,11 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const initialState = {
+  isExpanded: false,
+  isDetailView: false,
+  previousPath: "/",
+  navigationSource: null,
+  modalActive: false,
+};
+
 const cardSlice = createSlice({
   name: "card",
-  initialState: {
-    isExpanded: false,
-    isDetailView: false,
-  },
+  initialState,
   reducers: {
     setExpanded: (state, action) => {
       state.isExpanded = action.payload;
@@ -16,8 +21,17 @@ const cardSlice = createSlice({
         state.isExpanded = true;
       }
     },
+    setPreviousPath: (state, action) => {
+      state.previousPath = action.payload;
+    },
+    setNavigationSource: (state, action) => {
+      state.navigationSource = action.payload;
+    },
+    setModalActive: (state, action) => {
+      state.modalActive = action.payload;
+    },
   },
 });
 
-export const { setExpanded, setDetailView } = cardSlice.actions;
+export const { setExpanded, setDetailView, setPreviousPath, setNavigationSource, setModalActive } = cardSlice.actions;
 export default cardSlice.reducer;

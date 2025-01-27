@@ -1,11 +1,15 @@
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setNavigationSource } from "../store/cardSlice";
 import "./ListingItem.css";
 
 function ListingItem({ data }) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleClick = () => {
-    navigate(`/pixel/${data.id.split(" ")[1]}`);
+    dispatch(setNavigationSource("listing"));
+    navigate(`/pixel/${data.id}`);
   };
 
   return (

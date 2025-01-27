@@ -1,23 +1,39 @@
-import { useParams, useNavigate, useSearchParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { setExpanded } from "../store/cardSlice";
+import { useState, useCallback, useEffect } from "react";
+import { useParams, useNavigate, useSearchParams, useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setExpanded, setModalActive, setNavigationSource } from "../store/cardSlice";
 import Card from "./Card";
 import "./ListingDetailPage.css";
 
 function ListingDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
+  const { navigationSource } = useSelector((state) => state.card);
   const [searchParams] = useSearchParams();
   const currentView = searchParams.get("view") || "model";
 
   const handleTabChange = (view) => {
-    navigate(`/pixel/${id}?view=${view}`);
+    navigate(`/pixel/${id}?view=${view}`, { replace: true });
   };
 
   const handleMapClick = () => {
     dispatch(setExpanded(false));
   };
+
+  const handleBack = useCallback(() => {
+    if (navigationSource === "map") {
+      navigate("/");
+      dispatch(setExpanded(false));
+      dispatch(setModalActive(false));
+      dispatch(setNavigationSource("map"));
+    } else {
+      navigate("/");
+      dispatch(setExpanded(true));
+      dispatch(setNavigationSource(null));
+    }
+  }, [navigate, dispatch, navigationSource]);
 
   const handleScroll = (e) => {
     const threshold = 50; // pixels scrolled before triggering
@@ -78,7 +94,10 @@ function ListingDetailPage() {
   };
 
   return (
-    <div className="listing-detail-container" onScroll={handleScroll}>
+    <div className={`listing-detail-container`} onScroll={handleScroll}>
+      <button className="back-button" onClick={handleBack}>
+        ×
+      </button>
       <Card>
         <div className="listing-detail">
           <div className="detail-content">{renderContent()}</div>

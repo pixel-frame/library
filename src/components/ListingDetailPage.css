@@ -44,8 +44,21 @@
 }
 
 .listing-detail-container {
-  position: relative;
-  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+  background: white;
+}
+
+.listing-detail-container.entering {
+  transform: translateY(0);
+}
+
+.listing-detail-container.exiting {
+  transform: translateY(100%);
 }
 
 .listing-detail.card {
@@ -74,4 +87,33 @@
 .model-container {
   height: calc(100vh - 120px);
   touch-action: pan-y pinch-zoom;
+}
+
+.back-button {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  font-size: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  color: #333;
+  transition: all 0.2s ease;
+}
+
+.back-button:hover {
+  background: white;
+  transform: scale(1.05);
+}
+
+.back-button:active {
+  transform: scale(0.95);
 }

@@ -6,12 +6,14 @@ import ListingItem from "./ListingItem";
 
 function ListingPage() {
   const dispatch = useDispatch();
-  const { isExpanded } = useSelector((state) => state.card);
+  const { isExpanded, navigationSource } = useSelector((state) => state.card);
 
   useEffect(() => {
-    // Set expanded on initial load
-    dispatch(setExpanded(true));
-  }, []); // Empty dependency array means this runs once on mount
+    // Only expand on initial load if we're not coming from map navigation
+    if (navigationSource !== "map") {
+      dispatch(setExpanded(true));
+    }
+  }, [navigationSource, dispatch]);
 
   const listing = {
     id: "PIXEL 072",

@@ -1,12 +1,27 @@
-import { useState, useCallback, useMemo, useRef, useLayoutEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useState, useCallback, useMemo, useRef, useLayoutEffect, useEffect } from "react";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import DetailModal from "./DetailModal";
 import "./GridMap.css";
+import { setModalActive } from "../store/cardSlice";
 
-function GridMap({ selectedId }) {
+function GridMap({ selectedId, onModalOpen, onModalClose }) {
   const navigate = useNavigate();
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const { navigationSource, modalActive } = useSelector((state) => state.card);
   const [sortBy, setSortBy] = useState("default");
   const [isAnimating, setIsAnimating] = useState(false);
+  const [selectedPixel, setSelectedPixel] = useState(null);
   const positionsRef = useRef(new Map());
+
+  useEffect(() => {
+    // Clear selection when returning to map view
+    if (location.pathname === "/" && navigationSource === "map") {
+      setSelectedPixel(null);
+      // Don't need to dispatch setModalActive(false) here as it's handled by ListingDetailPage
+    }
+  }, [location.pathname, navigationSource]);
 
   // Create dot grid - increased to cover viewport
   const dots = useMemo(() => Array(4000).fill(null), []); // Increased from 500 to 2000
@@ -74,28 +89,87 @@ function GridMap({ selectedId }) {
   );
 
   const handlePixelClick = useCallback(
-    (pixelId) => {
-      navigate(`/pixel/${pixelId}`);
+    (pixel) => {
+      // Only handle clicks if we're not in a transitional state
+      if (location.pathname === "/") {
+        setSelectedPixel(pixel);
+        dispatch(setModalActive(true));
+        onModalOpen();
+      }
     },
-    [navigate]
+    [dispatch, onModalOpen, location.pathname]
   );
 
+  const handleCloseModal = useCallback(() => {
+    setSelectedPixel(null);
+    dispatch(setModalActive(false));
+    onModalClose();
+  }, [dispatch, onModalClose]);
+
+  // Helper function to get spatial position
+  const getSpatialPosition = useCallback((pixel) => {
+    // Create clusters based on ID ranges
+    const id = parseInt(pixel.id);
+    const cluster = Math.floor(id / 10);
+
+    // Generate positions based on location and cluster
+    if (pixel.location === "near") {
+      // Near field pixels cluster in top-left and bottom-right
+      const isTopLeft = cluster % 2 === 0;
+      return {
+        row: isTopLeft ? 1 + cluster * 2 : 8 + (cluster % 3),
+        col: isTopLeft ? 1 + (id % 3) : 9 + (id % 3),
+      };
+    } else {
+      // Far field pixels cluster in top-right and bottom-left
+      const isTopRight = cluster % 2 === 0;
+      return {
+        row: isTopRight ? 2 + cluster * 2 : 9 + (cluster % 3),
+        col: isTopRight ? 8 + (id % 3) : 2 + (id % 3),
+      };
+    }
+  }, []);
+
+  // Update getSortedPixels to handle spatial layout
   const getSortedPixels = useCallback(() => {
     switch (sortBy) {
       case "location":
-        return [...pixels].sort((a, b) => (a.location === "near" ? -1 : 1));
+        return [...pixels].map((pixel) => ({
+          ...pixel,
+          position: getSpatialPosition(pixel),
+        }));
+      case "default":
+        return pixels.map((pixel, index) => ({
+          ...pixel,
+          position: {
+            row: Math.floor(index / 8) + 1,
+            col: (index % 8) + 1,
+          },
+        }));
       case "availability":
-        return [...pixels].sort((a, b) => b.availability - a.availability);
+        return [...pixels]
+          .sort((a, b) => b.availability - a.availability)
+          .map((pixel, index) => ({
+            ...pixel,
+            position: {
+              row: Math.floor(index / 8) + 1,
+              col: (index % 8) + 1,
+            },
+          }));
       default:
         return pixels;
     }
-  }, [sortBy, pixels]);
+  }, [sortBy, pixels, getSpatialPosition]);
 
-  // Add selected state to pixel box
-  const getPixelClassName = (pixelId) => {
+  // Update getPixelClassName to include spatial classes
+  const getPixelClassName = (pixel) => {
     const classes = ["pixel-box"];
     if (isAnimating) classes.push("animating");
-    if (pixelId === selectedId) classes.push("selected");
+    if (pixel.id === selectedId || pixel.id === selectedPixel?.id) classes.push("selected");
+    if (sortBy === "location") {
+      classes.push("spatial");
+      classes.push(pixel.location === "near" ? "near-field" : "far-field");
+    }
     return classes.join(" ");
   };
 
@@ -129,13 +203,22 @@ function GridMap({ selectedId }) {
           <div
             key={pixel.id}
             data-id={pixel.id}
-            className={getPixelClassName(pixel.id)}
-            onClick={() => handlePixelClick(pixel.id)}
+            className={getPixelClassName(pixel)}
+            style={
+              sortBy === "location"
+                ? {
+                    "--grid-row": pixel.position.row,
+                    "--grid-col": pixel.position.col,
+                  }
+                : {}
+            }
+            onClick={() => handlePixelClick(pixel)}
           >
             {pixel.id}
           </div>
         ))}
       </div>
+      {selectedPixel && <DetailModal pixel={selectedPixel} onClose={handleCloseModal} />}
     </div>
   );
 }

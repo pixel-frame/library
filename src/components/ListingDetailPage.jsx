@@ -60,7 +60,7 @@ function ListingDetailPage() {
               alt={listing.title}
               shadow-intensity="1"
               environment-image="neutral"
-              style={{ width: "99%", height: "90vh" }}
+              style={{ width: "99%", height: "75vh" }}
               camera-orbit="45deg 55deg 2.5m"
               exposure="2"
               environment-intensity="2"

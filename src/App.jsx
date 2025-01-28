@@ -3,7 +3,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import GridMap from "./components/GridMap";
 import Card from "./components/Card";
-import ListingPage from "./components/ListingPage";
+import AboutPage from "./components/AboutPage";
 import ListingDetailPage from "./components/ListingDetailPage";
 import LoadingScreen from "./components/LoadingScreen";
 import { setDetailView } from "./store/cardSlice";
@@ -42,7 +42,7 @@ function App() {
           />
           <Card isModalActive={activeModal}>
             <Routes>
-              <Route path="/" element={<ListingPage />} />
+              <Route path="/" element={<AboutPage />} />
               <Route path="/pixel/:id" element={<ListingDetailPage />} />
             </Routes>
           </Card>

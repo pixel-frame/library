@@ -1,0 +1,47 @@
+.about-container {
+  padding: 120px 40px 40px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+h3 {
+  font-size: 12px;
+  font-weight: normal;
+  margin-bottom: 60px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.about-content {
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.about-content p {
+  margin-bottom: 40px;
+}
+
+.image-placeholder {
+  width: 100%;
+  height: 300px;
+  background: #e0e0e0;
+  margin: 40px 0;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.image-placeholder.wide {
+  height: 400px;
+}
+
+.image-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin: 40px 0;
+}
+
+.image-grid .image-placeholder {
+  height: 200px;
+  margin: 0;
+}

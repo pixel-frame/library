@@ -48,18 +48,32 @@
   font-weight: normal;
 }
 
-.grid-controls button {
-  background: none;
-  border: 1px solid black;
-  padding: 8px 16px;
-  margin-left: 10px;
-  font-family: "Courier New", monospace;
-  cursor: pointer;
+/* Update grid controls styling */
+.grid-controls {
+  display: flex;
+  gap: 8px;
 }
 
-.grid-controls button.active {
+.filter-button {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: black;
+  border-radius: 3px;
+  padding: 8px 16px;
+  font-family: "Courier New", monospace;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-button:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.filter-button.active {
   background: black;
   color: white;
+  border-color: black;
 }
 
 .grid-container {
@@ -68,14 +82,14 @@
   display: grid;
   grid-template-columns: repeat(12, 40px);
   grid-template-rows: repeat(12, 40px);
-  gap: 8px;
+  gap: 4px;
   max-width: fit-content;
   margin: 0 auto;
 }
 
 .pixel-box {
   width: 40px;
-  height: 50px; /* Increased height to accommodate number */
+  height: 40px; /* Increased height to accommodate number */
   border: 1px solid black;
   background: white;
   grid-column: var(--grid-col, auto);
@@ -83,7 +97,7 @@
   opacity: 1;
   transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: transform;
-  padding: 4px;
+  padding: 0px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -187,4 +201,88 @@
 /* Hide hotspot annotations in grid view */
 .pixel-box .annotation {
   display: none;
+}
+
+/* Add connected pixel styles */
+.pixel-box.connected {
+  z-index: 2;
+}
+
+.pixel-box.connected.beam {
+  border-color: #4caf50;
+  border-width: 2px;
+}
+
+.pixel-box.connected.column {
+  border-color: #2196f3;
+  border-width: 2px;
+}
+
+/* Add health status colors */
+.pixel-box.new {
+  background: #4caf50; /* Green */
+  border-color: #2e7d32;
+}
+
+.pixel-box.nominal {
+  background: #ffc107; /* Yellow */
+  border-color: #ffa000;
+}
+
+.pixel-box.degraded {
+  background: #f44336; /* Red */
+  border-color: #d32f2f;
+}
+
+.pixel-box.archived {
+  background: #9e9e9e; /* Gray */
+  border-color: #616161;
+  opacity: 0.7;
+}
+
+/* Show labels in health view too */
+.health-view .cluster-label {
+  opacity: 1;
+}
+
+/* Adjust grid container for metrics view */
+.grid-map[data-sort="metrics"] .grid-container {
+  margin-top: 40px; /* Space for axis labels */
+}
+
+/* Add axis labels for metrics view */
+.metrics-axis {
+  position: absolute;
+  font-size: 12px;
+  color: black;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.metrics-axis.x {
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.metrics-axis.y {
+  top: 50%;
+  left: -30px;
+  transform: translateY(-50%) rotate(-90deg);
+}
+
+/* Make health and metrics pixels more visible */
+.pixel-box.new model-viewer,
+.pixel-box.nominal model-viewer,
+.pixel-box.degraded model-viewer,
+.pixel-box.archived model-viewer {
+  --poster-color: rgba(255, 255, 255, 0.1);
+}
+
+.pixel-box.new .pixel-id,
+.pixel-box.nominal .pixel-id,
+.pixel-box.degraded .pixel-id,
+.pixel-box.archived .pixel-id {
+  color: white;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
 }

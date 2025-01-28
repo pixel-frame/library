@@ -15,6 +15,12 @@ function GridMap({ selectedId, onModalOpen, onModalClose }) {
   const [selectedPixel, setSelectedPixel] = useState(null);
   const positionsRef = useRef(new Map());
 
+  // Add structural connections state
+  const [structuralConnections, setStructuralConnections] = useState({
+    beams: [],
+    columns: [],
+  });
+
   useEffect(() => {
     // Clear selection when returning to map view
     if (location.pathname === "/" && navigationSource === "map") {
@@ -34,6 +40,15 @@ function GridMap({ selectedId, onModalOpen, onModalClose }) {
       position: index,
       location: Math.random() > 0.5 ? "near" : "far",
       availability: Math.random() > 0.5,
+      carbon: Math.random() * 10,
+      distance: Math.random() * 30000,
+      health: (() => {
+        const rand = Math.random();
+        if (rand < 0.25) return "new";
+        if (rand < 0.5) return "nominal";
+        if (rand < 0.75) return "degraded";
+        return "archived";
+      })(),
     }));
 
   // Store positions before update
@@ -109,9 +124,9 @@ function GridMap({ selectedId, onModalOpen, onModalClose }) {
   // Define cluster locations with more precise positions
   const clusterLocations = {
     0: { name: "Venice", position: { row: 2, col: 2 } },
-    1: { name: "Boston", position: { row: 2, col: 10 } },
-    2: { name: "New York", position: { row: 8, col: 2 } },
-    3: { name: "London", position: { row: 8, col: 10 } },
+    1: { name: "Boston", position: { row: 4, col: 7 } },
+    2: { name: "New York", position: { row: 12, col: 2 } },
+    3: { name: "London", position: { row: 12, col: 8 } },
   };
 
   // Update getSpatialPosition for better clustering
@@ -138,9 +153,41 @@ function GridMap({ selectedId, onModalOpen, onModalClose }) {
     };
   }, []);
 
-  // Update getSortedPixels to handle spatial layout
+  // Update getSortedPixels to handle new layouts
   const getSortedPixels = useCallback(() => {
     switch (sortBy) {
+      case "metrics":
+        // Position based on carbon (y) and distance (x)
+        const maxCarbon = Math.max(...pixels.map((p) => p.carbon));
+        const maxDistance = Math.max(...pixels.map((p) => p.distance));
+        return pixels.map((pixel) => ({
+          ...pixel,
+          position: {
+            row: Math.floor((1 - pixel.carbon / maxCarbon) * 10) + 1,
+            col: Math.floor((pixel.distance / maxDistance) * 10) + 1,
+          },
+        }));
+
+      case "health":
+        // Cluster by health status
+        const healthClusters = {
+          new: { row: 2, col: 2 },
+          nominal: { row: 2, col: 8 },
+          degraded: { row: 8, col: 2 },
+          archived: { row: 8, col: 8 },
+        };
+        return pixels.map((pixel, index) => {
+          const basePosition = healthClusters[pixel.health];
+          const offset = index % 9; // Create 3x3 grid within each cluster
+          return {
+            ...pixel,
+            position: {
+              row: basePosition.row + Math.floor(offset / 3) - 1,
+              col: basePosition.col + (offset % 3) - 1,
+            },
+          };
+        });
+
       case "location":
         return [...pixels].map((pixel) => ({
           ...pixel,
@@ -169,14 +216,47 @@ function GridMap({ selectedId, onModalOpen, onModalClose }) {
     }
   }, [sortBy, pixels, getSpatialPosition]);
 
-  // Update getPixelClassName to include spatial classes
+  // Update when a pixel is selected to set its connections
+  useEffect(() => {
+    if (selectedPixel) {
+      // Mock connection logic - in real app this would come from API/props
+      const pixelId = selectedPixel.id;
+      const baseNum = parseInt(pixelId);
+
+      // Generate some logical connections based on pixel ID
+      setStructuralConnections({
+        beams: [
+          (baseNum + 1).toString().padStart(3, "0"),
+          (baseNum + 2).toString().padStart(3, "0"),
+          (baseNum + 3).toString().padStart(3, "0"),
+        ].filter((id) => id <= "075"), // Keep only valid IDs
+        columns: [(baseNum - 8).toString().padStart(3, "0"), (baseNum - 16).toString().padStart(3, "0")].filter(
+          (id) => id > "000"
+        ), // Keep only valid IDs
+      });
+    }
+  }, [selectedPixel]);
+
+  // Update getPixelClassName to handle health colors
   const getPixelClassName = (pixel) => {
     const classes = ["pixel-box"];
     if (isAnimating) classes.push("animating");
     if (pixel.id === selectedId || pixel.id === selectedPixel?.id) classes.push("selected");
+
     if (sortBy === "location") {
       classes.push("spatial");
       classes.push(pixel.location === "near" ? "near-field" : "far-field");
+    } else if (sortBy === "health") {
+      classes.push(pixel.health); // Add health status as class
+    }
+
+    // Add connected class if this pixel is connected to selected pixel
+    if (
+      selectedPixel &&
+      (structuralConnections.beams.includes(pixel.id) || structuralConnections.columns.includes(pixel.id))
+    ) {
+      classes.push("connected");
+      classes.push(structuralConnections.beams.includes(pixel.id) ? "beam" : "column");
     }
     return classes.join(" ");
   };
@@ -263,8 +343,42 @@ function GridMap({ selectedId, onModalOpen, onModalClose }) {
     });
   }, [sortBy]);
 
+  // Add health cluster labels similar to location clusters
+  const renderHealthLabels = useCallback(() => {
+    if (sortBy !== "health") return null;
+
+    const healthClusters = {
+      new: { name: "NEW", position: { row: 2, col: 2 } },
+      nominal: { name: "NOMINAL", position: { row: 2, col: 8 } },
+      degraded: { name: "DEGRADED", position: { row: 8, col: 2 } },
+      archived: { name: "ARCHIVED", position: { row: 8, col: 8 } },
+    };
+
+    return Object.entries(healthClusters).map(([status, data]) => {
+      const cellSize = 48;
+      const x = (data.position.col - 1) * cellSize;
+      const y = (data.position.row - 1) * cellSize + 60;
+
+      return (
+        <div
+          key={`health-${status}`}
+          className="cluster-label"
+          style={{
+            left: `${x}px`,
+            top: `${y}px`,
+          }}
+        >
+          {data.name}
+        </div>
+      );
+    });
+  }, [sortBy]);
+
   return (
-    <div className={`grid-map ${sortBy === "location" ? "location-view" : ""}`} onTouchStart={handleTouchStart}>
+    <div
+      className={`grid-map ${sortBy === "location" ? "location-view" : ""} ${sortBy === "health" ? "health-view" : ""}`}
+      onTouchStart={handleTouchStart}
+    >
       <div className="dot-grid">
         {dots.map((_, index) => (
           <div key={index} className="dot" />
@@ -273,20 +387,35 @@ function GridMap({ selectedId, onModalOpen, onModalClose }) {
       <div className="grid-header">
         <h2>PIXELFRAME</h2>
         <div className="grid-controls">
-          <button className={sortBy === "default" ? "active" : ""} onClick={() => handleSort("default")}>
-            Default
+          <button
+            className={`filter-button ${sortBy === "default" ? "active" : ""}`}
+            onClick={() => handleSort("default")}
+          >
+            Inventory
           </button>
-          <button className={sortBy === "location" ? "active" : ""} onClick={() => handleSort("location")}>
+          <button
+            className={`filter-button ${sortBy === "location" ? "active" : ""}`}
+            onClick={() => handleSort("location")}
+          >
             Location
           </button>
-          <button className={sortBy === "availability" ? "active" : ""} onClick={() => handleSort("availability")}>
-            Availability
+          <button
+            className={`filter-button ${sortBy === "metrics" ? "active" : ""}`}
+            onClick={() => handleSort("metrics")}
+          >
+            Carbon/Distance
+          </button>
+          <button
+            className={`filter-button ${sortBy === "health" ? "active" : ""}`}
+            onClick={() => handleSort("health")}
+          >
+            Health
           </button>
         </div>
       </div>
       <div className="grid-container">
-        {/* Make sure cluster labels are rendered */}
         {sortBy === "location" && renderClusterLabels()}
+        {sortBy === "health" && renderHealthLabels()}
         {/* Connection lines */}
         {sortBy === "location" &&
           calculateConnections(getSortedPixels()).map((connection) => (
@@ -322,7 +451,13 @@ function GridMap({ selectedId, onModalOpen, onModalClose }) {
           </div>
         ))}
       </div>
-      {selectedPixel && <DetailModal pixel={selectedPixel} onClose={handleCloseModal} />}
+      {selectedPixel && (
+        <DetailModal
+          pixel={selectedPixel}
+          onClose={handleCloseModal}
+          structuralConnections={structuralConnections} // Pass connections as prop
+        />
+      )}
     </div>
   );
 }

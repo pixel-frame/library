@@ -1,0 +1,107 @@
+.modal-carousel {
+  position: fixed;
+  bottom: 82px;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  overflow: hidden;
+  height: calc(100vh - 164px);
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-track {
+  display: flex;
+  transition: transform 0.3s ease-out;
+  min-height: 0;
+  flex: 1;
+  position: relative;
+  margin: 0 -20px;
+}
+
+.modal-slide {
+  flex: 0 0 100%;
+  padding: 0 20px;
+  opacity: 0.5;
+  transition: all 0.3s ease;
+  transform: scale(0.95);
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 100%;
+}
+
+.modal-slide.active {
+  opacity: 1;
+  transform: scale(1);
+  position: relative;
+}
+
+.modal-slide .detail-modal {
+  background: rgba(17, 17, 17, 0.95);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  height: 100%;
+  overflow-y: auto;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.modal-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 16px 0;
+  position: relative;
+  z-index: 2;
+}
+
+.indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.indicator.active {
+  background: white;
+  transform: scale(1.2);
+}
+
+.modal-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modal-nav:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.modal-nav.prev {
+  left: 20px;
+}
+
+.modal-nav.next {
+  right: 20px;
+}
+
+.modal-content {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}

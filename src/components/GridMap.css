@@ -75,21 +75,18 @@
 
 .pixel-box {
   width: 40px;
-  height: 40px;
+  height: 50px; /* Increased height to accommodate number */
   border: 1px solid black;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  cursor: pointer;
   background: white;
   grid-column: var(--grid-col, auto);
   grid-row: var(--grid-row, auto);
   opacity: 1;
   transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-
-  /* Optimize animations */
   will-change: transform;
+  padding: 4px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .pixel-box:hover {
@@ -118,6 +115,7 @@
 .pixel-box.spatial {
   position: relative;
   transform-origin: center;
+  z-index: 2; /* Ensure boxes appear above lines */
 }
 
 .pixel-box.near-field {
@@ -137,4 +135,56 @@
 .pixel-box.spatial.neighbor {
   transform: scale(1.05);
   z-index: 5;
+}
+
+/* Add these new styles */
+.connection-line {
+  position: absolute;
+  height: 1px;
+  background: repeating-linear-gradient(90deg, #333 0px, #333 4px, transparent 4px, transparent 8px);
+  transform-origin: 0 0;
+  opacity: 0.3;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Add new styles for cluster labels */
+.cluster-label {
+  position: absolute;
+  font-size: 12px;
+  color: black;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+  text-align: center;
+  width: 120px;
+  margin-left: -40px;
+  font-weight: bold;
+}
+
+/* Show labels only in location view */
+.location-view .cluster-label {
+  opacity: 1;
+}
+
+/* Add styles for the tiny model viewer */
+.pixel-box model-viewer {
+  width: 100%;
+  height: 32px; /* Fixed height for model viewer */
+  --poster-color: transparent;
+  border: none;
+}
+
+.pixel-id {
+  font-size: 10px;
+  text-align: center;
+  margin-top: 2px;
+  font-family: "Courier New", monospace;
+}
+
+/* Hide hotspot annotations in grid view */
+.pixel-box .annotation {
+  display: none;
 }

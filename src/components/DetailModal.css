@@ -97,3 +97,17 @@
     opacity: 1;
   }
 }
+
+.modal-model {
+  width: 100%;
+  height: 120px;
+  margin: 10px 0;
+  border: 1px solid black;
+}
+
+.modal-model model-viewer {
+  width: 100%;
+  height: 100%;
+  --poster-color: transparent;
+  border: none;
+}

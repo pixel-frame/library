@@ -106,28 +106,36 @@ function GridMap({ selectedId, onModalOpen, onModalClose }) {
     onModalClose();
   }, [dispatch, onModalClose]);
 
-  // Helper function to get spatial position
-  const getSpatialPosition = useCallback((pixel) => {
-    // Create clusters based on ID ranges
-    const id = parseInt(pixel.id);
-    const cluster = Math.floor(id / 10);
+  // Define cluster locations with more precise positions
+  const clusterLocations = {
+    0: { name: "Venice", position: { row: 2, col: 2 } },
+    1: { name: "Boston", position: { row: 2, col: 10 } },
+    2: { name: "New York", position: { row: 8, col: 2 } },
+    3: { name: "London", position: { row: 8, col: 10 } },
+  };
 
-    // Generate positions based on location and cluster
-    if (pixel.location === "near") {
-      // Near field pixels cluster in top-left and bottom-right
-      const isTopLeft = cluster % 2 === 0;
-      return {
-        row: isTopLeft ? 1 + cluster * 2 : 8 + (cluster % 3),
-        col: isTopLeft ? 1 + (id % 3) : 9 + (id % 3),
-      };
-    } else {
-      // Far field pixels cluster in top-right and bottom-left
-      const isTopRight = cluster % 2 === 0;
-      return {
-        row: isTopRight ? 2 + cluster * 2 : 9 + (cluster % 3),
-        col: isTopRight ? 8 + (id % 3) : 2 + (id % 3),
-      };
-    }
+  // Update getSpatialPosition for better clustering
+  const getSpatialPosition = useCallback((pixel) => {
+    const id = parseInt(pixel.id);
+
+    // Determine which cluster the pixel belongs to based on ID ranges
+    let cluster;
+    if (id >= 1 && id <= 20) cluster = 0; // Venice
+    else if (id >= 21 && id <= 40) cluster = 1; // Boston
+    else if (id >= 41 && id <= 60) cluster = 2; // New York
+    else cluster = 3; // London
+
+    const clusterData = clusterLocations[cluster];
+
+    // Create a 3x3 grid pattern within each cluster
+    const localPosition = id % 9; // Position within the cluster (0-8)
+    const row = Math.floor(localPosition / 3); // 0, 1, or 2
+    const col = localPosition % 3; // 0, 1, or 2
+
+    return {
+      row: clusterData.position.row + row - 1, // -1 to center the pattern
+      col: clusterData.position.col + col - 1, // -1 to center the pattern
+    };
   }, []);
 
   // Update getSortedPixels to handle spatial layout
@@ -177,8 +185,86 @@ function GridMap({ selectedId, onModalOpen, onModalClose }) {
     e.preventDefault(); // Prevent double-tap zoom
   }, []);
 
+  // Update calculateConnections to match cluster logic
+  const calculateConnections = useCallback(
+    (pixels) => {
+      if (sortBy !== "location") return [];
+
+      const connections = [];
+      const cellSize = 48; // 40px + 8px gap
+
+      pixels.forEach((pixel, i) => {
+        const id = parseInt(pixel.id);
+        // Use same clustering logic as getSpatialPosition
+        let cluster;
+        if (id >= 1 && id <= 20) cluster = 0;
+        else if (id >= 21 && id <= 40) cluster = 1;
+        else if (id >= 41 && id <= 60) cluster = 2;
+        else cluster = 3;
+
+        pixels.forEach((otherPixel, j) => {
+          if (i >= j) return;
+
+          const otherId = parseInt(otherPixel.id);
+          let otherCluster;
+          if (otherId >= 1 && otherId <= 20) otherCluster = 0;
+          else if (otherId >= 21 && otherId <= 40) otherCluster = 1;
+          else if (otherId >= 41 && otherId <= 60) otherCluster = 2;
+          else otherCluster = 3;
+
+          if (cluster === otherCluster) {
+            const x1 = (pixel.position.col - 1) * cellSize + 20;
+            const y1 = (pixel.position.row - 1) * cellSize + 20;
+            const x2 = (otherPixel.position.col - 1) * cellSize + 20;
+            const y2 = (otherPixel.position.row - 1) * cellSize + 20;
+
+            const length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+            const angle = (Math.atan2(y2 - y1, x2 - x1) * 180) / Math.PI;
+
+            connections.push({
+              id: `${pixel.id}-${otherPixel.id}`,
+              style: {
+                width: `${length}px`,
+                left: `${x1}px`,
+                top: `${y1}px`,
+                transform: `rotate(${angle}deg)`,
+              },
+            });
+          }
+        });
+      });
+
+      return connections;
+    },
+    [sortBy]
+  );
+
+  // Add function to render cluster labels
+  const renderClusterLabels = useCallback(() => {
+    if (sortBy !== "location") return null;
+
+    return Object.entries(clusterLocations).map(([cluster, data]) => {
+      const cellSize = 48; // 40px + 8px gap
+      const x = (data.position.col - 1) * cellSize;
+      const y = (data.position.row - 1) * cellSize + 60; // Position below the cluster
+
+      return (
+        <div
+          key={`cluster-${cluster}`}
+          className="cluster-label"
+          style={{
+            left: `${x}px`,
+            top: `${y}px`,
+          }}
+        >
+          {data.name}
+        </div>
+      );
+    });
+  }, [sortBy]);
+
   return (
-    <div className="grid-map" onTouchStart={handleTouchStart}>
+    <div className={`grid-map ${sortBy === "location" ? "location-view" : ""}`} onTouchStart={handleTouchStart}>
       <div className="dot-grid">
         {dots.map((_, index) => (
           <div key={index} className="dot" />
@@ -199,6 +285,14 @@ function GridMap({ selectedId, onModalOpen, onModalClose }) {
         </div>
       </div>
       <div className="grid-container">
+        {/* Make sure cluster labels are rendered */}
+        {sortBy === "location" && renderClusterLabels()}
+        {/* Connection lines */}
+        {sortBy === "location" &&
+          calculateConnections(getSortedPixels()).map((connection) => (
+            <div key={connection.id} className="connection-line" style={connection.style} />
+          ))}
+        {/* Pixel boxes */}
         {getSortedPixels().map((pixel) => (
           <div
             key={pixel.id}
@@ -214,7 +308,17 @@ function GridMap({ selectedId, onModalOpen, onModalClose }) {
             }
             onClick={() => handlePixelClick(pixel)}
           >
-            {pixel.id}
+            <model-viewer
+              src="/pixel.gltf"
+              alt={`Pixel ${pixel.id}`}
+              shadow-intensity="1"
+              environment-image="neutral"
+              camera-orbit="0deg 0deg 2.5m"
+              exposure="2"
+              environment-intensity="2"
+              auto-rotate
+            />
+            <div className="pixel-id">{pixel.id}</div>
           </div>
         ))}
       </div>

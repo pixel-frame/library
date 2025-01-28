@@ -26,6 +26,8 @@ function Card({ children, isModalActive }) {
       className={`card ${isExpanded ? "expanded" : ""} ${isModalActive ? "modal-active" : ""}`}
       onClick={handleClick}
     >
+      <div className="card-handle"></div>
+      {!isDetailView && <div className="card-title">ALL PIXELS</div>}
       <div className="card-content" onScroll={handleScroll}>
         {children}
       </div>

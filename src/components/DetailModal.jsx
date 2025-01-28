@@ -19,7 +19,7 @@ function DetailModal({ pixel, onClose }) {
   );
 
   const handleModalClick = useCallback((e) => {
-    e.stopPropagation(); // Prevent clicks from reaching the map
+    e.stopPropagation();
   }, []);
 
   return (
@@ -36,6 +36,18 @@ function DetailModal({ pixel, onClose }) {
           >
             ×
           </button>
+        </div>
+        <div className="modal-model">
+          <model-viewer
+            src="/pixel.gltf"
+            alt={`Pixel ${pixel.id}`}
+            shadow-intensity="1"
+            environment-image="neutral"
+            camera-orbit="0deg 0deg 2.5m"
+            exposure="2"
+            environment-intensity="2"
+            auto-rotate
+          />
         </div>
         <div className="modal-info">
           <div className="info-row">

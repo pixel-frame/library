@@ -29,32 +29,36 @@ function App() {
   // Extract ID from path if we're on a detail page
   const selectedId = location.pathname.includes("/pixel/") ? location.pathname.split("/pixel/")[1].split("?")[0] : null;
 
-  // If we're on the details test page, render only that
-  if (location.pathname === "/details") {
-    return <DetailsTestPage />;
-  }
-
-  // Otherwise render the main app layout
   return (
     <div className="app">
-      {!hasShownIntro ? (
-        <LoadingScreen />
-      ) : (
-        <>
-          {/* Always render the base view */}
-          <GridMap
-            selectedId={selectedId}
-            onModalOpen={() => setActiveModal(true)}
-            onModalClose={() => setActiveModal(false)}
-          />
-          <Card isModalActive={activeModal}>
-            <Routes>
-              <Route path="/" element={<AboutPage />} />
-              <Route path="/pixel/:id" element={<ListingDetailPage />} />
-            </Routes>
-          </Card>
-        </>
-      )}
+      <Routes>
+        {/* Details test page route */}
+        <Route path="/details" element={<DetailsTestPage />} />
+
+        {/* Main app routes */}
+        <Route
+          path="*"
+          element={
+            !hasShownIntro ? (
+              <LoadingScreen />
+            ) : (
+              <>
+                <GridMap
+                  selectedId={selectedId}
+                  onModalOpen={() => setActiveModal(true)}
+                  onModalClose={() => setActiveModal(false)}
+                />
+                <Card isModalActive={activeModal}>
+                  <Routes>
+                    <Route path="/" element={<AboutPage />} />
+                    <Route path="/pixel/:id" element={<ListingDetailPage />} />
+                  </Routes>
+                </Card>
+              </>
+            )
+          }
+        />
+      </Routes>
     </div>
   );
 }

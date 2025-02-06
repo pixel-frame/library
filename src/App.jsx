@@ -6,6 +6,7 @@ import Card from "./components/Card";
 import AboutPage from "./components/AboutPage";
 import ListingDetailPage from "./components/ListingDetailPage";
 import LoadingScreen from "./components/LoadingScreen";
+import DetailsTestPage from "./components/DetailsTestPage";
 import { setDetailView } from "./store/cardSlice";
 import "./App.css";
 
@@ -28,6 +29,12 @@ function App() {
   // Extract ID from path if we're on a detail page
   const selectedId = location.pathname.includes("/pixel/") ? location.pathname.split("/pixel/")[1].split("?")[0] : null;
 
+  // If we're on the details test page, render only that
+  if (location.pathname === "/details") {
+    return <DetailsTestPage />;
+  }
+
+  // Otherwise render the main app layout
   return (
     <div className="app">
       {!hasShownIntro ? (

@@ -172,6 +172,12 @@
   height: 100%;
   --poster-color: transparent;
   border: none;
+  background: transparent;
+}
+
+.modal-model {
+  background-image: radial-gradient(#000 1px, transparent 1px);
+  background-size: 10px 10px;
 }
 
 .spark-metrics {

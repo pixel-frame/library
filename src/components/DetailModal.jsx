@@ -171,19 +171,28 @@ function DetailModal({ pixel, onClose, structuralConnections }) {
           </button>
         </div>
 
-        <div className="modal-model">
+        <div className={`modal-model ${isModelExpanded ? "expanded" : ""}`}>
+          <div className="dot-grid"></div>
           <button className="model-expand-button" onClick={() => setIsModelExpanded(!isModelExpanded)}>
             {isModelExpanded ? "[-]" : "[+]"}
           </button>
           <model-viewer
-            src="/pixel.gltf"
+            src="/other.glb"
             alt={`Pixel ${pixel.id}`}
-            shadow-intensity="1"
+            shadow-intensity=".5"
             environment-image="neutral"
             camera-orbit="0deg 0deg 2.5m"
-            exposure="2"
+            exposure="1"
             environment-intensity="2"
             auto-rotate
+            camera-controls
+            style={{
+              width: isModelExpanded ? "100vw" : "100%",
+              height: isModelExpanded ? "80vh" : "200px",
+              maxWidth: "100%",
+              position: "relative",
+              zIndex: 1,
+            }}
           />
         </div>
 

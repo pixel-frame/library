@@ -7,6 +7,7 @@ import AboutPage from "./components/AboutPage";
 import ListingDetailPage from "./components/ListingDetailPage";
 import LoadingScreen from "./components/LoadingScreen";
 import DetailsTestPage from "./components/DetailsTestPage";
+import CardTestPage from "./components/CardTestPage";
 import { setDetailView } from "./store/cardSlice";
 import "./App.css";
 
@@ -34,7 +35,7 @@ function App() {
       <Routes>
         {/* Details test page route */}
         <Route path="/details" element={<DetailsTestPage />} />
-
+        <Route path="/card-test" element={<CardTestPage />} />
         {/* Main app routes */}
         <Route
           path="*"

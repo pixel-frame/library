@@ -575,8 +575,55 @@ function DetailsTestPage() {
   const [fontWeight, setFontWeight] = useState(400);
   const [monoValue, setMonoValue] = useState(0);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isModelExpanded, setIsModelExpanded] = useState(false);
 
   const slides = [
+    {
+      title: "3D Model",
+      component: (
+        <model-viewer
+          src="/other.glb"
+          alt="Pixel model"
+          shadow-intensity="0"
+          tone-mapping="neutral"
+          camera-orbit="0deg 0deg 2.5m"
+          exposure="1"
+          environment-intensity="1"
+          auto-rotate
+          camera-controls
+          style={{
+            width: "100%",
+            height: "80vh",
+            maxWidth: "100%",
+            position: "relative",
+            zIndex: 1,
+          }}
+        />
+      ),
+    },
+    {
+      title: "3D Model",
+      component: (
+        <model-viewer
+          src="/gull.glb"
+          alt="Pixel model"
+          shadow-intensity=".5"
+          environment-image="neutral"
+          camera-orbit="0deg 0deg 2.5m"
+          exposure="1"
+          environment-intensity="2"
+          auto-rotate
+          camera-controls
+          style={{
+            width: "100%",
+            height: "80vh",
+            maxWidth: "100%",
+            position: "relative",
+            zIndex: 1,
+          }}
+        />
+      ),
+    },
     {
       title: "",
       component: (
@@ -636,10 +683,12 @@ function DetailsTestPage() {
     {
       title: "ASCII Animation Test",
       component: (
-        <div className="ascii-animation-container">
-          <AnimatedText text="PIXEL 072" delay={0} />
-          <AnimatedText text="STATUS" delay={100} />
-          <AnimatedText text="NOMINAL" delay={200} />
+        <div>
+          <AnimatedText text="FROM LIQUID" delay={0} />
+          <AnimatedText text="TO" delay={100} />
+          <AnimatedText text="STONE" delay={200} />
+          <br />
+          <AnimatedText text="VENNICE BIENNALE 2025" delay={500} />
         </div>
       ),
     },

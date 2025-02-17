@@ -1,0 +1,13 @@
+.sanimated-text-container {
+  position: relative;
+  display: inline-block;
+}
+
+.sanimated-text-old,
+.sanimated-text-new {
+  display: inline-block;
+}
+
+.sanimated-text-old.changing {
+  opacity: 0.5;
+}

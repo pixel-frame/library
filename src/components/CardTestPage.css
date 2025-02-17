@@ -1,0 +1,127 @@
+@font-face {
+  font-family: "ABCDiatype";
+  src: url("/fonts/ABCDiatypePlusVariable-Trial.woff2") format("woff2"),
+    url("/fonts/ABCDiatypePlusVariable-Trial.woff") format("woff");
+  font-weight: 100 900;
+  font-display: swap;
+}
+.card-test-page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  font-family: monospace;
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+
+.rolling-header {
+  position: relative;
+  padding: 1rem;
+  z-index: 2;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0 1rem;
+}
+
+/* Top section */
+.top-section {
+  height: 45vh;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  flex-shrink: 0;
+  margin: 0 0 1rem 0;
+}
+
+.content {
+  padding: 1rem;
+  color: #000;
+}
+
+.ascii-container {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ascii-container pre {
+  font-family: monospace;
+  white-space: pre;
+  margin: 0;
+  padding: 1rem;
+  border-radius: 4px;
+}
+
+.selected-info {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.selected-info h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.selected-info p {
+  margin: 0.5rem 0 0 0;
+  color: #666;
+}
+
+/* Bottom scrollable list */
+.scrollable-list {
+  height: 50vh;
+  overflow-y: scroll;
+  padding: 0px;
+  background-color: #ffffff;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  flex: 1;
+}
+
+.list-item {
+  display: grid;
+  grid-template-columns: 5fr 1fr 3fr;
+  gap: 16px;
+  padding: 8px 8px;
+  color: #000;
+  font-size: 14px;
+}
+
+.list-item.selected {
+  background-color: #000;
+  color: #fff;
+}
+
+.item-name {
+  font-weight: bold;
+}
+
+.item-year {
+  text-align: center;
+}
+
+.item-location {
+  text-align: right;
+}
+
+/* Custom scrollbar styling */
+.scrollable-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollable-list::-webkit-scrollbar-thumb {
+  background: #424242;
+  border-radius: 4px;
+}
+
+.scrollable-list::-webkit-scrollbar-thumb:hover {
+  background: #757575;
+}

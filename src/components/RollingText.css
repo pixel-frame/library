@@ -1,0 +1,11 @@
+.srolling-text-container {
+  overflow: hidden;
+  white-space: nowrap;
+  margin: 0rem 0;
+}
+
+.srolling-text {
+  display: inline-block;
+  font-family: monospace;
+  font-size: 14px;
+}

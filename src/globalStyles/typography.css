@@ -1,0 +1,88 @@
+@font-face {
+  font-family: "ABC Diatype";
+  src: url("/fonts/ABCDiatypePlusVariable-Trial.woff2") format("woff2"),
+    url("/fonts/ABCDiatypePlusVariable-Trial.woff") format("woff");
+  font-weight: 400 500;
+  font-display: swap;
+}
+
+/* Typography Scale */
+h1,
+.h1 {
+  font-size: var(--font-2xl);
+  line-height: var(--leading-tight);
+  font-variation-settings: "MONO" 0;
+  font-weight: 500;
+  margin-bottom: var(--space-lg);
+}
+
+h2,
+.h2 {
+  font-size: var(--font-xl);
+  line-height: var(--leading-tight);
+  font-variation-settings: "MONO" 0.5;
+  font-weight: 500;
+  margin-bottom: var(--space-md);
+}
+
+h3,
+.h3 {
+  font-size: var(--font-lg);
+  line-height: var(--leading-normal);
+  font-variation-settings: "MONO" 0.5;
+  font-weight: 500;
+  margin-bottom: var(--space-md);
+}
+
+h4,
+.h4 {
+  font-size: var(--font-md);
+  line-height: var(--leading-normal);
+  font-variation-settings: "MONO" 1;
+  font-weight: 400;
+  margin-bottom: var(--space-sm);
+}
+
+h5,
+.h5 {
+  font-size: var(--font-sm);
+  line-height: var(--leading-normal);
+  font-variation-settings: "MONO" 1;
+  font-weight: 400;
+  margin-bottom: var(--space-sm);
+}
+
+h6,
+.h6 {
+  font-size: var(--font-xs);
+  line-height: var(--leading-normal);
+  font-variation-settings: "MONO" 1;
+  font-weight: 400;
+  margin-bottom: var(--space-sm);
+}
+
+p {
+  margin-bottom: var(--space-md);
+  max-width: 65ch;
+}
+
+/* Font Variations */
+.font-mono {
+  font-variation-settings: "MONO" 1;
+  font-weight: 400;
+}
+
+.font-regular {
+  font-variation-settings: "MONO" 0.5;
+  font-weight: 400;
+}
+
+.font-bold {
+  font-variation-settings: "MONO" 0.5;
+  font-weight: 500;
+}
+
+.font-display {
+  font-variation-settings: "MONO" 0;
+  font-weight: 500;
+}

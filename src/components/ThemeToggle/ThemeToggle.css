@@ -1,0 +1,18 @@
+.theme-toggle {
+  position: fixed;
+  top: var(--space-md);
+  right: var(--space-md);
+  padding: var(--space-sm);
+  background-color: var(--accent);
+  color: var(--text-primary);
+  border: none;
+  cursor: pointer;
+  border-radius: var(--radius-full);
+  font-size: var(--font-md);
+  z-index: 1000;
+  transition: background-color 0.2s;
+}
+
+.theme-toggle:hover {
+  background-color: var(--hover-bg);
+}

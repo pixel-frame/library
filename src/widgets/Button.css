@@ -1,0 +1,19 @@
+.base-button {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  text-decoration: none;
+  cursor: pointer;
+  outline: none;
+  font: inherit;
+  color: inherit;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.base-button:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}

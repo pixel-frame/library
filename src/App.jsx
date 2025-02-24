@@ -3,6 +3,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { ThemeToggle } from "./components/ThemeToggle/ThemeToggle";
+import LoadingPage from "./pages/LoadingPage";
 import DetailsTestPage from "./components/DetailsTestPage";
 
 function App() {
@@ -19,17 +20,9 @@ function App() {
       <div className="app">
         <ThemeToggle />
         <Routes>
-          {/* Details test page route */}
+          <Route path="/" element={<LoadingPage />} />
           <Route path="/details" element={<DetailsTestPage />} />
-          {/* Main app routes */}
-          <Route
-            path="*"
-            element={
-              <>
-                <div>Hello</div>
-              </>
-            }
-          />
+          <Route path="*" element={<LoadingPage />} />
         </Routes>
       </div>
     </ThemeProvider>

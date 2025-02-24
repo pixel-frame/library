@@ -1,0 +1,37 @@
+.loading-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--space-xl);
+  max-width: 800px;
+}
+
+.loading-page h1 {
+  margin-bottom: var(--space-xl);
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  font-size: var(--font-lg);
+}
+
+.loading-page h2 {
+  margin-bottom: var(--space-lg);
+  position: absolute;
+  font-size: var(--font-md);
+  top: 1rem;
+  right: 1rem;
+  max-width: 400px;
+}
+
+.loading-page p {
+  position: absolute;
+  font-size: var(--font-sm);
+  bottom: 1rem;
+  left: 1rem;
+}
+
+.loading-page button {
+  position: absolute;
+  left: 40%;
+}

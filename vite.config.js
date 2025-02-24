@@ -13,6 +13,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      "@widgets": path.resolve(__dirname, "./src/widgets"),
     },
   },
 });

@@ -35,18 +35,3 @@
 .mt-lg {
   margin-top: var(--space-lg);
 }
-
-/* Interactive Elements */
-button,
-.button {
-  background-color: var(--button-bg);
-  color: var(--button-text);
-  border: 1px solid var(--border-color);
-}
-
-input,
-textarea {
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-  border: 1px solid var(--border-color);
-}

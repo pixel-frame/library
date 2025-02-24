@@ -581,24 +581,43 @@ function DetailsTestPage() {
     {
       title: "3D Model",
       component: (
-        <model-viewer
-          src="/other.glb"
-          alt="Pixel model"
-          shadow-intensity="0"
-          tone-mapping="neutral"
-          camera-orbit="0deg 0deg 2.5m"
-          exposure="1"
-          environment-intensity="1"
-          auto-rotate
-          camera-controls
-          style={{
-            width: "100%",
-            height: "80vh",
-            maxWidth: "100%",
-            position: "relative",
-            zIndex: 1,
-          }}
-        />
+        <>
+          <div
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              zIndex: 2,
+              color: "black",
+              fontSize: "8rem",
+              fontWeight: "NORMAL",
+              textAlign: "center",
+              pointerEvents: "none",
+            }}
+          >
+            MATERIAL INTELLIGENCE
+          </div>
+
+          <model-viewer
+            src="/other.glb"
+            alt="Pixel model"
+            shadow-intensity="0"
+            tone-mapping="neutral"
+            camera-orbit="0deg 0deg 2.5m"
+            exposure="1"
+            environment-intensity="1"
+            auto-rotate
+            camera-controls
+            style={{
+              width: "100%",
+              height: "80vh",
+              maxWidth: "100%",
+              position: "relative",
+              zIndex: 1,
+            }}
+          />
+        </>
       ),
     },
     {

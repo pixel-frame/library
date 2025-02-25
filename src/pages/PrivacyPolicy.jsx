@@ -17,7 +17,7 @@ const PrivacyPolicy = () => {
           <ul>
             <li>
               We collect only essential technical data required for the website to function, provided through our
-              hosting service (Vercel).
+              hosting service.
             </li>
             <li>
               We store minimal preference data (such as theme settings) locally on your device using browser local

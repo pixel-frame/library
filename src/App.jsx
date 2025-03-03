@@ -9,7 +9,7 @@ import DetailsTestPage from "./components/DetailsTestPage";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import ListingPage from "./pages/ListingPage";
 import AssemblyDetail from "./pages/AssemblyDetail";
-
+import PixelDetail from "./pages/PixelDetail";
 // Wrapper component to handle the loading page logic
 const AppContent = () => {
   const [hasSeenLoadingPage, setHasSeenLoadingPage] = useState(() => {
@@ -44,7 +44,9 @@ const AppContent = () => {
       <Routes>
         <Route path="/" element={<ListingPage />} />
         <Route path="/assemblies" element={<ListingPage />} />
+        <Route path="/pixels" element={<ListingPage />} />
         <Route path="/assembly/:id" element={<AssemblyDetail />} />
+        <Route path="/pixel/:id" element={<PixelDetail />} />
         <Route path="/details" element={<DetailsTestPage />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="*" element={<DetailsTestPage />} />

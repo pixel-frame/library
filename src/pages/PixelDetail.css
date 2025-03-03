@@ -1,0 +1,53 @@
+.pixel-detail-page {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.pixel-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.timeline-section {
+  background: var(--surface-color);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.timeline-event {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--background-color);
+  border-radius: 4px;
+}
+
+.timeline-date {
+  font-weight: 500;
+}
+
+.timeline-location {
+  font-weight: 500;
+}
+
+.timeline-coordinates {
+  color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+  .timeline-event {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+}

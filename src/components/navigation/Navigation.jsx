@@ -5,6 +5,7 @@ const Navigation = () => {
   const navigationLinks = [
     { url: "/", label: "Home" },
     { url: "/assemblies", label: "Assemblies" },
+    { url: "/pixels", label: "Pixels" },
     { url: "/privacy-policy", label: "Privacy Policy" },
   ];
 

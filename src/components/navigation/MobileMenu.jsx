@@ -19,29 +19,29 @@ const MobileMenu = ({ links }) => {
     <>
       {/* Hamburger Button */}
       <button
-        className={`hamburger-icon ${isOpen ? "open" : ""}`}
+        className={`${styles.hamburgerIcon} ${isOpen ? styles.open : ""}`}
         onClick={handleToggle}
         onKeyDown={handleKeyDown}
         aria-label="Toggle menu"
         aria-expanded={isOpen}
         tabIndex="0"
       >
-        <span className="hamburger-line"></span>
-        <span className="hamburger-line"></span>
-        <span className="hamburger-line"></span>
+        <span className={styles.hamburgerLine}></span>
+        <span className={styles.hamburgerLine}></span>
+        <span className={styles.hamburgerLine}></span>
       </button>
 
       {/* Mobile Menu Overlay */}
       {isOpen && (
-        <div className="mobile-menu-overlay">
-          <div className="mobile-menu-content">
+        <div className={styles.mobileMenuOverlay}>
+          <div className={styles.mobileMenuContent}>
             {/* Close Button */}
             <button className={styles.closeButton} onClick={handleToggle} aria-label="Close menu" tabIndex="0">
               ×
             </button>
 
             {/* Navigation Links */}
-            <nav className="mobile-nav">
+            <nav className={styles.mobileNav}>
               <ul>
                 {links &&
                   links.map((link, index) => (
@@ -52,7 +52,9 @@ const MobileMenu = ({ links }) => {
               </ul>
             </nav>
 
-            <ThemeToggle />
+            <div className={styles.themeToggleContainer}>
+              <ThemeToggle />
+            </div>
           </div>
         </div>
       )}

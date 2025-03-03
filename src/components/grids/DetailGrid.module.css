@@ -1,0 +1,84 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  width: 100%;
+  margin: 1rem 0;
+}
+
+.gridItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.title {
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  color: #666;
+}
+
+.infoButton {
+  width: 24px;
+  height: 24px;
+  background: var(--accent);
+  color: var(--text-primary);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-sm);
+  cursor: pointer;
+}
+
+.value {
+  font-size: var(--font-md);
+  font-weight: 500;
+  font-family: monospace;
+}
+
+.infoText {
+  font-size: var(--font-sm);
+  color: var(--text-primary);
+  margin-top: var(--space-xs);
+  font-family: monospace;
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+}
+
+.modalContent {
+  position: absolute;
+  background: var(--bg-primary);
+  padding: var(--space-md);
+  max-width: 300px;
+  border: 1px solid var(--text-primary);
+  color: var(--text-primary);
+  font-size: var(--font-md);
+  line-height: var(--leading-normal);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 480px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 320px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

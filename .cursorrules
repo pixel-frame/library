@@ -37,3 +37,4 @@ Follow these rules when you write code:
 - Stick to the design system and use global styles rather than inline styles.
 - As this is a mobile web application, make sure to use the mobile-first approach.
 - DO NOT ADD ANY HOVER STATES
+- Use CSS modules for all styling as needed to prevent class name collisions.

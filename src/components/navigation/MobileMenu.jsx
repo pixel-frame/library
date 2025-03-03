@@ -1,6 +1,6 @@
 import { useState } from "react";
-import "./MobileMenu.css";
 import { ThemeToggle } from "../ThemeToggle/ThemeToggle";
+import styles from "./MobileMenu.module.css";
 
 const MobileMenu = ({ links }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -36,7 +36,7 @@ const MobileMenu = ({ links }) => {
         <div className="mobile-menu-overlay">
           <div className="mobile-menu-content">
             {/* Close Button */}
-            <button className="close-button" onClick={handleToggle} aria-label="Close menu" tabIndex="0">
+            <button className={styles.closeButton} onClick={handleToggle} aria-label="Close menu" tabIndex="0">
               ×
             </button>
 

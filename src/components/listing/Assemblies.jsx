@@ -10,65 +10,24 @@ const Assemblies = () => {
   useEffect(() => {
     const fetchAssemblies = async () => {
       try {
-        // Hardcoded assembly data instead of importing from JSON
-        const hardcodedAssemblies = [
-          {
-            id: "beam-assembly-2022",
-            name: "BEAM ASSEMBLY",
-            description: "2022 - Cambridge, MA",
-            thumbnail: "1_Gen 1 Prototype Beam.glb",
-          },
-          {
-            id: "column-assembly-2022",
-            name: "COLUMN ASSEMBLY",
-            description: "2022 - Cambridge, MA",
-            thumbnail: "2_6_Gen 1 Prototype Column.glb",
-          },
-          {
-            id: "shear-test-2022",
-            name: "SHEAR TEST",
-            description: "2022 - Cambridge, MA",
-            thumbnail: null,
-          },
-          {
-            id: "beam-assembly-2023",
-            name: "BEAM ASSEMBLY",
-            description: "2023 - Washington DC",
-            thumbnail: "4_7_Gen 2 Prototype Beam_Showcase.glb",
-          },
-          {
-            id: "showcase-column-2023-1",
-            name: "SHOWCASE COLUMN",
-            description: "2023 - Washington DC",
-            thumbnail: "5_Gen 2 Prototype Column_showcase.glb",
-          },
-          {
-            id: "showcase-column-2023-2",
-            name: "SHOWCASE COLUMN",
-            description: "2023 - Washington DC",
-            thumbnail: null,
-          },
-          {
-            id: "exhibition-beam-2024",
-            name: "EXHIBITION BEAM",
-            description: "2024 - Cambridge, MA",
-            thumbnail: null,
-          },
-          {
-            id: "exhibition-column-2025",
-            name: "EXHIBITION COLUMN",
-            thumbnail: "10_Gen 1 Prototype Column_Biennale.glb",
-            description: "2025 - Cambridge, MA",
-          },
-          {
-            id: "biennale-beam-2025",
-            name: "BIENNALE BEAM",
-            description: "2025 - Venice, IT",
-            thumbnail: "9_Gen 2 Prototype Beam_Biennale.glb",
-          },
-        ];
+        const response = await fetch("/data/bank/assembly/carbon_locations.json");
+        const data = await response.json();
 
-        setAssemblies(hardcodedAssemblies);
+        const mappedAssemblies = data.reconfigurations.map((config) => ({
+          id: `assembly-${config.number}`,
+          name: config.name.toUpperCase(),
+          description: config.description,
+          date: config.date,
+          location: config.location,
+          pixelWeight: config.pixel_weight,
+          coefficient: config.coefficient,
+          a1A3Emissions: config.a1_a3_emissions,
+          transport: config.transport,
+          totalEmissions: config.total_emissions,
+          displayDate: `${new Date(config.date).getFullYear()} - ${config.location.name}`,
+        }));
+
+        setAssemblies(mappedAssemblies);
         setLoading(false);
       } catch (err) {
         setError("Failed to load assemblies data");
@@ -98,7 +57,6 @@ const Assemblies = () => {
             >
               <div className="assembly-info">
                 <h3>{assembly.name}</h3>
-                <p>{assembly.description}</p>
               </div>
             </Link>
           ))

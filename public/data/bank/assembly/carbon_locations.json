@@ -1,0 +1,349 @@
+{
+  "reconfigurations": [
+    {
+      "number": 1,
+      "name": "Gen 1 Prototype Beam Assembly and Load Test",
+      "description": "The Gen 1 Prototype Beam Assembly was fabricated as an initial proof of concept for Pixelframe, used to test both the assembly method and structural performance at half scale. Pixels in this configuration were subjected to a three-point bending test which led to minor cracking and spalling as pixels were tested to failure. ",
+      "date": "7/18/2022",
+      "location": {
+        "name": "Cambridge, MA",
+        "coordinates": {
+          "latitude": 42.3666,
+          "longitude": -71.1057
+        }
+      },
+      "pixel_weight": 6.04,
+      "coefficient": 0.38,
+      "a1_a3_emissions": 2.2952,
+      "transport": {
+        "distance": 0.0,
+        "type": "N/A",
+        "coefficient": null,
+        "emissions": 0.0
+      },
+      "total_emissions": 2.2952
+    },
+    {
+      "number": 2,
+      "name": "Gen 1 Prototype Column Assembly",
+      "description": "The Gen 1 Prototype Column Assembly used pixels left over from the beam assembly to experiment with different cross-sectional configurations, including the two-piece column and the four-piece column. ",
+      "date": "7/18/2022",
+      "location": {
+        "name": "Cambridge, MA",
+        "coordinates": {
+          "latitude": 42.3666,
+          "longitude": -71.1057
+        }
+      },
+      "pixel_weight": 6.04,
+      "coefficient": 0.38,
+      "a1_a3_emissions": 2.2952,
+      "transport": {
+        "distance": 0.0,
+        "type": "N/A",
+        "coefficient": null,
+        "emissions": 0.0
+      },
+      "total_emissions": 2.2952
+    },
+    {
+      "number": 3,
+      "name": "Gen 1 Prototype Shear Test",
+      "description": "The Gen 1 Prototype Shear Test used pixels from the first round of prototyping to find the coefficient of friction between the concrete and aluminum at the intersection of the intermediate plate and pixels. Pixels were tested to failure, with most being retired after this test due to extensive damage. ",
+      "date": "4/15/2024",
+      "location": {
+        "name": "Cambridge, MA",
+        "coordinates": {
+          "latitude": 42.3666,
+          "longitude": -71.1057
+        }
+      },
+      "pixel_weight": 6.04,
+      "coefficient": 0.0,
+      "a1_a3_emissions": 0.0,
+      "transport": {
+        "distance": 0.0,
+        "type": "N/A",
+        "coefficient": null,
+        "emissions": 0.0
+      },
+      "total_emissions": 0.0
+    },
+    {
+      "number": 4,
+      "name": "Gen 2 Prototype Showcase Beam Assembly",
+      "description": "The Showcase Beam Assembly was a design-proof-of-concept with second-generation pixels that were smaller, in response to results from the first series of tests. This assembly reused the tension assembly from the Gen 1 Prototype Beam, while experimenting with a new deviator and endplate design. This prototype was sent to Washington, DC, for an exhibition, and was subsequently returned to Cambridge, MA. ",
+      "date": "1/4/2023",
+      "location": {
+        "name": "Washington DC",
+        "coordinates": {
+          "latitude": 38.9072,
+          "longitude": -77.0369
+        }
+      },
+      "pixel_weight": 3.65,
+      "coefficient": 0.38,
+      "a1_a3_emissions": 1.387,
+      "transport": {
+        "distance": 700.0,
+        "type": "truck",
+        "coefficient": 0.032,
+        "emissions": 0.1168
+      },
+      "total_emissions": 1.5038
+    },
+    {
+      "number": 5,
+      "name": "Gen 2 Prototype Showcase Column Assembly",
+      "description": "The Showcase Column assembly tested out the design of the two-piece column at half scale. This prototype was sent to Washington, DC, for an exhibition, and was subsequently returned to Cambridge, MA. ",
+      "date": "1/4/2023",
+      "location": {
+        "name": "Washington DC",
+        "coordinates": {
+          "latitude": 38.9072,
+          "longitude": -77.0369
+        }
+      },
+      "pixel_weight": 3.65,
+      "coefficient": 0.38,
+      "a1_a3_emissions": 1.387,
+      "transport": {
+        "distance": 700.0,
+        "type": "truck",
+        "coefficient": 0.032,
+        "emissions": 0.1168
+      },
+      "total_emissions": 1.5038
+    },
+    {
+      "number": 6,
+      "name": "Gen 1 Prototype Showcase Column Assembly",
+      "description": "The Gen 1 Showcase Column Assembly used Gen 1 pixels to demonstrate the assembly of the four-piece column design, allowing visitors to the Washington DC exhibition to disassemble and reassemble the prototype.",
+      "date": "4/4/2023",
+      "location": {
+        "name": "Washington DC",
+        "coordinates": {
+          "latitude": 38.9072,
+          "longitude": -77.0369
+        }
+      },
+      "pixel_weight": 6.04,
+      "coefficient": 0.0,
+      "a1_a3_emissions": 0.0,
+      "transport": {
+        "distance": 700.0,
+        "type": "truck",
+        "coefficient": 0.032,
+        "emissions": 0.19328
+      },
+      "total_emissions": 0.19328
+    },
+    {
+      "number": 7,
+      "name": "Gen 2 Prototype Exhibition Beam Assembly ",
+      "description": "The Exhibition Beam Assembly was exhibited in Cambridge, MA, in June of 2024. ",
+      "date": "5/17/2024",
+      "location": {
+        "name": "Cambridge, MA",
+        "coordinates": {
+          "latitude": 42.3666,
+          "longitude": -71.1057
+        }
+      },
+      "pixel_weight": 3.65,
+      "coefficient": 0.0,
+      "a1_a3_emissions": 0.0,
+      "transport": {
+        "distance": 700.0,
+        "type": "truck",
+        "coefficient": 0.032,
+        "emissions": 0.1168
+      },
+      "total_emissions": 0.1168
+    },
+    {
+      "number": 8,
+      "name": "Gen 1 Prototype Exhibition Column Assembly",
+      "description": "The Exhibition Column Assembly was exhibited in Cambridge, MA, in June of 2024. It was used to demonstrate the assemble and disassembly of the system. ",
+      "date": "5/17/2024",
+      "location": {
+        "name": "Cambridge, MA",
+        "coordinates": {
+          "latitude": 42.3666,
+          "longitude": -71.1057
+        }
+      },
+      "pixel_weight": 3.65,
+      "coefficient": 0.0,
+      "a1_a3_emissions": 0.0,
+      "transport": {
+        "distance": 700.0,
+        "type": "truck",
+        "coefficient": 0.032,
+        "emissions": 0.1168
+      },
+      "total_emissions": 0.1168
+    },
+    {
+      "number": 9,
+      "name": "Gen 2 Prototype Biennale Beam",
+      "description": "The Gen 2 Biennale Beam is the most widely traveled Pixelframe assembly still in circulation today, temporarily visiting the Venice Biennale.",
+      "date": "3/19/2025",
+      "location": {
+        "name": "Venice, IT",
+        "coordinates": {
+          "latitude": 45.4404,
+          "longitude": 12.316
+        }
+      },
+      "pixel_weight": 3.65,
+      "coefficient": 0.0,
+      "a1_a3_emissions": 0.0,
+      "transport": {
+        "distance": 6450.0,
+        "type": "air",
+        "coefficient": 0.5,
+        "emissions": 1.825
+      },
+      "total_emissions": 1.825
+    },
+    {
+      "number": 10,
+      "name": "Gen 1 Prototype Biennale Column",
+      "description": "The Gen 1 Biennale Column is the oldest Pixelframe assembly still in circulation today - its pixels have been disassembled and reassembled many times, bearing marks of past load tests and reconfigurations. ",
+      "date": "3/19/2025",
+      "location": {
+        "name": "Venice, IT",
+        "coordinates": {
+          "latitude": 45.4404,
+          "longitude": 12.316
+        }
+      },
+      "pixel_weight": 6.04,
+      "coefficient": 0.0,
+      "a1_a3_emissions": 0.0,
+      "transport": {
+        "distance": 6450.0,
+        "type": "air",
+        "coefficient": 0.5,
+        "emissions": 3.02
+      },
+      "total_emissions": 3.02
+    },
+    {
+      "number": 12,
+      "name": "Gen 3 Prototype Primary Beam",
+      "description": "The Gen 3 Prototype Primary Beam is full-scale testing assembly currently under production. This prototype will be assembled in the summer of 2025, and will be used to test and showcase the system at full scale. ",
+      "date": "8/1/2025",
+      "location": {
+        "name": "Cambridge, MA",
+        "coordinates": {
+          "latitude": 42.3666,
+          "longitude": -71.1057
+        }
+      },
+      "pixel_weight": 29.23,
+      "coefficient": 0.38,
+      "a1_a3_emissions": 11.1074,
+      "transport": {
+        "distance": 0.0,
+        "type": "N/A",
+        "coefficient": null,
+        "emissions": 0
+      },
+      "total_emissions": null
+    },
+    {
+      "number": 13,
+      "name": "Gen 3 Prototype Secondary Beam",
+      "description": "The Gen 3 Prototype Secondary Beam is full-scale testing assembly currently under production. This prototype will be assembled in the summer of 2025, and will be used to test and showcase the system at full scale. This is the first instance of testing of the secondary beam assembly. ",
+      "date": "8/1/2025",
+      "location": {
+        "name": "Cambridge, MA",
+        "coordinates": {
+          "latitude": 42.3666,
+          "longitude": -71.1057
+        }
+      },
+      "pixel_weight": 29.23,
+      "coefficient": 0.38,
+      "a1_a3_emissions": 11.1074,
+      "transport": {
+        "distance": 0.0,
+        "type": "N/A",
+        "coefficient": null,
+        "emissions": 0
+      },
+      "total_emissions": null
+    },
+    {
+      "number": 14,
+      "name": "Speculative Reconfiguration - Warehouse",
+      "description": "The warehouse is a speculative future assembly sited in Edmonton, Alberta. The pixels in this configuration are temporarily assembled into a logistics center, a building with a shorter life span than average. After five years in this configuration, the building is disassembled and the pixels are reused. ",
+      "date": "12/4/2025",
+      "location": {
+        "name": "Edmonton, AB",
+        "coordinates": {
+          "latitude": 53.5461,
+          "longitude": -113.4937
+        }
+      },
+      "pixel_weight": 29.23,
+      "coefficient": 0.0,
+      "a1_a3_emissions": 0.0,
+      "transport": {
+        "distance": 7866.0,
+        "type": "truck",
+        "coefficient": 0.032,
+        "emissions": 0.93536
+      },
+      "total_emissions": 0.93536
+    },
+    {
+      "number": 15,
+      "name": "Speculative Reconfiguration - Pavilion",
+      "description": "After being used in the warehouse configuration, some pixels are trucked to Chicago, where they are used to construct a demonstrator pavilion that showcases circularity in building applications. The pavilion is dismantled after a few months, and the pixels are returned to the material bank.",
+      "date": "8/3/2034",
+      "location": {
+        "name": "Chicago, IL",
+        "coordinates": {
+          "latitude": 41.8781,
+          "longitude": -87.6298
+        }
+      },
+      "pixel_weight": 29.23,
+      "coefficient": 0.0,
+      "a1_a3_emissions": 0.0,
+      "transport": {
+        "distance": 2632.0,
+        "type": "truck",
+        "coefficient": 0.032,
+        "emissions": 0.93536
+      },
+      "total_emissions": 0.93536
+    },
+    {
+      "number": 16,
+      "name": "Speculative Reconfiguration - Tower",
+      "description": "The tower is a speculative future assembly in Vancouver, British Columbia. This configuration experiments with the adaptive reuse of an existing shear/elevator core, which remains after the facade of an existing building is removed. The Pixelframe system is used to build up a new, flexible structure around the existing structure, creating a new building envelope that allows in light and air.",
+      "date": "4/1/2035",
+      "location": {
+        "name": "Vancouver, BC",
+        "coordinates": {
+          "latitude": 49.2827,
+          "longitude": -123.1207
+        }
+      },
+      "pixel_weight": 29.23,
+      "coefficient": 0.0,
+      "a1_a3_emissions": 0.0,
+      "transport": {
+        "distance": 2200.0,
+        "type": "truck",
+        "coefficient": 0.032,
+        "emissions": 0.93536
+      },
+      "total_emissions": 0.93536
+    }
+  ]
+}

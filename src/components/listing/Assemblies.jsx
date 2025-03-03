@@ -10,7 +10,7 @@ const Assemblies = () => {
   useEffect(() => {
     const fetchAssemblies = async () => {
       try {
-        const response = await fetch("/data/bank/assembly/carbon_locations.json");
+        const response = await fetch("/data/bank/assembly/assemblies.json");
         const data = await response.json();
 
         const mappedAssemblies = data.reconfigurations.map((config) => ({

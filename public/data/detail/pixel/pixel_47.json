@@ -1,0 +1,64 @@
+{
+  "pixel_number": 47,
+  "generation": 2,
+  "generation_description": "Beta prototype (half scale)",
+  "state_description": null,
+  "state": null,
+  "fc": 35.0,
+  "weight": 3.65,
+  "carbon_emissions_a1_a3": null,
+  "concrete_mix": "Rapidset high strength concrete mix",
+  "fiber": {
+    "type": "Glass fiber",
+    "dosage": "3%"
+  },
+  "date_of_manufacture": "2023",
+  "number_of_reconfigurations": 1,
+  "reconfigurations": {
+    "1": false,
+    "2": false,
+    "3": false,
+    "4": false,
+    "5": false,
+    "6": false,
+    "7": false,
+    "8": false,
+    "9": false,
+    "10": false,
+    "12": false,
+    "13": false,
+    "14": false,
+    "15": false
+  },
+  "gif": true,
+  "notes": "",
+  "timeline": [
+    {
+      "step": 1,
+      "reconfiguration_number": 5,
+      "name": "Gen 2 Prototype Showcase Column Assembly",
+      "date": "1/4/2023",
+      "location": {
+        "name": "Washington DC",
+        "coordinates": {
+          "latitude": 38.9072,
+          "longitude": -77.0369
+        }
+      },
+      "emissions": {
+        "a1_a3": 1.387,
+        "transport": 0.1168,
+        "step_total": 1.5038,
+        "running_total": 1.5038
+      },
+      "transport": {
+        "type": "truck",
+        "distance": 700.0,
+        "cumulative_distance": 700.0
+      },
+      "description": "The Showcase Column assembly tested out the design of the two-piece column at half scale. This prototype was sent to Washington, DC, for an exhibition, and was subsequently returned to Cambridge, MA. "
+    }
+  ],
+  "total_emissions": 1.5038,
+  "total_distance": 700.0
+}

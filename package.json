@@ -8,7 +8,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "process-data": "python src/data/originals/translate_to_json.py"
+    "process-data": "python public/data/originals/translate_to_json.py"
   },
   "dependencies": {
     "@google/model-viewer": "^4.0.0",

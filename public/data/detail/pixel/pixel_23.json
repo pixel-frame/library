@@ -1,0 +1,114 @@
+{
+  "pixel_number": 23,
+  "generation": 1,
+  "generation_description": "First prototype (half scale)",
+  "state_description": null,
+  "state": null,
+  "fc": 35.0,
+  "weight": 6.04,
+  "carbon_emissions_a1_a3": null,
+  "concrete_mix": "Rapidset high strength concrete mix",
+  "fiber": {
+    "type": "Glass fiber",
+    "dosage": "3%"
+  },
+  "date_of_manufacture": "2022",
+  "number_of_reconfigurations": 3,
+  "reconfigurations": {
+    "1": false,
+    "2": false,
+    "3": false,
+    "4": false,
+    "5": false,
+    "6": false,
+    "7": false,
+    "8": false,
+    "9": false,
+    "10": false,
+    "12": false,
+    "13": false,
+    "14": false,
+    "15": false
+  },
+  "gif": false,
+  "notes": "",
+  "timeline": [
+    {
+      "step": 1,
+      "reconfiguration_number": 1,
+      "name": "Gen 1 Prototype Beam Assembly and Load Test",
+      "date": "7/18/2022",
+      "location": {
+        "name": "Cambridge, MA",
+        "coordinates": {
+          "latitude": 42.3666,
+          "longitude": -71.1057
+        }
+      },
+      "emissions": {
+        "a1_a3": 2.2952,
+        "transport": 0.0,
+        "step_total": 2.2952,
+        "running_total": 2.2952
+      },
+      "transport": {
+        "type": "N/A",
+        "distance": 0.0,
+        "cumulative_distance": 0.0
+      },
+      "description": "The Gen 1 Prototype Beam Assembly was fabricated as an initial proof of concept for Pixelframe, used to test both the assembly method and structural performance at half scale. Pixels in this configuration were subjected to a three-point bending test which led to minor cracking and spalling as pixels were tested to failure. "
+    },
+    {
+      "step": 2,
+      "reconfiguration_number": 8,
+      "name": "Gen 1 Prototype Exhibition Column Assembly",
+      "date": "5/17/2024",
+      "location": {
+        "name": "Cambridge, MA",
+        "coordinates": {
+          "latitude": 42.3666,
+          "longitude": -71.1057
+        }
+      },
+      "emissions": {
+        "a1_a3": 0,
+        "transport": 0.1168,
+        "step_total": 0.1168,
+        "running_total": 2.412
+      },
+      "transport": {
+        "type": "truck",
+        "distance": 700.0,
+        "cumulative_distance": 700.0
+      },
+      "description": "The Exhibition Column Assembly was exhibited in Cambridge, MA, in June of 2024. It was used to demonstrate the assemble and disassembly of the system. "
+    },
+    {
+      "step": 3,
+      "reconfiguration_number": 10,
+      "name": "Gen 1 Prototype Biennale Column",
+      "date": "3/19/2025",
+      "location": {
+        "name": "Venice, IT",
+        "coordinates": {
+          "latitude": 45.4404,
+          "longitude": 12.316
+        }
+      },
+      "emissions": {
+        "a1_a3": 0,
+        "transport": 3.02,
+        "step_total": 3.02,
+        "running_total": 5.432
+      },
+      "transport": {
+        "type": "air",
+        "distance": 6450.0,
+        "cumulative_distance": 7150.0
+      },
+      "description": "The Gen 1 Biennale Column is the oldest Pixelframe assembly still in circulation today - its pixels have been disassembled and reassembled many times, bearing marks of past load tests and reconfigurations. "
+    }
+  ],
+  "total_emissions": 5.432,
+  "total_distance": 7150.0
+}

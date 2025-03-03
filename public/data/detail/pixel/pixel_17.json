@@ -1,0 +1,114 @@
+{
+  "pixel_number": 17,
+  "generation": 1,
+  "generation_description": "First prototype (half scale)",
+  "state_description": null,
+  "state": null,
+  "fc": 35.0,
+  "weight": 6.04,
+  "carbon_emissions_a1_a3": null,
+  "concrete_mix": "Rapidset high strength concrete mix",
+  "fiber": {
+    "type": "Glass fiber",
+    "dosage": "3%"
+  },
+  "date_of_manufacture": "2022",
+  "number_of_reconfigurations": 3,
+  "reconfigurations": {
+    "1": false,
+    "2": false,
+    "3": false,
+    "4": false,
+    "5": false,
+    "6": false,
+    "7": false,
+    "8": false,
+    "9": false,
+    "10": false,
+    "12": false,
+    "13": false,
+    "14": false,
+    "15": false
+  },
+  "gif": false,
+  "notes": "",
+  "timeline": [
+    {
+      "step": 1,
+      "reconfiguration_number": 2,
+      "name": "Gen 1 Prototype Column Assembly",
+      "date": "7/18/2022",
+      "location": {
+        "name": "Cambridge, MA",
+        "coordinates": {
+          "latitude": 42.3666,
+          "longitude": -71.1057
+        }
+      },
+      "emissions": {
+        "a1_a3": 2.2952,
+        "transport": 0.0,
+        "step_total": 2.2952,
+        "running_total": 2.2952
+      },
+      "transport": {
+        "type": "N/A",
+        "distance": 0.0,
+        "cumulative_distance": 0.0
+      },
+      "description": "The Gen 1 Prototype Column Assembly used pixels left over from the beam assembly to experiment with different cross-sectional configurations, including the two-piece column and the four-piece column. "
+    },
+    {
+      "step": 2,
+      "reconfiguration_number": 6,
+      "name": "Gen 1 Prototype Showcase Column Assembly",
+      "date": "4/4/2023",
+      "location": {
+        "name": "Washington DC",
+        "coordinates": {
+          "latitude": 38.9072,
+          "longitude": -77.0369
+        }
+      },
+      "emissions": {
+        "a1_a3": 0,
+        "transport": 0.19328,
+        "step_total": 0.19328,
+        "running_total": 2.48848
+      },
+      "transport": {
+        "type": "truck",
+        "distance": 700.0,
+        "cumulative_distance": 700.0
+      },
+      "description": "The Gen 1 Showcase Column Assembly used Gen 1 pixels to demonstrate the assembly of the four-piece column design, allowing visitors to the Washington DC exhibition to disassemble and reassemble the prototype."
+    },
+    {
+      "step": 3,
+      "reconfiguration_number": 8,
+      "name": "Gen 1 Prototype Exhibition Column Assembly",
+      "date": "5/17/2024",
+      "location": {
+        "name": "Cambridge, MA",
+        "coordinates": {
+          "latitude": 42.3666,
+          "longitude": -71.1057
+        }
+      },
+      "emissions": {
+        "a1_a3": 0,
+        "transport": 0.1168,
+        "step_total": 0.1168,
+        "running_total": 2.60528
+      },
+      "transport": {
+        "type": "truck",
+        "distance": 700.0,
+        "cumulative_distance": 1400.0
+      },
+      "description": "The Exhibition Column Assembly was exhibited in Cambridge, MA, in June of 2024. It was used to demonstrate the assemble and disassembly of the system. "
+    }
+  ],
+  "total_emissions": 2.60528,
+  "total_distance": 1400.0
+}

@@ -10,26 +10,16 @@ const Pixels = () => {
   useEffect(() => {
     const fetchPixels = async () => {
       try {
-        const response = await fetch("/data/bank/pixel/master.json");
+        const response = await fetch("/data/bank/pixel/pixels.json");
         const data = await response.json();
 
         const mappedPixels = data.pixels.map((pixel) => ({
           id: `pixel-${pixel.pixel_number}`,
           number: pixel.pixel_number,
           generation: pixel.generation,
-          generation_description: pixel.generation_description,
           state: pixel.state,
           state_description: pixel.state_description,
-          fc: pixel.fc,
-          weight: pixel.weight,
-          carbon_emissions_a1_a3: pixel.carbon_emissions_a1_a3,
-          concrete_mix: pixel.concrete_mix,
-          fiber: pixel.fiber,
-          date_of_manufacture: pixel.date_of_manufacture,
           number_of_reconfigurations: pixel.number_of_reconfigurations,
-          reconfigurations: pixel.reconfigurations,
-          gif: pixel.gif,
-          notes: pixel.notes,
         }));
 
         setPixels(mappedPixels);
@@ -53,8 +43,7 @@ const Pixels = () => {
         {pixels.length > 0 ? (
           pixels.map((pixel) => (
             <Link
-              to={`/pixel/${pixel.id}`}
-              state={{ pixel }}
+              to={`/pixel/${pixel.number}`}
               key={pixel.id}
               className="pixel-card"
               aria-label={`View details of Pixel ${pixel.number}`}

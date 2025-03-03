@@ -1,13 +1,34 @@
-import React from "react";
-import { useParams, Link, useLocation } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useParams, Link } from "react-router-dom";
 import DetailGrid from "../components/grids/DetailGrid";
 import "./PixelDetail.css";
 
 const PixelDetail = () => {
   const { id } = useParams();
-  const location = useLocation();
-  const pixel = location.state?.pixel;
+  const [pixel, setPixel] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
+  useEffect(() => {
+    const fetchPixelDetail = async () => {
+      try {
+        const paddedId = id.toString().padStart(2, "0");
+        const response = await fetch(`/data/detail/pixel/pixel_${paddedId}.json`);
+        if (!response.ok) throw new Error("Pixel not found");
+        const data = await response.json();
+        setPixel(data);
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
+      }
+    };
+
+    fetchPixelDetail();
+  }, [id]);
+
+  if (loading) return <div className="loading-indicator">Loading pixel details...</div>;
+  if (error) return <div className="error-message">{error}</div>;
   if (!pixel) return <div className="error-message">Pixel not found</div>;
 
   return (
@@ -66,6 +87,11 @@ const PixelDetail = () => {
             <p>{pixel.notes}</p>
           </div>
         )}
+
+        <div className="other-data">
+          <h2>Available Data</h2>
+          <pre>{JSON.stringify(pixel, null, 2)}</pre>
+        </div>
       </div>
     </div>
   );

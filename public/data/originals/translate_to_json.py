@@ -250,9 +250,55 @@ def create_timeline_json(master_csv, carbon_locations_csv):
 
     return {"pixels": pixels_timeline}
 
+def create_individual_pixel_files(master_data, timeline_data):
+    """Create individual JSON files for each pixel with combined data"""
+    pixel_files = {}
+    
+    # Create a lookup for timeline data by pixel_number
+    timeline_lookup = {pixel["pixel_number"]: pixel for pixel in timeline_data["pixels"]}
+    
+    for pixel in master_data["pixels"]:
+        pixel_number = pixel["pixel_number"]
+        
+        # Create a deep copy of the pixel data
+        pixel_data = dict(pixel)
+        
+        # Add timeline data if available
+        if pixel_number in timeline_lookup:
+            pixel_data["timeline"] = timeline_lookup[pixel_number]["timeline"]
+            pixel_data["total_emissions"] = timeline_lookup[pixel_number]["total_emissions"]
+            pixel_data["total_distance"] = timeline_lookup[pixel_number]["total_distance"]
+        else:
+            pixel_data["timeline"] = []
+            pixel_data["total_emissions"] = 0
+            pixel_data["total_distance"] = 0
+            
+        # Store pixel data
+        pixel_files[pixel_number] = pixel_data
+        
+    return pixel_files
+
+def create_simplified_pixels_json(master_data):
+    """Create a simplified pixels.json with basic status information"""
+    simplified_pixels = []
+    
+    for pixel in master_data["pixels"]:
+        simplified_pixel = {
+            "pixel_number": pixel["pixel_number"],
+            "generation": pixel["generation"],
+            "state": pixel["state"],
+            "state_description": pixel["state_description"],
+            "number_of_reconfigurations": pixel["number_of_reconfigurations"]
+        }
+        simplified_pixels.append(simplified_pixel)
+        
+    return {"pixels": simplified_pixels}
+
 def main():
-    # Update paths to be relative to project root
-    base_path = 'src/data/originals'
+    # Update paths to match the new public folder structure
+    base_path = 'public/data/originals'
+    output_base_path = 'public/data/bank'
+    
     generation_descriptions = load_generation_descriptions(f'{base_path}/generation_description.csv')
     state_legend = load_state_legend(f'{base_path}/state_legend.csv')
     reconfig_columns = load_reconfigurations(f'{base_path}/carbon_location.csv')
@@ -261,19 +307,31 @@ def main():
     master_data = convert_master_to_json(f'{base_path}/master.csv', generation_descriptions, state_legend, reconfig_columns)
     timeline_data = create_timeline_json(f'{base_path}/master.csv', f'{base_path}/carbon_location.csv')
     
-    # Create directories if they don't exist
-    os.makedirs('src/data/bank/assembly', exist_ok=True)
-    os.makedirs('src/data/bank/pixel', exist_ok=True)
+    # Generate individual pixel files and simplified pixels.json
+    pixel_files = create_individual_pixel_files(master_data, timeline_data)
+    simplified_pixels = create_simplified_pixels_json(master_data)
     
-    # Save files to their respective directories
-    with open('src/data/bank/assembly/carbon_locations.json', 'w') as f:
+    # Create directories if they don't exist
+    os.makedirs(f'{output_base_path}/assembly', exist_ok=True)
+    os.makedirs(f'{output_base_path}/pixel', exist_ok=True)
+    
+    # Save assemblies.json (renamed from carbon_locations.json)
+    with open(f'{output_base_path}/assembly/assemblies.json', 'w') as f:
         json.dump(carbon_locations_data, f, indent=2)
     
-    with open('src/data/bank/pixel/master.json', 'w') as f:
-        json.dump(master_data, f, indent=2)
+    # Save simplified pixels.json
+    with open(f'{output_base_path}/pixel/pixels.json', 'w') as f:
+        json.dump(simplified_pixels, f, indent=2)
 
-    with open('src/data/bank/assembly/timeline.json', 'w') as f:
-        json.dump(timeline_data, f, indent=2)
+    # Save individual pixel files
+    for pixel_number, pixel_data in pixel_files.items():
+        # Create filename with leading zeros (e.g., pixel_01.json)
+        filename = f'pixel_{pixel_number:02d}.json'
+        with open(f'{output_base_path}/pixel/{filename}', 'w') as f:
+            json.dump(pixel_data, f, indent=2)
+            
+    # Don't save the original master.json and timeline.json anymore
+    # as they've been replaced with the new files
 
 if __name__ == "__main__":
     main() 

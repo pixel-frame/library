@@ -1,37 +1,86 @@
 .loading-page {
+  position: relative;
   min-height: 100vh;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: var(--space-xl);
-  max-width: 800px;
+  align-items: center;
+}
+
+.ascii-grid {
+  width: 85vw;
+  height: 60vh;
+  font-family: monospace;
+  font-size: 5px;
+  line-height: 1;
+  white-space: pre;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
 }
 
 .loading-page h1 {
-  margin-bottom: var(--space-xl);
   position: absolute;
   top: 1rem;
   left: 1rem;
-  font-size: var(--font-lg);
+  font-size: var(--font-sm);
+  max-width: 200px;
 }
 
 .loading-page h2 {
-  margin-bottom: var(--space-lg);
   position: absolute;
-  font-size: var(--font-md);
   top: 1rem;
   right: 1rem;
-  max-width: 400px;
+  font-size: var(--font-xs);
+  max-width: 200px;
+  text-align: right;
 }
 
 .loading-page p {
   position: absolute;
-  font-size: var(--font-sm);
-  bottom: 1rem;
+  font-size: var(--font-xs);
+  bottom: 3rem;
   left: 1rem;
+  max-width: 200px;
 }
 
 .loading-page button {
   position: absolute;
-  left: 40%;
+  bottom: 1rem;
+  right: 1rem;
+  font-size: var(--font-xs);
+}
+
+@media (min-width: 768px) {
+  .loading-page {
+    padding: var(--space-xl);
+  }
+
+  .ascii-grid {
+    height: 85vh;
+    font-size: 5px;
+  }
+
+  .loading-page h1 {
+    font-size: var(--font-lg);
+    max-width: 400px;
+  }
+
+  .loading-page h2 {
+    font-size: var(--font-md);
+    max-width: 400px;
+  }
+
+  .loading-page p {
+    font-size: var(--font-sm);
+    max-width: 400px;
+    bottom: 1rem;
+  }
+
+  .loading-page button {
+    font-size: var(--font-sm);
+  }
 }

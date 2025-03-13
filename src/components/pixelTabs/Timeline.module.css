@@ -1,0 +1,145 @@
+.timelineContainer {
+  width: 100%;
+  padding: 20px 0;
+}
+
+.timelineScroll {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  position: relative;
+  padding: 20px 0;
+}
+
+.timelineScroll::-webkit-scrollbar {
+  display: none;
+}
+
+.timeline {
+  min-width: 200%;
+  position: relative;
+  height: 80px;
+}
+
+.timelineLine {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--text-primary);
+}
+
+.timelineMarker {
+  position: absolute;
+  top: -3px;
+  width: 1px;
+  background: var(--text-secondary);
+  transform: translateX(-50%);
+}
+
+.eventMarker {
+  position: absolute;
+  top: -15px;
+  transform: translateX(-50%);
+  cursor: pointer;
+  background: var(--text-primary);
+}
+
+.eventIcon {
+  font-size: 20px;
+  line-height: 1;
+  position: relative;
+}
+
+.eventTooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--background-secondary);
+  padding: 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.eventMarker:hover .eventTooltip,
+.eventMarker:focus .eventTooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
+.eventDate {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+.eventTitle {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.yearLabels {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20px;
+  font-variant-numeric: tabular-nums;
+}
+
+.currentDate {
+  text-align: center;
+  margin-bottom: 10px;
+  font-variant-numeric: tabular-nums;
+}
+
+.scrollPadding {
+  width: 100%;
+  height: 1px;
+}
+
+/* Event type specific styles */
+.fabrication {
+  color: var(--color-fabrication);
+}
+.test {
+  color: var(--color-test);
+}
+.travel {
+  color: var(--color-travel);
+}
+.exhibition {
+  color: var(--color-exhibition);
+}
+.milestone {
+  color: var(--color-milestone);
+}
+
+.eventStar {
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.timelineCursor {
+  position: absolute;
+  top: -10px;
+  width: 2px;
+  height: 20px;
+  background: var(--text-primary);
+  transform: translateX(-50%);
+}

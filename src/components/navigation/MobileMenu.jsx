@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { ThemeToggle } from "../ThemeToggle/ThemeToggle";
+import { useTheme } from "../../hooks/useTheme";
 import styles from "./MobileMenu.module.css";
+import { AnimatedText } from "../text/AnimatedText";
 
 const MobileMenu = ({ links }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const { theme, toggleTheme } = useTheme();
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
@@ -46,14 +48,27 @@ const MobileMenu = ({ links }) => {
                 {links &&
                   links.map((link, index) => (
                     <li key={index}>
-                      <a href={link.url}>{link.label}</a>
+                      <a href={link.url}>
+                        <AnimatedText text={link.label} delay={index * 100} />
+                      </a>
                     </li>
                   ))}
               </ul>
             </nav>
 
-            <div className={styles.themeToggleContainer}>
-              <ThemeToggle />
+            <div
+              className={styles.themeStatus}
+              onClick={toggleTheme}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  toggleTheme();
+                }
+              }}
+              tabIndex="0"
+              role="button"
+              aria-label="Toggle dark mode"
+            >
+              DARK MODE: {theme === "dark" ? "ON" : "OFF"}
             </div>
           </div>
         </div>

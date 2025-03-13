@@ -112,15 +112,16 @@
 }
 
 .mobileNav li {
-  text-align: center;
+  text-align: left;
+  padding-left: var(--space-xl);
 }
 
 .mobileNav a {
   color: var(--text-primary);
   text-transform: uppercase;
   text-decoration: none;
-  font-size: var(--font-xl);
-  padding: var(--space-md);
+  font-size: var(--font-2xl);
+  padding: var(--space-md) 0;
   display: block;
   transition: color 0.2s ease;
 }
@@ -135,4 +136,21 @@
   display: flex;
   justify-content: center;
   width: 100%;
+}
+
+.themeStatus {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 85vw;
+  padding: 0.75rem 1.25rem;
+  margin: 2rem 2.75rem;
+  border-radius: var(--radius-sm);
+  text-align: left;
+  background-color: var(--accent);
+  color: var(--text-primary);
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  user-select: none;
 }

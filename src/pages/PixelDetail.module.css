@@ -76,6 +76,7 @@
   align-items: center;
   width: 100%;
   gap: 8px;
+  font-family: inherit;
 }
 
 .tabButton {
@@ -83,6 +84,9 @@
   background: none;
   padding: 8px 16px;
   cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+  color: var(--text-secondary);
 }
 
 .tabButtonActive {
@@ -94,6 +98,8 @@
   text-decoration: none;
   color: inherit;
   padding: 8px 16px;
+  font-family: inherit;
+  font-size: inherit;
 }
 
 .tabPanel {

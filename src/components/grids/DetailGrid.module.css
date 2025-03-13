@@ -9,17 +9,17 @@
 .gridItem {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0rem;
 }
 
 .titleRow {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.33rem;
 }
 
 .title {
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   text-transform: uppercase;
   color: #666;
 }
@@ -38,7 +38,7 @@
 }
 
 .value {
-  font-size: var(--font-md);
+  font-size: var(--font-sm);
   font-weight: 500;
   font-family: monospace;
 }

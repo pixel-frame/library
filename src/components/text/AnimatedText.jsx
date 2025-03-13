@@ -10,30 +10,26 @@ export function AnimatedText({ text, delay = 0 }) {
   useEffect(() => {
     let currentIteration = 0;
     const maxIterations = 30;
-    const intervalTime = 35;
+    const intervalTime = 20;
 
-    const startAnimation = () => {
-      setTimeout(() => {
-        const wordAnimation = setInterval(() => {
-          if (currentIteration < maxIterations) {
-            setIsChanging(true);
-            const frameGlyph = glyphs[Math.floor(Math.random() * glyphs.length)];
-            setDisplayText(text.replace(/./g, frameGlyph));
-            setTimeout(() => setIsChanging(false), 10);
-            currentIteration++;
-          } else {
-            setIsChanging(true);
-            setDisplayText(text);
-            setTimeout(() => {
-              setIsChanging(false);
-            }, 10);
-            clearInterval(wordAnimation);
-          }
-        }, intervalTime);
-      }, delay);
-    };
+    const wordAnimation = setInterval(() => {
+      if (currentIteration < maxIterations) {
+        setIsChanging(true);
+        const frameGlyph = glyphs[Math.floor(Math.random() * glyphs.length)];
+        setDisplayText(text.replace(/./g, frameGlyph));
+        setTimeout(() => setIsChanging(false), 0);
+        currentIteration++;
+      } else {
+        setIsChanging(true);
+        setDisplayText(text);
+        setTimeout(() => {
+          setIsChanging(false);
+        }, 3);
+        clearInterval(wordAnimation);
+      }
+    }, intervalTime);
 
-    startAnimation();
+    return () => clearInterval(wordAnimation);
   }, [text, delay]);
 
   return (

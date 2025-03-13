@@ -1,10 +1,9 @@
-.pixel-detail-page {
-  padding: 20px;
+.container {
   max-width: 1200px;
   margin: 0 auto;
 }
 
-.pixel-content {
+.content {
   display: flex;
   flex-direction: column;
   gap: 2rem;
@@ -65,4 +64,48 @@
   font-family: monospace;
   font-size: 0.9rem;
   line-height: 1.4;
+}
+
+.header {
+  position: relative;
+  width: 100%;
+}
+
+.navigation {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 8px;
+}
+
+.tabButton {
+  border: none;
+  background: none;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.tabButtonActive {
+  color: var(--text-primary);
+}
+
+.closeButton {
+  margin-left: auto;
+  text-decoration: none;
+  color: inherit;
+  padding: 8px 16px;
+}
+
+.tabPanel {
+  display: none;
+}
+
+.tabPanelActive {
+  display: block;
+}
+
+.loadingIndicator,
+.errorMessage {
+  padding: 20px;
+  text-align: center;
 }

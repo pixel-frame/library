@@ -1,0 +1,17 @@
+.expand-button {
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.expand-icon {
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+}

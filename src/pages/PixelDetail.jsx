@@ -1,13 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import DetailGrid from "../components/grids/DetailGrid";
-import "./PixelDetail.css";
+import StoryTab from "../components/pixelTabs/StoryTab";
+import InfoTab from "../components/pixelTabs/InfoTab";
+import NetworkTab from "../components/pixelTabs/NetworkTab";
+import styles from "./PixelDetail.module.css";
+
+const TABS = [
+  { id: "info", label: "[INFO]", component: InfoTab },
+  { id: "story", label: "[STORY]", component: StoryTab },
+  { id: "network", label: "[NETWORK]", component: NetworkTab },
+];
 
 const PixelDetail = () => {
   const { id } = useParams();
   const [pixel, setPixel] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [activeTab, setActiveTab] = useState("info");
 
   useEffect(() => {
     const fetchPixelDetail = async () => {
@@ -27,72 +36,47 @@ const PixelDetail = () => {
     fetchPixelDetail();
   }, [id]);
 
-  if (loading) return <div className="loading-indicator">Loading pixel details...</div>;
-  if (error) return <div className="error-message">{error}</div>;
-  if (!pixel) return <div className="error-message">Pixel not found</div>;
+  const handleTabChange = (tab) => () => {
+    setActiveTab(tab);
+  };
+
+  if (loading) return <div className={styles.loadingIndicator}>Loading pixel details...</div>;
+  if (error) return <div className={styles.errorMessage}>{error}</div>;
+  if (!pixel) return <div className={styles.errorMessage}>Pixel not found</div>;
 
   return (
-    <div className="pixel-detail-page">
-      <Link to="/pixels" className="back-button" aria-label="Back to pixels list" tabIndex="0">
-        ← Back to Pixels
-      </Link>
-
-      <h1>Pixel {pixel.number}</h1>
-
-      <div className="pixel-content">
-        <div className="pixel-info-container">
-          <DetailGrid
-            items={[
-              {
-                title: "Generation",
-                value: `${pixel.generation} - ${pixel.generation_description}`,
-              },
-              {
-                title: "Status",
-                value: pixel.state_description || "Active",
-              },
-              {
-                title: "Manufacture Date",
-                value: pixel.date_of_manufacture,
-              },
-              {
-                title: "Concrete Strength",
-                value: `${pixel.fc} MPa`,
-                info: "Concrete compressive strength",
-              },
-              {
-                title: "Weight",
-                value: `${pixel.weight} kg`,
-              },
-              {
-                title: "Fiber Type",
-                value: `${pixel.fiber.type} (${pixel.fiber.dosage})`,
-              },
-              {
-                title: "Reconfigurations",
-                value: pixel.number_of_reconfigurations,
-                info: "Number of times reconfigured",
-              },
-              {
-                title: "Concrete Mix",
-                value: pixel.concrete_mix || "Not specified",
-              },
-            ]}
-          />
-        </div>
-
-        {pixel.notes && (
-          <div className="notes-section">
-            <h2>Notes</h2>
-            <p>{pixel.notes}</p>
-          </div>
-        )}
-
-        <div className="other-data">
-          <h2>Available Data</h2>
-          <pre>{JSON.stringify(pixel, null, 2)}</pre>
-        </div>
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <nav className={styles.navigation} role="tablist">
+          {TABS.map(({ id, label }) => (
+            <button
+              key={id}
+              className={`${styles.tabButton} ${activeTab === id ? styles.tabButtonActive : ""}`}
+              role="tab"
+              aria-selected={activeTab === id}
+              aria-controls={`${id}-tab`}
+              onClick={handleTabChange(id)}
+            >
+              {label}
+            </button>
+          ))}
+          <Link to="/pixels" className={styles.closeButton} aria-label="Back to pixels list" tabIndex="0">
+            [X]
+          </Link>
+        </nav>
       </div>
+
+      {TABS.map(({ id, component: TabComponent }) => (
+        <div
+          key={id}
+          id={`${id}-tab`}
+          className={`${styles.tabPanel} ${activeTab === id ? styles.tabPanelActive : ""}`}
+          role="tabpanel"
+          aria-hidden={activeTab !== id}
+        >
+          <TabComponent pixel={pixel} isActive={activeTab === id} loading={loading} error={error} />
+        </div>
+      ))}
     </div>
   );
 };

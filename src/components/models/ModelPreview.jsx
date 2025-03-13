@@ -1,31 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import "./ModelPreview.css";
 
-const ModelPreview = ({ children }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-
-  const handleExpandClick = () => {
-    setIsExpanded(true);
-    document.body.style.overflow = "hidden";
-  };
-
+const ModelPreview = ({ children, isExpanded, onClose }) => {
   const handleCloseExpanded = () => {
-    setIsExpanded(false);
+    onClose();
     document.body.style.overflow = "auto";
   };
-
-  const childWithPreviewState = React.cloneElement(children, {
-    isPreview: !isExpanded,
-  });
 
   return (
     <>
       <div className="preview-container">
         <div className="preview-content">{React.cloneElement(children, { isPreview: true })}</div>
-        <button className="expand-button" onClick={handleExpandClick} aria-label="Expand model view" tabIndex="0">
-          <span className="expand-icon">⤢</span>
-          EXPAND
-        </button>
       </div>
 
       {isExpanded && (

@@ -5,6 +5,7 @@ import ModelPreview from "../components/models/ModelPreview";
 import DetailGrid from "../components/grids/DetailGrid";
 import styles from "./AssemblyDetail.module.css";
 import ExpandButton from "../components/buttons/ExpandButton";
+import CloseButton from "../components/buttons/CloseButton";
 
 const AssemblyDetail = () => {
   const { id } = useParams();
@@ -27,6 +28,10 @@ const AssemblyDetail = () => {
 
   const handleExpand = () => {
     setIsExpanded(!isExpanded);
+  };
+
+  const handleNavigateBack = () => {
+    window.history.back();
   };
 
   useEffect(() => {
@@ -69,9 +74,9 @@ const AssemblyDetail = () => {
 
   return (
     <div className="assembly-detail-page">
-      <Link to="/assemblies" className="back-button" aria-label="Back to assemblies list" tabIndex="0">
-        [X]
-      </Link>
+      <div className={styles.backButtonContainer}>
+        <CloseButton onClick={handleNavigateBack} ariaLabel="Back to assemblies list" />
+      </div>
 
       <div className="assembly-content">
         {modelPath && (

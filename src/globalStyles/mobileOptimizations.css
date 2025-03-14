@@ -1,0 +1,84 @@
+/* Mobile Optimizations */
+
+/* Prevent pull-to-refresh and browser chrome showing */
+body {
+  overscroll-behavior-y: contain;
+}
+
+/* Improve tap target sizes on mobile */
+button,
+a,
+[role="button"],
+input,
+select,
+textarea {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Fix for iOS input zooming */
+input[type="text"],
+input[type="email"],
+input[type="search"],
+input[type="password"] {
+  font-size: 16px;
+}
+
+/* Smooth scrolling */
+.scrollable-container {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+/* Fix for model viewers on mobile */
+model-viewer {
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Prevent text selection on UI elements */
+.no-select {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Add active state for touch feedback */
+.touch-feedback:active {
+  opacity: 0.7;
+}
+
+/* Fix for position:fixed elements on iOS */
+.ios-fixed {
+  transform: translateZ(0);
+}
+
+/* Adjust PixelDetail container for mobile */
+@media (max-width: 768px) {
+  .container {
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: var(--bg-primary);
+  }
+
+  .tabPanel {
+    height: calc(100% - 60px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .closeButtonContainer {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 20;
+  }
+}

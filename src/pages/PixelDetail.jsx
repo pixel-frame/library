@@ -4,6 +4,7 @@ import StoryTab from "../components/pixelTabs/StoryTab";
 import InfoTab from "../components/pixelTabs/InfoTab";
 import NetworkTab from "../components/pixelTabs/NetworkTab";
 import styles from "./PixelDetail.module.css";
+import CloseButton from "../components/buttons/CloseButton";
 
 const TABS = [
   { id: "info", label: "[INFO]", component: InfoTab },
@@ -40,6 +41,10 @@ const PixelDetail = () => {
     setActiveTab(tab);
   };
 
+  const handleNavigateBack = () => {
+    window.history.back();
+  };
+
   if (loading) return <div className={styles.loadingIndicator}>Loading pixel details...</div>;
   if (error) return <div className={styles.errorMessage}>{error}</div>;
   if (!pixel) return <div className={styles.errorMessage}>Pixel not found</div>;
@@ -60,9 +65,9 @@ const PixelDetail = () => {
               {label}
             </button>
           ))}
-          <Link to="/pixels" className={styles.closeButton} aria-label="Back to pixels list" tabIndex="0">
-            [X]
-          </Link>
+          <div className={styles.closeButtonContainer}>
+            <CloseButton onClick={handleNavigateBack} ariaLabel="Back to pixels list" />
+          </div>
         </nav>
       </div>
 

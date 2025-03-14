@@ -1,0 +1,20 @@
+.closeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background-color: #000;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+.icon {
+  color: white;
+}
+
+.closeButton:focus {
+  outline: 2px solid #0066cc;
+}

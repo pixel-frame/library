@@ -8,6 +8,16 @@
   transition: background-color 0.3s, color 0.3s;
 }
 
+html,
+body {
+  overflow-x: hidden;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overscroll-behavior: none;
+  touch-action: manipulation;
+}
+
 html {
   font-size: 16px;
   -webkit-text-size-adjust: 100%;
@@ -18,15 +28,63 @@ body {
   font-variation-settings: "MONO" 0.5;
   font-weight: 400;
   line-height: var(--leading-normal);
-  min-height: 100vh;
-  max-width: 100vw;
-  overflow-x: hidden;
   background-color: var(--bg-primary);
   color: var(--text-primary);
+}
+
+#root {
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.app {
+  min-height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Selection color */
 ::selection {
   background-color: var(--accent);
   color: var(--text-primary);
+}
+
+/* Mobile-specific styles */
+@media (max-width: 768px) {
+  .assembly-detail-page,
+  .pixel-detail-page {
+    overflow-x: hidden;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+  }
+
+  .assembly-content,
+  .pixel-content {
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    height: 100%;
+    padding-bottom: 80px; /* Add space at bottom for better scrolling */
+  }
+
+  /* Prevent rubber-banding/bounce effect */
+  .assembly-model-container,
+  .pixel-model-container {
+    touch-action: pan-y;
+  }
+}
+
+/* Fix for iOS Safari 100vh issue */
+@supports (-webkit-touch-callout: none) {
+  .assembly-detail-page,
+  .pixel-detail-page {
+    height: -webkit-fill-available;
+  }
 }

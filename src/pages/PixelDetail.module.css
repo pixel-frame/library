@@ -1,6 +1,9 @@
 .container {
   max-width: 1200px;
   margin: 0 auto;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .content {
@@ -8,6 +11,7 @@
   flex-direction: column;
   gap: 2rem;
   margin-top: 2rem;
+  overflow-x: hidden;
 }
 
 .timeline-section {
@@ -69,6 +73,8 @@
 .header {
   position: relative;
   width: 100%;
+  background-color: var(--bg-primary);
+  z-index: 10;
 }
 
 .navigation {
@@ -77,6 +83,13 @@
   width: 100%;
   gap: 8px;
   font-family: inherit;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.navigation::-webkit-scrollbar {
+  display: none;
 }
 
 .tabButton {
@@ -93,8 +106,12 @@
   color: var(--text-primary);
 }
 
-.closeButton {
+.closeButtonContainer {
   margin-left: auto;
+  flex-shrink: 0;
+}
+
+.closeButton {
   text-decoration: none;
   color: inherit;
   padding: 8px 16px;
@@ -104,14 +121,31 @@
 
 .tabPanel {
   display: none;
+  overflow-x: hidden;
 }
 
 .tabPanelActive {
   display: block;
+  overflow-x: hidden;
 }
 
 .loadingIndicator,
 .errorMessage {
   padding: 20px;
   text-align: center;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .container {
+    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
+    overflow: hidden;
+  }
+
+  .tabPanelActive {
+    height: calc(100% - 60px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
 }

@@ -10,6 +10,8 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import ListingPage from "./pages/ListingPage";
 import AssemblyDetail from "./pages/AssemblyDetail";
 import PixelDetail from "./pages/PixelDetail";
+import { initMobileViewportFix } from "./utils/mobileViewportFix";
+
 // Wrapper component to handle the loading page logic
 const AppContent = () => {
   const [hasSeenLoadingPage, setHasSeenLoadingPage] = useState(() => {
@@ -61,6 +63,9 @@ function App() {
   useEffect(() => {
     // Dynamically import model-viewer when component mounts
     import("@google/model-viewer");
+
+    // Initialize mobile viewport fix
+    initMobileViewportFix();
   }, []);
 
   return (

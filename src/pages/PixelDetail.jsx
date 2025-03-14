@@ -21,8 +21,8 @@ const PixelDetail = () => {
   useEffect(() => {
     const fetchPixelDetail = async () => {
       try {
-        const paddedId = id.toString().padStart(2, "0");
-        const response = await fetch(`/data/detail/pixel/pixel_${paddedId}.json`);
+        const paddedId = id.toString().padStart(4, "0");
+        const response = await fetch(`/data/bank/pixel/pixel_${paddedId}.json`);
         if (!response.ok) throw new Error("Pixel not found");
         const data = await response.json();
         setPixel(data);

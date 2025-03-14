@@ -2,6 +2,7 @@
   "reconfigurations": [
     {
       "number": 1,
+      "serial": "0001",
       "name": "Gen 1 Prototype Beam Assembly and Load Test",
       "description": "The Gen 1 Prototype Beam Assembly was fabricated as an initial proof of concept for Pixelframe, used to test both the assembly method and structural performance at half scale. Pixels in this configuration were subjected to a three-point bending test which led to minor cracking and spalling as pixels were tested to failure. ",
       "date": "7/18/2022",
@@ -25,6 +26,7 @@
     },
     {
       "number": 2,
+      "serial": "0002",
       "name": "Gen 1 Prototype Column Assembly",
       "description": "The Gen 1 Prototype Column Assembly used pixels left over from the beam assembly to experiment with different cross-sectional configurations, including the two-piece column and the four-piece column. ",
       "date": "7/18/2022",
@@ -48,6 +50,7 @@
     },
     {
       "number": 3,
+      "serial": "0003",
       "name": "Gen 1 Prototype Shear Test",
       "description": "The Gen 1 Prototype Shear Test used pixels from the first round of prototyping to find the coefficient of friction between the concrete and aluminum at the intersection of the intermediate plate and pixels. Pixels were tested to failure, with most being retired after this test due to extensive damage. ",
       "date": "4/15/2024",
@@ -71,6 +74,7 @@
     },
     {
       "number": 4,
+      "serial": "0004",
       "name": "Gen 2 Prototype Showcase Beam Assembly",
       "description": "The Showcase Beam Assembly was a design-proof-of-concept with second-generation pixels that were smaller, in response to results from the first series of tests. This assembly reused the tension assembly from the Gen 1 Prototype Beam, while experimenting with a new deviator and endplate design. This prototype was sent to Washington, DC, for an exhibition, and was subsequently returned to Cambridge, MA. ",
       "date": "1/4/2023",
@@ -94,6 +98,7 @@
     },
     {
       "number": 5,
+      "serial": "0005",
       "name": "Gen 2 Prototype Showcase Column Assembly",
       "description": "The Showcase Column assembly tested out the design of the two-piece column at half scale. This prototype was sent to Washington, DC, for an exhibition, and was subsequently returned to Cambridge, MA. ",
       "date": "1/4/2023",
@@ -117,6 +122,7 @@
     },
     {
       "number": 6,
+      "serial": "0006",
       "name": "Gen 1 Prototype Showcase Column Assembly",
       "description": "The Gen 1 Showcase Column Assembly used Gen 1 pixels to demonstrate the assembly of the four-piece column design, allowing visitors to the Washington DC exhibition to disassemble and reassemble the prototype.",
       "date": "4/4/2023",
@@ -140,6 +146,7 @@
     },
     {
       "number": 7,
+      "serial": "0007",
       "name": "Gen 2 Prototype Exhibition Beam Assembly ",
       "description": "The Exhibition Beam Assembly was exhibited in Cambridge, MA, in June of 2024. ",
       "date": "5/17/2024",
@@ -163,6 +170,7 @@
     },
     {
       "number": 8,
+      "serial": "0008",
       "name": "Gen 1 Prototype Exhibition Column Assembly",
       "description": "The Exhibition Column Assembly was exhibited in Cambridge, MA, in June of 2024. It was used to demonstrate the assemble and disassembly of the system. ",
       "date": "5/17/2024",
@@ -186,6 +194,7 @@
     },
     {
       "number": 9,
+      "serial": "0009",
       "name": "Gen 2 Prototype Biennale Beam",
       "description": "The Gen 2 Biennale Beam is the most widely traveled Pixelframe assembly still in circulation today, temporarily visiting the Venice Biennale.",
       "date": "3/19/2025",
@@ -209,6 +218,7 @@
     },
     {
       "number": 10,
+      "serial": "0010",
       "name": "Gen 1 Prototype Biennale Column",
       "description": "The Gen 1 Biennale Column is the oldest Pixelframe assembly still in circulation today - its pixels have been disassembled and reassembled many times, bearing marks of past load tests and reconfigurations. ",
       "date": "3/19/2025",
@@ -232,6 +242,7 @@
     },
     {
       "number": 12,
+      "serial": "0012",
       "name": "Gen 3 Prototype Primary Beam",
       "description": "The Gen 3 Prototype Primary Beam is full-scale testing assembly currently under production. This prototype will be assembled in the summer of 2025, and will be used to test and showcase the system at full scale. ",
       "date": "8/1/2025",
@@ -255,6 +266,7 @@
     },
     {
       "number": 13,
+      "serial": "0013",
       "name": "Gen 3 Prototype Secondary Beam",
       "description": "The Gen 3 Prototype Secondary Beam is full-scale testing assembly currently under production. This prototype will be assembled in the summer of 2025, and will be used to test and showcase the system at full scale. This is the first instance of testing of the secondary beam assembly. ",
       "date": "8/1/2025",
@@ -278,6 +290,7 @@
     },
     {
       "number": 14,
+      "serial": "0014",
       "name": "Speculative Reconfiguration - Warehouse",
       "description": "The warehouse is a speculative future assembly sited in Edmonton, Alberta. The pixels in this configuration are temporarily assembled into a logistics center, a building with a shorter life span than average. After five years in this configuration, the building is disassembled and the pixels are reused. ",
       "date": "12/4/2025",
@@ -301,6 +314,7 @@
     },
     {
       "number": 15,
+      "serial": "0015",
       "name": "Speculative Reconfiguration - Pavilion",
       "description": "After being used in the warehouse configuration, some pixels are trucked to Chicago, where they are used to construct a demonstrator pavilion that showcases circularity in building applications. The pavilion is dismantled after a few months, and the pixels are returned to the material bank.",
       "date": "8/3/2034",
@@ -324,6 +338,7 @@
     },
     {
       "number": 16,
+      "serial": "0016",
       "name": "Speculative Reconfiguration - Tower",
       "description": "The tower is a speculative future assembly in Vancouver, British Columbia. This configuration experiments with the adaptive reuse of an existing shear/elevator core, which remains after the facade of an existing building is removed. The Pixelframe system is used to build up a new, flexible structure around the existing structure, creating a new building envelope that allows in light and air.",
       "date": "4/1/2035",

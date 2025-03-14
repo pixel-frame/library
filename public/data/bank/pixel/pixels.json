@@ -2,6 +2,7 @@
   "pixels": [
     {
       "pixel_number": 1,
+      "serial": "0001",
       "generation": 1,
       "state": null,
       "state_description": null,
@@ -9,6 +10,7 @@
     },
     {
       "pixel_number": 2,
+      "serial": "0002",
       "generation": 1,
       "state": 4,
       "state_description": "Retired",
@@ -16,6 +18,7 @@
     },
     {
       "pixel_number": 3,
+      "serial": "0003",
       "generation": 1,
       "state": null,
       "state_description": null,
@@ -23,6 +26,7 @@
     },
     {
       "pixel_number": 4,
+      "serial": "0004",
       "generation": 1,
       "state": null,
       "state_description": null,
@@ -30,6 +34,7 @@
     },
     {
       "pixel_number": 5,
+      "serial": "0005",
       "generation": 1,
       "state": null,
       "state_description": null,
@@ -37,6 +42,7 @@
     },
     {
       "pixel_number": 6,
+      "serial": "0006",
       "generation": 1,
       "state": 4,
       "state_description": "Retired",
@@ -44,6 +50,7 @@
     },
     {
       "pixel_number": 7,
+      "serial": "0007",
       "generation": 1,
       "state": 4,
       "state_description": "Retired",
@@ -51,6 +58,7 @@
     },
     {
       "pixel_number": 9,
+      "serial": "0009",
       "generation": 1,
       "state": null,
       "state_description": null,
@@ -58,6 +66,7 @@
     },
     {
       "pixel_number": 10,
+      "serial": "0010",
       "generation": 1,
       "state": 4,
       "state_description": "Retired",
@@ -65,6 +74,7 @@
     },
     {
       "pixel_number": 11,
+      "serial": "0011",
       "generation": 1,
       "state": 4,
       "state_description": "Retired",
@@ -72,6 +82,7 @@
     },
     {
       "pixel_number": 12,
+      "serial": "0012",
       "generation": 1,
       "state": 4,
       "state_description": "Retired",
@@ -79,6 +90,7 @@
     },
     {
       "pixel_number": 13,
+      "serial": "0013",
       "generation": 1,
       "state": null,
       "state_description": null,
@@ -86,6 +98,7 @@
     },
     {
       "pixel_number": 14,
+      "serial": "0014",
       "generation": 1,
       "state": null,
       "state_description": null,
@@ -93,6 +106,7 @@
     },
     {
       "pixel_number": 15,
+      "serial": "0015",
       "generation": 1,
       "state": null,
       "state_description": null,
@@ -100,6 +114,7 @@
     },
     {
       "pixel_number": 16,
+      "serial": "0016",
       "generation": 1,
       "state": null,
       "state_description": null,
@@ -107,6 +122,7 @@
     },
     {
       "pixel_number": 17,
+      "serial": "0017",
       "generation": 1,
       "state": null,
       "state_description": null,
@@ -114,6 +130,7 @@
     },
     {
       "pixel_number": 18,
+      "serial": "0018",
       "generation": 1,
       "state": null,
       "state_description": null,
@@ -121,6 +138,7 @@
     },
     {
       "pixel_number": 19,
+      "serial": "0019",
       "generation": 1,
       "state": null,
       "state_description": null,
@@ -128,6 +146,7 @@
     },
     {
       "pixel_number": 20,
+      "serial": "0020",
       "generation": 1,
       "state": null,
       "state_description": null,
@@ -135,6 +154,7 @@
     },
     {
       "pixel_number": 21,
+      "serial": "0021",
       "generation": 1,
       "state": null,
       "state_description": null,
@@ -142,6 +162,7 @@
     },
     {
       "pixel_number": 22,
+      "serial": "0022",
       "generation": 1,
       "state": null,
       "state_description": null,
@@ -149,6 +170,7 @@
     },
     {
       "pixel_number": 23,
+      "serial": "0023",
       "generation": 1,
       "state": null,
       "state_description": null,
@@ -156,6 +178,7 @@
     },
     {
       "pixel_number": 24,
+      "serial": "0024",
       "generation": 1,
       "state": null,
       "state_description": null,
@@ -163,6 +186,7 @@
     },
     {
       "pixel_number": 25,
+      "serial": "0025",
       "generation": 2,
       "state": null,
       "state_description": null,
@@ -170,6 +194,7 @@
     },
     {
       "pixel_number": 26,
+      "serial": "0026",
       "generation": 2,
       "state": null,
       "state_description": null,
@@ -177,6 +202,7 @@
     },
     {
       "pixel_number": 27,
+      "serial": "0027",
       "generation": 2,
       "state": null,
       "state_description": null,
@@ -184,6 +210,7 @@
     },
     {
       "pixel_number": 28,
+      "serial": "0028",
       "generation": 2,
       "state": null,
       "state_description": null,
@@ -191,6 +218,7 @@
     },
     {
       "pixel_number": 30,
+      "serial": "0030",
       "generation": 2,
       "state": null,
       "state_description": null,
@@ -198,6 +226,7 @@
     },
     {
       "pixel_number": 32,
+      "serial": "0032",
       "generation": 2,
       "state": null,
       "state_description": null,
@@ -205,6 +234,7 @@
     },
     {
       "pixel_number": 33,
+      "serial": "0033",
       "generation": 2,
       "state": null,
       "state_description": null,
@@ -212,6 +242,7 @@
     },
     {
       "pixel_number": 34,
+      "serial": "0034",
       "generation": 2,
       "state": null,
       "state_description": null,
@@ -219,6 +250,7 @@
     },
     {
       "pixel_number": 35,
+      "serial": "0035",
       "generation": 2,
       "state": null,
       "state_description": null,
@@ -226,6 +258,7 @@
     },
     {
       "pixel_number": 36,
+      "serial": "0036",
       "generation": 2,
       "state": null,
       "state_description": null,
@@ -233,6 +266,7 @@
     },
     {
       "pixel_number": 37,
+      "serial": "0037",
       "generation": 2,
       "state": null,
       "state_description": null,
@@ -240,6 +274,7 @@
     },
     {
       "pixel_number": 38,
+      "serial": "0038",
       "generation": 2,
       "state": null,
       "state_description": null,
@@ -247,6 +282,7 @@
     },
     {
       "pixel_number": 39,
+      "serial": "0039",
       "generation": 2,
       "state": null,
       "state_description": null,
@@ -254,6 +290,7 @@
     },
     {
       "pixel_number": 40,
+      "serial": "0040",
       "generation": 2,
       "state": null,
       "state_description": null,
@@ -261,6 +298,7 @@
     },
     {
       "pixel_number": 41,
+      "serial": "0041",
       "generation": 2,
       "state": null,
       "state_description": null,
@@ -268,6 +306,7 @@
     },
     {
       "pixel_number": 42,
+      "serial": "0042",
       "generation": 2,
       "state": null,
       "state_description": null,
@@ -275,6 +314,7 @@
     },
     {
       "pixel_number": 43,
+      "serial": "0043",
       "generation": 2,
       "state": null,
       "state_description": null,
@@ -282,6 +322,7 @@
     },
     {
       "pixel_number": 44,
+      "serial": "0044",
       "generation": 2,
       "state": null,
       "state_description": null,
@@ -289,6 +330,7 @@
     },
     {
       "pixel_number": 45,
+      "serial": "0045",
       "generation": 2,
       "state": null,
       "state_description": null,
@@ -296,6 +338,7 @@
     },
     {
       "pixel_number": 46,
+      "serial": "0046",
       "generation": 2,
       "state": null,
       "state_description": null,
@@ -303,6 +346,7 @@
     },
     {
       "pixel_number": 47,
+      "serial": "0047",
       "generation": 2,
       "state": null,
       "state_description": null,
@@ -310,6 +354,7 @@
     },
     {
       "pixel_number": 48,
+      "serial": "0048",
       "generation": 2,
       "state": null,
       "state_description": null,
@@ -317,6 +362,7 @@
     },
     {
       "pixel_number": 49,
+      "serial": "0049",
       "generation": 2,
       "state": null,
       "state_description": null,
@@ -324,6 +370,7 @@
     },
     {
       "pixel_number": 50,
+      "serial": "0050",
       "generation": 2,
       "state": null,
       "state_description": null,
@@ -331,6 +378,7 @@
     },
     {
       "pixel_number": 51,
+      "serial": "0051",
       "generation": 2,
       "state": null,
       "state_description": null,
@@ -338,6 +386,7 @@
     },
     {
       "pixel_number": 52,
+      "serial": "0052",
       "generation": 2,
       "state": null,
       "state_description": null,
@@ -345,6 +394,7 @@
     },
     {
       "pixel_number": 53,
+      "serial": "0053",
       "generation": 2,
       "state": null,
       "state_description": null,
@@ -352,6 +402,7 @@
     },
     {
       "pixel_number": 54,
+      "serial": "0054",
       "generation": 2,
       "state": null,
       "state_description": null,
@@ -359,6 +410,7 @@
     },
     {
       "pixel_number": 55,
+      "serial": "0055",
       "generation": 2,
       "state": null,
       "state_description": null,
@@ -366,6 +418,7 @@
     },
     {
       "pixel_number": 56,
+      "serial": "0056",
       "generation": 2,
       "state": null,
       "state_description": null,
@@ -373,6 +426,7 @@
     },
     {
       "pixel_number": 57,
+      "serial": "0057",
       "generation": 2,
       "state": null,
       "state_description": null,
@@ -380,6 +434,7 @@
     },
     {
       "pixel_number": 58,
+      "serial": "0058",
       "generation": 2,
       "state": null,
       "state_description": null,
@@ -387,6 +442,7 @@
     },
     {
       "pixel_number": 59,
+      "serial": "0059",
       "generation": 2,
       "state": null,
       "state_description": null,
@@ -394,6 +450,7 @@
     },
     {
       "pixel_number": 60,
+      "serial": "0060",
       "generation": 2,
       "state": null,
       "state_description": null,
@@ -401,6 +458,7 @@
     },
     {
       "pixel_number": 61,
+      "serial": "0061",
       "generation": 2,
       "state": null,
       "state_description": null,
@@ -408,6 +466,7 @@
     },
     {
       "pixel_number": 62,
+      "serial": "0062",
       "generation": 2,
       "state": null,
       "state_description": null,
@@ -415,6 +474,7 @@
     },
     {
       "pixel_number": 63,
+      "serial": "0063",
       "generation": 2,
       "state": null,
       "state_description": null,
@@ -422,6 +482,7 @@
     },
     {
       "pixel_number": 64,
+      "serial": "0064",
       "generation": 2,
       "state": null,
       "state_description": null,
@@ -429,6 +490,7 @@
     },
     {
       "pixel_number": 65,
+      "serial": "0065",
       "generation": 2,
       "state": null,
       "state_description": null,
@@ -436,6 +498,7 @@
     },
     {
       "pixel_number": 66,
+      "serial": "0066",
       "generation": 2,
       "state": null,
       "state_description": null,
@@ -443,6 +506,7 @@
     },
     {
       "pixel_number": 67,
+      "serial": "0067",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -450,6 +514,7 @@
     },
     {
       "pixel_number": 68,
+      "serial": "0068",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -457,6 +522,7 @@
     },
     {
       "pixel_number": 69,
+      "serial": "0069",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -464,6 +530,7 @@
     },
     {
       "pixel_number": 70,
+      "serial": "0070",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -471,6 +538,7 @@
     },
     {
       "pixel_number": 71,
+      "serial": "0071",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -478,6 +546,7 @@
     },
     {
       "pixel_number": 72,
+      "serial": "0072",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -485,6 +554,7 @@
     },
     {
       "pixel_number": 73,
+      "serial": "0073",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -492,6 +562,7 @@
     },
     {
       "pixel_number": 74,
+      "serial": "0074",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -499,6 +570,7 @@
     },
     {
       "pixel_number": 75,
+      "serial": "0075",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -506,6 +578,7 @@
     },
     {
       "pixel_number": 76,
+      "serial": "0076",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -513,6 +586,7 @@
     },
     {
       "pixel_number": 77,
+      "serial": "0077",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -520,6 +594,7 @@
     },
     {
       "pixel_number": 78,
+      "serial": "0078",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -527,6 +602,7 @@
     },
     {
       "pixel_number": 79,
+      "serial": "0079",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -534,6 +610,7 @@
     },
     {
       "pixel_number": 80,
+      "serial": "0080",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -541,6 +618,7 @@
     },
     {
       "pixel_number": 81,
+      "serial": "0081",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -548,6 +626,7 @@
     },
     {
       "pixel_number": 82,
+      "serial": "0082",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -555,6 +634,7 @@
     },
     {
       "pixel_number": 83,
+      "serial": "0083",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -562,6 +642,7 @@
     },
     {
       "pixel_number": 84,
+      "serial": "0084",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -569,6 +650,7 @@
     },
     {
       "pixel_number": 85,
+      "serial": "0085",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -576,6 +658,7 @@
     },
     {
       "pixel_number": 86,
+      "serial": "0086",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -583,6 +666,7 @@
     },
     {
       "pixel_number": 87,
+      "serial": "0087",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -590,6 +674,7 @@
     },
     {
       "pixel_number": 88,
+      "serial": "0088",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -597,6 +682,7 @@
     },
     {
       "pixel_number": 89,
+      "serial": "0089",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -604,6 +690,7 @@
     },
     {
       "pixel_number": 90,
+      "serial": "0090",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -611,6 +698,7 @@
     },
     {
       "pixel_number": 91,
+      "serial": "0091",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -618,6 +706,7 @@
     },
     {
       "pixel_number": 92,
+      "serial": "0092",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -625,6 +714,7 @@
     },
     {
       "pixel_number": 93,
+      "serial": "0093",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -632,6 +722,7 @@
     },
     {
       "pixel_number": 94,
+      "serial": "0094",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -639,6 +730,7 @@
     },
     {
       "pixel_number": 95,
+      "serial": "0095",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -646,6 +738,7 @@
     },
     {
       "pixel_number": 96,
+      "serial": "0096",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -653,6 +746,7 @@
     },
     {
       "pixel_number": 97,
+      "serial": "0097",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -660,6 +754,7 @@
     },
     {
       "pixel_number": 98,
+      "serial": "0098",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -667,6 +762,7 @@
     },
     {
       "pixel_number": 99,
+      "serial": "0099",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -674,6 +770,7 @@
     },
     {
       "pixel_number": 100,
+      "serial": "0100",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -681,6 +778,7 @@
     },
     {
       "pixel_number": 101,
+      "serial": "0101",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -688,6 +786,7 @@
     },
     {
       "pixel_number": 102,
+      "serial": "0102",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -695,6 +794,7 @@
     },
     {
       "pixel_number": 103,
+      "serial": "0103",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -702,6 +802,7 @@
     },
     {
       "pixel_number": 104,
+      "serial": "0104",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -709,6 +810,7 @@
     },
     {
       "pixel_number": 105,
+      "serial": "0105",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -716,6 +818,7 @@
     },
     {
       "pixel_number": 106,
+      "serial": "0106",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -723,6 +826,7 @@
     },
     {
       "pixel_number": 107,
+      "serial": "0107",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -730,6 +834,7 @@
     },
     {
       "pixel_number": 108,
+      "serial": "0108",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -737,6 +842,7 @@
     },
     {
       "pixel_number": 109,
+      "serial": "0109",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -744,6 +850,7 @@
     },
     {
       "pixel_number": 110,
+      "serial": "0110",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -751,6 +858,7 @@
     },
     {
       "pixel_number": 111,
+      "serial": "0111",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -758,6 +866,7 @@
     },
     {
       "pixel_number": 112,
+      "serial": "0112",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -765,6 +874,7 @@
     },
     {
       "pixel_number": 113,
+      "serial": "0113",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -772,6 +882,7 @@
     },
     {
       "pixel_number": 114,
+      "serial": "0114",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -779,6 +890,7 @@
     },
     {
       "pixel_number": 115,
+      "serial": "0115",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -786,6 +898,7 @@
     },
     {
       "pixel_number": 116,
+      "serial": "0116",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -793,6 +906,7 @@
     },
     {
       "pixel_number": 117,
+      "serial": "0117",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -800,6 +914,7 @@
     },
     {
       "pixel_number": 118,
+      "serial": "0118",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -807,6 +922,7 @@
     },
     {
       "pixel_number": 119,
+      "serial": "0119",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -814,6 +930,7 @@
     },
     {
       "pixel_number": 120,
+      "serial": "0120",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -821,6 +938,7 @@
     },
     {
       "pixel_number": 121,
+      "serial": "0121",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -828,6 +946,7 @@
     },
     {
       "pixel_number": 122,
+      "serial": "0122",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -835,6 +954,7 @@
     },
     {
       "pixel_number": 123,
+      "serial": "0123",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -842,6 +962,7 @@
     },
     {
       "pixel_number": 124,
+      "serial": "0124",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -849,6 +970,7 @@
     },
     {
       "pixel_number": 125,
+      "serial": "0125",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -856,6 +978,7 @@
     },
     {
       "pixel_number": 126,
+      "serial": "0126",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -863,6 +986,7 @@
     },
     {
       "pixel_number": 127,
+      "serial": "0127",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -870,6 +994,7 @@
     },
     {
       "pixel_number": 128,
+      "serial": "0128",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -877,6 +1002,7 @@
     },
     {
       "pixel_number": 129,
+      "serial": "0129",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -884,6 +1010,7 @@
     },
     {
       "pixel_number": 130,
+      "serial": "0130",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -891,6 +1018,7 @@
     },
     {
       "pixel_number": 131,
+      "serial": "0131",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -898,6 +1026,7 @@
     },
     {
       "pixel_number": 132,
+      "serial": "0132",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -905,6 +1034,7 @@
     },
     {
       "pixel_number": 133,
+      "serial": "0133",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -912,6 +1042,7 @@
     },
     {
       "pixel_number": 134,
+      "serial": "0134",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -919,6 +1050,7 @@
     },
     {
       "pixel_number": 135,
+      "serial": "0135",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -926,6 +1058,7 @@
     },
     {
       "pixel_number": 136,
+      "serial": "0136",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -933,6 +1066,7 @@
     },
     {
       "pixel_number": 137,
+      "serial": "0137",
       "generation": 3,
       "state": 0,
       "state_description": null,
@@ -940,6 +1074,7 @@
     },
     {
       "pixel_number": 138,
+      "serial": "0138",
       "generation": 3,
       "state": 0,
       "state_description": null,

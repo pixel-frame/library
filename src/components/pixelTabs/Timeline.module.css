@@ -1,14 +1,22 @@
+.timelineWrapper {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
 .timelineContainer {
   width: 100%;
-  padding: 20px 0;
+  position: relative;
+  overflow: hidden;
 }
 
 .timelineScroll {
+  width: 100%;
   overflow-x: scroll;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
-  position: relative;
+  margin: 0;
   padding: 20px 0;
 }
 
@@ -19,7 +27,7 @@
 .timeline {
   min-width: 200%;
   position: relative;
-  height: 80px;
+  height: 60px;
 }
 
 .timelineLine {
@@ -142,4 +150,20 @@
   height: 20px;
   background: var(--text-primary);
   transform: translateX(-50%);
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 768px) {
+  .timelineScroll {
+    padding: 10px 0;
+    touch-action: pan-x pinch-zoom;
+  }
+
+  .timeline {
+    min-width: 300%; /* Make timeline wider on mobile for better scrolling */
+  }
+
+  .eventStar {
+    font-size: 16px; /* Larger touch target on mobile */
+  }
 }

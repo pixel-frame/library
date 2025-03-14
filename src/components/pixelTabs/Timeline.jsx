@@ -26,10 +26,23 @@ const Timeline = ({ onPositionChange, currentPosition, timelineEvents = [] }) =>
 
   const handleScroll = (e) => {
     if (!timelineRef.current) return;
-
     const scrollWidth = timelineRef.current.scrollWidth - timelineRef.current.clientWidth;
     const position = Math.min(e.target.scrollLeft / scrollWidth, 1);
     updatePosition(position);
+  };
+
+  // Handle touch events
+  const handleTouchStart = (e) => {
+    setIsDragging(true);
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+  };
+
+  const handleTouchMove = (e) => {
+    if (!isDragging || !timelineRef.current) return;
+    e.preventDefault(); // Prevent page scroll while dragging timeline
   };
 
   useEffect(() => {
@@ -58,61 +71,65 @@ const Timeline = ({ onPositionChange, currentPosition, timelineEvents = [] }) =>
   };
 
   return (
-    <div className={styles.timelineContainer}>
+    <div className={styles.timelineWrapper}>
       <div className={styles.currentDate}>{currentDate}</div>
-      <div
-        ref={timelineRef}
-        className={styles.timelineScroll}
-        onScroll={handleScroll}
-        role="slider"
-        aria-valuemin="0"
-        aria-valuemax="100"
-        aria-valuenow={currentPosition * 100}
-        tabIndex="0"
-      >
-        <div className={styles.timeline}>
-          <div className={styles.timelineLine}>
-            {/* Add markers for each month */}
-            {Array.from({ length: 42 }, (_, i) => {
-              const markerDate = new Date(startDate);
-              markerDate.setMonth(markerDate.getMonth() + i);
-              const position = ((markerDate - startDate) / dateRange) * 100;
+      <div className={styles.timelineContainer}>
+        <div
+          ref={timelineRef}
+          className={styles.timelineScroll}
+          onScroll={handleScroll}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+          onTouchMove={handleTouchMove}
+          role="slider"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-valuenow={currentPosition * 100}
+          tabIndex="0"
+        >
+          <div className={styles.timeline}>
+            <div className={styles.timelineLine}>
+              {/* Add markers for each month */}
+              {Array.from({ length: 42 }, (_, i) => {
+                const markerDate = new Date(startDate);
+                markerDate.setMonth(markerDate.getMonth() + i);
+                const position = ((markerDate - startDate) / dateRange) * 100;
 
-              // Check if this date has an event
-              const hasEvent = timelineEvents.some((event) => {
-                const eventDate = new Date(event.date);
+                // Check if this date has an event
+                const hasEvent = timelineEvents.some((event) => {
+                  const eventDate = new Date(event.date);
+                  return (
+                    eventDate.getMonth() === markerDate.getMonth() &&
+                    eventDate.getFullYear() === markerDate.getFullYear()
+                  );
+                });
+
                 return (
-                  eventDate.getMonth() === markerDate.getMonth() && eventDate.getFullYear() === markerDate.getFullYear()
+                  <div
+                    key={i}
+                    className={`${styles.timelineMarker} ${hasEvent ? styles.eventMarker : ""}`}
+                    style={{
+                      left: `${position}%`,
+                      height: hasEvent ? "12px" : "6px",
+                    }}
+                  >
+                    {hasEvent && <span className={styles.eventStar}>*</span>}
+                  </div>
                 );
-              });
+              })}
 
-              return (
-                <div
-                  key={i}
-                  className={`${styles.timelineMarker} ${hasEvent ? styles.eventMarker : ""}`}
-                  style={{
-                    left: `${position}%`,
-                    height: hasEvent ? "12px" : "6px",
-                  }}
-                >
-                  {hasEvent && <span className={styles.eventStar}>*</span>}
-                </div>
-              );
-            })}
+              {/* Current position indicator */}
+              <div className={styles.timelineCursor} style={{ left: `${currentPosition * 100}%` }} />
+            </div>
 
-            {/* Current position indicator */}
-            <div className={styles.timelineCursor} style={{ left: `${currentPosition * 100}%` }} />
-          </div>
-
-          <div className={styles.yearLabels}>
-            <span>2022</span>
-            <span>2023</span>
-            <span>2024</span>
-            <span>2025</span>
+            <div className={styles.yearLabels}>
+              <span>2022</span>
+              <span>2023</span>
+              <span>2024</span>
+              <span>2025</span>
+            </div>
           </div>
         </div>
-
-        <div className={styles.scrollPadding}></div>
       </div>
     </div>
   );

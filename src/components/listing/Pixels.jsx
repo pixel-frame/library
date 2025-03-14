@@ -14,8 +14,9 @@ const Pixels = () => {
         const data = await response.json();
 
         const mappedPixels = data.pixels.map((pixel) => ({
-          id: `pixel-${pixel.pixel_number}`,
+          id: `pixel-${pixel.serial}`,
           number: pixel.pixel_number,
+          serial: pixel.serial,
           generation: pixel.generation,
           state: pixel.state,
           state_description: pixel.state_description,
@@ -43,7 +44,7 @@ const Pixels = () => {
         {pixels.length > 0 ? (
           pixels.map((pixel) => (
             <Link
-              to={`/pixel/${pixel.number}`}
+              to={`/pixel/${pixel.serial}`}
               key={pixel.id}
               className="pixel-card"
               aria-label={`View details of Pixel ${pixel.number}`}

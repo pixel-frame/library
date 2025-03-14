@@ -1,0 +1,115 @@
+{
+  "pixel_number": 97,
+  "generation": 3,
+  "generation_description": "Beta prototype (full scale)",
+  "state_description": null,
+  "state": 0,
+  "fc": 50.0,
+  "weight": 29.23,
+  "carbon_emissions_a1_a3": null,
+  "concrete_mix": null,
+  "fiber": {
+    "type": "Steel fiber",
+    "dosage": "2%"
+  },
+  "date_of_manufacture": "2025",
+  "number_of_reconfigurations": 0,
+  "reconfigurations": {
+    "1": false,
+    "2": false,
+    "3": false,
+    "4": false,
+    "5": false,
+    "6": false,
+    "7": false,
+    "8": false,
+    "9": false,
+    "10": false,
+    "12": false,
+    "13": false,
+    "14": false,
+    "15": false
+  },
+  "gif": false,
+  "notes": "",
+  "serial": "0097",
+  "timeline": [
+    {
+      "step": 1,
+      "reconfiguration_number": 13,
+      "name": "Gen 3 Prototype Secondary Beam",
+      "date": "8/1/2025",
+      "location": {
+        "name": "Cambridge, MA",
+        "coordinates": {
+          "latitude": 42.3666,
+          "longitude": -71.1057
+        }
+      },
+      "emissions": {
+        "a1_a3": 11.1074,
+        "transport": 0,
+        "step_total": 11.1074,
+        "running_total": 11.1074
+      },
+      "transport": {
+        "type": "N/A",
+        "distance": 0.0,
+        "cumulative_distance": 0.0
+      },
+      "description": "The Gen 3 Prototype Secondary Beam is full-scale testing assembly currently under production. This prototype will be assembled in the summer of 2025, and will be used to test and showcase the system at full scale. This is the first instance of testing of the secondary beam assembly. "
+    },
+    {
+      "step": 2,
+      "reconfiguration_number": 14,
+      "name": "Speculative Reconfiguration - Warehouse",
+      "date": "12/4/2025",
+      "location": {
+        "name": "Edmonton, AB",
+        "coordinates": {
+          "latitude": 53.5461,
+          "longitude": -113.4937
+        }
+      },
+      "emissions": {
+        "a1_a3": 0,
+        "transport": 0.93536,
+        "step_total": 0.93536,
+        "running_total": 12.04276
+      },
+      "transport": {
+        "type": "truck",
+        "distance": 7866.0,
+        "cumulative_distance": 7866.0
+      },
+      "description": "The warehouse is a speculative future assembly sited in Edmonton, Alberta. The pixels in this configuration are temporarily assembled into a logistics center, a building with a shorter life span than average. After five years in this configuration, the building is disassembled and the pixels are reused. "
+    },
+    {
+      "step": 3,
+      "reconfiguration_number": 15,
+      "name": "Speculative Reconfiguration - Pavilion",
+      "date": "8/3/2034",
+      "location": {
+        "name": "Chicago, IL",
+        "coordinates": {
+          "latitude": 41.8781,
+          "longitude": -87.6298
+        }
+      },
+      "emissions": {
+        "a1_a3": 0,
+        "transport": 0.93536,
+        "step_total": 0.93536,
+        "running_total": 12.978119999999999
+      },
+      "transport": {
+        "type": "truck",
+        "distance": 2632.0,
+        "cumulative_distance": 10498.0
+      },
+      "description": "After being used in the warehouse configuration, some pixels are trucked to Chicago, where they are used to construct a demonstrator pavilion that showcases circularity in building applications. The pavilion is dismantled after a few months, and the pixels are returned to the material bank."
+    }
+  ],
+  "total_emissions": 12.978119999999999,
+  "total_distance": 10498.0
+}

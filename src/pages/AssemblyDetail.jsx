@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, Link, useLocation } from "react-router-dom";
 import AssemblyModel from "../components/models/AssemblyModel";
 import ModelPreview from "../components/models/ModelPreview";
@@ -8,8 +8,35 @@ import "./AssemblyDetail.css";
 const AssemblyDetail = () => {
   const { id } = useParams();
   const location = useLocation();
-  const assembly = location.state?.assembly;
-  console.log(assembly);
+  const [assembly, setAssembly] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchAssemblyDetail = async () => {
+      try {
+        const response = await fetch(`/data/bank/assembly/assembly_${id}.json`);
+        if (!response.ok) throw new Error("Assembly not found");
+        const data = await response.json();
+        setAssembly(data);
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
+      }
+    };
+
+    // If we have assembly data from navigation state, use it
+    if (location.state?.assembly) {
+      setAssembly(location.state.assembly);
+      setLoading(false);
+    } else {
+      fetchAssemblyDetail();
+    }
+  }, [id, location.state]);
+
+  if (loading) return <div className="loading-indicator">Loading assembly details...</div>;
+  if (error) return <div className="error-message">{error}</div>;
   if (!assembly) return <div className="error-message">Assembly not found</div>;
 
   return (

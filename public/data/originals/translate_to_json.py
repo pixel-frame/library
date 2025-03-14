@@ -76,8 +76,10 @@ def convert_carbon_locations_to_json(csv_file):
             if 'W' in row['Location coordinates']:
                 lon = -lon if lon else None
             
+            number = int(row['Reconfiguration number'])
             reconfiguration = {
-                "number": int(row['Reconfiguration number']),
+                "number": number,
+                "serial": f"{number:04d}",  # Add serial field
                 "name": row['Reconfiguration name'],
                 "description": row['Description'], 
                 "date": row['Date'].strip() if row['Date'] else None,
@@ -262,6 +264,8 @@ def create_individual_pixel_files(master_data, timeline_data):
         
         # Create a deep copy of the pixel data
         pixel_data = dict(pixel)
+        # Add the serialized identifier
+        pixel_data["serial"] = f"{pixel_number:04d}"
         
         # Add timeline data if available
         if pixel_number in timeline_lookup:
@@ -273,8 +277,8 @@ def create_individual_pixel_files(master_data, timeline_data):
             pixel_data["total_emissions"] = 0
             pixel_data["total_distance"] = 0
             
-        # Store pixel data
-        pixel_files[pixel_number] = pixel_data
+        # Store pixel data with padded number as key
+        pixel_files[f"{pixel_number:04d}"] = pixel_data
         
     return pixel_files
 
@@ -285,6 +289,7 @@ def create_simplified_pixels_json(master_data):
     for pixel in master_data["pixels"]:
         simplified_pixel = {
             "pixel_number": pixel["pixel_number"],
+            "serial": f"{pixel['pixel_number']:04d}",  # Add serial field
             "generation": pixel["generation"],
             "state": pixel["state"],
             "state_description": pixel["state_description"],
@@ -325,8 +330,7 @@ def main():
 
     # Save individual pixel files
     for pixel_number, pixel_data in pixel_files.items():
-        # Create filename with leading zeros (e.g., pixel_01.json)
-        filename = f'pixel_{pixel_number:02d}.json'
+        filename = f'pixel_{pixel_number}.json'  # pixel_number is already formatted
         with open(f'{output_base_path}/pixel/{filename}', 'w') as f:
             json.dump(pixel_data, f, indent=2)
             

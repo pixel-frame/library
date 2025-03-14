@@ -1,0 +1,115 @@
+{
+  "pixel_number": 41,
+  "generation": 2,
+  "generation_description": "Beta prototype (half scale)",
+  "state_description": null,
+  "state": null,
+  "fc": 35.0,
+  "weight": 3.65,
+  "carbon_emissions_a1_a3": null,
+  "concrete_mix": "Rapidset high strength concrete mix",
+  "fiber": {
+    "type": "Glass fiber",
+    "dosage": "3%"
+  },
+  "date_of_manufacture": "2023",
+  "number_of_reconfigurations": 3,
+  "reconfigurations": {
+    "1": false,
+    "2": false,
+    "3": false,
+    "4": false,
+    "5": false,
+    "6": false,
+    "7": false,
+    "8": false,
+    "9": false,
+    "10": false,
+    "12": false,
+    "13": false,
+    "14": false,
+    "15": false
+  },
+  "gif": true,
+  "notes": "",
+  "serial": "0041",
+  "timeline": [
+    {
+      "step": 1,
+      "reconfiguration_number": 4,
+      "name": "Gen 2 Prototype Showcase Beam Assembly",
+      "date": "1/4/2023",
+      "location": {
+        "name": "Washington DC",
+        "coordinates": {
+          "latitude": 38.9072,
+          "longitude": -77.0369
+        }
+      },
+      "emissions": {
+        "a1_a3": 1.387,
+        "transport": 0.1168,
+        "step_total": 1.5038,
+        "running_total": 1.5038
+      },
+      "transport": {
+        "type": "truck",
+        "distance": 700.0,
+        "cumulative_distance": 700.0
+      },
+      "description": "The Showcase Beam Assembly was a design-proof-of-concept with second-generation pixels that were smaller, in response to results from the first series of tests. This assembly reused the tension assembly from the Gen 1 Prototype Beam, while experimenting with a new deviator and endplate design. This prototype was sent to Washington, DC, for an exhibition, and was subsequently returned to Cambridge, MA. "
+    },
+    {
+      "step": 2,
+      "reconfiguration_number": 7,
+      "name": "Gen 2 Prototype Exhibition Beam Assembly ",
+      "date": "5/17/2024",
+      "location": {
+        "name": "Cambridge, MA",
+        "coordinates": {
+          "latitude": 42.3666,
+          "longitude": -71.1057
+        }
+      },
+      "emissions": {
+        "a1_a3": 0,
+        "transport": 0.1168,
+        "step_total": 0.1168,
+        "running_total": 1.6206
+      },
+      "transport": {
+        "type": "truck",
+        "distance": 700.0,
+        "cumulative_distance": 1400.0
+      },
+      "description": "The Exhibition Beam Assembly was exhibited in Cambridge, MA, in June of 2024. "
+    },
+    {
+      "step": 3,
+      "reconfiguration_number": 9,
+      "name": "Gen 2 Prototype Biennale Beam",
+      "date": "3/19/2025",
+      "location": {
+        "name": "Venice, IT",
+        "coordinates": {
+          "latitude": 45.4404,
+          "longitude": 12.316
+        }
+      },
+      "emissions": {
+        "a1_a3": 0,
+        "transport": 1.825,
+        "step_total": 1.825,
+        "running_total": 3.4455999999999998
+      },
+      "transport": {
+        "type": "air",
+        "distance": 6450.0,
+        "cumulative_distance": 7850.0
+      },
+      "description": "The Gen 2 Biennale Beam is the most widely traveled Pixelframe assembly still in circulation today, temporarily visiting the Venice Biennale."
+    }
+  ],
+  "total_emissions": 3.4455999999999998,
+  "total_distance": 7850.0
+}

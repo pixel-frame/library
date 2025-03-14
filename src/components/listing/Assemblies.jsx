@@ -15,6 +15,8 @@ const Assemblies = () => {
 
         const mappedAssemblies = data.reconfigurations.map((config) => ({
           id: `assembly-${config.number}`,
+          serial: config.serial,
+          number: config.number,
           name: config.name.toUpperCase(),
           description: config.description,
           date: config.date,
@@ -48,7 +50,7 @@ const Assemblies = () => {
         {assemblies.length > 0 ? (
           assemblies.map((assembly) => (
             <Link
-              to={`/assembly/${assembly.id}`}
+              to={`/assembly/${assembly.serial}`}
               state={{ assembly }}
               key={assembly.id}
               className="assembly-card"

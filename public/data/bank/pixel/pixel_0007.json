@@ -1,0 +1,65 @@
+{
+  "pixel_number": 7,
+  "generation": 1,
+  "generation_description": "First prototype (half scale)",
+  "state_description": "Retired",
+  "state": 4,
+  "fc": 35.0,
+  "weight": 6.04,
+  "carbon_emissions_a1_a3": null,
+  "concrete_mix": "Rapidset high strength concrete mix",
+  "fiber": {
+    "type": "Glass fiber",
+    "dosage": "3%"
+  },
+  "date_of_manufacture": "2022",
+  "number_of_reconfigurations": 1,
+  "reconfigurations": {
+    "1": false,
+    "2": false,
+    "3": false,
+    "4": false,
+    "5": false,
+    "6": false,
+    "7": false,
+    "8": false,
+    "9": false,
+    "10": false,
+    "12": false,
+    "13": false,
+    "14": false,
+    "15": false
+  },
+  "gif": false,
+  "notes": "uncut ",
+  "serial": "0007",
+  "timeline": [
+    {
+      "step": 1,
+      "reconfiguration_number": 1,
+      "name": "Gen 1 Prototype Beam Assembly and Load Test",
+      "date": "7/18/2022",
+      "location": {
+        "name": "Cambridge, MA",
+        "coordinates": {
+          "latitude": 42.3666,
+          "longitude": -71.1057
+        }
+      },
+      "emissions": {
+        "a1_a3": 2.2952,
+        "transport": 0.0,
+        "step_total": 2.2952,
+        "running_total": 2.2952
+      },
+      "transport": {
+        "type": "N/A",
+        "distance": 0.0,
+        "cumulative_distance": 0.0
+      },
+      "description": "The Gen 1 Prototype Beam Assembly was fabricated as an initial proof of concept for Pixelframe, used to test both the assembly method and structural performance at half scale. Pixels in this configuration were subjected to a three-point bending test which led to minor cracking and spalling as pixels were tested to failure. "
+    }
+  ],
+  "total_emissions": 2.2952,
+  "total_distance": 0.0
+}

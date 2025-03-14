@@ -15,10 +15,15 @@ const AssemblyDetail = () => {
   useEffect(() => {
     const fetchAssemblyDetail = async () => {
       try {
-        const response = await fetch(`/data/bank/assembly/assembly_${id}.json`);
-        if (!response.ok) throw new Error("Assembly not found");
+        const response = await fetch("/data/bank/assembly/assemblies.json");
+        if (!response.ok) throw new Error("Failed to fetch assemblies");
         const data = await response.json();
-        setAssembly(data);
+
+        const foundAssembly = data.reconfigurations.find((assembly) => assembly.serial === id);
+
+        if (!foundAssembly) throw new Error("Assembly not found");
+
+        setAssembly(foundAssembly);
         setLoading(false);
       } catch (err) {
         setError(err.message);

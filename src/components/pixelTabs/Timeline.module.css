@@ -1,22 +1,30 @@
 .timelineWrapper {
   width: 100%;
   overflow: hidden;
+  border: 1px solid var(--text-primary);
+  padding: 0;
   position: relative;
+  bottom: 0.75rem;
+  left: 0;
 }
 
 .timelineContainer {
   width: 100%;
   position: relative;
   overflow: hidden;
+  display: flex;
+  align-items: stretch;
+  gap: 0;
 }
 
 .timelineScroll {
-  width: 100%;
+  position: relative;
   overflow-x: scroll;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   margin: 0;
+  margin-top: 0.5rem;
   padding: 20px 0;
 }
 
@@ -43,7 +51,7 @@
   position: absolute;
   top: -3px;
   width: 1px;
-  background: var(--text-secondary);
+  background: var(--text-primary);
   transform: translateX(-50%);
 }
 
@@ -66,7 +74,7 @@
   bottom: 100%;
   left: 50%;
   transform: translateX(-50%);
-  background: var(--background-secondary);
+  background: var(--text-primary);
   padding: 8px;
   border-radius: 4px;
   white-space: nowrap;
@@ -75,7 +83,7 @@
   transition: opacity 0.2s;
   pointer-events: none;
   margin-bottom: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--text-primary);
 }
 
 .eventMarker:hover .eventTooltip,
@@ -86,7 +94,7 @@
 
 .eventDate {
   font-size: 12px;
-  color: var(--text-secondary);
+  color: var(--text-primary);
   margin-bottom: 4px;
 }
 
@@ -108,8 +116,21 @@
 
 .currentDate {
   text-align: center;
-  margin-bottom: 10px;
+
+  margin: 4px 0;
   font-variant-numeric: tabular-nums;
+  font-weight: 500;
+  position: absolute;
+  font-size: 14px;
+  top: 0;
+  color: var(--bg-primary);
+  background: var(--text-primary);
+  padding: 0px 4px;
+  border-radius: 1px;
+  display: inline-block;
+
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .scrollPadding {
@@ -144,18 +165,101 @@
 }
 
 .timelineCursor {
+  display: none;
+}
+
+.arrow {
+  width: 48px;
+  height: auto;
+  border: none;
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  z-index: 2;
+}
+
+.leftArrow {
+  margin-right: 0;
+}
+
+.rightArrow {
+  margin-left: 0;
+}
+
+.fixedCursor {
   position: absolute;
-  top: -10px;
+  left: 50%;
+  top: 50%;
   width: 2px;
   height: 20px;
-  background: var(--text-primary);
+  background: var(--accent-primary);
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.scrollContainer {
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+  height: 100px;
+  padding: 0;
+}
+
+.centerLineContainer {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
   transform: translateX(-50%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.centerLine {
+  position: absolute;
+  top: 20px;
+  bottom: 20px;
+  width: 3px;
+  height: 80%;
+  background: var(--text-primary);
+}
+
+.centerLine::after {
+  content: "";
+  position: absolute;
+  bottom: 0px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid var(--text-primary);
 }
 
 /* Mobile-specific adjustments */
 @media (max-width: 768px) {
+  .timelineWrapper {
+    border-width: 1px;
+  }
+
+  .centerDot {
+    width: 6px;
+    height: 6px;
+  }
+
+  .arrow {
+    width: 32px;
+    font-size: 16px;
+  }
+
   .timelineScroll {
-    padding: 10px 0;
     touch-action: pan-x pinch-zoom;
   }
 

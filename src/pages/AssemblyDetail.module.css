@@ -1,0 +1,40 @@
+.assembly-model-container {
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.pixel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  width: 100%;
+}
+
+.pixel-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.pixel-actions {
+  display: flex;
+  gap: 0px;
+  align-items: center;
+}
+
+.ar-button {
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.ar-icon {
+  font-size: 16px;
+  font-weight: 500;
+}

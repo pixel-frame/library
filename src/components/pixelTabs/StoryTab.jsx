@@ -121,18 +121,44 @@ const StoryTab = ({ pixel }) => {
     }
   };
 
-  // Update the generateEmissionsPath function to create two separate paths
+  // Calculate min and max values from emissions data with proper padding
+  const minValue = useMemo(() => {
+    const min = Math.min(...emissionsData.map((d) => d.value));
+    // Round down to nearest 0.5 and subtract 0.5 for padding
+    return Math.floor(min * 2) / 2 + 0.5;
+  }, [emissionsData]);
+
+  const maxValue = useMemo(() => {
+    const max = Math.max(...emissionsData.map((d) => d.value));
+    // Round up to nearest 0.5 and add 0.5 for padding
+    return Math.ceil(max * 2) / 2 - 0.5;
+  }, [emissionsData]);
+
+  // Generate y-axis labels with fixed step size
+  const yAxisLabels = useMemo(() => {
+    const labels = [];
+    const step = 0.5; // Fixed step of 0.5 units
+    const count = Math.ceil((maxValue - minValue) / step) + 1;
+
+    for (let i = 0; i < count; i++) {
+      const value = maxValue - step * i;
+      if (value >= minValue) {
+        labels.push(value.toFixed(1));
+      }
+    }
+
+    return labels;
+  }, [minValue, maxValue]);
+
+  // Update generateEmissionsPaths to use calculated bounds
   const generateEmissionsPaths = () => {
     const minDate = new Date("2022-07");
     const maxDate = new Date("2026-01");
     const dateRange = maxDate - minDate;
 
-    const minValue = 0;
-    const maxValue = 5; // Set a reasonable max for the graph
     const valueRange = maxValue - minValue;
-
     const height = 200;
-    const width = 1000; // Use a large width value
+    const width = 1000;
 
     // Find the cutoff point based on current timeline position
     const currentDate = new Date(minDate.getTime() + (maxDate.getTime() - minDate.getTime()) * timelinePosition);
@@ -205,10 +231,7 @@ const StoryTab = ({ pixel }) => {
     const maxDate = new Date("2026-01");
     const dateRange = maxDate - minDate;
 
-    const minValue = 0;
-    const maxValue = 5;
     const valueRange = maxValue - minValue;
-
     const height = 200;
     const width = 1000;
 
@@ -264,8 +287,8 @@ const StoryTab = ({ pixel }) => {
         <p id="emissions-heading">PIXEL EMISSIONS OVER TIME</p>
         <div className={styles.graph} aria-describedby="emissions-heading">
           <div className={styles.yAxis} aria-hidden="true">
-            {[120, 100, 80, 60, 40, 20, 0].map((value) => (
-              <div key={value}>{value}</div>
+            {yAxisLabels.map((label, index) => (
+              <div key={index}>{label}</div>
             ))}
           </div>
           <div className={styles.plotArea}>
@@ -273,7 +296,7 @@ const StoryTab = ({ pixel }) => {
               width="100%"
               height="200"
               viewBox="0 0 1000 200"
-              preserveAspectRatio="none"
+              preserveAspectRatio="xMidYMid meet"
               aria-label={`Emissions graph showing ${currentData.emission.value.toFixed(
                 2
               )} kg CO2 at age ${calculateAge(currentData.date)}`}
@@ -283,8 +306,14 @@ const StoryTab = ({ pixel }) => {
 
               {/* Grid Pattern Definition */}
               <defs>
-                <pattern id="emissionsGrid" width="100" height="100" patternUnits="userSpaceOnUse" x="0" y="0">
-                  <path d="M 100 0 L 0 0 0 100" fill="none" stroke="#666666" strokeWidth="1" strokeOpacity="0.3" />
+                <pattern id="emissionsGrid" width={1000 / 6} height={200 / 6} patternUnits="userSpaceOnUse">
+                  <path
+                    d={`M ${1000 / 6} 0 L 0 0 0 ${200 / 6}`}
+                    fill="none"
+                    stroke="var(--border-color)"
+                    strokeWidth="1"
+                    strokeOpacity="0.3"
+                  />
                 </pattern>
               </defs>
 
@@ -296,7 +325,7 @@ const StoryTab = ({ pixel }) => {
                 d={pastPath}
                 stroke="var(--text-primary)"
                 fill="none"
-                strokeWidth="2"
+                strokeWidth="4"
                 aria-hidden="true"
                 className={styles.pastPath}
               />
@@ -306,8 +335,8 @@ const StoryTab = ({ pixel }) => {
                 d={futurePath}
                 stroke="var(--text-primary)"
                 fill="none"
-                strokeWidth="2"
-                strokeDasharray="5,5"
+                strokeWidth="1"
+                strokeDasharray="8,8"
                 aria-hidden="true"
                 className={styles.futurePath}
               />
@@ -318,22 +347,36 @@ const StoryTab = ({ pixel }) => {
                 const maxDate = new Date("2026-01");
                 const dateRange = maxDate - minDate;
 
-                const minValue = 0;
-                const maxValue = 5;
                 const valueRange = maxValue - minValue;
-
                 const x = ((new Date(point.timestamp) - minDate) / dateRange) * 1000;
                 const y = 200 - ((point.value - minValue) / valueRange) * 200;
 
+                const isPastPoint = new Date(point.timestamp) <= new Date(currentData.date);
+
                 return (
-                  <text key={i} x={x} y={y} className={styles.plotPoint} textAnchor="middle" dominantBaseline="middle">
-                    *
-                  </text>
+                  <g key={i}>
+                    <rect
+                      x={x - 24}
+                      y={y - 24}
+                      width={48}
+                      height={48}
+                      className={styles.plotPointBackground}
+                      fill={isPastPoint ? "var(--text-primary)" : "var(--accent)"}
+                    />
+                    <text
+                      x={x}
+                      y={y}
+                      className={styles.plotPoint}
+                      textAnchor="middle"
+                      dominantBaseline="middle"
+                      fontSize="48"
+                      fill={isPastPoint ? "var(--bg-primary)" : "var(--text-primary)"}
+                    >
+                      *
+                    </text>
+                  </g>
                 );
               })}
-
-              {/* Current position indicator */}
-              <circle cx={currentPoint.x} cy={currentPoint.y} r="5" className={styles.currentPosition} />
             </svg>
           </div>
         </div>
@@ -373,113 +416,6 @@ const StoryTab = ({ pixel }) => {
         <div className={styles.travelDetails}>
           PIXEL-060 travels {distance} km via {mode}
           from {from} to {to}
-        </div>
-      </div>
-    );
-  };
-
-  // Render scrollable timeline with event cards
-  const renderTimelineScroll = () => {
-    const minDate = new Date("2022-07");
-    const maxDate = new Date("2026-01");
-    const dateRange = maxDate - minDate;
-    const [isDragging, setIsDragging] = useState(false);
-
-    const handleMouseDown = (e) => {
-      setIsDragging(true);
-      handleTimelineClick(e);
-    };
-
-    const handleMouseUp = () => {
-      setIsDragging(false);
-    };
-
-    const handleMouseMove = (e) => {
-      if (!isDragging || !timelineRef.current) return;
-      handleTimelineClick(e);
-    };
-
-    const handleTimelineClick = (e) => {
-      if (!timelineRef.current) return;
-      const rect = timelineRef.current.getBoundingClientRect();
-      const position = (e.clientX - rect.left) / rect.width;
-      handleTimelinePositionChange(Math.max(0, Math.min(1, position)));
-    };
-
-    useEffect(() => {
-      document.addEventListener("mouseup", handleMouseUp);
-      document.addEventListener("mousemove", handleMouseMove);
-
-      return () => {
-        document.removeEventListener("mouseup", handleMouseUp);
-        document.removeEventListener("mousemove", handleMouseMove);
-      };
-    }, [isDragging]);
-
-    return (
-      <div className={styles.timelineContainer}>
-        <div
-          ref={timelineRef}
-          className={styles.timelineScroll}
-          role="slider"
-          aria-valuemin="0"
-          aria-valuemax="100"
-          aria-valuenow={timelinePosition * 100}
-          tabIndex="0"
-          onKeyDown={(e) => {
-            if (e.key === "ArrowLeft") {
-              handleTimelinePositionChange(Math.max(0, timelinePosition - 0.02));
-            } else if (e.key === "ArrowRight") {
-              handleTimelinePositionChange(Math.min(1, timelinePosition + 0.02));
-            }
-          }}
-        >
-          <div className={styles.timeline}>
-            <div className={styles.timelineLine}>
-              {timelineEvents.map((event) => {
-                const eventDate = new Date(event.date);
-                const position = ((eventDate - minDate) / dateRange) * 100;
-
-                return (
-                  <div
-                    key={event.id}
-                    className={styles.eventDot}
-                    style={{ left: `${position}%` }}
-                    aria-label={`${event.title} - ${event.date}`}
-                    role="button"
-                    tabIndex="0"
-                  />
-                );
-              })}
-              <div
-                className={styles.scrubber}
-                style={{ left: `${timelinePosition * 100}%` }}
-                onMouseDown={handleMouseDown}
-                role="presentation"
-              />
-            </div>
-
-            <div className={styles.timeMarkers}>
-              {Array.from({ length: 10 }, (_, i) => (
-                <div key={i} className={`${styles.marker} ${i % 2 === 0 ? styles.tall : ""}`} aria-hidden="true" />
-              ))}
-            </div>
-
-            <div className={styles.yearLabels}>
-              <span>2022</span>
-              <span>2023</span>
-              <span>2024</span>
-              <span>2025</span>
-            </div>
-          </div>
-        </div>
-
-        <div className={styles.currentDate}>
-          {currentData.date.toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-          })}
         </div>
       </div>
     );

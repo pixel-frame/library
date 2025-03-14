@@ -1,14 +1,34 @@
-import React from "react";
-import "./AssemblyModel.css";
+import React, { useState, useEffect } from "react";
+import styles from "./AssemblyModel.module.css";
 
 const AssemblyModel = ({ modelPath, isPreview = false }) => {
+  const [modelError, setModelError] = useState(false);
+
+  useEffect(() => {
+    const checkModelExists = async () => {
+      try {
+        const response = await fetch(modelPath);
+        if (!response.ok) {
+          setModelError(true);
+        }
+      } catch (error) {
+        setModelError(true);
+      }
+    };
+
+    checkModelExists();
+  }, [modelPath]);
+
+  if (modelError) {
+    return <div className={styles.modelError}>NO MODEL FOUND</div>;
+  }
+
   //   const encodedPath = encodeURIComponent(modelPath);
 
   return (
-    <div className={`model-viewer ${isPreview ? "preview-mode" : ""}`}>
+    <div className={`${styles.modelViewer} ${isPreview ? styles.previewMode : ""}`}>
       <model-viewer
-        // src={`/data/models/assemblies/${encodedPath}`}
-        src={"/data/models/assemblies/1_Gen 1 Prototype Beam.glb"}
+        src={modelPath}
         alt="3D assembly model"
         shadow-intensity="0"
         tone-mapping="neutral"
@@ -23,6 +43,7 @@ const AssemblyModel = ({ modelPath, isPreview = false }) => {
         disable-zoom
         disable-pan
         disable-tap
+        onError={() => setModelError(true)}
         style={{
           width: "100%",
           height: isPreview ? "40vh" : "80vh",

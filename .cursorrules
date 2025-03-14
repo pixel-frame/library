@@ -38,3 +38,4 @@ Follow these rules when you write code:
 - As this is a mobile web application, make sure to use the mobile-first approach.
 - DO NOT ADD ANY HOVER STATES
 - Use CSS modules for all styling as needed to prevent class name collisions.
+- Write as little code as possible.

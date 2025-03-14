@@ -3,7 +3,8 @@ import { useParams, Link, useLocation } from "react-router-dom";
 import AssemblyModel from "../components/models/AssemblyModel";
 import ModelPreview from "../components/models/ModelPreview";
 import DetailGrid from "../components/grids/DetailGrid";
-import "./AssemblyDetail.css";
+import styles from "./AssemblyDetail.module.css";
+import ExpandButton from "../components/buttons/ExpandButton";
 
 const AssemblyDetail = () => {
   const { id } = useParams();
@@ -11,6 +12,22 @@ const AssemblyDetail = () => {
   const [assembly, setAssembly] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [modelPath, setModelPath] = useState(null);
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const availableModels = ["0001", "0002", "0004", "0005", "0009", "0010"];
+
+  const getModelSerial = (assembly) => {
+    const modelMappings = {
+      "0007": "0004",
+    };
+    const mappedSerial = modelMappings[assembly.serial] || assembly.serial;
+    return availableModels.includes(mappedSerial) ? mappedSerial : null;
+  };
+
+  const handleExpand = () => {
+    setIsExpanded(!isExpanded);
+  };
 
   useEffect(() => {
     const fetchAssemblyDetail = async () => {
@@ -20,22 +37,28 @@ const AssemblyDetail = () => {
         const data = await response.json();
 
         const foundAssembly = data.reconfigurations.find((assembly) => assembly.serial === id);
-
         if (!foundAssembly) throw new Error("Assembly not found");
 
+        console.log("Found assembly:", foundAssembly);
         setAssembly(foundAssembly);
+        const modelSerial = getModelSerial(foundAssembly);
+        setModelPath(modelSerial ? `/data/models/assemblies/${modelSerial}.glb` : null);
         setLoading(false);
       } catch (err) {
+        console.error("Error in fetchAssemblyDetail:", err);
         setError(err.message);
         setLoading(false);
       }
     };
 
-    // If we have assembly data from navigation state, use it
     if (location.state?.assembly) {
+      console.log("Using assembly from location state:", location.state.assembly);
       setAssembly(location.state.assembly);
+      const modelSerial = getModelSerial(location.state.assembly);
+      setModelPath(modelSerial ? `/data/models/assemblies/${modelSerial}.glb` : null);
       setLoading(false);
     } else {
+      console.log("Fetching assembly detail for id:", id);
       fetchAssemblyDetail();
     }
   }, [id, location.state]);
@@ -47,17 +70,36 @@ const AssemblyDetail = () => {
   return (
     <div className="assembly-detail-page">
       <Link to="/assemblies" className="back-button" aria-label="Back to assemblies list" tabIndex="0">
-        ← Back to Assemblies
+        [X]
       </Link>
 
-      <h1>{assembly.name}</h1>
-
       <div className="assembly-content">
-        <div className="assembly-model-container">
-          <ModelPreview>
-            <AssemblyModel modelPath={assembly.thumbnail} />
-          </ModelPreview>
-        </div>
+        {modelPath && (
+          <div className={styles["assembly-model-container"]}>
+            <ModelPreview isExpanded={isExpanded} onClose={() => setIsExpanded(false)}>
+              {modelPath ? (
+                <AssemblyModel modelPath={modelPath} />
+              ) : (
+                <div className={styles["no-model-message"]}>No 3D model available for this assembly</div>
+              )}
+            </ModelPreview>
+            <div className={styles["pixel-header"]}>
+              <p className={styles["pixel-title"]}>Assembly {assembly.serial}</p>
+              <div className={styles["pixel-actions"]}>
+                <ExpandButton onClick={handleExpand} />
+                {modelPath && (
+                  <button
+                    className={styles["ar-button"]}
+                    onClick={() => console.log("AR view")}
+                    aria-label="View in AR"
+                  >
+                    <span className={styles["ar-icon"]}>[ AR ]</span>
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className="assembly-info-container">
           <DetailGrid

@@ -1,5 +1,4 @@
 .storyTab {
-  padding: 12px;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -23,6 +22,8 @@
   position: relative;
   border: 1px solid var(--border-color);
   overflow: hidden;
+  position: absolute;
+  bottom: 0;
 }
 
 .timelineScroll {
@@ -96,17 +97,21 @@
   flex: 0 0 auto;
   height: 42%;
   min-height: 180px;
+  background: #f5f5f5;
   overflow: hidden;
 }
 
 .graphContainer p {
   font-size: 12px;
+  margin-bottom: 12px;
 }
+
 .graph {
   display: flex;
   position: relative;
   margin: 8px 0;
   height: calc(100% - 70px);
+  padding-bottom: 20px;
 }
 
 .yAxis {
@@ -115,18 +120,18 @@
   justify-content: space-between;
   padding-right: 8px;
   font-size: 10px;
-  min-width: 30px;
+  min-width: 40px;
+  text-align: right;
+  height: 200px;
 }
 
 .plotArea {
   position: relative;
   width: 100%;
+  height: 200px;
   background: var(--background-primary);
-}
-
-.plotPoint {
-  fill: var(--text-primary);
-  font-size: 14px;
+  border-left: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .currentPosition {
@@ -136,6 +141,10 @@
 .pastPath,
 .futurePath {
   vector-effect: non-scaling-stroke;
+}
+
+.pastPath {
+  stroke-width: 4px;
 }
 
 .emissionStats {
@@ -201,7 +210,7 @@
 
 .travelDetails {
   margin: 8px 0;
-  font-size: 11px;
+  font-size: var(--font-md);
   word-break: break-word;
   line-height: 1.4;
 }
@@ -259,15 +268,6 @@ h2 {
 
   .timelineEvent {
     flex: 0 0 200px;
-    font-size: 12px;
-  }
-
-  .eventDetails {
-    font-size: 11px;
-  }
-
-  .emissionStats {
-    font-size: 11px;
   }
 }
 
@@ -286,7 +286,6 @@ h2 {
   }
 
   .travelDetails {
-    font-size: 12px;
   }
 
   .emissionStats > div {
@@ -294,6 +293,24 @@ h2 {
   }
 
   .yearLabels {
-    font-size: 10px;
   }
+}
+
+/* Grid lines for y-axis values */
+.plotArea svg rect[fill="url(#emissionsGrid)"] {
+  stroke: var(--border-color);
+  stroke-opacity: 0.3;
+}
+
+/* Ensure the grid pattern is visible */
+.plotArea svg pattern line {
+  stroke: var(--border-color);
+  stroke-opacity: 0.3;
+}
+
+/* Adjust the y-axis label spacing and alignment */
+.yAxis > div {
+  height: 20px;
+  line-height: 20px;
+  white-space: nowrap;
 }

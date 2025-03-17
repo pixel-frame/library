@@ -12,6 +12,10 @@
   gap: 0rem;
 }
 
+.fullWidth {
+  grid-column: 1 / -1;
+}
+
 .titleRow {
   display: flex;
   align-items: center;
@@ -41,6 +45,11 @@
   font-size: var(--font-sm);
   font-weight: 500;
   font-family: monospace;
+}
+
+.fullWidth .value {
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
 .infoText {

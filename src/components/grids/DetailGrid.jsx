@@ -31,7 +31,7 @@ const DetailGrid = ({ items }) => {
   return (
     <div className={styles.grid}>
       {items.map((item, index) => (
-        <div key={index} className={styles.gridItem}>
+        <div key={index} className={`${styles.gridItem} ${item.fullWidth ? styles.fullWidth : ""}`}>
           <div className={styles.titleRow}>
             <span className={styles.title}>{item.title}</span>
             {item.info && (

@@ -15,6 +15,8 @@ const AssemblyDetail = () => {
   const [error, setError] = useState(null);
   const [modelPath, setModelPath] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [fullData, setFullData] = useState(null);
+  const [fullscreenImage, setFullscreenImage] = useState(null);
 
   const availableModels = ["0001", "0002", "0004", "0005", "0009", "0010"];
 
@@ -34,6 +36,21 @@ const AssemblyDetail = () => {
     window.history.back();
   };
 
+  const handleOpenFullscreen = (item) => {
+    setFullscreenImage(item);
+  };
+
+  const handleCloseFullscreen = () => {
+    setFullscreenImage(null);
+  };
+
+  const handleKeyDown = (e, action) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      action();
+    }
+  };
+
   useEffect(() => {
     const fetchAssemblyDetail = async () => {
       try {
@@ -44,7 +61,7 @@ const AssemblyDetail = () => {
         const foundAssembly = data.reconfigurations.find((assembly) => assembly.serial === id);
         if (!foundAssembly) throw new Error("Assembly not found");
 
-        console.log("Found assembly:", foundAssembly);
+        setFullData(data);
         setAssembly(foundAssembly);
         const modelSerial = getModelSerial(foundAssembly);
         setModelPath(modelSerial ? `/data/models/assemblies/${modelSerial}.glb` : null);
@@ -57,13 +74,12 @@ const AssemblyDetail = () => {
     };
 
     if (location.state?.assembly) {
-      console.log("Using assembly from location state:", location.state.assembly);
       setAssembly(location.state.assembly);
+      setFullData({ reconfigurations: [location.state.assembly] });
       const modelSerial = getModelSerial(location.state.assembly);
       setModelPath(modelSerial ? `/data/models/assemblies/${modelSerial}.glb` : null);
       setLoading(false);
     } else {
-      console.log("Fetching assembly detail for id:", id);
       fetchAssemblyDetail();
     }
   }, [id, location.state]);
@@ -71,6 +87,15 @@ const AssemblyDetail = () => {
   if (loading) return <div className="loading-indicator">Loading assembly details...</div>;
   if (error) return <div className="error-message">{error}</div>;
   if (!assembly) return <div className="error-message">Assembly not found</div>;
+
+  // Mock media items - replace with actual data when available
+  const mediaItems = [
+    { id: 1, title: "Assembly view 1" },
+    { id: 2, title: "Assembly view 2" },
+    { id: 3, title: "Assembly view 3" },
+    { id: 4, title: "Assembly view 4" },
+    { id: 5, title: "Assembly view 5" },
+  ];
 
   return (
     <div className="assembly-detail-page">
@@ -97,6 +122,7 @@ const AssemblyDetail = () => {
                     className={styles["ar-button"]}
                     onClick={() => console.log("AR view")}
                     aria-label="View in AR"
+                    tabIndex="0"
                   >
                     <span className={styles["ar-icon"]}>[ AR ]</span>
                   </button>
@@ -109,6 +135,11 @@ const AssemblyDetail = () => {
         <div className="assembly-info-container">
           <DetailGrid
             items={[
+              {
+                title: "Description",
+                value: assembly.description || "No description available",
+                fullWidth: true,
+              },
               {
                 title: "Date",
                 value: new Date(assembly.date).toLocaleDateString(),
@@ -152,7 +183,74 @@ const AssemblyDetail = () => {
             ]}
           />
         </div>
+
+        <div className={styles["media-section"]}>
+          <h2 className={styles["section-title"]}>Media</h2>
+          <div className={styles["media-grid"]}>
+            {mediaItems.map((item) => (
+              <div key={item.id} className={styles["media-item"]}>
+                <div
+                  className={styles["expand-icon"]}
+                  onClick={() => handleOpenFullscreen(item)}
+                  onKeyDown={(e) => handleKeyDown(e, () => handleOpenFullscreen(item))}
+                  tabIndex="0"
+                  role="button"
+                  aria-label={`Expand ${item.title}`}
+                >
+                  ↗
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: "100%",
+                    color: "#666",
+                  }}
+                >
+                  {item.title}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className={styles["media-section"]}>
+          <h2 className={styles["section-title"]}>JSON Data</h2>
+          <div className={styles["json-display"]}>
+            <pre>{JSON.stringify(fullData, null, 2)}</pre>
+          </div>
+        </div>
       </div>
+
+      {fullscreenImage && (
+        <div className={styles["fullscreen-overlay"]} onClick={handleCloseFullscreen}>
+          <button
+            className={styles["close-fullscreen"]}
+            onClick={handleCloseFullscreen}
+            aria-label="Close fullscreen view"
+          >
+            ✕
+          </button>
+          <div className={styles["fullscreen-image"]} onClick={(e) => e.stopPropagation()}>
+            <h2>{fullscreenImage.title}</h2>
+            <div
+              style={{
+                width: "80vw",
+                height: "60vh",
+                border: "2px solid white",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "white",
+                fontSize: "24px",
+              }}
+            >
+              {fullscreenImage.title} - Fullscreen View
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

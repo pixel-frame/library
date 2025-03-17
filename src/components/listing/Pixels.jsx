@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Pixels.module.css";
 import PixelModelTransition from "../models/PixelModelTransition";
+import { RollingText } from "../text/RollingText";
 
 const Pixels = () => {
   const [pixels, setPixels] = useState([]);
@@ -108,17 +109,6 @@ const Pixels = () => {
 
   return (
     <div className={styles.pixelsContainer}>
-      <div className={styles.pixelsHeader}>
-        <button
-          className={styles.viewToggleBtn}
-          onClick={cycleViewMode}
-          aria-label={`Current view: ${viewMode}. Click to change view mode`}
-          tabIndex="0"
-        >
-          {viewMode === "vertical" ? "→" : viewMode === "horizontal" ? "□" : "↓"}
-        </button>
-      </div>
-
       <div className={styles.mainPixelContent}>
         {viewMode !== "grid" && (
           <div className={styles.detailSection}>
@@ -130,6 +120,16 @@ const Pixels = () => {
                 viewMode={viewMode}
                 pixelNumber={pixels[selectedIndex]?.number}
               />
+
+              {/* View mode toggle button positioned absolutely on top of model viewer */}
+              <button
+                className={styles.viewToggleBtn}
+                onClick={cycleViewMode}
+                aria-label={`Current view: ${viewMode}. Click to change view mode`}
+                tabIndex="0"
+              >
+                {viewMode === "vertical" ? "→" : viewMode === "horizontal" ? "□" : "↓"}
+              </button>
             </div>
 
             <div className={styles.moreInfoLink}>
@@ -138,7 +138,7 @@ const Pixels = () => {
                 className={styles.pixelDetailLink}
                 aria-label={`View detailed information for Pixel ${pixels[selectedIndex]?.number}`}
               >
-                MORE INFORMATION → SEE ITS
+                <RollingText text="MORE INFORMATION →  MORE INFORMATION → MORE INFORMATION →  " />
               </Link>
             </div>
           </div>

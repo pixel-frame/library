@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import "./RollingText.css";
+import styles from "./RollingText.module.css";
 
-export function RollingText({ text }) {
+export function RollingText({ text, speed = 300 }) {
   const [displayText, setDisplayText] = useState(text);
 
   useEffect(() => {
-    const intervalTime = 300;
+    const intervalTime = speed;
 
     const interval = setInterval(() => {
       setDisplayText((prevText) => {
@@ -15,12 +15,12 @@ export function RollingText({ text }) {
     }, intervalTime);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [speed]);
 
   return (
-    <div className="srolling-text-container">
-      <div className="srolling-text">
-        <span>{displayText}</span>
+    <div className={styles.rollingTextContainer}>
+      <div className={styles.rollingText}>
+        <span className="font-mono">{displayText}</span>
       </div>
     </div>
   );

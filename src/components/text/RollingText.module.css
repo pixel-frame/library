@@ -1,0 +1,14 @@
+.rollingTextContainer {
+  display: inline-block;
+  overflow: hidden;
+  width: 100%;
+}
+
+.rollingText {
+  white-space: nowrap;
+  text-align: center;
+}
+
+.rollingText span {
+  display: inline-block;
+}

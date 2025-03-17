@@ -7,14 +7,29 @@
 }
 
 .pixelsHeader {
+  display: none;
+}
+
+.pixel-detail-link {
+  display: block;
+  background-color: #000;
+  color: #fff;
+  text-align: center;
+  padding: 0.8rem;
+  margin-top: 1rem;
+  text-decoration: none;
+  font-weight: bold;
+  letter-spacing: 1px;
+  font-size: 0.9rem;
   display: flex;
-  justify-content: flex-end;
-  padding: 0.5rem;
-  background-color: #fff;
-  border-bottom: 1px solid #000;
+  align-items: center;
+  justify-content: center;
 }
 
 .viewToggleBtn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
   background-color: #000;
   color: #fff;
   border: none;
@@ -25,6 +40,7 @@
   justify-content: center;
   font-size: 1.2rem;
   cursor: pointer;
+  z-index: 20;
 }
 
 .mainPixelContent {
@@ -41,7 +57,7 @@
   padding: 0;
   margin: 0;
   overflow: hidden;
-  height: 50vh;
+  height: 45vh;
 }
 
 .modelContainer {
@@ -58,6 +74,12 @@
   color: #fff;
   text-align: center;
   letter-spacing: 1px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .pixelDetailLink {

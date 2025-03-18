@@ -94,16 +94,16 @@
 
 .tabButton {
   border: none;
-  background: none;
   padding: 8px 16px;
+  background: none;
+  border: 0px solid var(--text-primary);
   cursor: pointer;
-  font-family: inherit;
-  font-size: inherit;
   color: var(--text-secondary);
 }
 
 .tabButtonActive {
-  color: var(--text-primary);
+  color: var(--bg-primary);
+  background: var(--text-primary);
 }
 
 .closeButtonContainer {

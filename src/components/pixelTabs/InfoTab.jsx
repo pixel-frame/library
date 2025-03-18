@@ -3,11 +3,12 @@ import DetailGrid from "../grids/DetailGrid";
 import ModelPreview from "../models/ModelPreview";
 import PixelModel from "../models/PixelModel";
 import ExpandButton from "../buttons/ExpandButton";
+import Globe from "../globe/Globe";
 import styles from "./InfoTab.module.css";
 
 const InfoTab = ({ pixel }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  console.log(pixel);
+
   const handleExpand = () => {
     setIsExpanded(true);
     document.body.style.overflow = "hidden";
@@ -27,6 +28,7 @@ const InfoTab = ({ pixel }) => {
           </button>
         </div>
       </div>
+
       <DetailGrid
         items={[
           {
@@ -40,6 +42,18 @@ const InfoTab = ({ pixel }) => {
           {
             title: "Manufacture Date",
             value: pixel.date_of_manufacture,
+          },
+          {
+            title: "Location",
+            value: (
+              <>
+                <div>Cambridge, MA</div>
+                <div className={styles.globeContainer}>
+                  <Globe latitude={42.3666} longitude={-71.1057} />
+                </div>
+              </>
+            ),
+            isGlobe: true,
           },
           {
             title: "Concrete Strength",

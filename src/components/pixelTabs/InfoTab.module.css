@@ -9,6 +9,7 @@
   justify-content: center;
   width: 100%;
 }
+
 .pixel-header {
   display: flex;
   justify-content: space-between;
@@ -61,4 +62,24 @@
   font-size: 20px;
   display: flex;
   align-items: center;
+}
+
+.locationContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.locationName {
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.globeContainer {
+  width: 100%;
+  height: 120px;
+  margin-top: 8px;
+  border-radius: 4px;
+  overflow: hidden;
 }

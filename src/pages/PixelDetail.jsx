@@ -7,9 +7,9 @@ import styles from "./PixelDetail.module.css";
 import CloseButton from "../components/buttons/CloseButton";
 
 const TABS = [
-  { id: "info", label: "[INFO]", component: InfoTab },
-  { id: "story", label: "[STORY]", component: StoryTab },
-  { id: "network", label: "[NETWORK]", component: NetworkTab },
+  { id: "info", label: "[ INFO ]", component: InfoTab },
+  { id: "story", label: "[ STORY ]", component: StoryTab },
+  { id: "network", label: "[ NETWORK ]", component: NetworkTab },
 ];
 
 const PixelDetail = () => {

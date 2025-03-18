@@ -31,7 +31,12 @@ const DetailGrid = ({ items }) => {
   return (
     <div className={styles.grid}>
       {items.map((item, index) => (
-        <div key={index} className={`${styles.gridItem} ${item.fullWidth ? styles.fullWidth : ""}`}>
+        <div
+          key={index}
+          className={`${styles.gridItem} ${item.fullWidth ? styles.fullWidth : ""} ${
+            item.isGlobe ? styles.globeItem : ""
+          }`}
+        >
           <div className={styles.titleRow}>
             <span className={styles.title}>{item.title}</span>
             {item.info && (

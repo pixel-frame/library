@@ -10,10 +10,16 @@
   display: flex;
   flex-direction: column;
   gap: 0rem;
+  border-top: 0.5px solid var(--text-primary);
+  padding-top: 0.33rem;
 }
 
 .fullWidth {
   grid-column: 1 / -1;
+}
+
+.globeItem {
+  grid-column: span 1;
 }
 
 .titleRow {
@@ -50,6 +56,10 @@
 .fullWidth .value {
   white-space: pre-wrap;
   word-break: break-word;
+}
+
+.globeItem .value {
+  height: 120px;
 }
 
 .infoText {
@@ -89,5 +99,9 @@
 @media (max-width: 320px) {
   .grid {
     grid-template-columns: 1fr;
+  }
+
+  .globeItem {
+    grid-column: span 1;
   }
 }

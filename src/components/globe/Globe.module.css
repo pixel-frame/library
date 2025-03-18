@@ -1,0 +1,38 @@
+.globeContainer {
+  width: 100%;
+  max-width: 120px;
+  aspect-ratio: 1;
+  margin: 0 auto;
+  padding: 10px;
+}
+
+.globe {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.globeOutline {
+  fill: white;
+  stroke: #333;
+  stroke-width: 0.5;
+}
+
+.landmass {
+  fill: #e0e0e0;
+  stroke: #555;
+  stroke-width: 0;
+}
+
+.gridLine {
+  fill: none;
+  stroke: #999;
+  stroke-width: 0.2;
+  stroke-dasharray: 1, 1;
+}
+
+.locationMarker {
+  fill: #000;
+  stroke: white;
+  stroke-width: 0.5;
+}

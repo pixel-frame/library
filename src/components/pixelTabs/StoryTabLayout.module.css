@@ -1,0 +1,24 @@
+.storyTabLayout {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  gap: 10px;
+}
+
+.emissionsSection {
+  flex: 0.5;
+  min-height: 0;
+  overflow: auto;
+}
+
+.logSection {
+  flex: 0.3;
+  min-height: 0;
+  overflow: auto;
+}
+
+.timelineSection {
+  flex: 0.2;
+  min-height: 0;
+}

@@ -1,20 +1,29 @@
 .timelineWrapper {
   width: 100%;
+  height: 100%;
   overflow: hidden;
-  border: 1px solid var(--text-primary);
+  /* border: 1px solid var(--text-primary); */
   padding: 0;
   position: relative;
-  bottom: 0.75rem;
-  left: 0;
+  margin-bottom: 2rem;
 }
 
 .timelineContainer {
   width: 100%;
+  height: 100%;
   position: relative;
   overflow: hidden;
   display: flex;
   align-items: stretch;
-  gap: 0;
+}
+
+.scrollContainer {
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+  height: 100%;
+  padding: 0;
+  user-select: none;
 }
 
 .timelineScroll {
@@ -24,216 +33,118 @@
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   margin: 0;
-  margin-top: 0.5rem;
-  padding: 20px 0;
+  padding: 0;
+  height: 100%;
 }
 
 .timelineScroll::-webkit-scrollbar {
   display: none;
 }
 
-.timeline {
-  min-width: 200%;
-  position: relative;
-  height: 60px;
+.timelineSvg {
+  height: 100%;
+  overflow: visible;
 }
 
-.timelineLine {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: var(--text-primary);
+.axis path,
+.axis line {
+  stroke: var(--text-primary);
 }
 
-.timelineMarker {
-  position: absolute;
-  top: -3px;
-  width: 1px;
-  background: var(--text-primary);
-  transform: translateX(-50%);
+.axis text {
+  fill: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.yearMarker {
+  stroke: var(--text-primary);
+  stroke-width: 1.5;
+}
+
+.yearLabel {
+  fill: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  font-size: 16px;
 }
 
 .eventMarker {
-  position: absolute;
-  top: -15px;
-  transform: translateX(-50%);
   cursor: pointer;
-  background: var(--text-primary);
 }
 
-.eventIcon {
-  font-size: 20px;
-  line-height: 1;
-  position: relative;
+.eventStar {
+  fill: var(--text-primary);
+  font-size: 16px;
 }
 
 .eventTooltip {
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--text-primary);
-  padding: 8px;
-  border-radius: 4px;
-  white-space: nowrap;
-  visibility: hidden;
-  opacity: 0;
-  transition: opacity 0.2s;
   pointer-events: none;
-  margin-bottom: 8px;
-  border: 1px solid var(--text-primary);
-}
-
-.eventMarker:hover .eventTooltip,
-.eventMarker:focus .eventTooltip {
-  visibility: visible;
-  opacity: 1;
+  z-index: 10;
 }
 
 .eventDate {
   font-size: 12px;
   color: var(--text-primary);
   margin-bottom: 4px;
+  font-variant-numeric: tabular-nums;
 }
 
 .eventTitle {
   font-size: 14px;
   font-weight: 500;
-}
-
-.yearLabels {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: space-between;
-  padding: 0 20px;
-  font-variant-numeric: tabular-nums;
-}
-
-.currentDate {
-  text-align: center;
-
-  margin: 4px 0;
-  font-variant-numeric: tabular-nums;
-  font-weight: 500;
-  position: absolute;
-  font-size: 14px;
-  top: 0;
-  color: var(--bg-primary);
-  background: var(--text-primary);
-  padding: 0px 4px;
-  border-radius: 1px;
-  display: inline-block;
-
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.scrollPadding {
-  width: 100%;
-  height: 1px;
-}
-
-/* Event type specific styles */
-.fabrication {
-  color: var(--color-fabrication);
-}
-.test {
-  color: var(--color-test);
-}
-.travel {
-  color: var(--color-travel);
-}
-.exhibition {
-  color: var(--color-exhibition);
-}
-.milestone {
-  color: var(--color-milestone);
-}
-
-.eventStar {
-  position: absolute;
-  top: -15px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 14px;
   color: var(--text-primary);
 }
 
-.timelineCursor {
-  display: none;
-}
-
-.arrow {
-  width: 48px;
-  height: auto;
-  border: none;
-  background: var(--text-primary);
-  color: var(--bg-primary);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  z-index: 2;
-}
-
-.leftArrow {
-  margin-right: 0;
-}
-
-.rightArrow {
-  margin-left: 0;
-}
-
-.fixedCursor {
+/* Center indicator */
+.centerIndicator {
   position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 2px;
-  height: 20px;
-  background: var(--accent-primary);
-  transform: translate(-50%, -50%);
-  z-index: 2;
-  pointer-events: none;
-}
-
-.scrollContainer {
-  position: relative;
-  flex: 1;
-  overflow: hidden;
-  height: 100px;
-  padding: 0;
-}
-
-.centerLineContainer {
-  position: absolute;
-  left: 50%;
   top: 0;
-  bottom: 0;
-  width: 2px;
+  left: 50%;
   transform: translateX(-50%);
-  z-index: 2;
+  height: 100%;
+  width: 3px;
   pointer-events: none;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .centerLine {
-  position: absolute;
-  top: 20px;
-  bottom: 20px;
   width: 3px;
-  height: 80%;
-  background: var(--text-primary);
+  height: 80px;
+  background-color: var(--accent-primary);
 }
 
-.centerLine::after {
+.centerArrow {
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid var(--accent-primary);
+}
+
+/* Current date display */
+.currentDateDisplay {
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--text-primary);
+  color: var(--bg-primary);
+  padding: 2px 8px;
+  border-radius: 2px;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  min-width: 80px;
+  z-index: 5;
+}
+
+.currentDateDisplay::before {
   content: "";
   position: absolute;
-  bottom: 0px;
+  top: -6px;
   left: 50%;
   transform: translateX(-50%);
   width: 0;
@@ -249,25 +160,18 @@
     border-width: 1px;
   }
 
-  .centerDot {
-    width: 6px;
-    height: 6px;
-  }
-
   .arrow {
-    width: 32px;
-    font-size: 16px;
+    width: 36px;
+    font-size: 18px;
   }
 
-  .timelineScroll {
-    touch-action: pan-x pinch-zoom;
+  .yearLabel {
+    font-size: 14px;
   }
 
-  .timeline {
-    min-width: 300%; /* Make timeline wider on mobile for better scrolling */
-  }
-
-  .eventStar {
-    font-size: 16px; /* Larger touch target on mobile */
+  .currentDateDisplay {
+    font-size: 12px;
+    min-width: 70px;
+    padding: 2px 6px;
   }
 }

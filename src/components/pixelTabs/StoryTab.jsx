@@ -1,16 +1,21 @@
 import { useState, useMemo, useEffect, useRef } from "react";
 import styles from "./StoryTab.module.css";
 import Timeline from "./Timeline";
+import LogCardContainer from "./LogCardContainer";
+import StoryTabLayout from "./StoryTabLayout";
 
 const StoryTab = ({ pixel }) => {
-  const [timelinePosition, setTimelinePosition] = useState(0);
+  const [timelinePosition, setTimelinePosition] = useState(0.5); // Start in the middle
   const [currentData, setCurrentData] = useState({
     emission: null,
     travel: null,
     date: new Date(),
     emissionChange: "0.000",
   });
+  const [currentEventIndex, setCurrentEventIndex] = useState(0);
   const timelineRef = useRef(null);
+  const isUpdatingFromTimelineRef = useRef(false);
+  const isNavigatingRef = useRef(false);
 
   // Timeline events - these will be scrollable cards
   const timelineEvents = useMemo(
@@ -112,13 +117,10 @@ const StoryTab = ({ pixel }) => {
   };
 
   const handleTimelinePositionChange = (position) => {
+    if (isNavigatingRef.current) return;
+    isUpdatingFromTimelineRef.current = true;
     setTimelinePosition(position);
-
-    // Scroll the timeline cards if ref exists
-    if (timelineRef.current) {
-      const scrollWidth = timelineRef.current.scrollWidth - timelineRef.current.clientWidth;
-      timelineRef.current.scrollLeft = position * scrollWidth;
-    }
+    isUpdatingFromTimelineRef.current = false;
   };
 
   // Calculate min and max values from emissions data with proper padding
@@ -149,6 +151,70 @@ const StoryTab = ({ pixel }) => {
 
     return labels;
   }, [minValue, maxValue]);
+
+  // Navigate to a specific event
+  const navigateToEvent = (direction) => {
+    isNavigatingRef.current = true;
+
+    let newIndex;
+    if (direction === "next") {
+      newIndex = Math.min(currentEventIndex + 1, timelineEvents.length - 1);
+    } else if (direction === "prev") {
+      newIndex = Math.max(currentEventIndex - 1, 0);
+    } else if (typeof direction === "number") {
+      newIndex = Math.max(0, Math.min(direction, timelineEvents.length - 1));
+    } else {
+      newIndex = currentEventIndex;
+    }
+
+    setCurrentEventIndex(newIndex);
+
+    // Update timeline position based on the event date
+    const eventDate = new Date(timelineEvents[newIndex].date);
+    const startDate = new Date("2022-07");
+    const endDate = new Date("2026-01");
+    const newPosition = (eventDate - startDate) / (endDate - startDate);
+
+    // Update timeline position
+    setTimelinePosition(newPosition);
+
+    // Explicitly scroll the timeline to the new position
+    if (timelineRef.current) {
+      timelineRef.current.scrollToPosition(newPosition);
+    }
+
+    // Find the emission data point closest to this event
+    const closestEmission = emissionsData.reduce((prev, curr) => {
+      const prevDiff = Math.abs(new Date(prev.timestamp) - eventDate);
+      const currDiff = Math.abs(new Date(curr.timestamp) - eventDate);
+      return currDiff < prevDiff ? curr : prev;
+    });
+
+    // Find the travel data point closest to this event
+    const closestTravel = travelData.reduce((prev, curr) => {
+      const prevDiff = Math.abs(new Date(prev.timestamp) - eventDate);
+      const currDiff = Math.abs(new Date(curr.timestamp) - eventDate);
+      return currDiff < prevDiff ? curr : prev;
+    });
+
+    // Calculate emission change
+    const prevEmissionIndex = emissionsData.findIndex((e) => e.timestamp === closestEmission.timestamp) - 1;
+    const emissionChange =
+      prevEmissionIndex >= 0 ? (closestEmission.value - emissionsData[prevEmissionIndex].value).toFixed(3) : "0.000";
+
+    // Update current data directly
+    setCurrentData({
+      emission: closestEmission,
+      travel: closestTravel,
+      date: eventDate,
+      emissionChange,
+    });
+
+    // Allow timeline updates again after a short delay
+    setTimeout(() => {
+      isNavigatingRef.current = false;
+    }, 500);
+  };
 
   // Update generateEmissionsPaths to use calculated bounds
   const generateEmissionsPaths = () => {
@@ -243,6 +309,8 @@ const StoryTab = ({ pixel }) => {
 
   // Update current data whenever timeline position changes
   useEffect(() => {
+    if (isNavigatingRef.current) return;
+
     // Calculate current date based on position (2022-07 to 2026-01)
     const startDate = new Date("2022-07");
     const endDate = new Date("2026-01");
@@ -274,6 +342,30 @@ const StoryTab = ({ pixel }) => {
       emissionChange,
     });
   }, [timelinePosition, emissionsData, travelData]);
+
+  // Find the current event index based on the current date
+  useEffect(() => {
+    if (!currentData.date || isNavigatingRef.current) return;
+
+    const currentDate = currentData.date;
+    let nearestIndex = 0;
+    let smallestDiff = Infinity;
+
+    timelineEvents.forEach((event, index) => {
+      const eventDate = new Date(event.date);
+      const diff = Math.abs(eventDate - currentDate);
+
+      if (diff < smallestDiff) {
+        smallestDiff = diff;
+        nearestIndex = index;
+      }
+    });
+
+    // Only update if the event index is changing
+    if (nearestIndex !== currentEventIndex) {
+      setCurrentEventIndex(nearestIndex);
+    }
+  }, [currentData.date, timelineEvents, currentEventIndex]);
 
   // Update the renderEmissionsGraph function to use the separate paths
   const renderEmissionsGraph = () => {
@@ -398,37 +490,27 @@ const StoryTab = ({ pixel }) => {
     );
   };
 
-  const renderTravelLog = () => {
-    if (!currentData.travel) return null;
-
-    const { from, to, distance, mode } = currentData.travel;
-    const asterisks = Math.ceil(Number(distance) / 80);
-
-    return (
-      <div className={styles.travelLog}>
-        <p>LOG</p>
-        <div className={styles.travelPath}>
-          <div>{from}</div>
-          <div className={styles.pathLine}>{"*".repeat(Math.min(asterisks, 20))}</div>
-          <div>{to}</div>
-          <div className={styles.scale}>* = 80 km</div>
-        </div>
-        <div className={styles.travelDetails}>
-          PIXEL-060 travels {distance} km via {mode}
-          from {from} to {to}
-        </div>
-      </div>
-    );
-  };
-
   return (
     <div className={styles.storyTab}>
-      {renderEmissionsGraph()}
-      {renderTravelLog()}
-      <Timeline
-        onPositionChange={handleTimelinePositionChange}
-        currentPosition={timelinePosition}
-        timelineEvents={timelineEvents}
+      <StoryTabLayout
+        emissionsGraph={renderEmissionsGraph()}
+        logContainer={
+          <LogCardContainer
+            timelineEvents={timelineEvents}
+            travelData={travelData}
+            currentEventIndex={currentEventIndex}
+            onNavigate={navigateToEvent}
+          />
+        }
+        timeline={
+          <Timeline
+            ref={timelineRef}
+            onPositionChange={handleTimelinePositionChange}
+            currentPosition={timelinePosition}
+            timelineEvents={timelineEvents}
+            onEventClick={(index) => navigateToEvent(index)}
+          />
+        }
       />
     </div>
   );

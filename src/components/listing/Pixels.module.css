@@ -129,13 +129,14 @@
 
 .listItem {
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: none !important;
   border-bottom: 1px solid #000;
 }
 
 .selected {
   background-color: #000;
   color: #fff;
+  transition: none !important;
 }
 
 .pixelPreview {

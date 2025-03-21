@@ -112,58 +112,6 @@ const NetworkTab = ({ pixel, isActive }) => {
     // Add background pattern of slashes
     const patternGroup = svg.append("g").attr("class", "background-pattern");
 
-    for (let row = 0; row < gridRows; row++) {
-      for (let col = 0; col < gridCols; col++) {
-        // Skip areas where we'll place our visualization
-        if (col > 2 && col < gridCols - 2 && row > 1 && row < gridRows - 5) {
-          continue;
-        }
-
-        // Add a random slash
-        const slashType = Math.floor(Math.random() * 4);
-        const x = col * gridSize;
-        const y = row * gridSize;
-
-        if (slashType === 0) {
-          patternGroup
-            .append("line")
-            .attr("x1", x)
-            .attr("y1", y)
-            .attr("x2", x + gridSize / 2)
-            .attr("y2", y + gridSize / 2)
-            .attr("stroke", "#ddd")
-            .attr("stroke-width", 0.5);
-        } else if (slashType === 1) {
-          patternGroup
-            .append("line")
-            .attr("x1", x + gridSize / 2)
-            .attr("y1", y)
-            .attr("x2", x + gridSize)
-            .attr("y2", y + gridSize / 2)
-            .attr("stroke", "#ddd")
-            .attr("stroke-width", 0.5);
-        } else if (slashType === 2) {
-          patternGroup
-            .append("line")
-            .attr("x1", x)
-            .attr("y1", y + gridSize / 2)
-            .attr("x2", x + gridSize / 2)
-            .attr("y2", y + gridSize)
-            .attr("stroke", "#ddd")
-            .attr("stroke-width", 0.5);
-        } else {
-          patternGroup
-            .append("line")
-            .attr("x1", x + gridSize / 2)
-            .attr("y1", y + gridSize / 2)
-            .attr("x2", x + gridSize)
-            .attr("y2", y + gridSize)
-            .attr("stroke", "#ddd")
-            .attr("stroke-width", 0.5);
-        }
-      }
-    }
-
     // Sort timeline by date
     const sortedTimeline = [...pixel.timeline].sort((a, b) => new Date(a.date) - new Date(b.date));
 

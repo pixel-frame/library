@@ -17,7 +17,7 @@ const InfoTab = ({ pixel }) => {
   return (
     <div className="pixel-info-container">
       <ModelPreview isExpanded={isExpanded} onClose={() => setIsExpanded(false)}>
-        <PixelModel />
+        <PixelModel modelPath={pixel.pixel_number} />
       </ModelPreview>
       <div className={styles["pixel-header"]}>
         <p className={styles["pixel-title"]}>PIXEL {pixel.pixel_number}</p>

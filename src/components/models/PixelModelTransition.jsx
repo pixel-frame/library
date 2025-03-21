@@ -30,13 +30,15 @@ const PixelModelTransition = ({ currentSerial, previousSerial, direction, viewMo
 
       return () => clearTimeout(timer);
     }
+    console.log(currentSerial);
+    console.log(previousSerial);
   }, [currentSerial, previousSerial]);
 
   return (
     <div className={styles.transitionContainer}>
       {showPrevious && (
         <div className={`${styles.modelSlide} ${styles.slideOut} ${styles[`slideOut${animationDirection}`]}`}>
-          <PixelModel modelPath={`/models/pixel_${previousSerial}.glb`} isPreview={true} />
+          <PixelModel modelPath={previousSerial} isPreview={true} />
           <div className={styles.pixelOverlay}>
             <button className={styles.expandButton}>[+]</button>
             <div className={styles.pixelLabel}>[PIXEL {pixelNumber}]</div>
@@ -49,7 +51,7 @@ const PixelModelTransition = ({ currentSerial, previousSerial, direction, viewMo
           isTransitioning ? styles[`slideIn${animationDirection}`] : ""
         }`}
       >
-        <PixelModel modelPath={`/models/pixel_${currentSerial}.glb`} isPreview={true} />
+        <PixelModel modelPath={currentSerial} isPreview={true} />
         <div className={styles.pixelOverlay}>
           <button className={styles.expandButton}>[+]</button>
           <div className={styles.pixelLabel}>[PIXEL {pixelNumber}]</div>

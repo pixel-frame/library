@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Pixels.module.css";
 import PixelModelTransition from "../models/PixelModelTransition";
+import PixelModel from "../models/PixelModel";
 import { RollingText } from "../text/RollingText";
 
 const Pixels = () => {
@@ -114,8 +115,8 @@ const Pixels = () => {
           <div className={styles.detailSection}>
             <div className={styles.modelContainer}>
               <PixelModelTransition
-                currentSerial={pixels[selectedIndex]?.serial}
-                previousSerial={previousIndex !== null ? pixels[previousIndex]?.serial : null}
+                currentSerial={pixels[selectedIndex]?.number}
+                previousSerial={previousIndex !== null ? pixels[previousIndex]?.number : null}
                 direction={transitionDirection}
                 viewMode={viewMode}
                 pixelNumber={pixels[selectedIndex]?.number}
@@ -156,7 +157,9 @@ const Pixels = () => {
               tabIndex="0"
               aria-label={`Pixel ${pixel.number}, ${pixel.state_description}`}
             >
-              <div className={styles.pixelPreview}>{generateSimpleASCII(pixel.serial)}</div>
+              <div className={styles.pixelPreview}>
+                {viewMode === "grid" ? <PixelModel modelPath={pixel.number} /> : generateSimpleASCII(pixel.serial)}
+              </div>
               <div className={styles.itemInfo}>
                 <div className={styles.itemNumber}>PIXEL {pixel.number}</div>
                 <div className={styles.itemGeneration}>GEN {pixel.generation}</div>

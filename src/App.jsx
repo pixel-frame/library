@@ -11,7 +11,8 @@ import ListingPage from "./pages/ListingPage";
 import AssemblyDetail from "./pages/AssemblyDetail";
 import PixelDetail from "./pages/PixelDetail";
 import { initMobileViewportFix } from "./utils/mobileViewportFix";
-
+import Explore from "./pages/Explore";
+import Carbon from "./pages/Emissions";
 // Wrapper component to handle the loading page logic
 const AppContent = () => {
   const [hasSeenLoadingPage, setHasSeenLoadingPage] = useState(() => {
@@ -52,6 +53,8 @@ const AppContent = () => {
         <Route path="/details" element={<DetailsTestPage />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="*" element={<DetailsTestPage />} />
+        <Route path="/explore" element={<Explore />} />
+        <Route path="/emissions" element={<Carbon />} />
       </Routes>
     </Layout>
   );

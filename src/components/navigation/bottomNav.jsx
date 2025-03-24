@@ -1,9 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styles from "./bottomNav.module.css";
 
 const BottomNav = () => {
   const [activeTab, setActiveTab] = useState("bank");
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  const handleScroll = () => {
+    const currentScrollY = window.scrollY;
+
+    // Show nav when scrolling up or at the top, hide when scrolling down
+    if (currentScrollY <= 0) {
+      setIsVisible(true);
+    } else if (currentScrollY > lastScrollY) {
+      setIsVisible(false);
+    } else {
+      setIsVisible(true);
+    }
+
+    setLastScrollY(currentScrollY);
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
 
   const handleNavClick = (tabName) => {
     setActiveTab(tabName);
@@ -16,7 +38,7 @@ const BottomNav = () => {
   };
 
   return (
-    <nav className={styles.bottomNav}>
+    <nav className={`${styles.bottomNav} ${isVisible ? "" : styles.hidden}`}>
       <div className={styles.navContainer}>
         <Link
           to="/pixels"

@@ -4,7 +4,13 @@
   left: 0;
   width: 100%;
   background-color: var(--text-primary);
-  z-index: 100;
+  transform: translateY(0);
+  transition: transform 0.3s ease;
+  z-index: 1000;
+}
+
+.hidden {
+  transform: translateY(100%);
 }
 
 .navContainer {

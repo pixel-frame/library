@@ -79,5 +79,13 @@
 
 .markerText {
   fill: black;
-  font-size: 10px;
+  font-size: 10px !important;
+}
+.locationName {
+  fill: black;
+  font-size: 7px !important;
+}
+
+.bitmapPixel {
+  fill: #75b798; /* Use the same color as your landmass or adjust as needed */
 }

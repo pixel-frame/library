@@ -187,7 +187,7 @@ const Carbon = () => {
           .attr("cy", y)
           .attr("r", circleSize / 2)
           .attr("fill", "black")
-          .attr("stroke", "white")
+          .attr("stroke", "transparent")
           .attr("stroke-width", 1)
           .attr("data-count", points.length);
 
@@ -333,7 +333,7 @@ const Carbon = () => {
                 .attr("width", squareSize)
                 .attr("height", squareSize)
                 .attr("fill", "black")
-                .attr("stroke", "white")
+                .attr("stroke", "transparent")
                 .attr("stroke-width", 1);
 
               // Store the square position

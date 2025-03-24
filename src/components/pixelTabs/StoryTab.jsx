@@ -16,6 +16,8 @@ const StoryTab = ({ pixel }) => {
   const timelineRef = useRef(null);
   const isUpdatingFromTimelineRef = useRef(false);
   const isNavigatingRef = useRef(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const containerRef = useRef(null);
 
   // Timeline events - these will be scrollable cards
   const timelineEvents = useMemo(
@@ -367,12 +369,49 @@ const StoryTab = ({ pixel }) => {
     }
   }, [currentData.date, timelineEvents, currentEventIndex]);
 
+  // Generate x-axis labels for the emissions graph
+  const generateTimeLabels = () => {
+    const startDate = new Date("2022-07");
+    const endDate = new Date("2026-01");
+    const labels = [];
+
+    let previousYear = null;
+
+    // Create labels for each year
+    for (let year = 2022; year <= 2026; year++) {
+      // For 2022, start from July
+      const startMonth = year === 2022 ? 6 : 0;
+      // For 2026, only include January
+      const endMonth = year === 2026 ? 0 : 11;
+
+      for (let month = startMonth; month <= endMonth; month += 3) {
+        const date = new Date(year, month);
+        if (date >= startDate && date <= endDate) {
+          const position = ((date - startDate) / (endDate - startDate)) * 100;
+
+          // Only include year in label if it's a new year
+          const showYear = previousYear !== year;
+          previousYear = year;
+
+          labels.push({
+            date,
+            position,
+            label: showYear ? date.toLocaleDateString("en-US", { year: "numeric" }) : "",
+          });
+        }
+      }
+    }
+
+    return labels;
+  };
+
   // Update the renderEmissionsGraph function to use the separate paths
   const renderEmissionsGraph = () => {
     if (!currentData.emission) return null;
 
     const currentPoint = getCurrentEmissionPoint();
     const { pastPath, futurePath } = generateEmissionsPaths();
+    const timeLabels = generateTimeLabels();
 
     return (
       <div className={styles.graphContainer} role="region" aria-label="Pixel emissions graph over time">
@@ -445,8 +484,25 @@ const StoryTab = ({ pixel }) => {
 
                 const isPastPoint = new Date(point.timestamp) <= new Date(currentData.date);
 
+                // Find the corresponding event index for this emission point
+                const correspondingEventIndex = timelineEvents.findIndex((event) => event.date === point.timestamp);
+
+                const handlePointClick = () => {
+                  if (correspondingEventIndex >= 0) {
+                    navigateToEvent(correspondingEventIndex);
+                  }
+                };
+
                 return (
-                  <g key={i}>
+                  <g
+                    key={i}
+                    onClick={handlePointClick}
+                    onKeyDown={(e) => e.key === "Enter" && handlePointClick()}
+                    tabIndex="0"
+                    role="button"
+                    aria-label={`Navigate to ${point.event} with emissions of ${point.value.toFixed(2)} kgCO2`}
+                    className={styles.emissionPoint}
+                  >
                     <rect
                       x={x - 24}
                       y={y - 24}
@@ -470,28 +526,113 @@ const StoryTab = ({ pixel }) => {
                 );
               })}
             </svg>
+
+            {/* X-Axis Time Labels */}
+            <div className={styles.xAxis} aria-hidden="true">
+              {timeLabels.map((item, index) => (
+                <span key={index} style={{ left: `${item.position}%` }}>
+                  {item.label}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
         <div className={styles.emissionStats}>
           <div>
             <span>EMISSION CHANGE</span>
-            <span>▲ +{currentData.emissionChange} kgCO2</span>
+            <span className={styles.factoid}>▲ +{currentData.emissionChange} kgCO2</span>
           </div>
           <div>
             <span>TOTAL EMISSIONS</span>
-            <span>{currentData.emission.value.toFixed(4)} kgCO2</span>
+            <span className={styles.factoid}>{currentData.emission.value.toFixed(4)} kgCO2</span>
           </div>
           <div>
             <span>Time</span>
-            <span>{calculateAge(currentData.date)}</span>
+            <span className={styles.factoid}>{calculateAge(currentData.date)}</span>
           </div>
         </div>
       </div>
     );
   };
 
+  const handleMouseDown = (e) => {
+    if (!containerRef.current) return;
+    setIsDragging(true);
+    updateTimelineFromMousePosition(e);
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDragging) return;
+    updateTimelineFromMousePosition(e);
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const updateTimelineFromMousePosition = (e) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const position = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    handleTimelinePositionChange(position);
+  };
+
+  useEffect(() => {
+    if (isDragging) {
+      document.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener("mouseup", handleMouseUp);
+    } else {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+    }
+
+    return () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [isDragging]);
+
+  // Add touch event handlers for mobile
+  const handleTouchStart = (e) => {
+    if (!containerRef.current) return;
+    setIsDragging(true);
+    updateTimelineFromTouchPosition(e);
+  };
+
+  const handleTouchMove = (e) => {
+    if (!isDragging) return;
+    updateTimelineFromTouchPosition(e);
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+  };
+
+  const updateTimelineFromTouchPosition = (e) => {
+    if (!containerRef.current || !e.touches[0]) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const position = Math.max(0, Math.min(1, (e.touches[0].clientX - rect.left) / rect.width));
+    handleTimelinePositionChange(position);
+  };
+
+  useEffect(() => {
+    if (isDragging) {
+      document.addEventListener("touchmove", handleTouchMove);
+      document.addEventListener("touchend", handleTouchEnd);
+    } else {
+      document.removeEventListener("touchmove", handleTouchMove);
+      document.removeEventListener("touchend", handleTouchEnd);
+    }
+
+    return () => {
+      document.removeEventListener("touchmove", handleTouchMove);
+      document.removeEventListener("touchend", handleTouchEnd);
+    };
+  }, [isDragging]);
+
   return (
-    <div className={styles.storyTab}>
+    <div className={styles.storyTab} ref={containerRef} onMouseDown={handleMouseDown} onTouchStart={handleTouchStart}>
+      <div className={styles.timeIndicator} style={{ left: `${timelinePosition * 100}%` }} aria-hidden="true" />
       <StoryTabLayout
         emissionsGraph={renderEmissionsGraph()}
         logContainer={

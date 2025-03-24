@@ -6,6 +6,10 @@
   height: calc(100vh - 120px);
   overflow-x: hidden;
   max-width: 100%;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 .notesSection,
@@ -93,7 +97,7 @@
   padding: 12px;
   width: 100%;
   height: 100%;
-  background: #f5f5f5;
+
   overflow: hidden;
 }
 
@@ -108,6 +112,12 @@
   margin: 8px 0;
   height: calc(100% - 70px);
   padding-bottom: 20px;
+  background: #f5f5f5;
+}
+
+.factoid {
+  font-size: var(--font-md);
+  text-align: left;
 }
 
 .yAxis {
@@ -128,6 +138,7 @@
   background: var(--background-primary);
   border-left: 1px solid var(--border-color);
   border-bottom: 1px solid var(--border-color);
+  margin-bottom: 20px;
 }
 
 .currentPosition {
@@ -154,7 +165,7 @@
 .emissionStats > div {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   min-width: 80px;
   padding: 4px;
 }
@@ -391,4 +402,47 @@ h2 {
 
 .activeCard {
   border: 2px solid var(--text-primary);
+}
+
+/* D3 Axis Styling */
+.xAxis path,
+.xAxis line {
+  stroke: var(--border-color);
+}
+
+.xAxis text {
+  font-size: 10px;
+  fill: var(--text-primary);
+}
+
+.plotArea svg {
+  overflow: visible;
+}
+
+.xAxis {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  font-size: 10px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 0 10px;
+}
+
+.xAxis span {
+  position: absolute;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+.timeIndicator {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background-color: var(--text-primary);
+  z-index: 10;
+  pointer-events: none;
+  transition: left 0.1s ease-out;
 }

@@ -6,7 +6,14 @@
       "generation": 1,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 2
+      "number_of_reconfigurations": 2,
+      "distance_traveled": 0.0,
+      "date_of_manufacture": "2022",
+      "total_emissions": 2.2952,
+      "emissions_over_time": {
+        "7/18/2022": 2.2952,
+        "4/15/2024": 2.2952
+      }
     },
     {
       "pixel_number": 2,
@@ -14,7 +21,14 @@
       "generation": 1,
       "state": 4,
       "state_description": "Retired",
-      "number_of_reconfigurations": 2
+      "number_of_reconfigurations": 2,
+      "distance_traveled": 0.0,
+      "date_of_manufacture": "2022",
+      "total_emissions": 2.2952,
+      "emissions_over_time": {
+        "7/18/2022": 2.2952,
+        "4/15/2024": 2.2952
+      }
     },
     {
       "pixel_number": 3,
@@ -22,7 +36,15 @@
       "generation": 1,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 3
+      "number_of_reconfigurations": 3,
+      "distance_traveled": 1400.0,
+      "date_of_manufacture": "2022",
+      "total_emissions": 2.60528,
+      "emissions_over_time": {
+        "7/18/2022": 2.2952,
+        "4/4/2023": 2.48848,
+        "5/17/2024": 2.60528
+      }
     },
     {
       "pixel_number": 4,
@@ -30,7 +52,14 @@
       "generation": 1,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 2
+      "number_of_reconfigurations": 2,
+      "distance_traveled": 6450.0,
+      "date_of_manufacture": "2022",
+      "total_emissions": 5.3152,
+      "emissions_over_time": {
+        "7/18/2022": 2.2952,
+        "3/19/2025": 5.3152
+      }
     },
     {
       "pixel_number": 5,
@@ -38,7 +67,15 @@
       "generation": 1,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 3
+      "number_of_reconfigurations": 3,
+      "distance_traveled": 700.0,
+      "date_of_manufacture": "2022",
+      "total_emissions": 2.48848,
+      "emissions_over_time": {
+        "7/18/2022": 2.2952,
+        "4/15/2024": 2.2952,
+        "4/4/2023": 2.48848
+      }
     },
     {
       "pixel_number": 6,
@@ -46,7 +83,13 @@
       "generation": 1,
       "state": 4,
       "state_description": "Retired",
-      "number_of_reconfigurations": 1
+      "number_of_reconfigurations": 1,
+      "distance_traveled": 0.0,
+      "date_of_manufacture": "2022",
+      "total_emissions": 2.2952,
+      "emissions_over_time": {
+        "7/18/2022": 2.2952
+      }
     },
     {
       "pixel_number": 7,
@@ -54,7 +97,13 @@
       "generation": 1,
       "state": 4,
       "state_description": "Retired",
-      "number_of_reconfigurations": 1
+      "number_of_reconfigurations": 1,
+      "distance_traveled": 0.0,
+      "date_of_manufacture": "2022",
+      "total_emissions": 2.2952,
+      "emissions_over_time": {
+        "7/18/2022": 2.2952
+      }
     },
     {
       "pixel_number": 9,
@@ -62,7 +111,14 @@
       "generation": 1,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 2
+      "number_of_reconfigurations": 2,
+      "distance_traveled": 0.0,
+      "date_of_manufacture": "2022",
+      "total_emissions": 2.2952,
+      "emissions_over_time": {
+        "7/18/2022": 2.2952,
+        "4/15/2024": 2.2952
+      }
     },
     {
       "pixel_number": 10,
@@ -70,7 +126,13 @@
       "generation": 1,
       "state": 4,
       "state_description": "Retired",
-      "number_of_reconfigurations": 1
+      "number_of_reconfigurations": 1,
+      "distance_traveled": 0.0,
+      "date_of_manufacture": "2022",
+      "total_emissions": 2.2952,
+      "emissions_over_time": {
+        "7/18/2022": 2.2952
+      }
     },
     {
       "pixel_number": 11,
@@ -78,7 +140,13 @@
       "generation": 1,
       "state": 4,
       "state_description": "Retired",
-      "number_of_reconfigurations": 1
+      "number_of_reconfigurations": 1,
+      "distance_traveled": 0.0,
+      "date_of_manufacture": "2022",
+      "total_emissions": 2.2952,
+      "emissions_over_time": {
+        "7/18/2022": 2.2952
+      }
     },
     {
       "pixel_number": 12,
@@ -86,7 +154,14 @@
       "generation": 1,
       "state": 4,
       "state_description": "Retired",
-      "number_of_reconfigurations": 2
+      "number_of_reconfigurations": 2,
+      "distance_traveled": 0.0,
+      "date_of_manufacture": "2022",
+      "total_emissions": 2.2952,
+      "emissions_over_time": {
+        "7/18/2022": 2.2952,
+        "4/15/2024": 2.2952
+      }
     },
     {
       "pixel_number": 13,
@@ -94,7 +169,15 @@
       "generation": 1,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 3
+      "number_of_reconfigurations": 3,
+      "distance_traveled": 700.0,
+      "date_of_manufacture": "2022",
+      "total_emissions": 2.48848,
+      "emissions_over_time": {
+        "7/18/2022": 2.2952,
+        "4/15/2024": 2.2952,
+        "4/4/2023": 2.48848
+      }
     },
     {
       "pixel_number": 14,
@@ -102,7 +185,15 @@
       "generation": 1,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 3
+      "number_of_reconfigurations": 3,
+      "distance_traveled": 7150.0,
+      "date_of_manufacture": "2022",
+      "total_emissions": 5.432,
+      "emissions_over_time": {
+        "7/18/2022": 2.2952,
+        "5/17/2024": 2.412,
+        "3/19/2025": 5.432
+      }
     },
     {
       "pixel_number": 15,
@@ -110,7 +201,15 @@
       "generation": 1,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 3
+      "number_of_reconfigurations": 3,
+      "distance_traveled": 700.0,
+      "date_of_manufacture": "2022",
+      "total_emissions": 2.48848,
+      "emissions_over_time": {
+        "7/18/2022": 2.2952,
+        "4/15/2024": 2.2952,
+        "4/4/2023": 2.48848
+      }
     },
     {
       "pixel_number": 16,
@@ -118,7 +217,15 @@
       "generation": 1,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 3
+      "number_of_reconfigurations": 3,
+      "distance_traveled": 6450.0,
+      "date_of_manufacture": "2022",
+      "total_emissions": 5.3152,
+      "emissions_over_time": {
+        "7/18/2022": 2.2952,
+        "4/15/2024": 2.2952,
+        "3/19/2025": 5.3152
+      }
     },
     {
       "pixel_number": 17,
@@ -126,7 +233,15 @@
       "generation": 1,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 3
+      "number_of_reconfigurations": 3,
+      "distance_traveled": 1400.0,
+      "date_of_manufacture": "2022",
+      "total_emissions": 2.60528,
+      "emissions_over_time": {
+        "7/18/2022": 2.2952,
+        "4/4/2023": 2.48848,
+        "5/17/2024": 2.60528
+      }
     },
     {
       "pixel_number": 18,
@@ -134,7 +249,15 @@
       "generation": 1,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 3
+      "number_of_reconfigurations": 3,
+      "distance_traveled": 7150.0,
+      "date_of_manufacture": "2022",
+      "total_emissions": 5.432,
+      "emissions_over_time": {
+        "7/18/2022": 2.2952,
+        "5/17/2024": 2.412,
+        "3/19/2025": 5.432
+      }
     },
     {
       "pixel_number": 19,
@@ -142,7 +265,15 @@
       "generation": 1,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 3
+      "number_of_reconfigurations": 3,
+      "distance_traveled": 700.0,
+      "date_of_manufacture": "2022",
+      "total_emissions": 2.48848,
+      "emissions_over_time": {
+        "7/18/2022": 2.2952,
+        "4/15/2024": 2.2952,
+        "4/4/2023": 2.48848
+      }
     },
     {
       "pixel_number": 20,
@@ -150,7 +281,14 @@
       "generation": 1,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 2
+      "number_of_reconfigurations": 2,
+      "distance_traveled": 0.0,
+      "date_of_manufacture": "2022",
+      "total_emissions": 2.2952,
+      "emissions_over_time": {
+        "7/18/2022": 2.2952,
+        "4/15/2024": 2.2952
+      }
     },
     {
       "pixel_number": 21,
@@ -158,7 +296,15 @@
       "generation": 1,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 4
+      "number_of_reconfigurations": 4,
+      "distance_traveled": 700.0,
+      "date_of_manufacture": "2022",
+      "total_emissions": 2.48848,
+      "emissions_over_time": {
+        "7/18/2022": 2.2952,
+        "4/15/2024": 2.2952,
+        "4/4/2023": 2.48848
+      }
     },
     {
       "pixel_number": 22,
@@ -166,7 +312,14 @@
       "generation": 1,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 2
+      "number_of_reconfigurations": 2,
+      "distance_traveled": 0.0,
+      "date_of_manufacture": "2022",
+      "total_emissions": 2.2952,
+      "emissions_over_time": {
+        "7/18/2022": 2.2952,
+        "4/15/2024": 2.2952
+      }
     },
     {
       "pixel_number": 23,
@@ -174,7 +327,15 @@
       "generation": 1,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 3
+      "number_of_reconfigurations": 3,
+      "distance_traveled": 7150.0,
+      "date_of_manufacture": "2022",
+      "total_emissions": 5.432,
+      "emissions_over_time": {
+        "7/18/2022": 2.2952,
+        "5/17/2024": 2.412,
+        "3/19/2025": 5.432
+      }
     },
     {
       "pixel_number": 24,
@@ -182,7 +343,13 @@
       "generation": 1,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 1
+      "number_of_reconfigurations": 1,
+      "distance_traveled": 0.0,
+      "date_of_manufacture": "2022",
+      "total_emissions": 2.2952,
+      "emissions_over_time": {
+        "7/18/2022": 2.2952
+      }
     },
     {
       "pixel_number": 25,
@@ -190,7 +357,15 @@
       "generation": 2,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 3
+      "number_of_reconfigurations": 3,
+      "distance_traveled": 7850.0,
+      "date_of_manufacture": "2023",
+      "total_emissions": 3.4455999999999998,
+      "emissions_over_time": {
+        "1/4/2023": 1.5038,
+        "5/17/2024": 1.6206,
+        "3/19/2025": 3.4455999999999998
+      }
     },
     {
       "pixel_number": 26,
@@ -198,7 +373,13 @@
       "generation": 2,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 1
+      "number_of_reconfigurations": 1,
+      "distance_traveled": 700.0,
+      "date_of_manufacture": "2023",
+      "total_emissions": 1.5038,
+      "emissions_over_time": {
+        "1/4/2023": 1.5038
+      }
     },
     {
       "pixel_number": 27,
@@ -206,7 +387,15 @@
       "generation": 2,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 3
+      "number_of_reconfigurations": 3,
+      "distance_traveled": 7850.0,
+      "date_of_manufacture": "2023",
+      "total_emissions": 3.4455999999999998,
+      "emissions_over_time": {
+        "1/4/2023": 1.5038,
+        "5/17/2024": 1.6206,
+        "3/19/2025": 3.4455999999999998
+      }
     },
     {
       "pixel_number": 28,
@@ -214,7 +403,13 @@
       "generation": 2,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 1
+      "number_of_reconfigurations": 1,
+      "distance_traveled": 700.0,
+      "date_of_manufacture": "2023",
+      "total_emissions": 1.5038,
+      "emissions_over_time": {
+        "1/4/2023": 1.5038
+      }
     },
     {
       "pixel_number": 30,
@@ -222,7 +417,15 @@
       "generation": 2,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 3
+      "number_of_reconfigurations": 3,
+      "distance_traveled": 7850.0,
+      "date_of_manufacture": "2023",
+      "total_emissions": 3.4455999999999998,
+      "emissions_over_time": {
+        "1/4/2023": 1.5038,
+        "5/17/2024": 1.6206,
+        "3/19/2025": 3.4455999999999998
+      }
     },
     {
       "pixel_number": 32,
@@ -230,7 +433,15 @@
       "generation": 2,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 3
+      "number_of_reconfigurations": 3,
+      "distance_traveled": 7850.0,
+      "date_of_manufacture": "2023",
+      "total_emissions": 3.4455999999999998,
+      "emissions_over_time": {
+        "1/4/2023": 1.5038,
+        "5/17/2024": 1.6206,
+        "3/19/2025": 3.4455999999999998
+      }
     },
     {
       "pixel_number": 33,
@@ -238,7 +449,15 @@
       "generation": 2,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 3
+      "number_of_reconfigurations": 3,
+      "distance_traveled": 7850.0,
+      "date_of_manufacture": "2023",
+      "total_emissions": 3.4455999999999998,
+      "emissions_over_time": {
+        "1/4/2023": 1.5038,
+        "5/17/2024": 1.6206,
+        "3/19/2025": 3.4455999999999998
+      }
     },
     {
       "pixel_number": 34,
@@ -246,7 +465,15 @@
       "generation": 2,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 3
+      "number_of_reconfigurations": 3,
+      "distance_traveled": 7850.0,
+      "date_of_manufacture": "2023",
+      "total_emissions": 3.4455999999999998,
+      "emissions_over_time": {
+        "1/4/2023": 1.5038,
+        "5/17/2024": 1.6206,
+        "3/19/2025": 3.4455999999999998
+      }
     },
     {
       "pixel_number": 35,
@@ -254,7 +481,13 @@
       "generation": 2,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 1
+      "number_of_reconfigurations": 1,
+      "distance_traveled": 700.0,
+      "date_of_manufacture": "2023",
+      "total_emissions": 1.5038,
+      "emissions_over_time": {
+        "1/4/2023": 1.5038
+      }
     },
     {
       "pixel_number": 36,
@@ -262,7 +495,13 @@
       "generation": 2,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 1
+      "number_of_reconfigurations": 1,
+      "distance_traveled": 700.0,
+      "date_of_manufacture": "2023",
+      "total_emissions": 1.5038,
+      "emissions_over_time": {
+        "1/4/2023": 1.5038
+      }
     },
     {
       "pixel_number": 37,
@@ -270,7 +509,15 @@
       "generation": 2,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 3
+      "number_of_reconfigurations": 3,
+      "distance_traveled": 7850.0,
+      "date_of_manufacture": "2023",
+      "total_emissions": 3.4455999999999998,
+      "emissions_over_time": {
+        "1/4/2023": 1.5038,
+        "5/17/2024": 1.6206,
+        "3/19/2025": 3.4455999999999998
+      }
     },
     {
       "pixel_number": 38,
@@ -278,7 +525,15 @@
       "generation": 2,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 3
+      "number_of_reconfigurations": 3,
+      "distance_traveled": 7850.0,
+      "date_of_manufacture": "2023",
+      "total_emissions": 3.4455999999999998,
+      "emissions_over_time": {
+        "1/4/2023": 1.5038,
+        "5/17/2024": 1.6206,
+        "3/19/2025": 3.4455999999999998
+      }
     },
     {
       "pixel_number": 39,
@@ -286,7 +541,15 @@
       "generation": 2,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 3
+      "number_of_reconfigurations": 3,
+      "distance_traveled": 7850.0,
+      "date_of_manufacture": "2023",
+      "total_emissions": 3.4455999999999998,
+      "emissions_over_time": {
+        "1/4/2023": 1.5038,
+        "5/17/2024": 1.6206,
+        "3/19/2025": 3.4455999999999998
+      }
     },
     {
       "pixel_number": 40,
@@ -294,7 +557,13 @@
       "generation": 2,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 1
+      "number_of_reconfigurations": 1,
+      "distance_traveled": 700.0,
+      "date_of_manufacture": "2023",
+      "total_emissions": 1.5038,
+      "emissions_over_time": {
+        "1/4/2023": 1.5038
+      }
     },
     {
       "pixel_number": 41,
@@ -302,7 +571,15 @@
       "generation": 2,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 3
+      "number_of_reconfigurations": 3,
+      "distance_traveled": 7850.0,
+      "date_of_manufacture": "2023",
+      "total_emissions": 3.4455999999999998,
+      "emissions_over_time": {
+        "1/4/2023": 1.5038,
+        "5/17/2024": 1.6206,
+        "3/19/2025": 3.4455999999999998
+      }
     },
     {
       "pixel_number": 42,
@@ -310,7 +587,15 @@
       "generation": 2,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 3
+      "number_of_reconfigurations": 3,
+      "distance_traveled": 7850.0,
+      "date_of_manufacture": "2023",
+      "total_emissions": 3.4455999999999998,
+      "emissions_over_time": {
+        "1/4/2023": 1.5038,
+        "5/17/2024": 1.6206,
+        "3/19/2025": 3.4455999999999998
+      }
     },
     {
       "pixel_number": 43,
@@ -318,7 +603,13 @@
       "generation": 2,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 1
+      "number_of_reconfigurations": 1,
+      "distance_traveled": 700.0,
+      "date_of_manufacture": "2023",
+      "total_emissions": 1.5038,
+      "emissions_over_time": {
+        "1/4/2023": 1.5038
+      }
     },
     {
       "pixel_number": 44,
@@ -326,7 +617,15 @@
       "generation": 2,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 3
+      "number_of_reconfigurations": 3,
+      "distance_traveled": 7850.0,
+      "date_of_manufacture": "2023",
+      "total_emissions": 3.4455999999999998,
+      "emissions_over_time": {
+        "1/4/2023": 1.5038,
+        "5/17/2024": 1.6206,
+        "3/19/2025": 3.4455999999999998
+      }
     },
     {
       "pixel_number": 45,
@@ -334,7 +633,13 @@
       "generation": 2,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 1
+      "number_of_reconfigurations": 1,
+      "distance_traveled": 700.0,
+      "date_of_manufacture": "2023",
+      "total_emissions": 1.5038,
+      "emissions_over_time": {
+        "1/4/2023": 1.5038
+      }
     },
     {
       "pixel_number": 46,
@@ -342,7 +647,15 @@
       "generation": 2,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 3
+      "number_of_reconfigurations": 3,
+      "distance_traveled": 7850.0,
+      "date_of_manufacture": "2023",
+      "total_emissions": 3.4455999999999998,
+      "emissions_over_time": {
+        "1/4/2023": 1.5038,
+        "5/17/2024": 1.6206,
+        "3/19/2025": 3.4455999999999998
+      }
     },
     {
       "pixel_number": 47,
@@ -350,7 +663,13 @@
       "generation": 2,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 1
+      "number_of_reconfigurations": 1,
+      "distance_traveled": 700.0,
+      "date_of_manufacture": "2023",
+      "total_emissions": 1.5038,
+      "emissions_over_time": {
+        "1/4/2023": 1.5038
+      }
     },
     {
       "pixel_number": 48,
@@ -358,7 +677,15 @@
       "generation": 2,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 3
+      "number_of_reconfigurations": 3,
+      "distance_traveled": 7850.0,
+      "date_of_manufacture": "2023",
+      "total_emissions": 3.4455999999999998,
+      "emissions_over_time": {
+        "1/4/2023": 1.5038,
+        "5/17/2024": 1.6206,
+        "3/19/2025": 3.4455999999999998
+      }
     },
     {
       "pixel_number": 49,
@@ -366,7 +693,15 @@
       "generation": 2,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 3
+      "number_of_reconfigurations": 3,
+      "distance_traveled": 7850.0,
+      "date_of_manufacture": "2023",
+      "total_emissions": 3.4455999999999998,
+      "emissions_over_time": {
+        "1/4/2023": 1.5038,
+        "5/17/2024": 1.6206,
+        "3/19/2025": 3.4455999999999998
+      }
     },
     {
       "pixel_number": 50,
@@ -374,7 +709,15 @@
       "generation": 2,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 3
+      "number_of_reconfigurations": 3,
+      "distance_traveled": 7850.0,
+      "date_of_manufacture": "2023",
+      "total_emissions": 3.4455999999999998,
+      "emissions_over_time": {
+        "1/4/2023": 1.5038,
+        "5/17/2024": 1.6206,
+        "3/19/2025": 3.4455999999999998
+      }
     },
     {
       "pixel_number": 51,
@@ -382,7 +725,13 @@
       "generation": 2,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 1
+      "number_of_reconfigurations": 1,
+      "distance_traveled": 700.0,
+      "date_of_manufacture": "2023",
+      "total_emissions": 1.5038,
+      "emissions_over_time": {
+        "1/4/2023": 1.5038
+      }
     },
     {
       "pixel_number": 52,
@@ -390,7 +739,15 @@
       "generation": 2,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 3
+      "number_of_reconfigurations": 3,
+      "distance_traveled": 7850.0,
+      "date_of_manufacture": "2023",
+      "total_emissions": 3.4455999999999998,
+      "emissions_over_time": {
+        "1/4/2023": 1.5038,
+        "5/17/2024": 1.6206,
+        "3/19/2025": 3.4455999999999998
+      }
     },
     {
       "pixel_number": 53,
@@ -398,7 +755,13 @@
       "generation": 2,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 1
+      "number_of_reconfigurations": 1,
+      "distance_traveled": 700.0,
+      "date_of_manufacture": "2023",
+      "total_emissions": 1.5038,
+      "emissions_over_time": {
+        "1/4/2023": 1.5038
+      }
     },
     {
       "pixel_number": 54,
@@ -406,7 +769,15 @@
       "generation": 2,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 3
+      "number_of_reconfigurations": 3,
+      "distance_traveled": 7850.0,
+      "date_of_manufacture": "2023",
+      "total_emissions": 3.4455999999999998,
+      "emissions_over_time": {
+        "1/4/2023": 1.5038,
+        "5/17/2024": 1.6206,
+        "3/19/2025": 3.4455999999999998
+      }
     },
     {
       "pixel_number": 55,
@@ -414,7 +785,15 @@
       "generation": 2,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 3
+      "number_of_reconfigurations": 3,
+      "distance_traveled": 7850.0,
+      "date_of_manufacture": "2023",
+      "total_emissions": 3.4455999999999998,
+      "emissions_over_time": {
+        "1/4/2023": 1.5038,
+        "5/17/2024": 1.6206,
+        "3/19/2025": 3.4455999999999998
+      }
     },
     {
       "pixel_number": 56,
@@ -422,7 +801,15 @@
       "generation": 2,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 3
+      "number_of_reconfigurations": 3,
+      "distance_traveled": 7850.0,
+      "date_of_manufacture": "2023",
+      "total_emissions": 3.4455999999999998,
+      "emissions_over_time": {
+        "1/4/2023": 1.5038,
+        "5/17/2024": 1.6206,
+        "3/19/2025": 3.4455999999999998
+      }
     },
     {
       "pixel_number": 57,
@@ -430,7 +817,15 @@
       "generation": 2,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 3
+      "number_of_reconfigurations": 3,
+      "distance_traveled": 7850.0,
+      "date_of_manufacture": "2023",
+      "total_emissions": 3.4455999999999998,
+      "emissions_over_time": {
+        "1/4/2023": 1.5038,
+        "5/17/2024": 1.6206,
+        "3/19/2025": 3.4455999999999998
+      }
     },
     {
       "pixel_number": 58,
@@ -438,7 +833,15 @@
       "generation": 2,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 3
+      "number_of_reconfigurations": 3,
+      "distance_traveled": 7850.0,
+      "date_of_manufacture": "2023",
+      "total_emissions": 3.4455999999999998,
+      "emissions_over_time": {
+        "1/4/2023": 1.5038,
+        "5/17/2024": 1.6206,
+        "3/19/2025": 3.4455999999999998
+      }
     },
     {
       "pixel_number": 59,
@@ -446,7 +849,13 @@
       "generation": 2,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 1
+      "number_of_reconfigurations": 1,
+      "distance_traveled": 700.0,
+      "date_of_manufacture": "2023",
+      "total_emissions": 1.5038,
+      "emissions_over_time": {
+        "1/4/2023": 1.5038
+      }
     },
     {
       "pixel_number": 60,
@@ -454,7 +863,15 @@
       "generation": 2,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 3
+      "number_of_reconfigurations": 3,
+      "distance_traveled": 7850.0,
+      "date_of_manufacture": "2023",
+      "total_emissions": 3.4455999999999998,
+      "emissions_over_time": {
+        "1/4/2023": 1.5038,
+        "5/17/2024": 1.6206,
+        "3/19/2025": 3.4455999999999998
+      }
     },
     {
       "pixel_number": 61,
@@ -462,7 +879,13 @@
       "generation": 2,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 1
+      "number_of_reconfigurations": 1,
+      "distance_traveled": 700.0,
+      "date_of_manufacture": "2023",
+      "total_emissions": 1.5038,
+      "emissions_over_time": {
+        "1/4/2023": 1.5038
+      }
     },
     {
       "pixel_number": 62,
@@ -470,7 +893,15 @@
       "generation": 2,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 3
+      "number_of_reconfigurations": 3,
+      "distance_traveled": 7850.0,
+      "date_of_manufacture": "2023",
+      "total_emissions": 3.4455999999999998,
+      "emissions_over_time": {
+        "1/4/2023": 1.5038,
+        "5/17/2024": 1.6206,
+        "3/19/2025": 3.4455999999999998
+      }
     },
     {
       "pixel_number": 63,
@@ -478,7 +909,13 @@
       "generation": 2,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 1
+      "number_of_reconfigurations": 1,
+      "distance_traveled": 700.0,
+      "date_of_manufacture": "2023",
+      "total_emissions": 1.5038,
+      "emissions_over_time": {
+        "1/4/2023": 1.5038
+      }
     },
     {
       "pixel_number": 64,
@@ -486,7 +923,13 @@
       "generation": 2,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 1
+      "number_of_reconfigurations": 1,
+      "distance_traveled": 700.0,
+      "date_of_manufacture": "2023",
+      "total_emissions": 1.5038,
+      "emissions_over_time": {
+        "1/4/2023": 1.5038
+      }
     },
     {
       "pixel_number": 65,
@@ -494,7 +937,13 @@
       "generation": 2,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 1
+      "number_of_reconfigurations": 1,
+      "distance_traveled": 700.0,
+      "date_of_manufacture": "2023",
+      "total_emissions": 1.5038,
+      "emissions_over_time": {
+        "1/4/2023": 1.5038
+      }
     },
     {
       "pixel_number": 66,
@@ -502,7 +951,13 @@
       "generation": 2,
       "state": null,
       "state_description": null,
-      "number_of_reconfigurations": 1
+      "number_of_reconfigurations": 1,
+      "distance_traveled": 700.0,
+      "date_of_manufacture": "2023",
+      "total_emissions": 1.5038,
+      "emissions_over_time": {
+        "1/4/2023": 1.5038
+      }
     },
     {
       "pixel_number": 67,
@@ -510,7 +965,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 68,
@@ -518,7 +981,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 69,
@@ -526,7 +997,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 70,
@@ -534,7 +1013,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 71,
@@ -542,7 +1029,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 72,
@@ -550,7 +1045,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 73,
@@ -558,7 +1061,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 74,
@@ -566,7 +1077,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 75,
@@ -574,7 +1093,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 76,
@@ -582,7 +1109,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 77,
@@ -590,7 +1125,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 78,
@@ -598,7 +1141,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 79,
@@ -606,7 +1157,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 80,
@@ -614,7 +1173,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 81,
@@ -622,7 +1189,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 82,
@@ -630,7 +1205,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 83,
@@ -638,7 +1221,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 84,
@@ -646,7 +1237,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 85,
@@ -654,7 +1253,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 86,
@@ -662,7 +1269,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 87,
@@ -670,7 +1285,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 88,
@@ -678,7 +1301,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 89,
@@ -686,7 +1317,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 90,
@@ -694,7 +1333,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 91,
@@ -702,7 +1349,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 92,
@@ -710,7 +1365,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 93,
@@ -718,7 +1381,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 94,
@@ -726,7 +1397,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 95,
@@ -734,7 +1413,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 96,
@@ -742,7 +1429,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 97,
@@ -750,7 +1445,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 98,
@@ -758,7 +1461,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 99,
@@ -766,7 +1477,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 100,
@@ -774,7 +1493,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 101,
@@ -782,7 +1509,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 102,
@@ -790,7 +1525,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 103,
@@ -798,7 +1541,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 104,
@@ -806,7 +1557,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 105,
@@ -814,7 +1573,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 106,
@@ -822,7 +1589,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 107,
@@ -830,7 +1605,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 108,
@@ -838,7 +1621,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 109,
@@ -846,7 +1637,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 110,
@@ -854,7 +1653,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 111,
@@ -862,7 +1669,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 112,
@@ -870,7 +1685,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 113,
@@ -878,7 +1701,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 114,
@@ -886,7 +1717,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 115,
@@ -894,7 +1733,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 116,
@@ -902,7 +1749,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 117,
@@ -910,7 +1765,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 118,
@@ -918,7 +1781,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 119,
@@ -926,7 +1797,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 120,
@@ -934,7 +1813,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 121,
@@ -942,7 +1829,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 122,
@@ -950,7 +1845,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 123,
@@ -958,7 +1861,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 124,
@@ -966,7 +1877,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 125,
@@ -974,7 +1893,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 126,
@@ -982,7 +1909,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 127,
@@ -990,7 +1925,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 128,
@@ -998,7 +1941,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 129,
@@ -1006,7 +1957,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 130,
@@ -1014,7 +1973,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 131,
@@ -1022,7 +1989,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 132,
@@ -1030,7 +2005,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 133,
@@ -1038,7 +2021,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 134,
@@ -1046,7 +2037,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 135,
@@ -1054,7 +2053,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 136,
@@ -1062,7 +2069,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 137,
@@ -1070,7 +2085,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     },
     {
       "pixel_number": 138,
@@ -1078,7 +2101,15 @@
       "generation": 3,
       "state": 0,
       "state_description": null,
-      "number_of_reconfigurations": 0
+      "number_of_reconfigurations": 0,
+      "distance_traveled": 10498.0,
+      "date_of_manufacture": "2025",
+      "total_emissions": 12.978119999999999,
+      "emissions_over_time": {
+        "8/1/2025": 11.1074,
+        "12/4/2025": 12.04276,
+        "8/3/2034": 12.978119999999999
+      }
     }
   ]
 }

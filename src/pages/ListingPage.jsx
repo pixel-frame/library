@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Button from "../widgets/Button";
 import Assemblies from "../components/listing/Assemblies";
 import Pixels from "../components/listing/Pixels";
-import Map from "../components/datavis/Map";
+import Carbon from "../components/datavis/Carbon";
 import InteractiveGlobe from "../components/globe/InteractiveGlobe";
 const ListingPage = () => {
   const { pathname } = useLocation();
@@ -42,7 +42,7 @@ const ListingPage = () => {
       <div className="listings-container">{pathname === "/assemblies" && <Assemblies />}</div>
       <div className="listings-container">{pathname === "/pixels" && <Pixels />}</div>
       <div className="listings-container">{pathname === "/" && showMap && <Map mode="map" />}</div>
-      <div className="listings-container">{pathname === "/" && showCarbon && <Map mode="carbon" />}</div>
+      <div className="listings-container">{pathname === "/" && showCarbon && <Carbon />}</div>
       <div className="listings-container">{pathname === "/" && showGlobe && <InteractiveGlobe />}</div>
     </div>
   );

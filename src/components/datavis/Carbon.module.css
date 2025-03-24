@@ -1,0 +1,88 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+}
+
+.svg {
+  max-width: 100%;
+  height: auto;
+  touch-action: manipulation;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.button {
+  padding: 8px 16px;
+  background-color: var(--accent-light);
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.selectionHighlight {
+  animation: blink 1.5s infinite;
+  stroke: #000;
+  stroke-width: 2px;
+  fill: rgba(0, 0, 0, 0.2);
+}
+
+.selectedPoint {
+  fill: white !important;
+  stroke: black !important;
+}
+
+.selectedInfo {
+  margin-top: 20px;
+  border: 1px solid #ccc;
+  padding: 15px;
+  border-radius: 5px;
+  width: 100%;
+  max-width: 600px;
+}
+
+.selectedList {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.selectedItem {
+  margin: 8px 0;
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.buttonContainer {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 50px;
+}
+@media (max-width: 768px) {
+  .button {
+    width: 100%;
+    max-width: 250px;
+  }
+}

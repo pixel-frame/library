@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import { geoOrthographic, geoPath } from "d3-geo";
 import * as topojson from "topojson-client";
@@ -6,6 +6,8 @@ import styles from "./InteractiveGlobe.module.css";
 
 const InteractiveGlobe = ({ points = [] }) => {
   const svgRef = useRef(null);
+  const [userInteracted, setUserInteracted] = useState(false);
+  const animationRef = useRef(null);
 
   useEffect(() => {
     if (!svgRef.current) return;
@@ -178,6 +180,7 @@ const InteractiveGlobe = ({ points = [] }) => {
         const dragBehavior = d3
           .drag()
           .on("start", function (event) {
+            setUserInteracted(true);
             event.sourceEvent.stopPropagation();
             const r = projection.rotate();
             const point = d3.pointer(event, this);
@@ -217,6 +220,7 @@ const InteractiveGlobe = ({ points = [] }) => {
           .zoom()
           .scaleExtent([0.7, 8])
           .on("zoom", function (event) {
+            setUserInteracted(true);
             const newScale = initialScale * event.transform.k;
             projection.scale(newScale);
 
@@ -228,11 +232,33 @@ const InteractiveGlobe = ({ points = [] }) => {
           });
 
         svg.call(zoomBehavior);
+
+        // Auto-rotation animation
+        const autoRotate = () => {
+          if (userInteracted) return;
+
+          const rotation = projection.rotate();
+          const speed = 0.03; // Adjust rotation speed
+          projection.rotate([rotation[0] + speed, rotation[1], rotation[2]]);
+          updateGlobe();
+
+          animationRef.current = requestAnimationFrame(autoRotate);
+        };
+
+        // Start auto-rotation
+        autoRotate();
       })
       .catch((error) => {
         console.error("Error loading world map data:", error);
       });
-  }, [points]);
+
+    // Clean up animation on unmount
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+  }, [points, userInteracted]);
 
   // Function to generate random points around the globe
   const generateRandomPoints = (count) => {

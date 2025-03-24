@@ -282,18 +282,42 @@ def create_individual_pixel_files(master_data, timeline_data):
         
     return pixel_files
 
-def create_simplified_pixels_json(master_data):
+def create_simplified_pixels_json(master_data, timeline_data):
     """Create a simplified pixels.json with basic status information"""
     simplified_pixels = []
     
+    # Create a lookup for timeline data by pixel_number
+    timeline_lookup = {pixel["pixel_number"]: pixel for pixel in timeline_data["pixels"]}
+    
     for pixel in master_data["pixels"]:
+        pixel_number = pixel["pixel_number"]
+        
+        # Get timeline data if available
+        total_distance = 0
+        total_emissions = 0
+        emissions_over_time = {}
+        
+        if pixel_number in timeline_lookup:
+            total_distance = timeline_lookup[pixel_number]["total_distance"]
+            total_emissions = timeline_lookup[pixel_number]["total_emissions"]
+            
+            # Create emissions over time dictionary
+            for entry in timeline_lookup[pixel_number]["timeline"]:
+                if entry["date"]:
+                    # Use the date as key and running total as value
+                    emissions_over_time[entry["date"]] = entry["emissions"]["running_total"]
+        
         simplified_pixel = {
             "pixel_number": pixel["pixel_number"],
             "serial": f"{pixel['pixel_number']:04d}",  # Add serial field
             "generation": pixel["generation"],
             "state": pixel["state"],
             "state_description": pixel["state_description"],
-            "number_of_reconfigurations": pixel["number_of_reconfigurations"]
+            "number_of_reconfigurations": pixel["number_of_reconfigurations"],
+            "distance_traveled": total_distance,
+            "date_of_manufacture": pixel["date_of_manufacture"],
+            "total_emissions": total_emissions,
+            "emissions_over_time": emissions_over_time
         }
         simplified_pixels.append(simplified_pixel)
         
@@ -314,7 +338,7 @@ def main():
     
     # Generate individual pixel files and simplified pixels.json
     pixel_files = create_individual_pixel_files(master_data, timeline_data)
-    simplified_pixels = create_simplified_pixels_json(master_data)
+    simplified_pixels = create_simplified_pixels_json(master_data, timeline_data)
     
     # Create directories if they don't exist
     os.makedirs(f'{output_base_path}/assembly', exist_ok=True)

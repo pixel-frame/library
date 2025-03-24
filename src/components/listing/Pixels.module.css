@@ -293,16 +293,3 @@
     min-width: 150px;
   }
 }
-
-.modelPlaceholder {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  width: 100%;
-  background-color: rgba(0, 0, 0, 0.1);
-  color: #000;
-  text-align: center;
-  padding: 20px;
-  font-size: 14px;
-}

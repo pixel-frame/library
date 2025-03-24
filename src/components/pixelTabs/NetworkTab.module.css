@@ -1,0 +1,135 @@
+.container {
+  padding: 1rem;
+  font-family: monospace;
+  width: 100%;
+}
+
+.assemblyHeader {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.asciiBox {
+  display: inline-block;
+  text-align: left;
+  white-space: pre;
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
+.pixelGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.pixelCard {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  padding: 0.5rem;
+  background-color: transparent;
+  border: none;
+}
+
+.cardContent {
+  white-space: pre;
+  font-size: 0.9rem;
+  line-height: 1.2;
+}
+
+.noPixels {
+  text-align: center;
+  white-space: pre;
+  margin-top: 2rem;
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
+.loading,
+.error {
+  text-align: center;
+  margin-top: 2rem;
+  font-family: monospace;
+  border: 1px solid;
+  padding: 1rem;
+}
+
+.error {
+  border-color: #ff0000;
+}
+
+.networkTabContainer {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.assemblyHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.assemblyTitle {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.viewFullButton {
+  background-color: #333;
+  color: white;
+  padding: 8px 16px;
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.assemblyInfo {
+  margin-bottom: 24px;
+}
+
+.sectionTitle {
+  font-size: 1.2rem;
+  margin-bottom: 12px;
+}
+
+.pixelsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pixelLink {
+  padding: 8px 12px;
+  background-color: #333;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.currentPixel {
+  background-color: #666;
+  position: relative;
+}
+
+.currentPixel::after {
+  content: "•";
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  color: white;
+}
+
+.loadingIndicator,
+.errorMessage,
+.noAssembly {
+  padding: 24px;
+  text-align: center;
+}
+
+.errorMessage {
+  color: #e74c3c;
+}

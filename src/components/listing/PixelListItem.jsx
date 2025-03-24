@@ -21,7 +21,7 @@ const PixelListItem = ({ pixel, index, isSelected, viewMode, onItemClick }) => {
     >
       {viewMode === "grid" && (
         <div className={styles.pixelPreview}>
-          <PixelModel modelPath={pixel.number} />
+          <div className={styles.modelPlaceholder}>App cannot handle model load</div>
         </div>
       )}
       <div className={styles.itemInfo}>

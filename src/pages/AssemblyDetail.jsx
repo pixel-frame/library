@@ -7,8 +7,9 @@ import styles from "./AssemblyDetail.module.css";
 import ExpandButton from "../components/buttons/ExpandButton";
 import CloseButton from "../components/buttons/CloseButton";
 
-const AssemblyDetail = () => {
-  const { id } = useParams();
+const AssemblyDetail = ({ assemblyId }) => {
+  const { id: urlId } = useParams();
+  const effectiveId = assemblyId || urlId;
   const location = useLocation();
   const [assembly, setAssembly] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -58,8 +59,8 @@ const AssemblyDetail = () => {
         if (!response.ok) throw new Error("Failed to fetch assemblies");
         const data = await response.json();
 
-        const foundAssembly = data.reconfigurations.find((assembly) => assembly.serial === id);
-        if (!foundAssembly) throw new Error("Assembly not found");
+        const foundAssembly = data.reconfigurations.find((assembly) => assembly.serial === effectiveId);
+        if (!foundAssembly) throw new Error(`Assembly ${effectiveId} not found`);
 
         setFullData(data);
         setAssembly(foundAssembly);
@@ -82,7 +83,7 @@ const AssemblyDetail = () => {
     } else {
       fetchAssemblyDetail();
     }
-  }, [id, location.state]);
+  }, [effectiveId, location.state]);
 
   if (loading) return <div className="loading-indicator">Loading assembly details...</div>;
   if (error) return <div className="error-message">{error}</div>;

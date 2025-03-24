@@ -19,15 +19,19 @@ const PixelDetailView = ({
   return (
     <div className={styles.detailSection}>
       <div className={styles.modelContainer}>
-        <PixelModelTransition
-          currentSerial={selectedPixel.number}
-          previousSerial={previousPixel?.number || null}
-          direction={transitionDirection}
-          viewMode={viewMode}
-          pixelNumber={selectedPixel.number}
-          isScrolling={isScrolling}
-          targetPixel={targetPixel?.number}
-        />
+        {viewMode !== "grid" ? (
+          <PixelModelTransition
+            currentSerial={selectedPixel.number}
+            previousSerial={previousPixel?.number || null}
+            direction={transitionDirection}
+            viewMode={viewMode}
+            pixelNumber={selectedPixel.number}
+            isScrolling={isScrolling}
+            targetPixel={targetPixel?.number}
+          />
+        ) : (
+          <div className={styles.modelPlaceholder}>App cannot handle model load</div>
+        )}
 
         <ViewModeToggle viewMode={viewMode} onViewModeChange={onViewModeChange} />
       </div>

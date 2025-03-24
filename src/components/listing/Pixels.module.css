@@ -188,6 +188,42 @@
   gap: 0.5rem;
 }
 
+.titleContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+  padding: 0.5rem 0.5rem;
+  justify-content: space-between;
+}
+
+.viewToggle {
+  display: flex;
+  gap: 10px;
+}
+
+.viewButton {
+  background: none;
+  border: none;
+  padding: 4px 0;
+  font-size: 14px;
+  cursor: pointer;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  border-bottom: 1.5px solid transparent;
+}
+
+.viewButton.selected {
+  border-bottom: 1.5px solid var(--text-primary);
+}
+.title {
+  font-size: 1rem;
+
+  text-transform: uppercase;
+}
+
 .grid .listItem {
   display: flex;
   flex-direction: column;
@@ -256,4 +292,17 @@
   .horizontal .listItem {
     min-width: 150px;
   }
+}
+
+.modelPlaceholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.1);
+  color: #000;
+  text-align: center;
+  padding: 20px;
+  font-size: 14px;
 }

@@ -2,14 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import StoryTab from "../components/pixelTabs/StoryTab";
 import InfoTab from "../components/pixelTabs/InfoTab";
-import NetworkTab from "../components/pixelTabs/NetworkTab";
 import styles from "./PixelDetail.module.css";
 import CloseButton from "../components/buttons/CloseButton";
-
+import AssemblyDetail from "./AssemblyDetail";
 const TABS = [
-  { id: "info", label: "[ INFO ]", component: InfoTab },
-  { id: "story", label: "[ STORY ]", component: StoryTab },
-  { id: "network", label: "[ NETWORK ]", component: NetworkTab },
+  { id: "info", label: "[ Details ]", component: InfoTab },
+  { id: "story", label: "[ History ]", component: StoryTab },
+  { id: "network", label: "[ Assembly ]", component: AssemblyDetail },
 ];
 
 const PixelDetail = () => {
@@ -71,17 +70,46 @@ const PixelDetail = () => {
         </nav>
       </div>
 
-      {TABS.map(({ id, component: TabComponent }) => (
-        <div
-          key={id}
-          id={`${id}-tab`}
-          className={`${styles.tabPanel} ${activeTab === id ? styles.tabPanelActive : ""}`}
-          role="tabpanel"
-          aria-hidden={activeTab !== id}
-        >
-          <TabComponent pixel={pixel} isActive={activeTab === id} loading={loading} error={error} />
-        </div>
-      ))}
+      {TABS.map(({ id: tabId, component: TabComponent }) => {
+        // Special handling for AssemblyDetail component
+        const props = {
+          pixel,
+          isActive: activeTab === tabId,
+          loading,
+          error,
+          pixelId: id,
+        };
+
+        // For the network tab, use the last timeline entry's reconfiguration number
+        if (tabId === "network" && pixel && pixel.timeline && pixel.timeline.length > 0) {
+          // Get the last timeline entry
+          const lastTimelineEntry = pixel.timeline[pixel.timeline.length - 1];
+
+          console.log("Timeline entries:", pixel.timeline);
+          console.log("Last timeline entry:", lastTimelineEntry);
+
+          if (lastTimelineEntry && lastTimelineEntry.reconfiguration_number) {
+            // Format the reconfiguration number as a 4-digit string with leading zeros
+            const formattedAssemblyId = lastTimelineEntry.reconfiguration_number.toString().padStart(4, "0");
+            props.assemblyId = formattedAssemblyId;
+            console.log("Using assembly ID from timeline:", props.assemblyId);
+          } else {
+            console.log("No reconfiguration found in last timeline entry for pixel:", id);
+          }
+        }
+
+        return (
+          <div
+            key={tabId}
+            id={`${tabId}-tab`}
+            className={`${styles.tabPanel} ${activeTab === tabId ? styles.tabPanelActive : ""}`}
+            role="tabpanel"
+            aria-hidden={activeTab !== tabId}
+          >
+            <TabComponent {...props} />
+          </div>
+        );
+      })}
     </div>
   );
 };

@@ -1,0 +1,68 @@
+.bottomNav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: var(--text-primary);
+  z-index: 100;
+}
+
+.navContainer {
+  display: flex;
+  justify-content: space-around;
+  padding: 8px 0 8px;
+}
+
+.navItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: var(--bg-primary);
+  width: 33.33%;
+}
+
+.navText {
+  margin-top: 6px;
+  font-size: 10px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--bg-primary);
+}
+
+.active {
+}
+
+/* Brutalist shape styles */
+.square {
+  width: 20px;
+  height: 20px;
+  background-color: var(--bg-primary);
+}
+
+.circle {
+  width: 20px;
+  height: 20px;
+  background-color: var(--bg-primary);
+  border-radius: 50%;
+}
+
+.triangle {
+  width: 0;
+  height: 0;
+  border-left: 14px solid transparent;
+  border-right: 14px solid transparent;
+  border-bottom: 20px solid var(--bg-primary);
+}
+
+/* Active state styles */
+.active .square,
+.active .circle,
+.active .triangle {
+  background-color: var(--bg-primary);
+}
+
+.active .triangle {
+  border-bottom-color: var(--bg-primary);
+}

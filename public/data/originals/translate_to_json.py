@@ -116,9 +116,12 @@ def convert_master_to_json(csv_file, generation_descriptions, state_legend, reco
                 
             reconfigurations = {}
             for i in range(1, 16):
-                if i in reconfig_columns:
-                    value = safe_get(row, f"Reconfiguration {i}", '').strip()
-                    reconfigurations[str(i)] = bool(safe_int(value, 0))
+                # Check if the column exists in the CSV
+                column_name = f"Reconfiguration {i}"
+                if column_name in row:
+                    value = safe_get(row, column_name, '').strip()
+                    # Convert to boolean - "1" means true, anything else is false
+                    reconfigurations[str(i)] = value == "1"
             
             generation = safe_int(safe_get(row, 'Generation'))
             state = safe_int(safe_get(row, 'State'))

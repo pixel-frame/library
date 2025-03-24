@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import styles from "./Pixels.module.css";
 import PixelList from "./PixelList";
 import PixelDetailView from "./PixelPreview";
-
+import Button from "../../widgets/Button";
 const Pixels = () => {
   const [pixels, setPixels] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -13,6 +13,7 @@ const Pixels = () => {
   const [transitionDirection, setTransitionDirection] = useState("Right");
   const [viewMode, setViewMode] = useState("vertical"); // 'vertical', 'horizontal', or 'grid'
   const [isScrolling, setIsScrolling] = useState(false);
+  const [selectedView, setSelectedView] = useState("compact"); // Track which view button is selected
   const scrollTimeoutRef = useRef(null);
 
   useEffect(() => {
@@ -73,6 +74,15 @@ const Pixels = () => {
     setViewMode(viewMode === "vertical" ? "horizontal" : viewMode === "horizontal" ? "grid" : "vertical");
   };
 
+  const handleViewChange = (view) => {
+    setSelectedView(view);
+    if (view === "compact") {
+      setViewMode("vertical"); // Set to normal view for compact
+    } else if (view === "detailed") {
+      setViewMode("grid"); // Set to grid view for detailed
+    }
+  };
+
   const handleItemClick = (index) => {
     if (index === selectedIndex) return;
     setSelectedIndex(index);
@@ -88,6 +98,31 @@ const Pixels = () => {
 
   return (
     <div className={styles.pixelsContainer}>
+      <div className={styles.titleContainer}>
+        {" "}
+        <span className={styles.title}>Material Bank</span>{" "}
+        <div className={styles.viewToggle}>
+          <Button
+            className={`${styles.viewButton} ${selectedView === "compact" ? styles.selected : ""}`}
+            onClick={() => handleViewChange("compact")}
+            aria-label="Compact view"
+            tabIndex="0"
+            onKeyDown={(e) => e.key === "Enter" && handleViewChange("compact")}
+          >
+            [DETAILED
+          </Button>
+          <Button
+            className={`${styles.viewButton} ${selectedView === "detailed" ? styles.selected : ""}`}
+            onClick={() => handleViewChange("detailed")}
+            aria-label="Detailed view"
+            tabIndex="0"
+            onKeyDown={(e) => e.key === "Enter" && handleViewChange("detailed")}
+          >
+            COMPACT]
+          </Button>
+        </div>
+      </div>
+
       <div className={styles.mainPixelContent}>
         {viewMode !== "grid" && (
           <PixelDetailView

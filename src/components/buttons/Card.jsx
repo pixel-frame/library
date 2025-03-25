@@ -7,8 +7,9 @@ const Card = ({ children }) => {
   const contentRef = useRef(null);
 
   const handleScroll = () => {
-    if (contentRef.current && !isScrolled) {
-      setIsScrolled(true);
+    if (cardRef.current) {
+      const isAtTop = cardRef.current.scrollTop === 0;
+      setIsScrolled(!isAtTop);
     }
   };
 

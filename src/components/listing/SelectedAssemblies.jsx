@@ -6,58 +6,10 @@ const SelectedAssemblies = ({ assemblies = [], onScroll, onHighlight, onExpand }
   const scrollRef = useRef(null);
   const lastScrollPosition = useRef(0);
 
-  // Update highlighting based on scroll position
-  useEffect(() => {
-    if (!scrollRef.current || !onHighlight) return;
-
-    const handleVisibilityCheck = () => {
-      const container = scrollRef.current;
-      const items = container.querySelectorAll(`.${styles.listItem}`);
-      const containerRect = container.getBoundingClientRect();
-      const containerCenter = containerRect.top + containerRect.height / 2;
-
-      let closestItem = null;
-      let minDistance = Infinity;
-
-      items.forEach((item, index) => {
-        const rect = item.getBoundingClientRect();
-        const itemCenter = rect.top + rect.height / 2;
-        const distance = Math.abs(containerCenter - itemCenter);
-
-        if (distance < minDistance) {
-          minDistance = distance;
-          closestItem = index;
-        }
-      });
-
-      setHighlightedIndex(closestItem);
-
-      if (closestItem !== null && assemblies[closestItem]) {
-        onHighlight(assemblies[closestItem]);
-      }
-    };
-
-    const scrollContainer = scrollRef.current;
-    const debouncedCheck = debounce(handleVisibilityCheck, 100);
-
-    scrollContainer.addEventListener("scroll", debouncedCheck);
-    handleVisibilityCheck();
-
-    return () => {
-      scrollContainer.removeEventListener("scroll", debouncedCheck);
-    };
-  }, [assemblies, onHighlight]);
-
-  const debounce = (func, wait) => {
-    let timeout;
-    return function executedFunction(...args) {
-      const later = () => {
-        clearTimeout(timeout);
-        func(...args);
-      };
-      clearTimeout(timeout);
-      timeout = setTimeout(later, wait);
-    };
+  const handleItemClick = (assembly, index) => {
+    setHighlightedIndex(index);
+    onHighlight(assembly);
+    onExpand(assembly);
   };
 
   const handleScroll = (event) => {
@@ -88,20 +40,12 @@ const SelectedAssemblies = ({ assemblies = [], onScroll, onHighlight, onExpand }
             <div
               key={assembly?.id || index}
               className={`${styles.listItem} ${isHighlighted ? styles.highlighted : ""}`}
+              onClick={() => handleItemClick(assembly, index)}
             >
               <div className={styles.itemInfo}>
                 <div className={styles.itemName}>{assemblyName}</div>
                 <div className={styles.itemLocation}>{locationName}</div>
               </div>
-              {isHighlighted && (
-                <button
-                  className={styles.expandButton}
-                  onClick={() => onExpand(assembly)}
-                  aria-label="Expand assembly details"
-                >
-                  Expand
-                </button>
-              )}
             </div>
           );
         })}

@@ -18,12 +18,14 @@
   margin-bottom: 8px;
   background: var(--background);
   transition: all 0.2s ease;
+  cursor: pointer;
 }
 
+/* 
 .listItem.highlighted {
   border-color: var(--accent);
   background: var(--accent);
-}
+} */
 
 .itemInfo {
   display: flex;

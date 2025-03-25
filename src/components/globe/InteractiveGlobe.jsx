@@ -15,6 +15,9 @@ const InteractiveGlobe = ({ highlightedAssembly, focusedAssembly }) => {
   const transformRef = useRef(null);
   const shouldRotateRef = useRef(true);
 
+  // Add default rotation and scale constants
+  const DEFAULT_SCALE = 1;
+
   // Define updateGlobe at component level
   const updateGlobe = useCallback(() => {
     if (!is3D || !projectionRef.current || !svgRef.current) return;
@@ -88,15 +91,14 @@ const InteractiveGlobe = ({ highlightedAssembly, focusedAssembly }) => {
     }, {});
 
     // Convert to array of points
-    const points = Object.values(locationGroups).map((location) => {
-      return {
-        latitude: location.latitude,
-        longitude: location.longitude,
-        name: location.name,
-        count: location.assemblies.length,
-        transportType: "air", // Default to air transport
-      };
-    });
+    const points = Object.values(locationGroups).map((location) => ({
+      latitude: location.latitude,
+      longitude: location.longitude,
+      name: location.name,
+      count: location.assemblies.length,
+      transportType: "air",
+      assemblies: location.assemblies, // Include individual assemblies
+    }));
 
     console.log("Transformed points:", points);
     return points;
@@ -255,16 +257,38 @@ const InteractiveGlobe = ({ highlightedAssembly, focusedAssembly }) => {
                 highlightedAssembly &&
                 highlightedAssembly.location.coordinates.latitude === d.latitude &&
                 highlightedAssembly.location.coordinates.longitude === d.longitude;
+              const isFocused =
+                focusedAssembly &&
+                focusedAssembly.location.coordinates.latitude === d.latitude &&
+                focusedAssembly.location.coordinates.longitude === d.longitude;
 
-              element
-                .append("rect")
-                .attr("x", -3)
-                .attr("y", -12)
-                .attr("width", 5)
-                .attr("height", 5)
-                .attr("class", `${styles.markerSquare} ${isHighlighted ? styles.highlighted : ""}`);
+              if (isFocused) {
+                // Create larger squares for focused location
+                d.assemblies.forEach((assembly, index) => {
+                  const row = Math.floor(index / 3);
+                  const col = index % 3;
+                  const isSelected = highlightedAssembly && assembly.id === highlightedAssembly.id;
+                  console.log("buzz" + JSON.stringify(highlightedAssembly));
+                  console.log("guzz" + JSON.stringify(assembly));
+                  element
+                    .append("rect")
+                    .attr("x", (col - 1) * 20 - 6) // Doubled spacing
+                    .attr("y", row * 20 - 24) // Doubled spacing and offset
+                    .attr("width", 15) // Doubled size
+                    .attr("height", 15) // Doubled size
+                    .attr("class", `${styles.markerSquare}  ${isSelected ? styles.highlighted : ""}`);
+                });
+              } else {
+                // Single square for unfocused location
+                element
+                  .append("rect")
+                  .attr("x", -3)
+                  .attr("y", -12)
+                  .attr("width", 5)
+                  .attr("height", 5)
+                  .attr("class", `${styles.markerSquare} ${isHighlighted ? styles.highlighted : ""}`);
+              }
 
-              // Add text with assembly count in brackets (show in both views)
               element
                 .append("text")
                 .attr("y", 3)
@@ -272,7 +296,6 @@ const InteractiveGlobe = ({ highlightedAssembly, focusedAssembly }) => {
                 .attr("class", styles.markerText)
                 .text(`[${d.count}]`);
 
-              // Only add location name in 2D view
               if (!is3D) {
                 element
                   .append("text")
@@ -432,7 +455,6 @@ const InteractiveGlobe = ({ highlightedAssembly, focusedAssembly }) => {
     const zoom = d3.zoom().scaleExtent([0.7, 8]);
 
     if (is3D) {
-      // For 3D view: rotate globe to show the location
       const targetRotation = [
         -focusedAssembly.location.coordinates.longitude,
         -focusedAssembly.location.coordinates.latitude,
@@ -441,14 +463,13 @@ const InteractiveGlobe = ({ highlightedAssembly, focusedAssembly }) => {
       projectionRef.current.rotate(targetRotation);
       rotationRef.current = targetRotation;
 
-      // Zoom in
-      const transform = d3.zoomIdentity.scale(2.5);
+      // Increased zoom level from 2.5 to 5
+      const transform = d3.zoomIdentity.scale(8);
       svg.transition().duration(1000).call(zoom.transform, transform);
       transformRef.current = transform;
 
       updateGlobe();
     } else {
-      // For 2D view: center and zoom to the location
       const coordinates = [
         focusedAssembly.location.coordinates.longitude,
         focusedAssembly.location.coordinates.latitude,
@@ -459,9 +480,10 @@ const InteractiveGlobe = ({ highlightedAssembly, focusedAssembly }) => {
         const width = svg.node().getBoundingClientRect().width;
         const height = svg.node().getBoundingClientRect().height;
 
+        // Increased zoom level from 2.5 to 5
         const transform = d3.zoomIdentity
           .translate(width / 2, height / 2)
-          .scale(2.5)
+          .scale(5)
           .translate(-point[0], -point[1]);
 
         svg.transition().duration(1000).call(zoom.transform, transform);
@@ -471,6 +493,25 @@ const InteractiveGlobe = ({ highlightedAssembly, focusedAssembly }) => {
 
     setUserInteracted(true);
   }, [focusedAssembly, is3D]);
+
+  // Effect to handle reset when focusedAssembly is cleared
+  useEffect(() => {
+    if (!focusedAssembly && svgRef.current && projectionRef.current) {
+      const svg = d3.select(svgRef.current);
+      const zoom = d3.zoom().scaleExtent([0.7, 8]);
+
+      // Reset zoom/scale with animation
+      const transform = d3.zoomIdentity.scale(DEFAULT_SCALE);
+      svg.transition().duration(1000).call(zoom.transform, transform);
+      transformRef.current = transform;
+
+      // Resume auto-rotation
+      shouldRotateRef.current = true;
+      autoRotate();
+
+      updateGlobe();
+    }
+  }, [focusedAssembly, is3D, autoRotate]);
 
   return (
     <div className={styles.interactiveGlobeContainer}>

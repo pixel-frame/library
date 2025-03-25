@@ -104,6 +104,7 @@ const AssemblyDetail = ({ assemblyId, onBack }) => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
+        <p className={styles["pixel-title"]}>Assembly {assembly.serial}</p>
         <CloseButton onClick={onBack} ariaLabel="Back to assemblies list" />
       </div>
 
@@ -118,7 +119,6 @@ const AssemblyDetail = ({ assemblyId, onBack }) => {
               )}
             </ModelPreview>
             <div className={styles["pixel-header"]}>
-              <p className={styles["pixel-title"]}>Assembly {assembly.serial}</p>
               <div className={styles["pixel-actions"]}>
                 <ExpandButton onClick={handleExpand} />
               </div>

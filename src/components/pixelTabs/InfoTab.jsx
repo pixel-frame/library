@@ -9,27 +9,29 @@ import styles from "./InfoTab.module.css";
 
 const InfoTab = ({ pixel }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [isARMode, setIsARMode] = useState(false);
+  const modelViewerRef = useRef(null);
 
   const handleExpand = () => {
     setIsExpanded(true);
     document.body.style.overflow = "hidden";
   };
 
-  const toggleARMode = () => {
-    setIsARMode((prevMode) => !prevMode);
+  const handleARActivation = () => {
+    if (modelViewerRef.current) {
+      modelViewerRef.current.activateAR();
+    }
   };
 
   return (
     <div className="pixel-info-container">
       <ModelPreview isExpanded={isExpanded} onClose={() => setIsExpanded(false)}>
-        <PixelModel modelPath={pixel.pixel_number} isARMode={isARMode} />
+        <PixelModel modelPath={pixel.pixel_number} />
       </ModelPreview>
       <div className={styles["pixel-header"]}>
         <p className={styles["pixel-title"]}>PIXEL {pixel.pixel_number}</p>
         <div className={styles["pixel-actions"]}>
           <ExpandButton onClick={handleExpand} />
-          <ARButton onClick={toggleARMode} />
+          <ARButton onClick={handleARActivation} />
         </div>
       </div>
 

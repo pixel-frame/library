@@ -3,23 +3,11 @@ import styles from "./PixelModel.module.css";
 
 const PixelModel = ({ modelPath, isPreview = false }) => {
   const [modelError, setModelError] = React.useState(false);
-  const [isARMode, setIsARMode] = React.useState(false);
   const modelViewerRef = useRef(null);
-
-  useEffect(() => {
-    if (modelViewerRef.current) {
-      modelViewerRef.current.setAttribute("ar", isARMode);
-    }
-  }, [isARMode]);
 
   const handleModelError = () => {
     setModelError(true);
   };
-
-  const toggleARMode = () => {
-    setIsARMode((prevMode) => !prevMode);
-  };
-
   if (modelError) {
     return (
       <div className={`${styles.modelViewer} ${isPreview ? styles.previewMode : ""}`}>
@@ -47,8 +35,7 @@ const PixelModel = ({ modelPath, isPreview = false }) => {
         disable-zoom
         disable-pan
         disable-tap
-        ar={isARMode}
-        ar-modes="webxr scene-viewer quick-look"
+        ar
         onError={handleModelError}
         style={{
           width: "100%",

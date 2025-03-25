@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import DetailGrid from "../grids/DetailGrid";
 import ModelPreview from "../models/ModelPreview";
 import PixelModel from "../models/PixelModel";
@@ -25,7 +25,7 @@ const InfoTab = ({ pixel }) => {
   return (
     <div className="pixel-info-container">
       <ModelPreview isExpanded={isExpanded} onClose={() => setIsExpanded(false)}>
-        <PixelModel modelPath={pixel.pixel_number} />
+        <PixelModel modelPath={pixel.pixel_number} modelViewerRef={modelViewerRef} />
       </ModelPreview>
       <div className={styles["pixel-header"]}>
         <p className={styles["pixel-title"]}>PIXEL {pixel.pixel_number}</p>

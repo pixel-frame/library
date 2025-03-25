@@ -1,9 +1,8 @@
 import React, { useRef, useEffect } from "react";
 import styles from "./PixelModel.module.css";
 
-const PixelModel = ({ modelPath, isPreview = false }) => {
+const PixelModel = ({ modelPath, isPreview = false, modelViewerRef }) => {
   const [modelError, setModelError] = React.useState(false);
-  const modelViewerRef = useRef(null);
 
   const handleModelError = () => {
     setModelError(true);

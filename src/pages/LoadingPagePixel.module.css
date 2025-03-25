@@ -1,30 +1,53 @@
 .loadingPage {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2000;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   padding: 20px;
-  gap: 20px;
-  min-height: 100vh;
-  background-color: black;
-  color: white;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  opacity: 1;
+  transition: opacity 1s ease-out;
+}
+
+.loadingOverlay {
+  opacity: 0.5;
+}
+
+.fadeOut {
+  opacity: 0;
 }
 
 .asciiGrid {
   font-family: monospace;
-  font-size: 6px;
-  line-height: 4px;
+  font-size: 4px;
+  line-height: 3px;
   white-space: pre;
   text-align: center;
-  margin: 20px 0;
-  max-width: 800px;
+  margin-top: 40px;
+  max-width: 600px;
   overflow: hidden;
 }
 
 .scanResults {
+  position: absolute;
+  bottom: 300px;
+  left: 0;
+  right: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  margin-top: 20px;
+}
+
+.loadingPage button {
+  position: absolute;
+  bottom: 8rem;
+  left: 50%;
+  transform: translateX(-50%);
 }

@@ -16,16 +16,17 @@ import Explore from "./pages/Explore";
 import Carbon from "./pages/Emissions";
 // Wrapper component to handle the loading page logic
 const AppContent = () => {
-  const [hasSeenLoadingPage, setHasSeenLoadingPage] = useState(() => {
-    // This runs only on initial render and properly handles server-side rendering
+  const [showLoadingOverlay, setShowLoadingOverlay] = useState(() => {
     try {
-      return localStorage.getItem("hasSeenLoadingPage") === "true";
+      return localStorage.getItem("hasSeenLoadingPage") !== "true";
     } catch (e) {
-      return false;
+      return true;
     }
   });
 
   const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const isRfidSource = searchParams.get("source") === "rfid";
   const navigate = useNavigate();
 
   const handleProceed = () => {
@@ -34,30 +35,27 @@ const AppContent = () => {
     } catch (e) {
       console.error("Could not save to localStorage:", e);
     }
-    setHasSeenLoadingPage(true);
+    setShowLoadingOverlay(false);
   };
 
-  // If user hasn't seen loading page, show it
-  if (!hasSeenLoadingPage) {
-    return <LoadingPagePixel onProceed={handleProceed} />;
-  }
-
-  // Otherwise show the actual content
   return (
-    <Layout>
-      <Routes>
-        <Route path="/" element={<ListingPage />} />
-        <Route path="/assemblies" element={<ListingPage />} />
-        <Route path="/pixels" element={<ListingPage />} />
-        <Route path="/assembly/:id" element={<AssemblyDetail />} />
-        <Route path="/pixel/:id" element={<PixelDetail />} />
-        <Route path="/details" element={<DetailsTestPage />} />
-        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-        <Route path="*" element={<DetailsTestPage />} />
-        <Route path="/explore" element={<Explore />} />
-        <Route path="/emissions" element={<Carbon />} />
-      </Routes>
-    </Layout>
+    <>
+      {isRfidSource && <LoadingPagePixel onProceed={handleProceed} />}
+      <Layout>
+        <Routes>
+          <Route path="/" element={<ListingPage />} />
+          <Route path="/assemblies" element={<ListingPage />} />
+          <Route path="/pixels" element={<ListingPage />} />
+          <Route path="/assembly/:id" element={<AssemblyDetail />} />
+          <Route path="/pixel/:id" element={<PixelDetail />} />
+          <Route path="/details" element={<DetailsTestPage />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="*" element={<DetailsTestPage />} />
+          <Route path="/explore" element={<Explore />} />
+          <Route path="/emissions" element={<Carbon />} />
+        </Routes>
+      </Layout>
+    </>
   );
 };
 

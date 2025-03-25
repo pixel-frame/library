@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import modelPoster from "/public/data/previews/pixels/model-poster-3.png";
+import { useLocation } from "react-router-dom";
 import Button from "@widgets/Button";
 import { AnimatedText } from "../components/text/AnimatedText";
 import styles from "./LoadingPagePixel.module.css";
@@ -9,11 +9,17 @@ const ANIMATION_DURATION = 1000; // Duration in milliseconds
 const FRAMES_PER_SECOND = 30;
 
 export default function LoadingPagePixel({ onProceed }) {
+  const location = useLocation();
+  const pixelNumber = location.pathname.split("/").pop().replace("pixel", "");
+  const formattedPixelNumber = parseInt(pixelNumber).toString();
+  console.log(formattedPixelNumber);
+  const modelPoster = `/data/previews/pixels/model-poster-${formattedPixelNumber}.png`;
   const gridRef = useRef(null);
   const [asciiArt, setAsciiArt] = useState([]);
   const [animationProgress, setAnimationProgress] = useState(0);
   const [isAnimating, setIsAnimating] = useState(true);
   const [showScanResults, setShowScanResults] = useState(false);
+  const [isExiting, setIsExiting] = useState(false);
 
   useEffect(() => {
     const img = new Image();
@@ -92,7 +98,7 @@ export default function LoadingPagePixel({ onProceed }) {
             }
 
             // Gradually increase chance of showing correct character
-            return Math.random() > 0.3 ? char : ASCII_CHARS[Math.floor(Math.random() * ASCII_CHARS.length)];
+            return Math.random() > 0.9 ? char : ASCII_CHARS[Math.floor(Math.random() * ASCII_CHARS.length)];
           })
           .join("")
       );
@@ -111,8 +117,14 @@ export default function LoadingPagePixel({ onProceed }) {
     requestAnimationFrame(animate);
   }, [asciiArt, isAnimating]);
 
+  const handleProceedClick = () => {
+    setIsExiting(true);
+    // Only call onProceed after animation completes
+    setTimeout(onProceed, 1000);
+  };
+
   return (
-    <div className={styles.loadingPage}>
+    <div className={`${styles.loadingPage} ${isExiting ? styles.fadeOut : ""}`}>
       <pre ref={gridRef} className={styles.asciiGrid} />
       {showScanResults && (
         <div className={styles.scanResults}>
@@ -120,7 +132,7 @@ export default function LoadingPagePixel({ onProceed }) {
           <AnimatedText text="PIXEL 0072" delay={500} />
         </div>
       )}
-      <Button onClick={onProceed}>[TAP HERE TO PROCEED]</Button>
+      {!isAnimating && <Button onClick={handleProceedClick}>[TAP HERE TO PROCEED]</Button>}
     </div>
   );
 }

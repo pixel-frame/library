@@ -120,16 +120,6 @@ const AssemblyDetail = ({ assemblyId }) => {
               <p className={styles["pixel-title"]}>Assembly {assembly.serial}</p>
               <div className={styles["pixel-actions"]}>
                 <ExpandButton onClick={handleExpand} />
-                {modelPath && (
-                  <button
-                    className={styles["ar-button"]}
-                    onClick={() => console.log("AR view")}
-                    aria-label="View in AR"
-                    tabIndex="0"
-                  >
-                    <span className={styles["ar-icon"]}>[ AR ]</span>
-                  </button>
-                )}
               </div>
             </div>
           </div>

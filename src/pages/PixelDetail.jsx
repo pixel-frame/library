@@ -1,31 +1,39 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import StoryTab from "../components/pixelTabs/StoryTab";
 import InfoTab from "../components/pixelTabs/InfoTab";
 import styles from "./PixelDetail.module.css";
 import CloseButton from "../components/buttons/CloseButton";
 import AssemblyDetail from "./AssemblyDetail";
+
 const TABS = [
   { id: "info", label: "[ Details ]", component: InfoTab },
   { id: "story", label: "[ History ]", component: StoryTab },
   { id: "network", label: "[ Assembly ]", component: AssemblyDetail },
 ];
 
-const PixelDetail = () => {
-  const { id } = useParams();
-  const [pixel, setPixel] = useState(null);
+const PixelDetail = ({ id: propId, initialTab = "info", onClose }) => {
+  const { id: urlId } = useParams();
+  const [searchParams] = useSearchParams();
+  const tabFromUrl = searchParams.get("tab");
+
+  // Use prop ID if provided, otherwise fall back to URL param
+  const pixelId = propId || urlId;
+  const [activeTab, setActiveTab] = useState(tabFromUrl || initialTab);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [activeTab, setActiveTab] = useState("info");
+  const [pixelData, setPixelData] = useState(null);
 
   useEffect(() => {
     const fetchPixelDetail = async () => {
+      if (!pixelId) return;
+
       try {
-        const paddedId = id.toString().padStart(4, "0");
+        const paddedId = pixelId.toString().padStart(4, "0");
         const response = await fetch(`/data/bank/pixel/pixel_${paddedId}.json`);
         if (!response.ok) throw new Error("Pixel not found");
         const data = await response.json();
-        setPixel(data);
+        setPixelData(data);
         setLoading(false);
       } catch (err) {
         setError(err.message);
@@ -33,8 +41,9 @@ const PixelDetail = () => {
       }
     };
 
+    setLoading(true);
     fetchPixelDetail();
-  }, [id]);
+  }, [pixelId]);
 
   const handleTabChange = (tab) => () => {
     setActiveTab(tab);
@@ -46,7 +55,7 @@ const PixelDetail = () => {
 
   if (loading) return <div className={styles.loadingIndicator}>Loading pixel details...</div>;
   if (error) return <div className={styles.errorMessage}>{error}</div>;
-  if (!pixel) return <div className={styles.errorMessage}>Pixel not found</div>;
+  if (!pixelData) return <div className={styles.errorMessage}>Pixel not found</div>;
 
   return (
     <div className={styles.container}>
@@ -59,42 +68,30 @@ const PixelDetail = () => {
               role="tab"
               aria-selected={activeTab === id}
               aria-controls={`${id}-tab`}
-              onClick={handleTabChange(id)}
+              onClick={() => setActiveTab(id)}
             >
               {label}
             </button>
           ))}
           <div className={styles.closeButtonContainer}>
-            <CloseButton onClick={handleNavigateBack} ariaLabel="Back to pixels list" />
+            <CloseButton onClick={onClose} ariaLabel="Close pixel details" />
           </div>
         </nav>
       </div>
 
       {TABS.map(({ id: tabId, component: TabComponent }) => {
-        // Special handling for AssemblyDetail component
         const props = {
-          pixel,
+          pixel: pixelData,
           isActive: activeTab === tabId,
           loading,
           error,
-          pixelId: id,
+          pixelId,
         };
 
-        // For the network tab, use the last timeline entry's reconfiguration number
-        if (tabId === "network" && pixel && pixel.timeline && pixel.timeline.length > 0) {
-          // Get the last timeline entry
-          const lastTimelineEntry = pixel.timeline[pixel.timeline.length - 1];
-
-          console.log("Timeline entries:", pixel.timeline);
-          console.log("Last timeline entry:", lastTimelineEntry);
-
-          if (lastTimelineEntry && lastTimelineEntry.reconfiguration_number) {
-            // Format the reconfiguration number as a 4-digit string with leading zeros
-            const formattedAssemblyId = lastTimelineEntry.reconfiguration_number.toString().padStart(4, "0");
-            props.assemblyId = formattedAssemblyId;
-            console.log("Using assembly ID from timeline:", props.assemblyId);
-          } else {
-            console.log("No reconfiguration found in last timeline entry for pixel:", id);
+        if (tabId === "network" && pixelData?.timeline?.length > 0) {
+          const lastTimelineEntry = pixelData.timeline[pixelData.timeline.length - 1];
+          if (lastTimelineEntry?.reconfiguration_number) {
+            props.assemblyId = lastTimelineEntry.reconfiguration_number.toString().padStart(4, "0");
           }
         }
 

@@ -1,12 +1,15 @@
 import React, { useEffect, useState, useRef } from "react";
 import styles from "./SelectedPixels.module.css";
 import SparkLine from "./SparkLine";
+import Card from "../buttons/Card";
+import PixelDetail from "../../pages/PixelDetail";
 
 const SelectedPixels = ({ selectedPoints, onScroll, onHighlight }) => {
   const [allPixels, setAllPixels] = useState([]);
   const [highlightedIndex, setHighlightedIndex] = useState(null);
   const scrollRef = useRef(null);
   const lastScrollPosition = useRef(0);
+  const [selectedPixelId, setSelectedPixelId] = useState(null);
 
   // Fetch all pixels when component mounts
   useEffect(() => {
@@ -103,6 +106,11 @@ const SelectedPixels = ({ selectedPoints, onScroll, onHighlight }) => {
 
   const pixelsToShow = selectedPoints?.length > 0 ? selectedPoints : allPixels;
 
+  // Update click handler to only pass the ID
+  const handlePixelClick = (pixel) => {
+    setSelectedPixelId(pixel.serial || pixel.pixel_number);
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.titleContainer}>
@@ -124,6 +132,10 @@ const SelectedPixels = ({ selectedPoints, onScroll, onHighlight }) => {
             <div
               key={pixel.serial || index}
               className={`${styles.listItem} ${isHighlighted ? styles.highlighted : ""}`}
+              onClick={() => handlePixelClick(pixel)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => e.key === "Enter" && handlePixelClick(pixel)}
             >
               <div className={styles.itemInfo}>
                 <div className={styles.itemNumber}>PIXEL {pixelNumber}</div>
@@ -137,6 +149,11 @@ const SelectedPixels = ({ selectedPoints, onScroll, onHighlight }) => {
           );
         })}
       </div>
+      {selectedPixelId && (
+        <Card>
+          <PixelDetail id={selectedPixelId} initialTab="story" onClose={() => setSelectedPixelId(null)} />
+        </Card>
+      )}
     </div>
   );
 };

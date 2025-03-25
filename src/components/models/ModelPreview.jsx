@@ -10,7 +10,12 @@ const ModelPreview = ({ children, isExpanded, onClose }) => {
   return (
     <>
       <div className="preview-container">
-        <div className="preview-content">{React.cloneElement(children, { isPreview: true })}</div>
+        <div className="preview-content">
+          {React.cloneElement(children, {
+            isPreview: true,
+            key: "preview",
+          })}
+        </div>
       </div>
 
       {isExpanded && (
@@ -24,7 +29,10 @@ const ModelPreview = ({ children, isExpanded, onClose }) => {
             >
               ×
             </button>
-            {React.cloneElement(children, { isPreview: false })}
+            {React.cloneElement(children, {
+              isPreview: false,
+              key: "expanded",
+            })}
           </div>
         </div>
       )}

@@ -7,6 +7,7 @@ const PixelModel = ({ modelPath, isPreview = false }) => {
   const handleModelError = () => {
     setModelError(true);
   };
+
   if (modelError) {
     return (
       <div className={`${styles.modelViewer} ${isPreview ? styles.previewMode : ""}`}>
@@ -20,21 +21,21 @@ const PixelModel = ({ modelPath, isPreview = false }) => {
       <model-viewer
         src={`/data/models/pixels/Pixel ${modelPath}.glb`}
         alt="3D pixel model"
-        shadow-intensity="0"
-        tone-mapping="aces"
-        camera-orbit="45deg 60deg 6m"
+        shadow-intensity="1"
+        environment-image="neutral"
+        camera-orbit="45deg 55deg 2.5m"
         exposure="1.1"
         environment-intensity="1"
         auto-rotate={isPreview}
         camera-controls={!isPreview}
         interaction-prompt="none"
-        touch-action="none"
-        pointer-events="none"
-        disable-zoom={isPreview}
-        disable-pan={isPreview}
-        disable-tap={isPreview}
+        touch-action={isPreview ? "none" : "auto"}
+        pointer-events={isPreview ? "none" : "auto"}
         ar={!isPreview}
         ar-modes={!isPreview ? "webxr scene-viewer quick-look" : "none"}
+        ar-scale="fixed"
+        loading="eager"
+        reveal="auto"
         onError={handleModelError}
         style={{
           width: "100%",
@@ -42,7 +43,6 @@ const PixelModel = ({ modelPath, isPreview = false }) => {
           maxWidth: "100%",
           position: "relative",
           zIndex: 1,
-          pointerEvents: isPreview ? "none" : "auto",
         }}
       />
     </div>

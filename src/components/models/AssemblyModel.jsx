@@ -31,8 +31,8 @@ const AssemblyModel = ({ modelPath, isPreview = false }) => {
         src={modelPath}
         alt="3D assembly model"
         shadow-intensity="0"
-        tone-mapping="neutral"
-        camera-orbit="0deg 0deg 6m"
+        tone-mapping="aces"
+        camera-orbit="45deg 60deg 6m"
         exposure="1"
         environment-intensity="1"
         auto-rotate={isPreview}

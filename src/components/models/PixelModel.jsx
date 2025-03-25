@@ -34,7 +34,8 @@ const PixelModel = ({ modelPath, isPreview = false, modelViewerRef }) => {
         disable-zoom
         disable-pan
         disable-tap
-        ar
+        ar={!isPreview}
+        ar-modes={!isPreview ? "webxr scene-viewer quick-look" : "none"}
         onError={handleModelError}
         style={{
           width: "100%",

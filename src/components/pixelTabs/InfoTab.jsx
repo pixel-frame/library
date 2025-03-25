@@ -31,7 +31,7 @@ const InfoTab = ({ pixel }) => {
         <p className={styles["pixel-title"]}>PIXEL {pixel.pixel_number}</p>
         <div className={styles["pixel-actions"]}>
           <ExpandButton onClick={handleExpand} />
-          <ARButton onClick={handleARActivation} />
+          {/* <ARButton onClick={handleARActivation} /> */}
         </div>
       </div>
 

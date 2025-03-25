@@ -5,6 +5,7 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import { ThemeToggle } from "./components/ThemeToggle/ThemeToggle";
 import Layout from "./components/layout/Layout";
 import LoadingPage from "./pages/LoadingPage";
+import LoadingPagePixel from "./pages/LoadingPagePixel";
 import DetailsTestPage from "./components/DetailsTestPage";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import ListingPage from "./pages/ListingPage";
@@ -38,7 +39,7 @@ const AppContent = () => {
 
   // If user hasn't seen loading page, show it
   if (!hasSeenLoadingPage) {
-    return <LoadingPage onProceed={handleProceed} />;
+    return <LoadingPagePixel onProceed={handleProceed} />;
   }
 
   // Otherwise show the actual content

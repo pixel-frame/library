@@ -677,20 +677,3 @@
   min-height: 300px;
   padding: 2rem;
 }
-
-.ascii-grid {
-  font-family: monospace;
-  font-size: 8px;
-  line-height: 1;
-  white-space: pre;
-  color: #212121;
-  margin: 0;
-  letter-spacing: 0.1em;
-}
-
-@media (max-width: 768px) {
-  .ascii-grid {
-    font-size: 6px;
-    padding: 0.5rem;
-  }
-}

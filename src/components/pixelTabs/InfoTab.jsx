@@ -15,12 +15,6 @@ const InfoTab = ({ pixel }) => {
     document.body.style.overflow = "hidden";
   };
 
-  // const handleARActivation = () => {
-  //   if (modelViewerRef.current) {
-  //     modelViewerRef.current.activateAR();
-  //   }
-  // };
-
   return (
     <div className="pixel-info-container">
       <ModelPreview isExpanded={isExpanded} onClose={() => setIsExpanded(false)}>

@@ -38,7 +38,7 @@ const PixelModel = ({ modelPath, isPreview = false }) => {
         reveal="auto"
         onError={handleModelError}
         style={{
-          width: "100%",
+          width: "80%",
           height: isPreview ? "40vh" : "80vh",
           maxWidth: "100%",
           position: "relative",

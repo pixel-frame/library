@@ -3,29 +3,33 @@ import DetailGrid from "../grids/DetailGrid";
 import ModelPreview from "../models/ModelPreview";
 import PixelModel from "../models/PixelModel";
 import ExpandButton from "../buttons/ExpandButton";
+import ARButton from "../buttons/ARButton";
 import Globe from "../globe/Globe";
 import styles from "./InfoTab.module.css";
 
 const InfoTab = ({ pixel }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isARMode, setIsARMode] = useState(false);
 
   const handleExpand = () => {
     setIsExpanded(true);
     document.body.style.overflow = "hidden";
   };
 
+  const toggleARMode = () => {
+    setIsARMode((prevMode) => !prevMode);
+  };
+
   return (
     <div className="pixel-info-container">
       <ModelPreview isExpanded={isExpanded} onClose={() => setIsExpanded(false)}>
-        <PixelModel modelPath={pixel.pixel_number} />
+        <PixelModel modelPath={pixel.pixel_number} isARMode={isARMode} />
       </ModelPreview>
       <div className={styles["pixel-header"]}>
         <p className={styles["pixel-title"]}>PIXEL {pixel.pixel_number}</p>
         <div className={styles["pixel-actions"]}>
           <ExpandButton onClick={handleExpand} />
-          <button className={styles["ar-button"]} onClick={() => console.log("AR view")} aria-label="View in AR">
-            <span className={styles["ar-icon"]}>[ AR ]</span>
-          </button>
+          <ARButton onClick={toggleARMode} />
         </div>
       </div>
 

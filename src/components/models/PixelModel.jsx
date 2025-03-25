@@ -1,12 +1,23 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import styles from "./PixelModel.module.css";
 
 const PixelModel = ({ modelPath, isPreview = false }) => {
   const [modelError, setModelError] = React.useState(false);
-  console.log("fuzz");
-  console.log(modelPath);
+  const [isARMode, setIsARMode] = React.useState(false);
+  const modelViewerRef = useRef(null);
+
+  useEffect(() => {
+    if (modelViewerRef.current) {
+      modelViewerRef.current.setAttribute("ar", isARMode);
+    }
+  }, [isARMode]);
+
   const handleModelError = () => {
     setModelError(true);
+  };
+
+  const toggleARMode = () => {
+    setIsARMode((prevMode) => !prevMode);
   };
 
   if (modelError) {
@@ -20,6 +31,7 @@ const PixelModel = ({ modelPath, isPreview = false }) => {
   return (
     <div className={`${styles.modelViewer} ${isPreview ? styles.previewMode : ""}`}>
       <model-viewer
+        ref={modelViewerRef}
         src={`/data/models/pixels/Pixel ${modelPath}.glb`}
         alt="3D pixel model"
         shadow-intensity="0"
@@ -35,6 +47,8 @@ const PixelModel = ({ modelPath, isPreview = false }) => {
         disable-zoom
         disable-pan
         disable-tap
+        ar={isARMode}
+        ar-modes="webxr scene-viewer quick-look"
         onError={handleModelError}
         style={{
           width: "100%",

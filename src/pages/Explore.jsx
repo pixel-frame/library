@@ -1,12 +1,14 @@
 import React, { useState, useCallback, useEffect } from "react";
 import InteractiveGlobe from "../components/globe/InteractiveGlobe";
 import SelectedAssemblies from "../components/listing/SelectedAssemblies";
+import AssemblyDetail from "./AssemblyDetail";
 import PageHeader from "../components/common/PageHeader";
 import styles from "./Explore.module.css";
 
 const Explore = () => {
   const [isListExpanded, setIsListExpanded] = useState(false);
   const [highlightedAssembly, setHighlightedAssembly] = useState(null);
+  const [focusedAssembly, setFocusedAssembly] = useState(null);
   const [assemblies, setAssemblies] = useState([]);
 
   // Fetch assemblies data when component mounts
@@ -33,16 +35,36 @@ const Explore = () => {
     setIsListExpanded(scrollTop > 10);
   }, []);
 
+  const handleExpand = useCallback((assembly) => {
+    setFocusedAssembly(assembly);
+    setIsListExpanded(false);
+  }, []);
+
+  const handleBack = useCallback(() => {
+    setFocusedAssembly(null);
+  }, []);
+
   return (
     <div className={styles.container}>
       <PageHeader title="Explore Assemblies" />
 
       <div className={styles.content}>
         <div className={`${styles.globeContainer} ${isListExpanded ? styles.collapsed : ""}`}>
-          <InteractiveGlobe highlightedAssembly={highlightedAssembly} />
+          <InteractiveGlobe highlightedAssembly={highlightedAssembly} focusedAssembly={focusedAssembly} />
         </div>
-        <div className={`${styles.assembliesContainer} ${isListExpanded ? styles.expanded : ""}`}>
-          <SelectedAssemblies assemblies={assemblies} onScroll={handleScroll} onHighlight={setHighlightedAssembly} />
+        <div className={`${styles.sideContainer} ${isListExpanded ? styles.expanded : ""}`}>
+          {!focusedAssembly ? (
+            <SelectedAssemblies
+              assemblies={assemblies}
+              onScroll={handleScroll}
+              onHighlight={setHighlightedAssembly}
+              onExpand={handleExpand}
+            />
+          ) : (
+            <div className={styles.detailCard}>
+              <AssemblyDetail assemblyId={focusedAssembly.serial} onBack={handleBack} />
+            </div>
+          )}
         </div>
       </div>
     </div>

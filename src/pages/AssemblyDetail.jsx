@@ -7,7 +7,8 @@ import styles from "./AssemblyDetail.module.css";
 import ExpandButton from "../components/buttons/ExpandButton";
 import CloseButton from "../components/buttons/CloseButton";
 import NetworkMatrix from "../components/datavis/NetworkMatrix";
-const AssemblyDetail = ({ assemblyId }) => {
+
+const AssemblyDetail = ({ assemblyId, onBack }) => {
   const { id: urlId } = useParams();
   const effectiveId = assemblyId || urlId;
   const location = useLocation();
@@ -101,19 +102,19 @@ const AssemblyDetail = ({ assemblyId }) => {
   ];
 
   return (
-    <div className="assembly-detail-page">
-      <div className={styles.backButtonContainer}>
-        <CloseButton onClick={handleNavigateBack} ariaLabel="Back to assemblies list" />
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <CloseButton onClick={onBack} ariaLabel="Back to assemblies list" />
       </div>
 
-      <div className="assembly-content">
+      <div className={styles.content}>
         {modelPath && (
           <div className={styles["assembly-model-container"]}>
             <ModelPreview isExpanded={isExpanded} onClose={() => setIsExpanded(false)}>
               {modelPath ? (
                 <AssemblyModel modelPath={modelPath} />
               ) : (
-                <div className={styles["no-model-message"]}>No 3D model available for this assembly</div>
+                <div className={styles["no-model-message"]}>No 3D model available</div>
               )}
             </ModelPreview>
             <div className={styles["pixel-header"]}>

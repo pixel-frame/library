@@ -30,10 +30,10 @@
   flex-direction: row;
   border-top: 1px solid #000;
   gap: 8px;
+  font-size: 0.7rem;
 }
 
 .itemLocation {
-  font-size: 1.1em;
   font-weight: 500;
   color: var(--text);
 }
@@ -42,10 +42,9 @@
   display: flex;
   justify-content: space-between;
   color: var(--text-secondary);
-  font-size: 0.9em;
 }
 
 .itemType {
-  font-size: 0.9em;
+  font-size: 0.7em;
   color: var(--text-primary);
 }

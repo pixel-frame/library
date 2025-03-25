@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import styles from "./SelectedAssemblies.module.css";
 
-const SelectedAssemblies = ({ assemblies = [], onScroll, onHighlight }) => {
+const SelectedAssemblies = ({ assemblies = [], onScroll, onHighlight, onExpand }) => {
   const [highlightedIndex, setHighlightedIndex] = useState(null);
   const scrollRef = useRef(null);
   const lastScrollPosition = useRef(0);
@@ -93,6 +93,15 @@ const SelectedAssemblies = ({ assemblies = [], onScroll, onHighlight }) => {
                 <div className={styles.itemName}>{assemblyName}</div>
                 <div className={styles.itemLocation}>{locationName}</div>
               </div>
+              {isHighlighted && (
+                <button
+                  className={styles.expandButton}
+                  onClick={() => onExpand(assembly)}
+                  aria-label="Expand assembly details"
+                >
+                  Expand
+                </button>
+              )}
             </div>
           );
         })}

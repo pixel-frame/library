@@ -13,24 +13,31 @@
 }
 
 .globeContainer {
-  height: 50vh;
+  height: 40vh;
   transition: height 0.3s ease;
 }
 
 .globeContainer.collapsed {
-  height: 40vh;
+  height: 25vh;
 }
 
-.assembliesContainer {
+.sideContainer {
   flex: 1;
-  overflow: auto;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   transition: height 0.3s ease;
 }
 
-.assembliesContainer.expanded {
-  height: 60vh;
+.detailCard {
+  background: var(--surface-background);
+  border-radius: 8px;
+  box-shadow: var(--shadow-sm);
+  margin: 16px;
+  height: calc(100vh - 120px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 @media (min-width: 768px) {
@@ -49,14 +56,30 @@
     height: 100%;
   }
 
-  .assembliesContainer {
+  .sideContainer {
     width: 34%;
-    flex: none;
+    max-width: 400px;
     border-left: 1px solid var(--border);
   }
 
-  .assembliesContainer.expanded {
+  .sideContainer.expanded {
     width: 67%;
-    height: 100%;
   }
+
+  .detailCard {
+    height: calc(100% - 32px);
+  }
+}
+
+.assemblyDetail {
+  padding: 20px;
+}
+
+.backButton {
+  margin-bottom: 20px;
+  padding: 8px 16px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
 }

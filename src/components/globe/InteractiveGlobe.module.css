@@ -116,3 +116,18 @@
   border: 1px solid var(--border);
   color: var(--text);
 }
+
+.controls {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.zoomButton {
+  padding: 8px 16px;
+  border-radius: 4px;
+  background: var(--accent);
+  color: var(--text);
+  border: none;
+  cursor: pointer;
+}

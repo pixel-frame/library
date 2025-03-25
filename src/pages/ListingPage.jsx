@@ -5,7 +5,6 @@ import Assemblies from "../components/listing/Assemblies";
 import Pixels from "../components/listing/Pixels";
 import Carbon from "../components/datavis/Carbon";
 import InteractiveGlobe from "../components/globe/InteractiveGlobe";
-import Design from "./Design";
 const ListingPage = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
@@ -45,7 +44,6 @@ const ListingPage = () => {
       <div className="listings-container">{pathname === "/" && showMap && <Map mode="map" />}</div>
       <div className="listings-container">{pathname === "/" && showCarbon && <Carbon />}</div>
       <div className="listings-container">{pathname === "/" && showGlobe && <InteractiveGlobe />}</div>
-      <div className="listings-container">{pathname === "/" && <Design />}</div>
     </div>
   );
 };

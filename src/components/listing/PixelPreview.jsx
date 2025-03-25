@@ -32,8 +32,6 @@ const PixelDetailView = ({
         ) : (
           <div className={styles.modelPlaceholder}>App cannot handle model load</div>
         )}
-
-        <ViewModeToggle viewMode={viewMode} onViewModeChange={onViewModeChange} />
       </div>
 
       <div className={styles.moreInfoLink}>

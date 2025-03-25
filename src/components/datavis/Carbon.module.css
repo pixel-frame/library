@@ -3,23 +3,29 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  transition: height 0.3s ease;
 }
 
 .svg {
-  max-width: 100%;
-  height: auto;
   width: 100%;
+  height: 100%;
   touch-action: manipulation;
   margin: 0;
   padding: 0;
+  display: block;
+  transition: height 0.3s ease;
 }
 
 .buttonContainer {
   display: flex;
   justify-content: center;
-  gap: 4px;
-  margin-top: 4px;
+
   width: 100%;
+  padding: 0 16px;
 }
 
 .button {
@@ -87,4 +93,10 @@
     width: 100%;
     max-width: 250px;
   }
+}
+
+.highlightedPoint {
+  fill: green !important;
+  stroke: blue !important;
+  stroke-width: 200px;
 }

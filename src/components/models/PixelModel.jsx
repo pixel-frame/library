@@ -31,6 +31,7 @@ const PixelModel = ({ modelPath, isPreview = false }) => {
         interaction-prompt="none"
         touch-action={isPreview ? "none" : "auto"}
         pointer-events={isPreview ? "none" : "auto"}
+        disable-pan
         ar={!isPreview}
         ar-modes={!isPreview ? "webxr scene-viewer quick-look" : "none"}
         ar-scale="fixed"
@@ -38,7 +39,7 @@ const PixelModel = ({ modelPath, isPreview = false }) => {
         reveal="auto"
         onError={handleModelError}
         style={{
-          width: "80%",
+          width: "100%",
           height: isPreview ? "40vh" : "80vh",
           maxWidth: "100%",
           position: "relative",

@@ -40,17 +40,19 @@ const AssemblyModel = ({ modelPath, isPreview = false }) => {
         interaction-prompt="none"
         touch-action="none"
         pointer-events="none"
-        disable-zoom
         disable-pan
-        disable-tap
-        onError={() => setModelError(true)}
+        ar={!isPreview}
+        ar-modes={!isPreview ? "webxr scene-viewer quick-look" : "none"}
+        ar-scale="fixed"
+        loading="eager"
+        reveal="auto"
+        onError={handleModelError}
         style={{
           width: "100%",
           height: isPreview ? "40vh" : "80vh",
           maxWidth: "100%",
           position: "relative",
           zIndex: 1,
-          pointerEvents: isPreview ? "none" : "auto",
         }}
       />
     </div>

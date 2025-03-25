@@ -1,0 +1,51 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--background);
+}
+
+.scrollableList {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+}
+
+.listItem {
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  margin-bottom: 8px;
+  background: var(--background);
+  transition: all 0.2s ease;
+}
+
+.listItem.highlighted {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+.itemInfo {
+  display: flex;
+  flex-direction: row;
+  border-top: 1px solid #000;
+  gap: 8px;
+}
+
+.itemLocation {
+  font-size: 1.1em;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.itemDetails {
+  display: flex;
+  justify-content: space-between;
+  color: var(--text-secondary);
+  font-size: 0.9em;
+}
+
+.itemType {
+  font-size: 0.9em;
+  color: var(--text-primary);
+}

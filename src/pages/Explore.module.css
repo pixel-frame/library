@@ -1,0 +1,62 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+}
+
+.globeContainer {
+  height: 50vh;
+  transition: height 0.3s ease;
+}
+
+.globeContainer.collapsed {
+  height: 40vh;
+}
+
+.assembliesContainer {
+  flex: 1;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  transition: height 0.3s ease;
+}
+
+.assembliesContainer.expanded {
+  height: 60vh;
+}
+
+@media (min-width: 768px) {
+  .content {
+    flex-direction: row;
+  }
+
+  .globeContainer {
+    width: 66%;
+    height: 100%;
+    transition: width 0.3s ease;
+  }
+
+  .globeContainer.collapsed {
+    width: 33%;
+    height: 100%;
+  }
+
+  .assembliesContainer {
+    width: 34%;
+    flex: none;
+    border-left: 1px solid var(--border);
+  }
+
+  .assembliesContainer.expanded {
+    width: 67%;
+    height: 100%;
+  }
+}

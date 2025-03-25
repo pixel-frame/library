@@ -1,8 +1,7 @@
 .interactiveGlobeContainer {
   width: 100%;
-  max-width: 500px;
-  aspect-ratio: 1;
-  margin: 0 auto;
+  height: 100%;
+  position: relative;
   touch-action: none;
   user-select: none;
 }
@@ -73,19 +72,47 @@
 }
 
 .markerSquare {
-  fill: #000000;
+  fill: #666;
   border-radius: 2px;
+  transition: fill 0.3s ease;
+}
+
+.markerSquare.highlighted {
+  fill: #ff4444;
 }
 
 .markerText {
   fill: black;
-  font-size: 10px !important;
+  font-size: 10px;
+  transition: fill 0.3s ease;
 }
+
+.markerText.highlighted {
+  fill: var(--accent);
+}
+
 .locationName {
   fill: black;
-  font-size: 7px !important;
+  font-size: 7px;
+  transition: fill 0.3s ease;
+}
+
+.locationName.highlighted {
+  fill: var(--accent);
 }
 
 .bitmapPixel {
   fill: #75b798; /* Use the same color as your landmass or adjust as needed */
+}
+
+.viewToggleButton {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 1;
+  padding: 8px 16px;
+  border-radius: 4px;
+  background: var(--background);
+  border: 1px solid var(--border);
+  color: var(--text);
 }

@@ -57,7 +57,7 @@ const Carbon = ({ onSelectionChange, selectedPoints, highlightedPoint }) => {
 
     // Grid configuration
 
-    const gridCellsX = 30;
+    const gridCellsX = 21;
     const gridCellsY = 18; // Double the number of cells on y-axis (was 15)
 
     // Calculate cell size to ensure squares (use the smaller dimension)
@@ -126,7 +126,7 @@ const Carbon = ({ onSelectionChange, selectedPoints, highlightedPoint }) => {
       .attr("y1", 0)
       .attr("x2", (d) => d * cellSize)
       .attr("y2", actualGridHeight)
-      .attr("stroke", "#e0e0e0")
+      .attr("stroke", "#e6e6e6")
       .attr("stroke-width", 1);
 
     // Horizontal grid lines
@@ -140,7 +140,7 @@ const Carbon = ({ onSelectionChange, selectedPoints, highlightedPoint }) => {
       .attr("y1", (d) => d * cellSize)
       .attr("x2", actualGridWidth)
       .attr("y2", (d) => d * cellSize)
-      .attr("stroke", "#e0e0e0")
+      .attr("stroke", "#e6e6e6")
       .attr("stroke-width", 1);
 
     // Group data points by their position on the grid
@@ -406,10 +406,15 @@ const Carbon = ({ onSelectionChange, selectedPoints, highlightedPoint }) => {
     // Add X axis with fewer ticks
     const xAxis = d3
       .axisBottom(xScale)
-      .ticks(6) // Reduced from 12 to 6
-      .tickFormat((d) => (xAxisMetric === "age" ? `${d}y` : `${d}`));
+      .ticks(4)
+      .tickFormat((d) => (d === 0 ? "" : xAxisMetric === "age" ? `${d}y` : `${d}`))
+      .tickSize(0);
 
-    svg.append("g").attr("transform", `translate(0, ${actualGridHeight})`).call(xAxis);
+    svg
+      .append("g")
+      .attr("transform", `translate(0, ${actualGridHeight})`)
+      .call(xAxis)
+      .call((g) => g.select(".domain").remove());
 
     // Add X axis label
     svg
@@ -421,9 +426,16 @@ const Carbon = ({ onSelectionChange, selectedPoints, highlightedPoint }) => {
       .text(xAxisMetric === "age" ? "Age (years)" : "Distance Traveled (km)");
 
     // Add Y axis with fewer ticks
-    const yAxis = d3.axisLeft(yScale).ticks(8); // Reduced from 15 to 8
+    const yAxis = d3
+      .axisLeft(yScale)
+      .ticks(4)
+      .tickFormat((d) => (d === 0 ? "" : d))
+      .tickSize(0);
 
-    svg.append("g").call(yAxis);
+    svg
+      .append("g")
+      .call(yAxis)
+      .call((g) => g.select(".domain").remove());
 
     // Add Y axis label
     svg

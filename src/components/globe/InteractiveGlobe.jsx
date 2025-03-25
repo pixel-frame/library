@@ -4,12 +4,14 @@ import { geoMercator, geoOrthographic, geoPath } from "d3-geo";
 import * as topojson from "topojson-client";
 import styles from "./InteractiveGlobe.module.css";
 
-const InteractiveGlobe = () => {
+const InteractiveGlobe = ({ highlightedAssembly }) => {
   const svgRef = useRef(null);
   const [userInteracted, setUserInteracted] = useState(false);
   const [assemblies, setAssemblies] = useState([]);
   const [is3D, setIs3D] = useState(true);
   const animationRef = useRef(null);
+  const rotationRef = useRef([-12, -42, 0]);
+  const transformRef = useRef(null);
 
   // Load assemblies data
   useEffect(() => {
@@ -100,6 +102,7 @@ const InteractiveGlobe = () => {
           .translate([width / 2, height / 2])
           .clipAngle(90)
           .precision(0.1)
+          .rotate([12, 42, 0])
       : geoMercator()
           .scale(width / 2 / Math.PI)
           .translate([width / 2, height / 2]);
@@ -181,6 +184,12 @@ const InteractiveGlobe = () => {
       pointsGroup.selectAll(".routePath").attr("d", path);
     };
 
+    // Set initial rotation from stored value
+    if (is3D && rotationRef.current) {
+      projection.rotate(rotationRef.current);
+      updateGlobe();
+    }
+
     // Load world map data
     d3.json("https://unpkg.com/world-atlas@2.0.2/countries-110m.json")
       .then((data) => {
@@ -213,15 +222,18 @@ const InteractiveGlobe = () => {
             .attr("class", "marker")
             .each(function (d) {
               const element = d3.select(this);
+              const isHighlighted =
+                highlightedAssembly &&
+                highlightedAssembly.location.coordinates.latitude === d.latitude &&
+                highlightedAssembly.location.coordinates.longitude === d.longitude;
 
-              // Add gray square
               element
                 .append("rect")
                 .attr("x", -3)
                 .attr("y", -12)
                 .attr("width", 5)
                 .attr("height", 5)
-                .attr("class", styles.markerSquare);
+                .attr("class", `${styles.markerSquare} ${isHighlighted ? styles.highlighted : ""}`);
 
               // Add text with assembly count in brackets (show in both views)
               element
@@ -322,18 +334,17 @@ const InteractiveGlobe = () => {
               const point = d3.pointer(event, this);
               const rotation = this.__rotation;
 
-              // Calculate rotation based on drag distance
               const x1 = point[0];
               const y1 = point[1];
 
-              // Calculate new rotation angles
               const deltaX = (x1 - rotation.x0) / 5;
               const deltaY = (y1 - rotation.y0) / 5;
 
-              // Apply rotation
-              projection.rotate([rotation.r0[0] + deltaX, rotation.r0[1] - deltaY, rotation.r0[2]]);
+              const newRotation = [rotation.r0[0] + deltaX, rotation.r0[1] - deltaY, rotation.r0[2]];
+              projection.rotate(newRotation);
+              // Store current rotation
+              rotationRef.current = newRotation;
 
-              // Update all elements
               updateGlobe();
             });
 
@@ -344,7 +355,7 @@ const InteractiveGlobe = () => {
             if (userInteracted) return;
 
             const rotation = projection.rotate();
-            const speed = 0.03; // Adjust rotation speed
+            const speed = 0.05; // Adjust rotation speed
             projection.rotate([rotation[0] + speed, rotation[1], rotation[2]]);
             updateGlobe();
 
@@ -361,22 +372,24 @@ const InteractiveGlobe = () => {
           .scaleExtent([is3D ? 0.7 : 1, 8])
           .on("zoom", (event) => {
             setUserInteracted(true);
+            // Store current transform
+            transformRef.current = event.transform;
 
             if (is3D) {
               const newScale = initialScale * event.transform.k;
               projection.scale(newScale);
-
-              // Update globe outline
               svg.select("circle").attr("r", newScale);
-
-              // Update all elements
               updateGlobe();
             } else {
-              // For 2D, just transform the groups
               mapGroup.attr("transform", event.transform);
               pointsGroup.attr("transform", event.transform);
             }
           });
+
+        // Apply stored transform if it exists
+        if (transformRef.current) {
+          svg.call(zoom.transform, transformRef.current);
+        }
 
         svg.call(zoom);
       })
@@ -390,7 +403,7 @@ const InteractiveGlobe = () => {
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [assemblies, userInteracted, is3D]);
+  }, [assemblies, userInteracted, is3D, highlightedAssembly]);
 
   return (
     <div className={styles.interactiveGlobeContainer}>

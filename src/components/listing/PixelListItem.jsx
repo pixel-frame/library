@@ -20,12 +20,12 @@ const PixelListItem = ({ pixel, index, isSelected, viewMode, onItemClick }) => {
     >
       {viewMode === "grid" && (
         <div className={styles.pixelPreview}>
-          <img 
+          <img
             src={`data/previews/pixels/model-poster-${pixel.number}.png`}
             alt={`Preview of Pixel ${pixel.number}`}
             className={styles.previewImage}
             onError={(e) => {
-              e.target.src = 'data/previews/pixels/model-poster-46.png';
+              e.target.src = "data/previews/pixels/model-poster-46.png";
               e.target.classList.add(styles.previewFallback);
             }}
           />
@@ -33,8 +33,12 @@ const PixelListItem = ({ pixel, index, isSelected, viewMode, onItemClick }) => {
       )}
       <div className={styles.itemInfo}>
         <div className={styles.itemNumber}>PIXEL {pixel.number}</div>
-        <div className={styles.itemGeneration}>GEN {pixel.generation}</div>
-        <div className={styles.itemState}>{pixel.state_description}</div>
+        {viewMode !== "grid" && (
+          <>
+            <div className={styles.itemGeneration}>GEN {pixel.generation}</div>
+            <div className={styles.itemState}>{pixel.state_description}</div>
+          </>
+        )}
       </div>
     </div>
   );

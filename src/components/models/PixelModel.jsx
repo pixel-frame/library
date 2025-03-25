@@ -25,6 +25,7 @@ const PixelModel = ({ modelPath, isPreview = false }) => {
         environment-image="neutral"
         camera-orbit="45deg 55deg 2.5m"
         exposure="1.1"
+        poster-image={`data/previews/pixels/model-poster-${modelPath}.png`}
         environment-intensity="1"
         auto-rotate={isPreview}
         camera-controls={!isPreview}

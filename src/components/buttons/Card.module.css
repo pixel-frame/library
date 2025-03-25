@@ -1,0 +1,43 @@
+.card {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: white;
+  border-top: 1px solid #000;
+  overflow-y: auto;
+  transition: height 0.3s ease-in-out;
+  height: 50vh;
+  width: 100%;
+  z-index: 1000;
+  animation: slideIn 0.3s ease-out;
+}
+
+.content {
+  padding: 16px;
+  padding-top: 32px;
+}
+
+.handle {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 36px;
+  height: 4px;
+  background-color: #e0e0e0;
+  border-radius: 2px;
+}
+
+.expanded {
+  height: 95vh;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}

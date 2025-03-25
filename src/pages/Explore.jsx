@@ -4,7 +4,7 @@ import SelectedAssemblies from "../components/listing/SelectedAssemblies";
 import AssemblyDetail from "./AssemblyDetail";
 import PageHeader from "../components/common/PageHeader";
 import styles from "./Explore.module.css";
-
+import Card from "../components/buttons/Card";
 const Explore = () => {
   const [isListExpanded, setIsListExpanded] = useState(false);
   const [highlightedAssembly, setHighlightedAssembly] = useState(null);
@@ -61,9 +61,9 @@ const Explore = () => {
               onExpand={handleExpand}
             />
           ) : (
-            <div className={styles.detailCard}>
+            <Card>
               <AssemblyDetail assemblyId={focusedAssembly.serial} onBack={handleBack} />
-            </div>
+            </Card>
           )}
         </div>
       </div>

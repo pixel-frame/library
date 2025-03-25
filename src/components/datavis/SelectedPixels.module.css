@@ -1,0 +1,82 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  background-color: #fff;
+}
+
+.title {
+  font-weight: bold;
+  font-size: 1rem;
+  text-transform: uppercase;
+}
+
+.scrollableList {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 16px;
+  overscroll-behavior: contain;
+  min-height: 0;
+}
+
+.listItem {
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.2s ease;
+}
+
+.listItem:last-child {
+  margin-bottom: 0;
+  border-bottom: none;
+}
+
+.itemInfo {
+  display: grid;
+  grid-template-columns: 120px 200px 100px;
+  gap: 2rem;
+  flex: 1;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.itemNumber {
+  font-weight: bold;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+}
+
+.itemEmissions {
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.itemState {
+  font-size: 0.8rem;
+}
+
+.emptyState {
+  padding: 1rem;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.itemInfo {
+  grid-template-columns: 1.5fr 2fr 1fr 1fr;
+  gap: 1rem;
+}
+
+.highlighted {
+  background-color: var(--accent-light);
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}

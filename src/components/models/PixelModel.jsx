@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import styles from "./PixelModel.module.css";
 
 const PixelModel = ({ modelPath, isPreview = false }) => {
   const [modelError, setModelError] = React.useState(false);
+  const modelViewerRef = useRef(null);
   console.log("fuzz");
   console.log(modelPath);
   const handleModelError = () => {
@@ -17,9 +18,43 @@ const PixelModel = ({ modelPath, isPreview = false }) => {
     );
   }
 
+  useEffect(() => {
+    const captureModelPoster = async () => {
+      try {
+        // Wait for the model to load completely
+        await new Promise((resolve) => {
+          modelViewerRef.current.addEventListener('load', resolve, { once: true });
+        });
+        
+        // Delay to ensure rendering is complete
+        await new Promise(resolve => setTimeout(resolve, 100));
+
+        const blob = await modelViewerRef.current.toBlob({
+          idealAspect: true,
+          mimeType: "image/webp",
+          qualityArgument: 0.85,
+        });
+
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `model-poster-${modelPath}.png`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      } catch (error) {
+        console.error('Error capturing model:', error);
+      }
+    };
+
+    captureModelPoster();
+  }, []);
+
   return (
     <div className={`${styles.modelViewer} ${isPreview ? styles.previewMode : ""}`}>
       <model-viewer
+        ref={modelViewerRef}
         src={`/data/models/pixels/Pixel ${modelPath}.glb`}
         alt="3D pixel model"
         shadow-intensity="0"

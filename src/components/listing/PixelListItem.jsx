@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styles from "./Pixels.module.css";
-import PixelModel from "../models/PixelModel";
 
 const PixelListItem = ({ pixel, index, isSelected, viewMode, onItemClick }) => {
   const handleKeyDown = (e) => {
@@ -21,7 +20,15 @@ const PixelListItem = ({ pixel, index, isSelected, viewMode, onItemClick }) => {
     >
       {viewMode === "grid" && (
         <div className={styles.pixelPreview}>
-          <div className={styles.modelPlaceholder}>App cannot handle model load</div>
+          <img 
+            src={`data/previews/pixels/model-poster-${pixel.number}.png`}
+            alt={`Preview of Pixel ${pixel.number}`}
+            className={styles.previewImage}
+            onError={(e) => {
+              e.target.src = 'data/previews/pixels/model-poster-46.png';
+              e.target.classList.add(styles.previewFallback);
+            }}
+          />
         </div>
       )}
       <div className={styles.itemInfo}>

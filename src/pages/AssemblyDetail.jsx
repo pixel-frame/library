@@ -19,7 +19,7 @@ const AssemblyDetail = ({ assemblyId }) => {
   const [fullData, setFullData] = useState(null);
   const [fullscreenImage, setFullscreenImage] = useState(null);
 
-  const availableModels = ["0001", "0002", "0004", "0005", "0009", "0010"];
+  const availableModels = ["0001", "0002", "0003", "0004", "0005", "0009", "0010"];
 
   const getModelSerial = (assembly) => {
     const modelMappings = {

@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import styles from "./PixelModel.module.css";
 
-const PixelModel = ({ modelPath, isPreview = false, modelViewerRef }) => {
+const PixelModel = ({ modelPath, isPreview = false }) => {
   const [modelError, setModelError] = React.useState(false);
 
   const handleModelError = () => {
@@ -18,7 +18,6 @@ const PixelModel = ({ modelPath, isPreview = false, modelViewerRef }) => {
   return (
     <div className={`${styles.modelViewer} ${isPreview ? styles.previewMode : ""}`}>
       <model-viewer
-        ref={modelViewerRef}
         src={`/data/models/pixels/Pixel ${modelPath}.glb`}
         alt="3D pixel model"
         shadow-intensity="0"
@@ -31,9 +30,9 @@ const PixelModel = ({ modelPath, isPreview = false, modelViewerRef }) => {
         interaction-prompt="none"
         touch-action="none"
         pointer-events="none"
-        disable-zoom
-        disable-pan
-        disable-tap
+        disable-zoom={isPreview}
+        disable-pan={isPreview}
+        disable-tap={isPreview}
         ar={!isPreview}
         ar-modes={!isPreview ? "webxr scene-viewer quick-look" : "none"}
         onError={handleModelError}

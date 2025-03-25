@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import DetailGrid from "../grids/DetailGrid";
 import ModelPreview from "../models/ModelPreview";
 import PixelModel from "../models/PixelModel";
@@ -9,18 +9,17 @@ import styles from "./InfoTab.module.css";
 
 const InfoTab = ({ pixel }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const modelViewerRef = useRef(null);
 
   const handleExpand = () => {
     setIsExpanded(true);
     document.body.style.overflow = "hidden";
   };
 
-  const handleARActivation = () => {
-    if (modelViewerRef.current) {
-      modelViewerRef.current.activateAR();
-    }
-  };
+  // const handleARActivation = () => {
+  //   if (modelViewerRef.current) {
+  //     modelViewerRef.current.activateAR();
+  //   }
+  // };
 
   return (
     <div className="pixel-info-container">

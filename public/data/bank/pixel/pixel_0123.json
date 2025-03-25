@@ -22,31 +22,6 @@
     {
       "step": 1,
       "reconfiguration_number": 13,
-      "name": "Gen 3 Prototype Secondary Beam",
-      "date": "8/1/2025",
-      "location": {
-        "name": "Cambridge, MA",
-        "coordinates": {
-          "latitude": 42.3666,
-          "longitude": -71.1057
-        }
-      },
-      "emissions": {
-        "a1_a3": 11.1074,
-        "transport": 0,
-        "step_total": 11.1074,
-        "running_total": 11.1074
-      },
-      "transport": {
-        "type": "N/A",
-        "distance": 0.0,
-        "cumulative_distance": 0.0
-      },
-      "description": "The Gen 3 Prototype Secondary Beam is full-scale testing assembly currently under production. This prototype will be assembled in the summer of 2025, and will be used to test and showcase the system at full scale. This is the first instance of testing of the secondary beam assembly. "
-    },
-    {
-      "step": 2,
-      "reconfiguration_number": 14,
       "name": "Speculative Reconfiguration - Warehouse",
       "date": "12/4/2025",
       "location": {
@@ -57,10 +32,10 @@
         }
       },
       "emissions": {
-        "a1_a3": 0,
+        "a1_a3": 0.0,
         "transport": 0.93536,
         "step_total": 0.93536,
-        "running_total": 12.04276
+        "running_total": 0.93536
       },
       "transport": {
         "type": "truck",
@@ -70,8 +45,8 @@
       "description": "The warehouse is a speculative future assembly sited in Edmonton, Alberta. The pixels in this configuration are temporarily assembled into a logistics center, a building with a shorter life span than average. After five years in this configuration, the building is disassembled and the pixels are reused. "
     },
     {
-      "step": 3,
-      "reconfiguration_number": 15,
+      "step": 2,
+      "reconfiguration_number": 14,
       "name": "Speculative Reconfiguration - Pavilion",
       "date": "8/3/2034",
       "location": {
@@ -85,7 +60,7 @@
         "a1_a3": 0,
         "transport": 0.93536,
         "step_total": 0.93536,
-        "running_total": 12.978119999999999
+        "running_total": 1.87072
       },
       "transport": {
         "type": "truck",
@@ -93,8 +68,33 @@
         "cumulative_distance": 10498.0
       },
       "description": "After being used in the warehouse configuration, some pixels are trucked to Chicago, where they are used to construct a demonstrator pavilion that showcases circularity in building applications. The pavilion is dismantled after a few months, and the pixels are returned to the material bank."
+    },
+    {
+      "step": 3,
+      "reconfiguration_number": 15,
+      "name": "Speculative Reconfiguration - Tower",
+      "date": "4/1/2035",
+      "location": {
+        "name": "Vancouver, BC",
+        "coordinates": {
+          "latitude": 49.2827,
+          "longitude": -123.1207
+        }
+      },
+      "emissions": {
+        "a1_a3": 0,
+        "transport": 0.93536,
+        "step_total": 0.93536,
+        "running_total": 2.8060799999999997
+      },
+      "transport": {
+        "type": "truck",
+        "distance": 2200.0,
+        "cumulative_distance": 12698.0
+      },
+      "description": "The tower is a speculative future assembly in Vancouver, British Columbia. This configuration experiments with the adaptive reuse of an existing shear/elevator core, which remains after the facade of an existing building is removed. The Pixelframe system is used to build up a new, flexible structure around the existing structure, creating a new building envelope that allows in light and air."
     }
   ],
-  "total_emissions": 12.978119999999999,
-  "total_distance": 10498.0
+  "total_emissions": 2.8060799999999997,
+  "total_distance": 12698.0
 }

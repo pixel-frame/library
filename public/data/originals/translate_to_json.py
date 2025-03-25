@@ -58,7 +58,31 @@ def load_reconfigurations(csv_file):
                 }
     return reconfig_columns
 
-def convert_carbon_locations_to_json(csv_file):
+def extract_pixels_for_reconfiguration(master_csv, reconfig_number):
+    """Extract pixel numbers that are part of a specific reconfiguration"""
+    pixel_network = []
+    
+    with open(master_csv, 'r') as file:
+        csv_reader = csv.DictReader(file)
+        
+        # In the master.csv, the columns are exactly "Reconfiguration X (Description)"
+        # We need to check all columns that might match our reconfiguration number
+        
+        for row in csv_reader:
+            pixel_number = safe_int(safe_get(row, 'Pixel number'))
+            if not pixel_number:
+                continue
+            
+            # Check all reconfiguration columns
+            for column in row.keys():
+                if column.startswith(f"Reconfiguration {reconfig_number} ") or column == f"Reconfiguration {reconfig_number}":
+                    if safe_get(row, column, '').strip() == '1':
+                        pixel_network.append(pixel_number)
+                        break  # Found a match, no need to check other columns
+    
+    return pixel_network
+
+def convert_carbon_locations_to_json(csv_file, master_csv):
     reconfigurations = []
     
     with open(csv_file, 'r') as file:
@@ -77,6 +101,10 @@ def convert_carbon_locations_to_json(csv_file):
                 lon = -lon if lon else None
             
             number = int(row['Reconfiguration number'])
+            
+            # Get the network of pixels for this reconfiguration
+            pixel_network = extract_pixels_for_reconfiguration(master_csv, number)
+            
             reconfiguration = {
                 "number": number,
                 "serial": f"{number:04d}",  # Add serial field
@@ -99,7 +127,8 @@ def convert_carbon_locations_to_json(csv_file):
                     "coefficient": float(row['Transport coefficient (kgCO2e/kg)']) if row['Transport coefficient (kgCO2e/kg)'] else None,
                     "emissions": float(row['Carbon emissions (A4) (kgCO2e/pixel)']) if row['Carbon emissions (A4) (kgCO2e/pixel)'] else 0
                 },
-                "total_emissions": float(row['Total emissions per reconfiguration (kgCO2e/pixel)']) if row['Total emissions per reconfiguration (kgCO2e/pixel)'] else None
+                "total_emissions": float(row['Total emissions per reconfiguration (kgCO2e/pixel)']) if row['Total emissions per reconfiguration (kgCO2e/pixel)'] else None,
+                "network": pixel_network  # Add the network of pixels
             }
             reconfigurations.append(reconfiguration)
             
@@ -335,7 +364,8 @@ def main():
     state_legend = load_state_legend(f'{base_path}/state_legend.csv')
     reconfig_columns = load_reconfigurations(f'{base_path}/carbon_location.csv')
     
-    carbon_locations_data = convert_carbon_locations_to_json(f'{base_path}/carbon_location.csv')
+    # Pass master_csv to convert_carbon_locations_to_json
+    carbon_locations_data = convert_carbon_locations_to_json(f'{base_path}/carbon_location.csv', f'{base_path}/master.csv')
     master_data = convert_master_to_json(f'{base_path}/master.csv', generation_descriptions, state_legend, reconfig_columns)
     timeline_data = create_timeline_json(f'{base_path}/master.csv', f'{base_path}/carbon_location.csv')
     

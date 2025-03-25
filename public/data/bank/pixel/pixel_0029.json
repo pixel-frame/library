@@ -1,0 +1,24 @@
+{
+  "pixel_number": 29,
+  "generation": 2,
+  "generation_description": "Beta prototype (half scale)",
+  "state_description": "Good condition",
+  "state": 1,
+  "fc": 35.0,
+  "weight": 2.0,
+  "carbon_emissions_a1_a3": null,
+  "concrete_mix": "Rapidset high strength concrete mix",
+  "fiber": {
+    "type": "Glass fiber",
+    "dosage": "3%"
+  },
+  "date_of_manufacture": "2023",
+  "number_of_reconfigurations": 1,
+  "reconfigurations": {},
+  "gif": false,
+  "notes": "",
+  "serial": "0029",
+  "timeline": [],
+  "total_emissions": 0,
+  "total_distance": 0
+}

@@ -6,7 +6,7 @@ import DetailGrid from "../components/grids/DetailGrid";
 import styles from "./AssemblyDetail.module.css";
 import ExpandButton from "../components/buttons/ExpandButton";
 import CloseButton from "../components/buttons/CloseButton";
-
+import NetworkMatrix from "../components/datavis/NetworkMatrix";
 const AssemblyDetail = ({ assemblyId }) => {
   const { id: urlId } = useParams();
   const effectiveId = assemblyId || urlId;
@@ -64,6 +64,7 @@ const AssemblyDetail = ({ assemblyId }) => {
 
         setFullData(data);
         setAssembly(foundAssembly);
+
         const modelSerial = getModelSerial(foundAssembly);
         setModelPath(modelSerial ? `/data/models/assemblies/${modelSerial}.glb` : null);
         setLoading(false);
@@ -77,6 +78,7 @@ const AssemblyDetail = ({ assemblyId }) => {
     if (location.state?.assembly) {
       setAssembly(location.state.assembly);
       setFullData({ reconfigurations: [location.state.assembly] });
+
       const modelSerial = getModelSerial(location.state.assembly);
       setModelPath(modelSerial ? `/data/models/assemblies/${modelSerial}.glb` : null);
       setLoading(false);
@@ -134,6 +136,7 @@ const AssemblyDetail = ({ assemblyId }) => {
         )}
 
         <div className="assembly-info-container">
+          <NetworkMatrix network={assembly.network} />
           <DetailGrid
             items={[
               {

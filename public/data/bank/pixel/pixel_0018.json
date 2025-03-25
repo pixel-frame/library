@@ -2,10 +2,10 @@
   "pixel_number": 18,
   "generation": 1,
   "generation_description": "First prototype (half scale)",
-  "state_description": null,
-  "state": null,
+  "state_description": "Retired",
+  "state": 4,
   "fc": 35.0,
-  "weight": 6.04,
+  "weight": 3.2,
   "carbon_emissions_a1_a3": null,
   "concrete_mix": "Rapidset high strength concrete mix",
   "fiber": {

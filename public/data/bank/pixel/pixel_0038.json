@@ -2,10 +2,10 @@
   "pixel_number": 38,
   "generation": 2,
   "generation_description": "Beta prototype (half scale)",
-  "state_description": null,
-  "state": null,
+  "state_description": "Average condition",
+  "state": 2,
   "fc": 35.0,
-  "weight": 3.65,
+  "weight": 2.0,
   "carbon_emissions_a1_a3": null,
   "concrete_mix": "Rapidset high strength concrete mix",
   "fiber": {
@@ -15,7 +15,7 @@
   "date_of_manufacture": "2023",
   "number_of_reconfigurations": 3,
   "reconfigurations": {},
-  "gif": true,
+  "gif": false,
   "notes": "",
   "serial": "0038",
   "timeline": [

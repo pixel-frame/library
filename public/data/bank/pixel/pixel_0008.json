@@ -1,0 +1,24 @@
+{
+  "pixel_number": 8,
+  "generation": 1,
+  "generation_description": "First prototype (half scale)",
+  "state_description": "Retired",
+  "state": 4,
+  "fc": 35.0,
+  "weight": 3.2,
+  "carbon_emissions_a1_a3": null,
+  "concrete_mix": "Rapidset high strength concrete mix",
+  "fiber": {
+    "type": "Glass fiber",
+    "dosage": "3%"
+  },
+  "date_of_manufacture": "2022",
+  "number_of_reconfigurations": 0,
+  "reconfigurations": {},
+  "gif": false,
+  "notes": "cut 3/16/2025",
+  "serial": "0008",
+  "timeline": [],
+  "total_emissions": 0,
+  "total_distance": 0
+}

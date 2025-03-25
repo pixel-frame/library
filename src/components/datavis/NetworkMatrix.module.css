@@ -1,0 +1,43 @@
+.networkMatrix {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  margin: 0rem auto;
+  padding: 0rem 1rem;
+  max-width: 100%;
+}
+
+.square {
+  width: 18px;
+  height: 18px;
+  position: relative;
+}
+
+.blackSquare {
+  border: 8px solid #000;
+  background-color: #000;
+}
+
+.graySquare {
+  border: 8px solid #000;
+}
+
+.blueSquare {
+  background-color: blue;
+}
+
+.greenSquare {
+  background-color: green;
+}
+
+.label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 12px;
+  line-height: 1;
+  white-space: nowrap;
+  pointer-events: none;
+}

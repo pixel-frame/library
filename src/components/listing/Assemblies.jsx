@@ -27,6 +27,7 @@ const Assemblies = () => {
           transport: config.transport,
           totalEmissions: config.total_emissions,
           displayDate: `${new Date(config.date).getFullYear()} - ${config.location.name}`,
+          network: config.network,
         }));
 
         setAssemblies(mappedAssemblies);

@@ -21,7 +21,7 @@ const PixelModel = ({ modelPath, isPreview = false }) => {
       <model-viewer
         src={`/data/models/pixels/Pixel ${modelPath}.glb`}
         alt="3D pixel model"
-        shadow-intensity="1"
+        shadow-intensity=".1"
         environment-image="neutral"
         camera-orbit="45deg 55deg 2.5m"
         exposure="1.1"

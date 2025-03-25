@@ -3,25 +3,27 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
-  padding: 10px;
 }
 
 .svg {
   max-width: 100%;
   height: auto;
+  width: 100%;
   touch-action: manipulation;
+  margin: 0;
+  padding: 0;
 }
 
 .buttonContainer {
   display: flex;
   justify-content: center;
-  gap: 10px;
-  margin-top: 20px;
+  gap: 4px;
+  margin-top: 4px;
   width: 100%;
 }
 
 .button {
-  padding: 8px 16px;
+  padding: 4px 8px;
   background-color: var(--accent-light);
   border: 1px solid var(--accent);
   border-radius: 4px;
@@ -42,10 +44,10 @@
 }
 
 .selectedInfo {
-  margin-top: 20px;
+  margin-top: 4px;
   border: 1px solid #ccc;
-  padding: 15px;
-  border-radius: 5px;
+  padding: 6px;
+  border-radius: 4px;
   width: 100%;
   max-width: 600px;
 }
@@ -54,14 +56,14 @@
   list-style-type: none;
   padding: 0;
   margin: 0;
-  max-height: 200px;
+  max-height: 120px;
   overflow-y: auto;
 }
 
 .selectedItem {
-  margin: 8px 0;
-  padding: 8px;
-  border-bottom: 1px solid #eee;
+  margin: 2px 0;
+  padding: 2px;
+  font-size: 0.85em;
 }
 
 @keyframes blink {

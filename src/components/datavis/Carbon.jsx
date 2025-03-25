@@ -52,7 +52,7 @@ const Carbon = () => {
 
     // Grid configuration
     const gridSize = 300;
-    const margin = { top: 40, right: 40, bottom: 60, left: 60 };
+    const margin = { top: 20, right: 30, bottom: 60, left: 30 };
     const width = gridSize;
     const height = gridSize * 2; // Double the height
 
@@ -68,8 +68,8 @@ const Carbon = () => {
     const actualGridHeight = cellSize * gridCellsY;
 
     // Find max values for scales
-    const maxAge = Math.max(...pixelData.map((d) => d.age), 5);
-    const maxEmissions = Math.max(...pixelData.map((d) => d.emissions), 15);
+    const maxAge = Math.max(...pixelData.map((d) => d.age), 4);
+    const maxEmissions = Math.max(...pixelData.map((d) => d.emissions), 6);
     const maxDistance = Math.max(...pixelData.map((d) => d.distanceTraveled), 10000);
 
     // Count the maximum number of points in any single grid cell for scaling
@@ -411,9 +411,10 @@ const Carbon = () => {
     // Add X axis label
     svg
       .append("text")
-      .attr("x", actualGridWidth / 2)
+      .attr("x", actualGridWidth)
       .attr("y", actualGridHeight + 40)
-      .attr("text-anchor", "middle")
+      .attr("text-anchor", "end")
+      .attr("font-size", "0.6em")
       .text(xAxisMetric === "age" ? "Age (years)" : "Distance Traveled (km)");
 
     // Add Y axis with fewer ticks
@@ -424,10 +425,10 @@ const Carbon = () => {
     // Add Y axis label
     svg
       .append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", -40)
-      .attr("x", -actualGridHeight / 2)
-      .attr("text-anchor", "middle")
+      .attr("y", actualGridHeight + 40)
+      .attr("x", 0)
+      .attr("text-anchor", "start")
+      .attr("font-size", "0.6em")
       .text("Carbon Emissions (kg CO2e)");
 
     // Draw selection highlight if exists

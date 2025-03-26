@@ -4,10 +4,10 @@ import styles from "./ImageWheel.module.css";
 
 export default function ImageWheel(props) {
   const perspective = props.perspective || "center";
-  const wheelSize = 20;
+  const wheelSize = 15;
   const slides = props.length;
   const slideDegree = 360 / wheelSize;
-  const slidesPerView = props.loop ? 9 : 1;
+  const slidesPerView = props.loop ? 8 : 1;
   const [sliderState, setSliderState] = React.useState(null);
   const size = useRef(0);
   const options = useRef({
@@ -66,12 +66,14 @@ export default function ImageWheel(props) {
     for (let i = 0; i < slides; i++) {
       const distance = sliderState ? (sliderState.slides[i].distance - offset) * slidesPerView : 0;
       const rotate = Math.abs(distance) > wheelSize / 2 ? 180 : distance * (360 / wheelSize) * -1;
+      const isUpsideDown = Math.abs(rotate) > 90;
+      const isActive = Math.abs(distance) < 0.15 && rotate > -45 && rotate < 45;
       const style = {
         transform: `rotateX(${rotate}deg) translateZ(${radius}px)`,
         WebkitTransform: `rotateX(${rotate}deg) translateZ(${radius}px)`,
       };
       const value = props.setValue ? props.setValue(i, sliderState.abs + Math.round(distance)) : i;
-      values.push({ style, value });
+      values.push({ style, value, isUpsideDown, isActive });
     }
     return values;
   }
@@ -82,8 +84,14 @@ export default function ImageWheel(props) {
     <div className={wheelClass} ref={sliderRef}>
       <div className={styles.wheelInner}>
         <div className={styles.wheelSlides} style={{ width: props.width + "px" }}>
-          {slideValues().map(({ style, value }, idx) => (
-            <div className={styles.wheelSlide} style={style} key={idx}>
+          {slideValues().map(({ style, value, isUpsideDown, isActive }, idx) => (
+            <div
+              className={`${styles.wheelSlide} ${isUpsideDown ? styles.hiddenSlide : ""} ${
+                isActive ? styles.activeSlide : ""
+              }`}
+              style={style}
+              key={idx}
+            >
               <div className={styles.imageContainer}>{value}</div>
             </div>
           ))}

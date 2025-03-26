@@ -1,6 +1,5 @@
 body {
   margin: 0;
-  font-family: "Inter", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -73,7 +72,7 @@ body {
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   display: flex;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 400;
   height: 100%;
   width: 100%;
@@ -95,6 +94,6 @@ body {
 }
 
 .smallWheelWrapper {
-  width: 70px;
+  width: 220px;
   height: 180px;
 }

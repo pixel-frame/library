@@ -18,10 +18,12 @@ const TestList = () => {
     return `${randomDay} ${dayNumber} ${randomMonth}`;
   };
 
+  const generatePixelText = (i) => `Pixel ${String(i).padStart(3, "0")} Available`;
+
   return (
     <div className={styles.wheelContainer}>
       <div className={styles.smallWheelWrapper}>
-        <WheelList loop length={140} width={23} perspective="left" />
+        <WheelList loop length={140} width={200} perspective="right" setValue={(i) => generatePixelText(i + 1)} />
       </div>
     </div>
   );

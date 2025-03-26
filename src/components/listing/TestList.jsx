@@ -2,7 +2,7 @@ import React from "react";
 import WheelList from "./WheelList";
 import styles from "./WheelList.module.css";
 
-const TestList = () => {
+const TestList = ({ onSelectionChange }) => {
   const generateRandomDate = (_relative, absolute) => {
     // Generate random day names
     const dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -18,6 +18,12 @@ const TestList = () => {
     return `${randomDay} ${dayNumber} ${randomMonth}`;
   };
 
+  const handleIndexChange = (index) => {
+    if (onSelectionChange) {
+      onSelectionChange(index);
+    }
+  };
+
   const generatePixelText = (i) => ({
     left: `Pixel ${String(i).padStart(3, "0")}`,
     right: "Available",
@@ -26,7 +32,14 @@ const TestList = () => {
   return (
     <div className={styles.wheelContainer}>
       <div className={styles.smallWheelWrapper}>
-        <WheelList loop length={140} width="100%" perspective="left" setValue={(i) => generatePixelText(i + 1)} />
+        <WheelList
+          loop
+          length={140}
+          width="100%"
+          perspective="left"
+          setValue={(i) => generatePixelText(i + 1)}
+          onIndexChange={handleIndexChange}
+        />
       </div>
     </div>
   );

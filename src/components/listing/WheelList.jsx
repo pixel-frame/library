@@ -46,6 +46,15 @@ export default function Wheel(props) {
     if (slider.current) setRadius(slider.current.size / 2);
   }, [slider]);
 
+  React.useEffect(() => {
+    if (sliderState && props.onIndexChange) {
+      // Get the current centered index
+      const currentIndex = sliderState.abs;
+      console.log("WheelList index changed:", currentIndex);
+      props.onIndexChange(currentIndex);
+    }
+  }, [sliderState, props.onIndexChange]);
+
   function slideValues() {
     if (!sliderState) return [];
     const offset = props.loop ? 1 / 2 - 1 / slidesPerView / 2 : 0;

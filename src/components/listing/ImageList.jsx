@@ -1,30 +1,42 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import ImageWheel from "./ImageWheel";
 import styles from "./ImageWheel.module.css";
-import { useSelection } from "../../context/SelectionContext";
 
-const ImageList = () => {
-  const { selectedIndex } = useSelection();
+const ImageList = ({ selectedPixelIndex }) => {
   const [currentImages, setCurrentImages] = useState([]);
+  const prevIndexRef = useRef(null);
 
   useEffect(() => {
-    // Create images based on the selected index
-    // For example, if we have 6 images per model and 140 models total
-    const modelIndex = selectedIndex || 0;
+    console.log("ImageList received selectedPixelIndex:", selectedPixelIndex);
+    console.log("ImageList previous index was:", prevIndexRef.current);
 
-    // Generate images for the current model
-    const images = Array.from({ length: 6 }, (_, i) => ({
-      src: `/data/previews/pixels/model-poster-${(modelIndex % 24) + 1}-${i + 1}.png`,
-      alt: `Model ${modelIndex + 1} - Image ${i + 1}`,
-    }));
+    // Only update images if the index has actually changed
+    if (prevIndexRef.current !== selectedPixelIndex) {
+      prevIndexRef.current = selectedPixelIndex;
 
-    setCurrentImages(images);
-  }, [selectedIndex]);
+      // Use the selectedPixelIndex from props if available, otherwise fall back to 0
+      const modelIndex = selectedPixelIndex !== undefined ? selectedPixelIndex : 0;
+
+      // Generate images for the current model
+      const images = Array.from({ length: 6 }, (_, i) => ({
+        src: `/data/previews/pixels/model-poster-1.png`,
+        alt: `Model ${modelIndex + 1} - Image ${i + 1}`,
+      }));
+
+      console.log("ImageList generated images:", images);
+
+      // Force a new array reference to trigger the useEffect in ImageWheel
+      setCurrentImages([...images]);
+    }
+  }, [selectedPixelIndex]);
 
   return (
     <div className={styles.wheelContainer}>
       <div className={styles.smallWheelWrapper}>
-        <ImageWheel images={currentImages} />
+        <ImageWheel
+          images={currentImages}
+          key={`image-wheel-${selectedPixelIndex}`} // Force remount on index change
+        />
       </div>
     </div>
   );

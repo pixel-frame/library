@@ -16,6 +16,7 @@ const ListingPage = () => {
   const [showCarbon, setCarbon] = React.useState(false);
   const [showGlobe, setGlobe] = React.useState(false);
   const [showWheel, setShowWheel] = React.useState(false);
+  const [selectedPixelIndex, setSelectedPixelIndex] = React.useState(0);
 
   const handleMapToggle = () => {
     setShowMap(!showMap);
@@ -35,6 +36,11 @@ const ListingPage = () => {
   const handleWheelToggle = () => {
     setShowWheel(!showWheel);
     navigate("/");
+  };
+
+  const handlePixelSelection = (index) => {
+    console.log("ListingPage received index change:", index);
+    setSelectedPixelIndex(index);
   };
 
   return (
@@ -59,10 +65,10 @@ const ListingPage = () => {
       {pathname === "/" && showWheel && (
         <div className={styles.wheelsContainer}>
           <div className={styles.wheelSection}>
-            <ImageList />
+            <ImageList selectedPixelIndex={selectedPixelIndex} />
           </div>
           <div className={styles.wheelSection}>
-            <TestList />
+            <TestList onSelectionChange={handlePixelSelection} />
           </div>
         </div>
       )}

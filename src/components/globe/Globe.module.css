@@ -1,7 +1,9 @@
 .globeContainer {
   width: 100%;
-  max-width: 75px;
-  margin: 0;
+  max-width: 120px;
+  aspect-ratio: 1;
+  margin: 0 auto;
+  padding: 10px;
 }
 
 .globe {

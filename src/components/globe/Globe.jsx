@@ -10,8 +10,8 @@ const Globe = ({ latitude, longitude }) => {
   useEffect(() => {
     if (!svgRef.current) return;
 
-    const width = 96;
-    const height = 96;
+    const width = 100;
+    const height = 100;
     const sensitivity = 75;
 
     // Clear previous content

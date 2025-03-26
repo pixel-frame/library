@@ -23,7 +23,7 @@ const TestList = () => {
   return (
     <div className={styles.wheelContainer}>
       <div className={styles.smallWheelWrapper}>
-        <WheelList loop length={140} width={200} perspective="right" setValue={(i) => generatePixelText(i + 1)} />
+        <WheelList loop length={140} width={200} perspective="left" setValue={(i) => generatePixelText(i + 1)} />
       </div>
     </div>
   );

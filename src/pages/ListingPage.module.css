@@ -1,3 +1,11 @@
 .buttonContainer {
   font-size: var(--font-xl);
 }
+
+.wheelWrapper {
+  position: absolute;
+  bottom: -8rem;
+  left: 0;
+  width: 100vw;
+  height: 50vh;
+}

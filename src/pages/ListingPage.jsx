@@ -6,6 +6,7 @@ import Pixels from "../components/listing/Pixels";
 import Carbon from "../components/datavis/Carbon";
 import InteractiveGlobe from "../components/globe/InteractiveGlobe";
 import TestList from "../components/listing/TestList";
+import styles from "./ListingPage.module.css";
 
 const ListingPage = () => {
   const { pathname } = useLocation();
@@ -54,7 +55,7 @@ const ListingPage = () => {
       <div className="listings-container">{pathname === "/" && showMap && <Map mode="map" />}</div>
       <div className="listings-container">{pathname === "/" && showCarbon && <Carbon />}</div>
       <div className="listings-container">{pathname === "/" && showGlobe && <InteractiveGlobe />}</div>
-      <div className="listings-container">{pathname === "/" && showWheel && <TestList />}</div>
+      <div className={styles.wheelWrapper}>{pathname === "/" && showWheel && <TestList />}</div>
     </div>
   );
 };

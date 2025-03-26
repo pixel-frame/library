@@ -73,6 +73,7 @@ body {
   -webkit-backface-visibility: hidden;
   display: flex;
   font-size: 16px;
+  text-transform: uppercase;
   font-weight: 400;
   height: 100%;
   width: 100%;

@@ -6,6 +6,7 @@ import Pixels from "../components/listing/Pixels";
 import Carbon from "../components/datavis/Carbon";
 import InteractiveGlobe from "../components/globe/InteractiveGlobe";
 import TestList from "../components/listing/TestList";
+import ImageList from "../components/listing/ImageList";
 import styles from "./ListingPage.module.css";
 
 const ListingPage = () => {
@@ -55,7 +56,16 @@ const ListingPage = () => {
       <div className="listings-container">{pathname === "/" && showMap && <Map mode="map" />}</div>
       <div className="listings-container">{pathname === "/" && showCarbon && <Carbon />}</div>
       <div className="listings-container">{pathname === "/" && showGlobe && <InteractiveGlobe />}</div>
-      <div className={styles.wheelWrapper}>{pathname === "/" && showWheel && <TestList />}</div>
+      {pathname === "/" && showWheel && (
+        <div className={styles.wheelsContainer}>
+          <div className={styles.wheelSection}>
+            <ImageList />
+          </div>
+          <div className={styles.wheelSection}>
+            <TestList />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

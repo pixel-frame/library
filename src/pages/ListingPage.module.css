@@ -9,3 +9,14 @@
   width: 100vw;
   height: 50vh;
 }
+
+.wheelsContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.wheelSection {
+  height: 50vh;
+  width: 100%;
+}

@@ -1,41 +1,36 @@
-import React, { useState, useEffect, useRef } from "react";
+import React from "react";
 import ImageWheel from "./ImageWheel";
 import styles from "./ImageWheel.module.css";
 
 const ImageList = ({ selectedPixelIndex }) => {
-  const [currentImages, setCurrentImages] = useState([]);
-  const prevIndexRef = useRef(null);
+  const [currentIndex, setCurrentIndex] = React.useState(0);
 
-  useEffect(() => {
-    console.log("ImageList received selectedPixelIndex:", selectedPixelIndex);
-    console.log("ImageList previous index was:", prevIndexRef.current);
+  const generateModelImage = (i) => (
+    <img
+      src={`/data/previews/pixels/model-poster-1.png`}
+      alt={`Model ${i}`}
+      className={styles.modelImage}
+      onError={(e) => {
+        e.target.style.display = "none";
+      }}
+    />
+  );
 
-    // Only update images if the index has actually changed
-    if (prevIndexRef.current !== selectedPixelIndex) {
-      prevIndexRef.current = selectedPixelIndex;
-
-      // Use the selectedPixelIndex from props if available, otherwise fall back to 0
-      const modelIndex = selectedPixelIndex !== undefined ? selectedPixelIndex : 0;
-
-      // Generate images for the current model
-      const images = Array.from({ length: 6 }, (_, i) => ({
-        src: `/data/previews/pixels/model-poster-1.png`,
-        alt: `Model ${modelIndex + 1} - Image ${i + 1}`,
-      }));
-
-      console.log("ImageList generated images:", images);
-
-      // Force a new array reference to trigger the useEffect in ImageWheel
-      setCurrentImages([...images]);
-    }
-  }, [selectedPixelIndex]);
+  const handleIndexChange = (index) => {
+    setCurrentIndex(index);
+  };
 
   return (
     <div className={styles.wheelContainer}>
       <div className={styles.smallWheelWrapper}>
         <ImageWheel
-          images={currentImages}
-          key={`image-wheel-${selectedPixelIndex}`} // Force remount on index change
+          loop
+          length={140}
+          width="100%"
+          perspective="left"
+          setValue={(i) => generateModelImage(i + 1)}
+          onIndexChange={handleIndexChange}
+          currentIndex={selectedPixelIndex}
         />
       </div>
     </div>

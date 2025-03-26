@@ -1,102 +1,94 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import { useKeenSlider } from "keen-slider/react";
-import "keen-slider/keen-slider.min.css";
 import styles from "./ImageWheel.module.css";
 
-const ImageWheel = ({ images }) => {
-  const [mounted, setMounted] = useState(false);
-  const imagesRef = useRef(images);
-  const [sliderRef, sliderInstance] = useKeenSlider({
-    loop: true,
-    vertical: true,
+export default function ImageWheel(props) {
+  const perspective = props.perspective || "center";
+  const wheelSize = 20;
+  const slides = props.length;
+  const slideDegree = 360 / wheelSize;
+  const slidesPerView = props.loop ? 9 : 1;
+  const [sliderState, setSliderState] = React.useState(null);
+  const size = useRef(0);
+  const options = useRef({
     slides: {
-      perView: 1,
-      spacing: 10,
+      number: slides,
+      origin: props.loop ? "center" : "auto",
+      perView: slidesPerView,
+    },
+    vertical: true,
+    initial: props.initIdx || 0,
+    loop: props.loop,
+    dragSpeed: (val) => {
+      const height = size.current;
+      return val * (height / ((height / 2) * Math.tan(slideDegree * (Math.PI / 180))) / slidesPerView);
     },
     created: (s) => {
-      console.log("ImageWheel slider created");
-      setMounted(true);
+      size.current = s.size;
     },
+    updated: (s) => {
+      size.current = s.size;
+    },
+    detailsChanged: (s) => {
+      setSliderState(s.track.details);
+    },
+    rubberband: !props.loop,
+    mode: "free-snap",
   });
 
-  // Force a slide change when images change
-  useEffect(() => {
-    console.log("ImageWheel useEffect - images changed:", images);
-    console.log("ImageWheel useEffect - previous images:", imagesRef.current);
-    console.log("ImageWheel useEffect - sliderInstance:", sliderInstance);
+  const [sliderRef, slider] = useKeenSlider(options.current);
+  const [radius, setRadius] = React.useState(0);
 
-    // Check if images reference has changed
-    if (images !== imagesRef.current && sliderInstance && sliderInstance.current && mounted) {
-      console.log("ImageWheel - Images reference changed, triggering animation");
-      imagesRef.current = images;
+  React.useEffect(() => {
+    if (slider.current) setRadius(slider.current.size / 2);
+  }, [slider]);
 
-      // Try different methods to force a slide change
-      try {
-        // Method 1: Use next()
-        console.log("ImageWheel - Trying next() method");
-        sliderInstance.current.next();
-
-        // Method 2: Use moveToIdx
-        setTimeout(() => {
-          console.log("ImageWheel - Trying moveToIdx method");
-          const currentIdx = sliderInstance.current.track.details?.abs || 0;
-          const nextIdx = (currentIdx + 1) % (images.length || 1);
-          sliderInstance.current.moveToIdx(nextIdx);
-        }, 500);
-
-        // Method 3: Force a refresh
-        setTimeout(() => {
-          console.log("ImageWheel - Trying refresh method");
-          sliderInstance.current.refresh();
-        }, 1000);
-      } catch (error) {
-        console.error("ImageWheel - Error during slide transition:", error);
-      }
+  React.useEffect(() => {
+    if (sliderState && props.onIndexChange) {
+      // Get the current centered index
+      const currentIndex = sliderState.abs;
+      props.onIndexChange(currentIndex);
     }
-  }, [sliderInstance, images, mounted]);
+  }, [sliderState, props.onIndexChange]);
 
-  // Add a manual animation trigger for debugging
-  useEffect(() => {
-    if (mounted && sliderInstance && sliderInstance.current) {
-      const interval = setInterval(() => {
-        console.log("ImageWheel - Auto-advancing slide");
-        try {
-          sliderInstance.current.next();
-        } catch (error) {
-          console.error("ImageWheel - Error in auto-advance:", error);
-        }
-      }, 5000); // Auto-advance every 5 seconds for testing
-
-      return () => clearInterval(interval);
+  // Add effect to move slider when currentIndex changes externally
+  React.useEffect(() => {
+    if (slider.current && props.currentIndex !== undefined && sliderState && sliderState.abs !== props.currentIndex) {
+      slider.current.moveToIdx(props.currentIndex);
     }
-  }, [sliderInstance, mounted]);
+  }, [props.currentIndex, slider, sliderState]);
+
+  function slideValues() {
+    if (!sliderState) return [];
+    const offset = props.loop ? 1 / 2 - 1 / slidesPerView / 2 : 0;
+
+    const values = [];
+    for (let i = 0; i < slides; i++) {
+      const distance = sliderState ? (sliderState.slides[i].distance - offset) * slidesPerView : 0;
+      const rotate = Math.abs(distance) > wheelSize / 2 ? 180 : distance * (360 / wheelSize) * -1;
+      const style = {
+        transform: `rotateX(${rotate}deg) translateZ(${radius}px)`,
+        WebkitTransform: `rotateX(${rotate}deg) translateZ(${radius}px)`,
+      };
+      const value = props.setValue ? props.setValue(i, sliderState.abs + Math.round(distance)) : i;
+      values.push({ style, value });
+    }
+    return values;
+  }
+
+  const wheelClass = `${styles.wheel} keen-slider ${styles[`wheel--perspective-${perspective}`]}`;
 
   return (
-    <div ref={sliderRef} className={`keen-slider ${styles.verticalSlider}`}>
-      {images && images.length > 0 ? (
-        images.map((image, index) => (
-          <div key={`${image.src}-${index}`} className={`keen-slider__slide ${styles.slideItem}`}>
-            <img
-              src={image.src}
-              alt={image.alt || `Image ${index + 1}`}
-              className={styles.slideImage}
-              onError={(e) => {
-                e.target.style.display = "none";
-              }}
-            />
-          </div>
-        ))
-      ) : (
-        <>
-          <div className={`keen-slider__slide ${styles.slideItem}`}>1</div>
-          <div className={`keen-slider__slide ${styles.slideItem}`}>2</div>
-          <div className={`keen-slider__slide ${styles.slideItem}`}>3</div>
-          <div className={`keen-slider__slide ${styles.slideItem}`}>4</div>
-          <div className={`keen-slider__slide ${styles.slideItem}`}>5</div>
-        </>
-      )}
+    <div className={wheelClass} ref={sliderRef}>
+      <div className={styles.wheelInner}>
+        <div className={styles.wheelSlides} style={{ width: props.width + "px" }}>
+          {slideValues().map(({ style, value }, idx) => (
+            <div className={styles.wheelSlide} style={style} key={idx}>
+              <div className={styles.imageContainer}>{value}</div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
-};
-
-export default ImageWheel;
+}

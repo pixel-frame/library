@@ -6,7 +6,7 @@ body {
 
 .wheel {
   display: block;
-  color: #fff;
+  color: var(--color-white);
   height: 100%;
   overflow: visible;
   width: 100%;
@@ -42,21 +42,21 @@ body {
 
 .wheelShadowTop,
 .wheelShadowBottom {
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.5) 100%);
+  background: linear-gradient(to bottom, var(--shadow-dark) 0%, var(--shadow-medium) 100%);
   left: 0;
   height: calc(42% + 2px);
   width: 100%;
-  border-bottom: 0.5px solid rgba(255, 255, 255, 0.3);
+  border-bottom: 0.5px solid var(--border-light);
   position: relative;
   margin-top: -2px;
   z-index: 5;
 }
 
 .wheelShadowBottom {
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.9) 100%);
+  background: linear-gradient(to bottom, var(--shadow-medium) 0%, var(--shadow-dark) 100%);
   margin-top: 2px;
   border-bottom: none;
-  border-top: 0.5px solid rgba(255, 255, 255, 0.3);
+  border-top: 0.5px solid var(--border-light);
 }
 
 .wheelLabel {
@@ -94,7 +94,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #000;
+  background: var(--color-black);
   width: 100vw;
 }
 

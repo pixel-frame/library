@@ -1,0 +1,102 @@
+.container {
+  width: 100%;
+  height: 60vh;
+  min-height: 200px;
+  max-height: 400px;
+  position: relative;
+}
+
+.svg {
+  width: 100%;
+  height: 100%;
+}
+
+.grid line {
+  stroke: var(--border-color);
+  stroke-opacity: 0.2;
+  shape-rendering: crispEdges;
+}
+
+.grid path {
+  stroke-width: 0;
+}
+
+.pastPath {
+  fill: none;
+  stroke: var(--text-primary);
+  stroke-width: 2px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.futurePath {
+  fill: none;
+  stroke: var(--text-primary);
+  stroke-width: 1px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 4, 4;
+}
+
+.emissionPoint {
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.emissionPoint rect {
+  transition: opacity 0.2s ease;
+}
+
+.emissionPoint:hover rect {
+  opacity: 0.8;
+}
+
+.plotPoint {
+  pointer-events: none;
+  user-select: none;
+}
+
+.xAxis,
+.yAxis {
+  color: var(--text-primary);
+  font-size: 12px;
+}
+
+.xAxis line,
+.yAxis line {
+  stroke: var(--border-color);
+}
+
+.xAxis path,
+.yAxis path {
+  stroke: var(--border-color);
+}
+
+.xAxis text,
+.yAxis text {
+  fill: var(--text-primary);
+}
+
+.timeIndicator {
+  stroke: var(--text-primary);
+  stroke-width: 2px;
+  /* stroke-dasharray: 2, 2; */
+  pointer-events: none;
+}
+
+.tooltip {
+  position: absolute;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  pointer-events: none;
+  z-index: 10;
+  max-width: 200px;
+}
+
+/* Ensure points are visible on mobile */
+@media (max-width: 768px) {
+  .emissionPoint rect {
+    transform: scale(1.2); /* Make points slightly bigger on mobile */
+  }
+}

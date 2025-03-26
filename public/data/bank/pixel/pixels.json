@@ -11,6 +11,7 @@
       "date_of_manufacture": "2022",
       "total_emissions": 2.2952,
       "emissions_over_time": {
+        "January 2022": 2.2952,
         "7/18/2022": 2.2952,
         "4/15/2024": 2.2952
       }
@@ -26,6 +27,7 @@
       "date_of_manufacture": "2022",
       "total_emissions": 2.2952,
       "emissions_over_time": {
+        "January 2022": 2.2952,
         "7/18/2022": 2.2952,
         "4/15/2024": 2.2952
       }
@@ -41,6 +43,7 @@
       "date_of_manufacture": "2022",
       "total_emissions": 2.60528,
       "emissions_over_time": {
+        "January 2022": 2.2952,
         "7/18/2022": 2.2952,
         "4/4/2023": 2.48848,
         "5/17/2024": 2.60528
@@ -57,6 +60,7 @@
       "date_of_manufacture": "2022",
       "total_emissions": 5.3152,
       "emissions_over_time": {
+        "January 2022": 2.2952,
         "7/18/2022": 2.2952,
         "3/19/2025": 5.3152
       }
@@ -72,6 +76,7 @@
       "date_of_manufacture": "2022",
       "total_emissions": 2.48848,
       "emissions_over_time": {
+        "January 2022": 2.2952,
         "7/18/2022": 2.2952,
         "4/15/2024": 2.2952,
         "4/4/2023": 2.48848
@@ -88,6 +93,7 @@
       "date_of_manufacture": "2022",
       "total_emissions": 2.2952,
       "emissions_over_time": {
+        "January 2022": 2.2952,
         "7/18/2022": 2.2952
       }
     },
@@ -102,6 +108,7 @@
       "date_of_manufacture": "2022",
       "total_emissions": 2.2952,
       "emissions_over_time": {
+        "January 2022": 2.2952,
         "7/18/2022": 2.2952
       }
     },
@@ -116,6 +123,7 @@
       "date_of_manufacture": "2022",
       "total_emissions": 2.2952,
       "emissions_over_time": {
+        "January 2022": 2.2952,
         "7/18/2022": 2.2952,
         "4/15/2024": 2.2952
       }
@@ -130,7 +138,9 @@
       "distance_traveled": 0,
       "date_of_manufacture": "2022",
       "total_emissions": 0,
-      "emissions_over_time": {}
+      "emissions_over_time": {
+        "January 2022": 0
+      }
     },
     {
       "pixel_number": 10,
@@ -143,6 +153,7 @@
       "date_of_manufacture": "2022",
       "total_emissions": 2.2952,
       "emissions_over_time": {
+        "January 2022": 2.2952,
         "7/18/2022": 2.2952
       }
     },
@@ -157,6 +168,7 @@
       "date_of_manufacture": "2022",
       "total_emissions": 2.2952,
       "emissions_over_time": {
+        "January 2022": 2.2952,
         "7/18/2022": 2.2952
       }
     },
@@ -171,6 +183,7 @@
       "date_of_manufacture": "2022",
       "total_emissions": 2.2952,
       "emissions_over_time": {
+        "January 2022": 2.2952,
         "7/18/2022": 2.2952,
         "4/15/2024": 2.2952
       }
@@ -186,6 +199,7 @@
       "date_of_manufacture": "2022",
       "total_emissions": 2.48848,
       "emissions_over_time": {
+        "January 2022": 2.2952,
         "7/18/2022": 2.2952,
         "4/15/2024": 2.2952,
         "4/4/2023": 2.48848
@@ -202,6 +216,7 @@
       "date_of_manufacture": "2022",
       "total_emissions": 5.432,
       "emissions_over_time": {
+        "January 2022": 2.2952,
         "7/18/2022": 2.2952,
         "5/17/2024": 2.412,
         "3/19/2025": 5.432
@@ -218,6 +233,7 @@
       "date_of_manufacture": "2022",
       "total_emissions": 2.48848,
       "emissions_over_time": {
+        "January 2022": 2.2952,
         "7/18/2022": 2.2952,
         "4/15/2024": 2.2952,
         "4/4/2023": 2.48848
@@ -234,6 +250,7 @@
       "date_of_manufacture": "2022",
       "total_emissions": 5.3152,
       "emissions_over_time": {
+        "January 2022": 2.2952,
         "7/18/2022": 2.2952,
         "4/15/2024": 2.2952,
         "3/19/2025": 5.3152
@@ -250,6 +267,7 @@
       "date_of_manufacture": "2022",
       "total_emissions": 2.60528,
       "emissions_over_time": {
+        "January 2022": 2.2952,
         "7/18/2022": 2.2952,
         "4/4/2023": 2.48848,
         "5/17/2024": 2.60528
@@ -266,6 +284,7 @@
       "date_of_manufacture": "2022",
       "total_emissions": 5.432,
       "emissions_over_time": {
+        "January 2022": 2.2952,
         "7/18/2022": 2.2952,
         "5/17/2024": 2.412,
         "3/19/2025": 5.432
@@ -282,6 +301,7 @@
       "date_of_manufacture": "2022",
       "total_emissions": 2.48848,
       "emissions_over_time": {
+        "January 2022": 2.2952,
         "7/18/2022": 2.2952,
         "4/15/2024": 2.2952,
         "4/4/2023": 2.48848
@@ -298,6 +318,7 @@
       "date_of_manufacture": "2022",
       "total_emissions": 2.2952,
       "emissions_over_time": {
+        "January 2022": 2.2952,
         "7/18/2022": 2.2952,
         "4/15/2024": 2.2952
       }
@@ -313,6 +334,7 @@
       "date_of_manufacture": "2022",
       "total_emissions": 5.5084800000000005,
       "emissions_over_time": {
+        "January 2022": 2.2952,
         "7/18/2022": 2.2952,
         "4/15/2024": 2.2952,
         "4/4/2023": 2.48848,
@@ -330,6 +352,7 @@
       "date_of_manufacture": "2022",
       "total_emissions": 2.2952,
       "emissions_over_time": {
+        "January 2022": 2.2952,
         "7/18/2022": 2.2952,
         "4/15/2024": 2.2952
       }
@@ -345,6 +368,7 @@
       "date_of_manufacture": "2022",
       "total_emissions": 5.432,
       "emissions_over_time": {
+        "January 2022": 2.2952,
         "7/18/2022": 2.2952,
         "5/17/2024": 2.412,
         "3/19/2025": 5.432
@@ -361,6 +385,7 @@
       "date_of_manufacture": "2022",
       "total_emissions": 2.2952,
       "emissions_over_time": {
+        "January 2022": 2.2952,
         "7/18/2022": 2.2952
       }
     },
@@ -375,6 +400,7 @@
       "date_of_manufacture": "2023",
       "total_emissions": 3.4455999999999998,
       "emissions_over_time": {
+        "January 2023": 1.387,
         "1/4/2023": 1.5038,
         "5/17/2024": 1.6206,
         "3/19/2025": 3.4455999999999998
@@ -391,6 +417,7 @@
       "date_of_manufacture": "2023",
       "total_emissions": 1.5038,
       "emissions_over_time": {
+        "January 2023": 1.387,
         "1/4/2023": 1.5038
       }
     },
@@ -405,6 +432,7 @@
       "date_of_manufacture": "2023",
       "total_emissions": 3.4455999999999998,
       "emissions_over_time": {
+        "January 2023": 1.387,
         "1/4/2023": 1.5038,
         "5/17/2024": 1.6206,
         "3/19/2025": 3.4455999999999998
@@ -421,6 +449,7 @@
       "date_of_manufacture": "2023",
       "total_emissions": 1.5038,
       "emissions_over_time": {
+        "January 2023": 1.387,
         "1/4/2023": 1.5038
       }
     },
@@ -434,7 +463,9 @@
       "distance_traveled": 0,
       "date_of_manufacture": "2023",
       "total_emissions": 0,
-      "emissions_over_time": {}
+      "emissions_over_time": {
+        "January 2023": 0
+      }
     },
     {
       "pixel_number": 30,
@@ -447,6 +478,7 @@
       "date_of_manufacture": "2023",
       "total_emissions": 3.4455999999999998,
       "emissions_over_time": {
+        "January 2023": 1.387,
         "1/4/2023": 1.5038,
         "5/17/2024": 1.6206,
         "3/19/2025": 3.4455999999999998
@@ -463,6 +495,7 @@
       "date_of_manufacture": "2023",
       "total_emissions": 3.4455999999999998,
       "emissions_over_time": {
+        "January 2023": 1.387,
         "1/4/2023": 1.5038,
         "5/17/2024": 1.6206,
         "3/19/2025": 3.4455999999999998
@@ -479,6 +512,7 @@
       "date_of_manufacture": "2023",
       "total_emissions": 3.4455999999999998,
       "emissions_over_time": {
+        "January 2023": 1.387,
         "1/4/2023": 1.5038,
         "5/17/2024": 1.6206,
         "3/19/2025": 3.4455999999999998
@@ -495,6 +529,7 @@
       "date_of_manufacture": "2023",
       "total_emissions": 3.4455999999999998,
       "emissions_over_time": {
+        "January 2023": 1.387,
         "1/4/2023": 1.5038,
         "5/17/2024": 1.6206,
         "3/19/2025": 3.4455999999999998
@@ -511,6 +546,7 @@
       "date_of_manufacture": "2023",
       "total_emissions": 1.5038,
       "emissions_over_time": {
+        "January 2023": 1.387,
         "1/4/2023": 1.5038
       }
     },
@@ -525,6 +561,7 @@
       "date_of_manufacture": "2023",
       "total_emissions": 1.5038,
       "emissions_over_time": {
+        "January 2023": 1.387,
         "1/4/2023": 1.5038
       }
     },
@@ -539,6 +576,7 @@
       "date_of_manufacture": "2023",
       "total_emissions": 3.4455999999999998,
       "emissions_over_time": {
+        "January 2023": 1.387,
         "1/4/2023": 1.5038,
         "5/17/2024": 1.6206,
         "3/19/2025": 3.4455999999999998
@@ -555,6 +593,7 @@
       "date_of_manufacture": "2023",
       "total_emissions": 3.4455999999999998,
       "emissions_over_time": {
+        "January 2023": 1.387,
         "1/4/2023": 1.5038,
         "5/17/2024": 1.6206,
         "3/19/2025": 3.4455999999999998
@@ -571,6 +610,7 @@
       "date_of_manufacture": "2023",
       "total_emissions": 3.4455999999999998,
       "emissions_over_time": {
+        "January 2023": 1.387,
         "1/4/2023": 1.5038,
         "5/17/2024": 1.6206,
         "3/19/2025": 3.4455999999999998
@@ -587,6 +627,7 @@
       "date_of_manufacture": "2023",
       "total_emissions": 1.5038,
       "emissions_over_time": {
+        "January 2023": 1.387,
         "1/4/2023": 1.5038
       }
     },
@@ -601,6 +642,7 @@
       "date_of_manufacture": "2023",
       "total_emissions": 3.4455999999999998,
       "emissions_over_time": {
+        "January 2023": 1.387,
         "1/4/2023": 1.5038,
         "5/17/2024": 1.6206,
         "3/19/2025": 3.4455999999999998
@@ -617,6 +659,7 @@
       "date_of_manufacture": "2023",
       "total_emissions": 3.4455999999999998,
       "emissions_over_time": {
+        "January 2023": 1.387,
         "1/4/2023": 1.5038,
         "5/17/2024": 1.6206,
         "3/19/2025": 3.4455999999999998
@@ -633,6 +676,7 @@
       "date_of_manufacture": "2023",
       "total_emissions": 1.5038,
       "emissions_over_time": {
+        "January 2023": 1.387,
         "1/4/2023": 1.5038
       }
     },
@@ -647,6 +691,7 @@
       "date_of_manufacture": "2023",
       "total_emissions": 3.4455999999999998,
       "emissions_over_time": {
+        "January 2023": 1.387,
         "1/4/2023": 1.5038,
         "5/17/2024": 1.6206,
         "3/19/2025": 3.4455999999999998
@@ -663,6 +708,7 @@
       "date_of_manufacture": "2023",
       "total_emissions": 1.5038,
       "emissions_over_time": {
+        "January 2023": 1.387,
         "1/4/2023": 1.5038
       }
     },
@@ -677,6 +723,7 @@
       "date_of_manufacture": "2023",
       "total_emissions": 3.4455999999999998,
       "emissions_over_time": {
+        "January 2023": 1.387,
         "1/4/2023": 1.5038,
         "5/17/2024": 1.6206,
         "3/19/2025": 3.4455999999999998
@@ -693,6 +740,7 @@
       "date_of_manufacture": "2023",
       "total_emissions": 1.5038,
       "emissions_over_time": {
+        "January 2023": 1.387,
         "1/4/2023": 1.5038
       }
     },
@@ -707,6 +755,7 @@
       "date_of_manufacture": "2023",
       "total_emissions": 3.4455999999999998,
       "emissions_over_time": {
+        "January 2023": 1.387,
         "1/4/2023": 1.5038,
         "5/17/2024": 1.6206,
         "3/19/2025": 3.4455999999999998
@@ -723,6 +772,7 @@
       "date_of_manufacture": "2023",
       "total_emissions": 3.4455999999999998,
       "emissions_over_time": {
+        "January 2023": 1.387,
         "1/4/2023": 1.5038,
         "5/17/2024": 1.6206,
         "3/19/2025": 3.4455999999999998
@@ -739,6 +789,7 @@
       "date_of_manufacture": "2023",
       "total_emissions": 3.4455999999999998,
       "emissions_over_time": {
+        "January 2023": 1.387,
         "1/4/2023": 1.5038,
         "5/17/2024": 1.6206,
         "3/19/2025": 3.4455999999999998
@@ -755,6 +806,7 @@
       "date_of_manufacture": "2023",
       "total_emissions": 1.5038,
       "emissions_over_time": {
+        "January 2023": 1.387,
         "1/4/2023": 1.5038
       }
     },
@@ -769,6 +821,7 @@
       "date_of_manufacture": "2023",
       "total_emissions": 3.4455999999999998,
       "emissions_over_time": {
+        "January 2023": 1.387,
         "1/4/2023": 1.5038,
         "5/17/2024": 1.6206,
         "3/19/2025": 3.4455999999999998
@@ -785,6 +838,7 @@
       "date_of_manufacture": "2023",
       "total_emissions": 1.5038,
       "emissions_over_time": {
+        "January 2023": 1.387,
         "1/4/2023": 1.5038
       }
     },
@@ -799,6 +853,7 @@
       "date_of_manufacture": "2023",
       "total_emissions": 3.4455999999999998,
       "emissions_over_time": {
+        "January 2023": 1.387,
         "1/4/2023": 1.5038,
         "5/17/2024": 1.6206,
         "3/19/2025": 3.4455999999999998
@@ -815,6 +870,7 @@
       "date_of_manufacture": "2023",
       "total_emissions": 3.4455999999999998,
       "emissions_over_time": {
+        "January 2023": 1.387,
         "1/4/2023": 1.5038,
         "5/17/2024": 1.6206,
         "3/19/2025": 3.4455999999999998
@@ -831,6 +887,7 @@
       "date_of_manufacture": "2023",
       "total_emissions": 3.4455999999999998,
       "emissions_over_time": {
+        "January 2023": 1.387,
         "1/4/2023": 1.5038,
         "5/17/2024": 1.6206,
         "3/19/2025": 3.4455999999999998
@@ -847,6 +904,7 @@
       "date_of_manufacture": "2023",
       "total_emissions": 3.4455999999999998,
       "emissions_over_time": {
+        "January 2023": 1.387,
         "1/4/2023": 1.5038,
         "5/17/2024": 1.6206,
         "3/19/2025": 3.4455999999999998
@@ -863,6 +921,7 @@
       "date_of_manufacture": "2023",
       "total_emissions": 3.4455999999999998,
       "emissions_over_time": {
+        "January 2023": 1.387,
         "1/4/2023": 1.5038,
         "5/17/2024": 1.6206,
         "3/19/2025": 3.4455999999999998
@@ -879,6 +938,7 @@
       "date_of_manufacture": "2023",
       "total_emissions": 1.5038,
       "emissions_over_time": {
+        "January 2023": 1.387,
         "1/4/2023": 1.5038
       }
     },
@@ -893,6 +953,7 @@
       "date_of_manufacture": "2023",
       "total_emissions": 3.4455999999999998,
       "emissions_over_time": {
+        "January 2023": 1.387,
         "1/4/2023": 1.5038,
         "5/17/2024": 1.6206,
         "3/19/2025": 3.4455999999999998
@@ -909,6 +970,7 @@
       "date_of_manufacture": "2023",
       "total_emissions": 1.5038,
       "emissions_over_time": {
+        "January 2023": 1.387,
         "1/4/2023": 1.5038
       }
     },
@@ -923,6 +985,7 @@
       "date_of_manufacture": "2023",
       "total_emissions": 3.4455999999999998,
       "emissions_over_time": {
+        "January 2023": 1.387,
         "1/4/2023": 1.5038,
         "5/17/2024": 1.6206,
         "3/19/2025": 3.4455999999999998
@@ -939,6 +1002,7 @@
       "date_of_manufacture": "2023",
       "total_emissions": 1.5038,
       "emissions_over_time": {
+        "January 2023": 1.387,
         "1/4/2023": 1.5038
       }
     },
@@ -953,6 +1017,7 @@
       "date_of_manufacture": "2023",
       "total_emissions": 1.5038,
       "emissions_over_time": {
+        "January 2023": 1.387,
         "1/4/2023": 1.5038
       }
     },
@@ -967,6 +1032,7 @@
       "date_of_manufacture": "2023",
       "total_emissions": 1.5038,
       "emissions_over_time": {
+        "January 2023": 1.387,
         "1/4/2023": 1.5038
       }
     },
@@ -981,6 +1047,7 @@
       "date_of_manufacture": "2023",
       "total_emissions": 1.5038,
       "emissions_over_time": {
+        "January 2023": 1.387,
         "1/4/2023": 1.5038
       }
     },
@@ -995,6 +1062,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1011,6 +1079,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1027,6 +1096,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1043,6 +1113,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1059,6 +1130,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1075,6 +1147,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1091,6 +1164,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1107,6 +1181,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1123,6 +1198,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1139,6 +1215,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1155,6 +1232,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1171,6 +1249,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1187,6 +1266,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1203,6 +1283,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1219,6 +1300,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1235,6 +1317,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1251,6 +1334,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1267,6 +1351,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1283,6 +1368,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1299,6 +1385,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1315,6 +1402,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1331,6 +1419,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1347,6 +1436,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1363,6 +1453,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1379,6 +1470,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1395,6 +1487,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1411,6 +1504,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1427,6 +1521,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1443,6 +1538,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1459,6 +1555,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1475,6 +1572,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1491,6 +1589,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1507,6 +1606,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1523,6 +1623,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1539,6 +1640,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1555,6 +1657,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1571,6 +1674,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1587,6 +1691,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1603,6 +1708,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1619,6 +1725,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1635,6 +1742,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1651,6 +1759,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1667,6 +1776,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1683,6 +1793,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1699,6 +1810,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1715,6 +1827,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1731,6 +1844,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1747,6 +1861,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1763,6 +1878,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1779,6 +1895,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1795,6 +1912,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1811,6 +1929,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1827,6 +1946,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1843,6 +1963,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1859,6 +1980,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1875,6 +1997,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1891,6 +2014,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1907,6 +2031,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1923,6 +2048,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1939,6 +2065,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1955,6 +2082,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1971,6 +2099,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -1987,6 +2116,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -2003,6 +2133,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -2019,6 +2150,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -2035,6 +2167,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -2051,6 +2184,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -2067,6 +2201,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -2083,6 +2218,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -2099,6 +2235,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -2115,6 +2252,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997
@@ -2131,6 +2269,7 @@
       "date_of_manufacture": "2025",
       "total_emissions": 2.8060799999999997,
       "emissions_over_time": {
+        "January 2025": 0.0,
         "12/4/2025": 0.93536,
         "8/3/2034": 1.87072,
         "4/1/2035": 2.8060799999999997

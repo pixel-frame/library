@@ -232,24 +232,64 @@ def create_timeline_json(master_csv, carbon_locations_csv):
                 if safe_get(row, column, '').strip() == '1':
                     reconfigurations.append(num)
 
-            if not reconfigurations:
-                continue
-
+            # Create timeline starting with fabrication step
             timeline = []
             cumulative_emissions = 0
             cumulative_distance = 0
             
-            for step, reconfig_num in enumerate(reconfigurations, 1):
+            # Add fabrication step as the first timeline entry
+            manufacture_year = safe_get(row, 'Date of manufacture')
+            if manufacture_year:
+                fabrication_date = f"January {manufacture_year}"
+                
+                # Get the A1-A3 emissions from the first reconfiguration if available
+                a1_a3_emissions = 0
+                if reconfigurations and reconfigurations[0] in carbon_data:
+                    a1_a3_emissions = carbon_data[reconfigurations[0]]['a1_a3_emissions']
+                
+                # Create the fabrication timeline entry
+                fabrication_entry = {
+                    "step": 1,
+                    "reconfiguration_number": 0,  # 0 indicates fabrication step
+                    "name": "Initial Fabrication",
+                    "date": fabrication_date,
+                    "location": {
+                        "name": "Fabrication Site",
+                        "coordinates": {
+                            "latitude": None,
+                            "longitude": None
+                        }
+                    },
+                    "emissions": {
+                        "a1_a3": a1_a3_emissions,
+                        "transport": 0,
+                        "step_total": a1_a3_emissions,
+                        "running_total": a1_a3_emissions
+                    },
+                    "transport": {
+                        "type": None,
+                        "distance": 0,
+                        "cumulative_distance": 0
+                    },
+                    "description": f"Generation {safe_get(row, 'Generation')} pixel fabrication"
+                }
+                
+                timeline.append(fabrication_entry)
+                cumulative_emissions = a1_a3_emissions
+            
+            # Add subsequent reconfiguration steps
+            for step, reconfig_num in enumerate(reconfigurations, len(timeline) + 1):
                 if reconfig_num not in carbon_data:
                     continue
                     
                 reconfig_data = carbon_data[reconfig_num]
                 
-                a1_a3 = reconfig_data['a1_a3_emissions'] if step == 1 else 0
+                # A1-A3 emissions only counted in fabrication step now
+                a1_a3 = 0
                 transport_emissions = reconfig_data['transport']['emissions']
                 step_distance = reconfig_data['transport']['distance']
                 
-                cumulative_emissions += (a1_a3 + transport_emissions)
+                cumulative_emissions += transport_emissions
                 cumulative_distance += step_distance
 
                 timeline_entry = {
@@ -261,7 +301,7 @@ def create_timeline_json(master_csv, carbon_locations_csv):
                     "emissions": {
                         "a1_a3": a1_a3,
                         "transport": transport_emissions,
-                        "step_total": a1_a3 + transport_emissions,
+                        "step_total": transport_emissions,
                         "running_total": cumulative_emissions
                     },
                     "transport": {

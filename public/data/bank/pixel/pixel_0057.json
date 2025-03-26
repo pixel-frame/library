@@ -21,6 +21,31 @@
   "timeline": [
     {
       "step": 1,
+      "reconfiguration_number": 0,
+      "name": "Initial Fabrication",
+      "date": "January 2023",
+      "location": {
+        "name": "Fabrication Site",
+        "coordinates": {
+          "latitude": null,
+          "longitude": null
+        }
+      },
+      "emissions": {
+        "a1_a3": 1.387,
+        "transport": 0,
+        "step_total": 1.387,
+        "running_total": 1.387
+      },
+      "transport": {
+        "type": null,
+        "distance": 0,
+        "cumulative_distance": 0
+      },
+      "description": "Generation 2 pixel fabrication"
+    },
+    {
+      "step": 2,
       "reconfiguration_number": 4,
       "name": "Gen 2 Prototype Showcase Beam Assembly",
       "date": "1/4/2023",
@@ -32,9 +57,9 @@
         }
       },
       "emissions": {
-        "a1_a3": 1.387,
+        "a1_a3": 0,
         "transport": 0.1168,
-        "step_total": 1.5038,
+        "step_total": 0.1168,
         "running_total": 1.5038
       },
       "transport": {
@@ -45,7 +70,7 @@
       "description": "The Showcase Beam Assembly was a design-proof-of-concept with second-generation pixels that were smaller, in response to results from the first series of tests. This assembly reused the tension assembly from the Gen 1 Prototype Beam, while experimenting with a new deviator and endplate design. This prototype was sent to Washington, DC, for an exhibition, and was subsequently returned to Cambridge, MA. "
     },
     {
-      "step": 2,
+      "step": 3,
       "reconfiguration_number": 7,
       "name": "Gen 2 Prototype Exhibition Beam Assembly ",
       "date": "5/17/2024",
@@ -70,7 +95,7 @@
       "description": "The Exhibition Beam Assembly was exhibited in Cambridge, MA, in June of 2024. "
     },
     {
-      "step": 3,
+      "step": 4,
       "reconfiguration_number": 9,
       "name": "Gen 2 Prototype Biennale Beam",
       "date": "3/19/2025",

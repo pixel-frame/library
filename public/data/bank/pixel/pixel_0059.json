@@ -21,6 +21,31 @@
   "timeline": [
     {
       "step": 1,
+      "reconfiguration_number": 0,
+      "name": "Initial Fabrication",
+      "date": "January 2023",
+      "location": {
+        "name": "Fabrication Site",
+        "coordinates": {
+          "latitude": null,
+          "longitude": null
+        }
+      },
+      "emissions": {
+        "a1_a3": 1.387,
+        "transport": 0,
+        "step_total": 1.387,
+        "running_total": 1.387
+      },
+      "transport": {
+        "type": null,
+        "distance": 0,
+        "cumulative_distance": 0
+      },
+      "description": "Generation 2 pixel fabrication"
+    },
+    {
+      "step": 2,
       "reconfiguration_number": 5,
       "name": "Gen 2 Prototype Showcase Column Assembly",
       "date": "1/4/2023",
@@ -32,9 +57,9 @@
         }
       },
       "emissions": {
-        "a1_a3": 1.387,
+        "a1_a3": 0,
         "transport": 0.1168,
-        "step_total": 1.5038,
+        "step_total": 0.1168,
         "running_total": 1.5038
       },
       "transport": {

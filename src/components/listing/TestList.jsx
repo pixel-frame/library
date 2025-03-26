@@ -20,14 +20,8 @@ const TestList = () => {
 
   return (
     <div className={styles.wheelContainer}>
-      <div className={styles.wheelWrapper}>
-        <WheelList loop length={24} width={140} perspective="right" setValue={generateRandomDate} />
-      </div>
       <div className={styles.smallWheelWrapper}>
-        <WheelList loop length={24} width={23} />
-      </div>
-      <div className={styles.smallWheelWrapper}>
-        <WheelList loop length={60} width={23} perspective="left" />
+        <WheelList loop length={140} width={23} perspective="left" />
       </div>
     </div>
   );

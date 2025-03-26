@@ -79,7 +79,8 @@ export default function Wheel(props) {
         <div className={styles.wheelSlides} style={{ width: props.width + "px" }}>
           {slideValues().map(({ style, value }, idx) => (
             <div className={styles.wheelSlide} style={style} key={idx}>
-              <span>{value}</span>
+              <span className={styles.leftText}>{value.left}</span>
+              <span className={styles.rightText}>{value.right}</span>
             </div>
           ))}
         </div>

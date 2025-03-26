@@ -29,31 +29,34 @@ const DetailGrid = ({ items }) => {
   };
 
   return (
-    <div className={styles.grid}>
+    <div>
       {items.map((item, index) => (
-        <div
-          key={index}
-          className={`${styles.gridItem} ${item.fullWidth ? styles.fullWidth : ""} ${
-            item.isGlobe ? styles.globeItem : ""
-          }`}
-        >
-          <div className={styles.titleRow}>
-            <span className={styles.title}>{item.title}</span>
-            {item.info && (
-              <button
-                className={styles.infoButton}
-                onClick={(e) => handleInfoClick(e, index)}
-                onKeyDown={(e) => handleKeyDown(e, index)}
-                aria-label={`Information about ${item.title}`}
-                tabIndex="0"
-              >
-                i
-              </button>
-            )}
+        <div className={` ${item.isGlobe ? styles.globeSpace : styles.space}`}>
+          <div
+            key={index}
+            className={`${styles.gridItem} ${item.fullWidth ? styles.fullWidth : ""} ${
+              item.isGlobe ? styles.globeItem : ""
+            }`}
+          >
+            <div className={styles.titleRow}>
+              <span className={styles.title}>{item.title}</span>
+              {item.info && (
+                <button
+                  className={styles.infoButton}
+                  onClick={(e) => handleInfoClick(e, index)}
+                  onKeyDown={(e) => handleKeyDown(e, index)}
+                  aria-label={`Information about ${item.title}`}
+                  tabIndex="0"
+                >
+                  i
+                </button>
+              )}
+            </div>
+            <div className={styles.content}>
+              <div className={styles.value}>{item.value}</div>
+            </div>
           </div>
-          <div className={styles.content}>
-            <div className={styles.value}>{item.value}</div>
-          </div>
+          <div> {item.isGlobe && item.globe}</div>
         </div>
       ))}
       {activeInfo !== null && items[activeInfo]?.info && (

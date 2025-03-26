@@ -5,20 +5,20 @@ import { AnimatedText } from "../components/text/AnimatedText";
 import styles from "./LoadingPagePixel.module.css";
 
 const ASCII_CHARS = " .:-=+*#%@".split("");
-const ANIMATION_DURATION = 1000; // Duration in milliseconds
-const FRAMES_PER_SECOND = 30;
+const ANIMATION_DURATION = 1000;
+const FRAMES_PER_SECOND = 9;
+const WIDTH = 60;
 
 export default function LoadingPagePixel({ onProceed }) {
   const location = useLocation();
   const pixelNumber = location.pathname.split("/").pop().replace("pixel", "");
   const formattedPixelNumber = parseInt(pixelNumber).toString();
-  console.log(formattedPixelNumber);
   const modelPoster = `/data/previews/pixels/model-poster-${formattedPixelNumber}.png`;
   const gridRef = useRef(null);
+  const animationFrameRef = useRef(null);
   const [asciiArt, setAsciiArt] = useState([]);
-  const [animationProgress, setAnimationProgress] = useState(0);
-  const [isAnimating, setIsAnimating] = useState(true);
   const [showScanResults, setShowScanResults] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(true);
   const [isExiting, setIsExiting] = useState(false);
 
   useEffect(() => {
@@ -30,24 +30,20 @@ export default function LoadingPagePixel({ onProceed }) {
       const ctx = canvas.getContext("2d");
 
       const aspectRatio = img.width / img.height;
-      const width = 100;
-      const height = Math.floor(width / aspectRatio);
+      const height = Math.floor(WIDTH / aspectRatio);
 
-      canvas.width = width;
+      canvas.width = WIDTH;
       canvas.height = height;
 
-      ctx.drawImage(img, 0, 0, width, height);
-      const imageData = ctx.getImageData(0, 0, width, height);
+      ctx.drawImage(img, 0, 0, WIDTH, height);
+      const imageData = ctx.getImageData(0, 0, WIDTH, height);
 
       const asciiLines = [];
       for (let y = 0; y < height; y++) {
         let line = "";
-        for (let x = 0; x < width; x++) {
-          const idx = (y * width + x) * 4;
-          const r = imageData.data[idx];
-          const g = imageData.data[idx + 1];
-          const b = imageData.data[idx + 2];
-          const brightness = (r + g + b) / 3;
+        for (let x = 0; x < WIDTH; x++) {
+          const idx = (y * WIDTH + x) * 4;
+          const brightness = (imageData.data[idx] + imageData.data[idx + 1] + imageData.data[idx + 2]) / 3;
           const charIndex = Math.floor((brightness / 255) * (ASCII_CHARS.length - 1));
           line += ASCII_CHARS[charIndex];
         }
@@ -55,71 +51,65 @@ export default function LoadingPagePixel({ onProceed }) {
       }
       setAsciiArt(asciiLines);
     };
-  }, []);
+  }, [modelPoster]);
 
   useEffect(() => {
     if (!asciiArt.length || !isAnimating) return;
 
     const totalFrames = (ANIMATION_DURATION / 1000) * FRAMES_PER_SECOND;
-    const frameInterval = ANIMATION_DURATION / totalFrames;
     let currentFrame = 0;
+    let lastFrameTime = 0;
+    const frameInterval = 1000 / FRAMES_PER_SECOND;
 
-    const animate = () => {
+    const animate = (timestamp) => {
       if (!gridRef.current) return;
 
-      const progress = currentFrame / totalFrames;
-      setAnimationProgress(progress);
+      if (timestamp - lastFrameTime < frameInterval) {
+        animationFrameRef.current = requestAnimationFrame(animate);
+        return;
+      }
 
-      // Start showing scan results at 50% progress
+      const progress = Math.min(currentFrame / totalFrames, 1);
+
       if (progress >= 0.7 && !showScanResults) {
         setShowScanResults(true);
       }
 
-      const randomChars = asciiArt.map((line, y) =>
-        line
-          .split("")
-          .map((char, x) => {
-            // Add more noise to borders
-            if (y === 0 || y === asciiArt.length - 1 || x === 0 || x === line.length - 1) {
-              return Math.random() > 0.1 ? ASCII_CHARS[Math.floor(Math.random() * ASCII_CHARS.length)] : " ";
+      const currentLines = asciiArt.map((line) => {
+        const chars = line.split("");
+        return chars
+          .map((char) => {
+            if (char !== " ") {
+              return progress > Math.random() ? char : ASCII_CHARS[Math.floor(Math.random() * ASCII_CHARS.length)];
             }
-
-            const targetCharIndex = ASCII_CHARS.indexOf(char);
-            const currentProgress = progress * (1 + Math.random() * 0.3); // Add some randomness to progress
-
-            // As progress increases, narrow down the possible characters
-            const range = Math.ceil(ASCII_CHARS.length * (1 - currentProgress));
-            const minIndex = Math.max(0, targetCharIndex - range);
-            const maxIndex = Math.min(ASCII_CHARS.length - 1, targetCharIndex + range);
-
-            // Chance to show random character decreases with progress
-            if (Math.random() > currentProgress * 0.8) {
-              return ASCII_CHARS[minIndex + Math.floor(Math.random() * (maxIndex - minIndex + 1))];
-            }
-
-            // Gradually increase chance of showing correct character
-            return Math.random() > 0.9 ? char : ASCII_CHARS[Math.floor(Math.random() * ASCII_CHARS.length)];
+            return " ";
           })
-          .join("")
-      );
+          .join("");
+      });
 
-      gridRef.current.textContent = randomChars.join("\n");
+      gridRef.current.textContent = currentLines.join("\n");
 
       if (currentFrame < totalFrames) {
         currentFrame++;
-        setTimeout(() => requestAnimationFrame(animate), frameInterval);
+        lastFrameTime = timestamp;
+        animationFrameRef.current = requestAnimationFrame(animate);
       } else {
         setIsAnimating(false);
         gridRef.current.textContent = asciiArt.join("\n");
       }
     };
 
-    requestAnimationFrame(animate);
+    animationFrameRef.current = requestAnimationFrame(animate);
+
+    return () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
   }, [asciiArt, isAnimating]);
 
   const handleProceedClick = () => {
     setIsExiting(true);
-    // Only call onProceed after animation completes
     setTimeout(onProceed, 1000);
   };
 
@@ -129,7 +119,7 @@ export default function LoadingPagePixel({ onProceed }) {
       {showScanResults && (
         <div className={styles.scanResults}>
           <AnimatedText text="SUCCESSFULLY SCANNED" delay={0} />
-          <AnimatedText text="PIXEL 0072" delay={500} />
+          <AnimatedText text={`PIXEL ${formattedPixelNumber}`} delay={500} />
         </div>
       )}
       {!isAnimating && <Button onClick={handleProceedClick}>[TAP HERE TO PROCEED]</Button>}

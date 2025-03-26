@@ -12,8 +12,8 @@ a,
 input,
 select,
 textarea {
-  min-height: 36px;
-  min-width: 36px;
+  min-height: 34px;
+  min-width: 34px;
 }
 
 /* Fix for iOS input zooming */

@@ -9,8 +9,9 @@
 .gridItem {
   display: flex;
   flex-direction: column;
-  gap: 0rem;
-  border-top: 0.5px solid var(--text-primary);
+  justify-content: space-between;
+  gap: 0.5rem;
+
   padding-top: 0.33rem;
   margin-bottom: 0.75rem;
 }
@@ -19,20 +20,53 @@
   grid-column: 1 / -1;
 }
 
+.space {
+  border-top: 1px solid var(--text-primary);
+  padding: 0 0.75rem;
+}
+
+.globeSpace {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0.75rem;
+  border-top: 1px solid var(--text-primary);
+}
+
 .globeItem {
   grid-column: span 1;
+}
+
+.globeItem .content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.globeItem .value {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.globeItem .titleRow {
+  margin-bottom: 0.25rem;
 }
 
 .titleRow {
   display: flex;
   align-items: center;
   gap: 0.33rem;
+  justify-content: space-between;
 }
 
 .title {
   font-size: 0.75rem;
   text-transform: uppercase;
-  color: #666;
+  color: var(--text-primary);
+  flex: 1;
 }
 
 .infoButton {
@@ -46,10 +80,11 @@
   justify-content: center;
   font-size: var(--font-sm);
   cursor: pointer;
+  flex-shrink: 0;
 }
 
 .value {
-  font-size: var(--font-sm);
+  font-size: var(--font-md);
   font-weight: 500;
   font-family: monospace;
 }
@@ -57,10 +92,6 @@
 .fullWidth .value {
   white-space: pre-wrap;
   word-break: break-word;
-}
-
-.globeItem .value {
-  height: 120px;
 }
 
 .infoText {
@@ -93,7 +124,11 @@
 
 @media (max-width: 480px) {
   .grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
+  }
+
+  .globeItem {
+    grid-column: span 1;
   }
 }
 

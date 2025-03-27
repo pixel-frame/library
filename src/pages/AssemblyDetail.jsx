@@ -8,16 +8,16 @@ import ExpandButton from "../components/buttons/ExpandButton";
 import CloseButton from "../components/buttons/CloseButton";
 import NetworkMatrix from "../components/datavis/NetworkMatrix";
 
-const AssemblyDetail = ({ assemblyId, onBack }) => {
+const AssemblyDetail = ({ assemblyId, assembly: passedAssembly, fullData: passedFullData, onBack }) => {
   const { id: urlId } = useParams();
   const effectiveId = assemblyId || urlId;
   const location = useLocation();
-  const [assembly, setAssembly] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [assembly, setAssembly] = useState(passedAssembly || null);
+  const [loading, setLoading] = useState(!passedAssembly);
   const [error, setError] = useState(null);
   const [modelPath, setModelPath] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false);
-  const [fullData, setFullData] = useState(null);
+  const [fullData, setFullData] = useState(passedFullData || null);
   const [fullscreenImage, setFullscreenImage] = useState(null);
 
   const availableModels = ["0001", "0002", "0003", "0004", "0005", "0009", "0010"];
@@ -54,6 +54,29 @@ const AssemblyDetail = ({ assemblyId, onBack }) => {
   };
 
   useEffect(() => {
+    // If we already have the assembly data passed as props, use it
+    if (passedAssembly && passedFullData) {
+      setAssembly(passedAssembly);
+      setFullData(passedFullData);
+
+      const modelSerial = getModelSerial(passedAssembly);
+      setModelPath(modelSerial ? `/data/models/assemblies/${modelSerial}.glb` : null);
+      setLoading(false);
+      return;
+    }
+
+    // Otherwise, if we have location state, use that
+    if (location.state?.assembly) {
+      setAssembly(location.state.assembly);
+      setFullData({ reconfigurations: [location.state.assembly] });
+
+      const modelSerial = getModelSerial(location.state.assembly);
+      setModelPath(modelSerial ? `/data/models/assemblies/${modelSerial}.glb` : null);
+      setLoading(false);
+      return;
+    }
+
+    // As a fallback, fetch the data
     const fetchAssemblyDetail = async () => {
       try {
         const response = await fetch("/data/bank/assembly/assemblies.json");
@@ -76,17 +99,8 @@ const AssemblyDetail = ({ assemblyId, onBack }) => {
       }
     };
 
-    if (location.state?.assembly) {
-      setAssembly(location.state.assembly);
-      setFullData({ reconfigurations: [location.state.assembly] });
-
-      const modelSerial = getModelSerial(location.state.assembly);
-      setModelPath(modelSerial ? `/data/models/assemblies/${modelSerial}.glb` : null);
-      setLoading(false);
-    } else {
-      fetchAssemblyDetail();
-    }
-  }, [effectiveId, location.state]);
+    fetchAssemblyDetail();
+  }, [effectiveId, location.state, passedAssembly, passedFullData]);
 
   if (loading) return <div className="loading-indicator">Loading assembly details...</div>;
   if (error) return <div className="error-message">{error}</div>;

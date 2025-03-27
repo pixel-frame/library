@@ -68,7 +68,12 @@ const Explore = () => {
 
       {focusedAssembly && (
         <Card isOpen={isSheetOpen} onClose={handleBack}>
-          <AssemblyDetail assemblyId={focusedAssembly.serial} onBack={handleBack} />
+          <AssemblyDetail
+            assemblyId={focusedAssembly.serial}
+            assembly={focusedAssembly}
+            fullData={{ reconfigurations: assemblies }}
+            onBack={handleBack}
+          />
         </Card>
       )}
     </div>

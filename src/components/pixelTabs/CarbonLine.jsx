@@ -2,6 +2,68 @@ import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import styles from "./CarbonLine.module.css";
 
+// Helper function to safely parse dates (Safari-compatible)
+const safeParseDate = (dateString) => {
+  if (!dateString) return new Date();
+
+  // Handle ISO strings in a Safari-compatible way
+  if (typeof dateString === "string") {
+    // Replace any hyphens with slashes for better Safari compatibility
+    const safeDateString = dateString.replace(/-/g, "/");
+
+    // For ISO strings with time and timezone info
+    if (dateString.includes("T")) {
+      return new Date(dateString); // Keep original format for ISO strings with time
+    }
+
+    return new Date(safeDateString);
+  }
+
+  // If it's already a Date object
+  if (dateString instanceof Date) {
+    return dateString;
+  }
+
+  // Fallback
+  return new Date();
+};
+
+// Update the createXScale function to use the safe date parsing
+const createXScale = (startDate, endDate, width) => {
+  // Safely parse dates
+  const parsedStartDate = safeParseDate(startDate);
+  const parsedEndDate = safeParseDate(endDate);
+
+  // Calculate the time span in years
+  const years = (parsedEndDate - parsedStartDate) / (1000 * 60 * 60 * 24 * 365);
+
+  // For longer time spans, adjust padding proportionally
+  const paddingMonths = years > 5 ? 6 : 2;
+
+  // Create padded dates
+  const paddedStartDate = new Date(parsedStartDate);
+  paddedStartDate.setMonth(paddedStartDate.getMonth() - paddingMonths);
+
+  const paddedEndDate = new Date(parsedEndDate);
+  paddedEndDate.setMonth(paddedEndDate.getMonth() + paddingMonths);
+
+  return d3.scaleTime().domain([paddedStartDate, paddedEndDate]).range([0, width]);
+};
+
+// Update getTickCount to use safe date parsing
+const getTickCount = (startDate, endDate) => {
+  if (!startDate || !endDate) return 6;
+
+  const start = safeParseDate(startDate);
+  const end = safeParseDate(endDate);
+  const years = (end - start) / (1000 * 60 * 60 * 24 * 365);
+
+  if (years > 10) return Math.ceil(years / 2); // One tick every 2 years
+  if (years > 5) return years + 1; // One tick per year
+  if (years > 2) return years * 2; // Two ticks per year
+  return years * 4; // Quarterly ticks for shorter spans
+};
+
 const CarbonLine = ({
   emissionsData,
   currentDate,
@@ -101,18 +163,11 @@ const CarbonLine = ({
         const margin = { top: 60, right: 4, bottom: 60, left: 4 };
         const innerWidth = dimensions.width - margin.left - margin.right;
 
-        // Use dateRange to set up the scale
-        const paddedStartDate = new Date(dateRange?.start);
-        paddedStartDate.setMonth(paddedStartDate.getMonth() - 2);
-
-        const today = new Date();
-        const paddedEndDate = new Date(today);
-        paddedEndDate.setMonth(paddedEndDate.getMonth() + 1);
-
-        const xScale = d3.scaleTime().domain([paddedStartDate, paddedEndDate]).range([0, innerWidth]);
+        // Use the helper function to create xScale with safe date parsing
+        const xScale = createXScale(dateRange?.start, dateRange?.end, innerWidth);
 
         // Calculate position for the first event
-        const firstEventDate = new Date(emissionsData[0].timestamp);
+        const firstEventDate = safeParseDate(emissionsData[0].timestamp);
         const xPos = xScale(firstEventDate);
 
         // Set the indicator position
@@ -138,19 +193,12 @@ const CarbonLine = ({
     const margin = { top: 60, right: 4, bottom: 60, left: 4 };
     const innerWidth = dimensions.width - margin.left - margin.right;
 
-    // Use dateRange to set up the scale
-    const paddedStartDate = new Date(dateRange?.start);
-    paddedStartDate.setMonth(paddedStartDate.getMonth() - 2);
-
-    const today = new Date();
-    const paddedEndDate = new Date(today);
-    paddedEndDate.setMonth(paddedEndDate.getMonth() + 1);
-
-    const xScale = d3.scaleTime().domain([paddedStartDate, paddedEndDate]).range([0, innerWidth]);
+    // Use the helper function to create xScale with safe date parsing
+    const xScale = createXScale(dateRange?.start, dateRange?.end, innerWidth);
 
     // Get the date for the current event index
     if (emissionsData[currentEventIndex]) {
-      const eventDate = new Date(emissionsData[currentEventIndex].timestamp);
+      const eventDate = safeParseDate(emissionsData[currentEventIndex].timestamp);
       const xPos = xScale(eventDate);
 
       // Update the indicator position
@@ -182,23 +230,16 @@ const CarbonLine = ({
     const constrainedX = Math.max(0, Math.min(x, innerWidth));
     setTimeIndicatorPosition(constrainedX + margin.left);
 
-    // Get the date at cursor position
-    const paddedStartDate = new Date(dateRange?.start);
-    paddedStartDate.setMonth(paddedStartDate.getMonth() - 2);
-
-    const today = new Date();
-    const paddedEndDate = new Date(today);
-    paddedEndDate.setMonth(paddedEndDate.getMonth() + 1);
-
-    const xScale = d3.scaleTime().domain([paddedStartDate, paddedEndDate]).range([0, innerWidth]);
+    // Use the helper function to create xScale with safe date parsing
+    const xScale = createXScale(dateRange?.start, dateRange?.end, innerWidth);
 
     const cursorDate = xScale.invert(constrainedX);
 
     // Sort data points by timestamp
-    const sortedPoints = [...emissionsData].sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+    const sortedPoints = [...emissionsData].sort((a, b) => safeParseDate(a.timestamp) - safeParseDate(b.timestamp));
 
     // Find all points that are before or at the cursor position
-    const pointsBeforeCursor = sortedPoints.filter((point) => new Date(point.timestamp) <= cursorDate);
+    const pointsBeforeCursor = sortedPoints.filter((point) => safeParseDate(point.timestamp) <= cursorDate);
 
     // If no points are before the cursor, select the first point
     if (pointsBeforeCursor.length === 0) {
@@ -267,7 +308,8 @@ const CarbonLine = ({
     const paddedEndDate = new Date(minEndDate);
     paddedEndDate.setMonth(paddedEndDate.getMonth() + 1);
 
-    const xScale = d3.scaleTime().domain([paddedStartDate, paddedEndDate]).range([0, innerWidth]);
+    // Use the helper function to create xScale with safe date parsing
+    const xScale = createXScale(dateRange?.start, dateRange?.end, innerWidth);
 
     // Adjust y-scale domain padding to account for point size
     const yMin = 0; // Always start at 0

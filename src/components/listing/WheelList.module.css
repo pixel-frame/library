@@ -6,7 +6,7 @@ body {
 
 .wheel {
   display: block;
-  color: var(--color-white);
+  color: var(--text-primary);
   height: 100%;
   overflow: visible;
   width: 100%;
@@ -94,7 +94,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: var(--color-black);
+  background: var(--bg-primary);
   width: 100vw;
 }
 

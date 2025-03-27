@@ -21,11 +21,13 @@
 
 .navItem {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
+  justify-content: center;
+  gap: 8px;
   text-decoration: none;
   color: var(--bg-primary);
-  width: 33.33%;
+  text-align: center;
 }
 
 .navText {

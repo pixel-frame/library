@@ -12,11 +12,11 @@ const SheetModal = ({ children, isOpen, onClose }) => {
   };
 
   return (
-    <Sheet isOpen={isOpen} onClose={onClose} detent="content-height">
-      <Sheet.Container className={`${styles.card} ${isScrolled ? styles.expanded : ""}`}>
+    <Sheet isOpen={isOpen} onClose={onClose}>
+      <Sheet.Container className={styles.card}>
         <Sheet.Header className={styles.handle} />
-        <Sheet.Content className={styles.content} onScroll={handleScroll} ref={contentRef}>
-          {children}
+        <Sheet.Content onScroll={handleScroll} ref={contentRef}>
+          <Sheet.Scroller draggableAt="top"> {children}</Sheet.Scroller>
         </Sheet.Content>
       </Sheet.Container>
       {/* <Sheet.Backdrop /> */}

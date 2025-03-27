@@ -9,7 +9,6 @@ const InteractiveGlobe = ({ highlightedAssembly, focusedAssembly }) => {
   const projectionRef = useRef(null);
   const [userInteracted, setUserInteracted] = useState(false);
   const [assemblies, setAssemblies] = useState([]);
-  const [is3D, setIs3D] = useState(true);
   const animationRef = useRef(null);
   const rotationRef = useRef([-12, -42, 0]);
   const transformRef = useRef(null);
@@ -20,7 +19,7 @@ const InteractiveGlobe = ({ highlightedAssembly, focusedAssembly }) => {
 
   // Define updateGlobe at component level
   const updateGlobe = useCallback(() => {
-    if (!is3D || !projectionRef.current || !svgRef.current) return;
+    if (!projectionRef.current || !svgRef.current) return;
 
     const mapGroup = d3.select(svgRef.current).select("g");
     const pointsGroup = d3.select(svgRef.current).select("g:last-of-type");
@@ -42,7 +41,7 @@ const InteractiveGlobe = ({ highlightedAssembly, focusedAssembly }) => {
       });
 
     pointsGroup.selectAll(".routePath").attr("d", path);
-  }, [is3D]);
+  }, []);
 
   // Load assemblies data
   useEffect(() => {
@@ -104,11 +103,6 @@ const InteractiveGlobe = ({ highlightedAssembly, focusedAssembly }) => {
     return points;
   };
 
-  const handleToggleView = () => {
-    setIs3D(!is3D);
-    setUserInteracted(false); // Reset interaction state when toggling
-  };
-
   // Simplified autoRotate function - only check shouldRotateRef
   const autoRotate = useCallback(() => {
     if (!shouldRotateRef.current || !projectionRef.current) return;
@@ -147,21 +141,17 @@ const InteractiveGlobe = ({ highlightedAssembly, focusedAssembly }) => {
     // Clear previous content
     d3.select(svgRef.current).selectAll("*").remove();
 
-    // Set dimensions based on view type
-    const width = is3D ? 300 : 800;
-    const height = is3D ? 300 : 450;
+    // Set dimensions for 3D globe
+    const width = 300;
+    const height = 300;
 
-    // Create the appropriate projection
-    projectionRef.current = is3D
-      ? geoOrthographic()
-          .scale(width / 2 - 10)
-          .translate([width / 2, height / 2])
-          .clipAngle(90)
-          .precision(0.1)
-          .rotate([12, 42, 0])
-      : geoMercator()
-          .scale(width / 2 / Math.PI)
-          .translate([width / 2, height / 2]);
+    // Create the orthographic projection for 3D globe
+    projectionRef.current = geoOrthographic()
+      .scale(width / 2 - 10)
+      .translate([width / 2, height / 2])
+      .clipAngle(90)
+      .precision(0.1)
+      .rotate([12, 42, 0]);
 
     const initialScale = projectionRef.current.scale();
     const path = geoPath().projection(projectionRef.current);
@@ -172,15 +162,13 @@ const InteractiveGlobe = ({ highlightedAssembly, focusedAssembly }) => {
       .attr("width", "100%")
       .attr("height", "100%");
 
-    // Add globe outline for 3D view
-    if (is3D) {
-      svg
-        .append("circle")
-        .attr("cx", width / 2)
-        .attr("cy", height / 2)
-        .attr("r", initialScale)
-        .attr("class", styles.globeOutline);
-    }
+    // Add globe outline
+    svg
+      .append("circle")
+      .attr("cx", width / 2)
+      .attr("cy", height / 2)
+      .attr("r", initialScale)
+      .attr("class", styles.globeOutline);
 
     // Create a container for all the map elements
     const mapGroup = svg.append("g");
@@ -190,33 +178,22 @@ const InteractiveGlobe = ({ highlightedAssembly, focusedAssembly }) => {
 
     // Function to create route path
     const createRoutePath = (start, end) => {
-      if (is3D) {
-        // For 3D globe, create a curved path
-        const route = d3.geoInterpolate([start.longitude, start.latitude], [end.longitude, end.latitude]);
+      // Create a curved path for 3D globe
+      const route = d3.geoInterpolate([start.longitude, start.latitude], [end.longitude, end.latitude]);
 
-        const routePoints = [];
-        for (let t = 0; t <= 1; t += 0.01) {
-          routePoints.push(route(t));
-        }
-
-        return {
-          type: "LineString",
-          coordinates: routePoints,
-        };
-      } else {
-        // For 2D map, use a simple line
-        return {
-          type: "LineString",
-          coordinates: [
-            [start.longitude, start.latitude],
-            [end.longitude, end.latitude],
-          ],
-        };
+      const routePoints = [];
+      for (let t = 0; t <= 1; t += 0.01) {
+        routePoints.push(route(t));
       }
+
+      return {
+        type: "LineString",
+        coordinates: routePoints,
+      };
     };
 
     // Set initial rotation from stored value
-    if (is3D && rotationRef.current) {
+    if (rotationRef.current) {
       projectionRef.current.rotate(rotationRef.current);
       updateGlobe();
     }
@@ -295,26 +272,14 @@ const InteractiveGlobe = ({ highlightedAssembly, focusedAssembly }) => {
                 .attr("text-anchor", "middle")
                 .attr("class", styles.markerText)
                 .text(`[${d.count}]`);
-
-              if (!is3D) {
-                element
-                  .append("text")
-                  .attr("y", 15)
-                  .attr("x", -3)
-                  .attr("text-anchor", "middle")
-                  .attr("class", styles.locationName)
-                  .text(d.name);
-              }
             })
             .attr("transform", (d) => {
               const coords = projectionRef.current([d.longitude, d.latitude]);
               return coords ? `translate(${coords[0]}, ${coords[1]})` : null;
             });
 
-          // For 3D view, immediately update to hide points on the back side
-          if (is3D) {
-            updateGlobe();
-          }
+          // Update to hide points on the back side
+          updateGlobe();
 
           // Create lines between consecutive points
           for (let i = 0; i < pointsData.length - 1; i++) {
@@ -331,102 +296,65 @@ const InteractiveGlobe = ({ highlightedAssembly, focusedAssembly }) => {
               .attr("class", `${styles.routeLine} ${styles.airRoute} routePath`)
               .attr("d", path);
           }
+        }
 
-          // For 2D view, automatically zoom to fit all points
-          if (!is3D && pointsData.length > 0) {
-            // Create a GeoJSON feature collection from the points
-            const pointFeatures = {
-              type: "FeatureCollection",
-              features: pointsData.map((d) => ({
-                type: "Feature",
-                geometry: {
-                  type: "Point",
-                  coordinates: [d.longitude, d.latitude],
-                },
-              })),
+        // 3D specific interactions
+        const dragBehavior = d3
+          .drag()
+          .on("start", function (event) {
+            setUserInteracted(true);
+            event.sourceEvent.stopPropagation();
+            const r = projectionRef.current.rotate();
+            const point = d3.pointer(event, this);
+
+            // Store initial position and rotation
+            this.__rotation = {
+              x0: point[0],
+              y0: point[1],
+              r0: r,
             };
+          })
+          .on("drag", function (event) {
+            if (!this.__rotation) return;
 
-            // Calculate the bounds of the points
-            const bounds = path.bounds(pointFeatures);
-            const dx = bounds[1][0] - bounds[0][0];
-            const dy = bounds[1][1] - bounds[0][1];
-            const x = (bounds[0][0] + bounds[1][0]) / 2;
-            const y = (bounds[0][1] + bounds[1][1]) / 2;
-            const scale = 0.8 / Math.max(dx / width, dy / height);
-            const translate = [width / 2 - scale * x, height / 2 - scale * y];
+            const point = d3.pointer(event, this);
+            const rotation = this.__rotation;
 
-            // Apply the transform
-            mapGroup.attr("transform", `translate(${translate}) scale(${scale})`);
-            pointsGroup.attr("transform", `translate(${translate}) scale(${scale})`);
-          }
+            const x1 = point[0];
+            const y1 = point[1];
+
+            const deltaX = (x1 - rotation.x0) / 5;
+            const deltaY = (y1 - rotation.y0) / 5;
+
+            const newRotation = [rotation.r0[0] + deltaX, rotation.r0[1] - deltaY, rotation.r0[2]];
+            projectionRef.current.rotate(newRotation);
+            // Store current rotation
+            rotationRef.current = newRotation;
+
+            updateGlobe();
+          });
+
+        svg.call(dragBehavior);
+
+        // Start auto-rotation if not focused
+        if (!focusedAssembly) {
+          shouldRotateRef.current = true;
+          autoRotate();
         }
 
-        if (is3D) {
-          // 3D specific interactions
-
-          // Improved rotation interaction
-          const dragBehavior = d3
-            .drag()
-            .on("start", function (event) {
-              setUserInteracted(true);
-              event.sourceEvent.stopPropagation();
-              const r = projectionRef.current.rotate();
-              const point = d3.pointer(event, this);
-
-              // Store initial position and rotation
-              this.__rotation = {
-                x0: point[0],
-                y0: point[1],
-                r0: r,
-              };
-            })
-            .on("drag", function (event) {
-              if (!this.__rotation) return;
-
-              const point = d3.pointer(event, this);
-              const rotation = this.__rotation;
-
-              const x1 = point[0];
-              const y1 = point[1];
-
-              const deltaX = (x1 - rotation.x0) / 5;
-              const deltaY = (y1 - rotation.y0) / 5;
-
-              const newRotation = [rotation.r0[0] + deltaX, rotation.r0[1] - deltaY, rotation.r0[2]];
-              projectionRef.current.rotate(newRotation);
-              // Store current rotation
-              rotationRef.current = newRotation;
-
-              updateGlobe();
-            });
-
-          svg.call(dragBehavior);
-
-          // Start auto-rotation if not focused
-          if (is3D && !focusedAssembly) {
-            shouldRotateRef.current = true;
-            autoRotate();
-          }
-        }
-
-        // Add zoom and pan functionality (works for both 2D and 3D)
+        // Add zoom functionality
         const zoom = d3
           .zoom()
-          .scaleExtent([is3D ? 0.7 : 1, 8])
+          .scaleExtent([0.7, 8])
           .on("zoom", (event) => {
             setUserInteracted(true);
             // Store current transform
             transformRef.current = event.transform;
 
-            if (is3D) {
-              const newScale = initialScale * event.transform.k;
-              projectionRef.current.scale(newScale);
-              svg.select("circle").attr("r", newScale);
-              updateGlobe();
-            } else {
-              mapGroup.attr("transform", event.transform);
-              pointsGroup.attr("transform", event.transform);
-            }
+            const newScale = initialScale * event.transform.k;
+            projectionRef.current.scale(newScale);
+            svg.select("circle").attr("r", newScale);
+            updateGlobe();
           });
 
         // Apply stored transform if it exists
@@ -445,7 +373,7 @@ const InteractiveGlobe = ({ highlightedAssembly, focusedAssembly }) => {
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [assemblies, is3D, highlightedAssembly, autoRotate, focusedAssembly]);
+  }, [assemblies, highlightedAssembly, focusedAssembly]);
 
   // Add this effect to handle focusing on a specific assembly
   useEffect(() => {
@@ -454,75 +382,26 @@ const InteractiveGlobe = ({ highlightedAssembly, focusedAssembly }) => {
     const svg = d3.select(svgRef.current);
     const zoom = d3.zoom().scaleExtent([0.7, 8]);
 
-    if (is3D) {
-      const targetRotation = [
-        -focusedAssembly.location.coordinates.longitude,
-        -focusedAssembly.location.coordinates.latitude,
-        0,
-      ];
-      projectionRef.current.rotate(targetRotation);
-      rotationRef.current = targetRotation;
+    const targetRotation = [
+      -focusedAssembly.location.coordinates.longitude,
+      -focusedAssembly.location.coordinates.latitude,
+      0,
+    ];
+    projectionRef.current.rotate(targetRotation);
+    rotationRef.current = targetRotation;
 
-      // Increased zoom level from 2.5 to 5
-      const transform = d3.zoomIdentity.scale(8);
-      svg.transition().duration(1000).call(zoom.transform, transform);
-      transformRef.current = transform;
+    // Increased zoom level to 8
+    const transform = d3.zoomIdentity.scale(8);
+    svg.transition().duration(1000).call(zoom.transform, transform);
+    transformRef.current = transform;
 
-      updateGlobe();
-    } else {
-      const coordinates = [
-        focusedAssembly.location.coordinates.longitude,
-        focusedAssembly.location.coordinates.latitude,
-      ];
-      const point = projectionRef.current(coordinates);
-
-      if (point) {
-        const width = svg.node().getBoundingClientRect().width;
-        const height = svg.node().getBoundingClientRect().height;
-
-        // Increased zoom level from 2.5 to 5
-        const transform = d3.zoomIdentity
-          .translate(width / 2, height / 2)
-          .scale(5)
-          .translate(-point[0], -point[1]);
-
-        svg.transition().duration(1000).call(zoom.transform, transform);
-        transformRef.current = transform;
-      }
-    }
+    updateGlobe();
 
     setUserInteracted(true);
-  }, [focusedAssembly, is3D]);
-
-  // Effect to handle reset when focusedAssembly is cleared
-  useEffect(() => {
-    if (!focusedAssembly && svgRef.current && projectionRef.current) {
-      const svg = d3.select(svgRef.current);
-      const zoom = d3.zoom().scaleExtent([0.7, 8]);
-
-      // Reset zoom/scale with animation
-      const transform = d3.zoomIdentity.scale(DEFAULT_SCALE);
-      svg.transition().duration(1000).call(zoom.transform, transform);
-      transformRef.current = transform;
-
-      // Resume auto-rotation
-      shouldRotateRef.current = true;
-      autoRotate();
-
-      updateGlobe();
-    }
-  }, [focusedAssembly, is3D, autoRotate]);
+  }, [focusedAssembly]);
 
   return (
     <div className={styles.interactiveGlobeContainer}>
-      <button
-        className={styles.viewToggleButton}
-        onClick={handleToggleView}
-        aria-label={`Switch to ${is3D ? "2D" : "3D"} view`}
-        tabIndex="0"
-      >
-        Switch to {is3D ? "2D" : "3D"} View
-      </button>
       <svg ref={svgRef} className={styles.interactiveGlobe}></svg>
     </div>
   );

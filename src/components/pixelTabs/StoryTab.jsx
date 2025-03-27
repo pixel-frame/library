@@ -2,6 +2,7 @@ import { useState, useMemo, useEffect, useRef } from "react";
 import styles from "./StoryTab.module.css";
 import LogCardContainer from "./LogCardContainer";
 import CarbonLine from "./CarbonLine";
+import { safeParseDate } from "../../utils/dateUtils";
 
 const StoryTab = ({ pixel }) => {
   const [timelinePosition, setTimelinePosition] = useState(0.5); // Start in the middle
@@ -25,7 +26,8 @@ const StoryTab = ({ pixel }) => {
       };
     }
 
-    const dates = pixel.timeline.map((event) => new Date(event.date));
+    // Use safeParseDate for consistent date parsing
+    const dates = pixel.timeline.map((event) => safeParseDate(event.date).getTime());
     const start = new Date(Math.min(...dates));
     const end = new Date(Math.max(...dates));
 
@@ -39,41 +41,75 @@ const StoryTab = ({ pixel }) => {
   const timelineEvents = useMemo(() => {
     if (!pixel?.timeline) return [];
 
-    return pixel.timeline.map((event) => ({
-      date: new Date(event.date).toISOString().slice(0, 7), // Format: YYYY-MM
-      type: event.name.toLowerCase().includes("test")
-        ? "test"
-        : event.name.toLowerCase().includes("transport")
-        ? "travel"
-        : event.name.toLowerCase().includes("exhibition")
-        ? "exhibition"
-        : "fabrication",
-      title: event.name,
-      details: event.description,
-      id: event.step,
-    }));
+    return pixel.timeline.map((event) => {
+      // Safely parse the date
+      const parsedDate = safeParseDate(event.date);
+
+      // Check if date is valid before formatting
+      const formattedDate = !isNaN(parsedDate.getTime())
+        ? parsedDate.toISOString().slice(0, 7) // Format: YYYY-MM
+        : new Date().toISOString().slice(0, 7); // Fallback to current date
+
+      return {
+        date: formattedDate,
+        type: event.name.toLowerCase().includes("test")
+          ? "test"
+          : event.name.toLowerCase().includes("transport")
+          ? "travel"
+          : event.name.toLowerCase().includes("exhibition")
+          ? "exhibition"
+          : "fabrication",
+        title: event.name,
+        details: event.description,
+        id: event.step,
+      };
+    });
   }, [pixel]);
 
   const emissionsData = useMemo(() => {
     if (!pixel?.timeline) return [];
 
-    return pixel.timeline.map((event) => ({
-      timestamp: new Date(event.date).toISOString().slice(0, 10), // Format: YYYY-MM-DD
-      value: event.emissions.running_total,
-      event: event.name,
-    }));
+    // First sort the timeline by date to ensure chronological order
+    // This is critical for proper line rendering
+    const sortedTimeline = [...pixel.timeline].sort((a, b) => {
+      const dateA = safeParseDate(a.date).getTime();
+      const dateB = safeParseDate(b.date).getTime();
+      return dateA - dateB;
+    });
+
+    return sortedTimeline.map((event) => {
+      // Safely parse the date
+      const parsedDate = safeParseDate(event.date);
+
+      return {
+        timestamp: parsedDate.toISOString(), // Use full ISO string for consistency
+        rawDate: parsedDate, // Store the actual Date object for calculations
+        value: event.emissions?.running_total || 0,
+        event: event.name,
+      };
+    });
   }, [pixel]);
 
   const travelData = useMemo(() => {
     if (!pixel?.timeline) return [];
 
-    return pixel.timeline.map((event) => ({
-      timestamp: new Date(event.date).toISOString().slice(0, 7),
-      from: event.transport?.type === "N/A" ? event.location?.name || "Unknown" : "",
-      to: event.location?.name || "Unknown",
-      distance: event.transport?.distance?.toString() || "0",
-      mode: (event.transport?.type || "unknown").toLowerCase(),
-    }));
+    return pixel.timeline.map((event) => {
+      // Safely parse the date
+      const parsedDate = safeParseDate(event.date);
+
+      // Check if date is valid before formatting
+      const formattedDate = !isNaN(parsedDate.getTime())
+        ? parsedDate.toISOString().slice(0, 7) // Format: YYYY-MM
+        : new Date().toISOString().slice(0, 7); // Fallback to current date
+
+      return {
+        timestamp: formattedDate,
+        from: event.transport?.type === "N/A" ? event.location?.name || "Unknown" : "",
+        to: event.location?.name || "Unknown",
+        distance: event.transport?.distance?.toString() || "0",
+        mode: (event.transport?.type || "unknown").toLowerCase(),
+      };
+    });
   }, [pixel]);
 
   const calculateAge = (date) => {
@@ -112,15 +148,15 @@ const StoryTab = ({ pixel }) => {
 
     // Find the emission data point closest to this event
     const closestEmission = emissionsData.reduce((prev, curr) => {
-      const prevDiff = Math.abs(new Date(prev.timestamp) - eventDate);
-      const currDiff = Math.abs(new Date(curr.timestamp) - eventDate);
+      const prevDiff = Math.abs(safeParseDate(prev.timestamp).getTime() - eventDate.getTime());
+      const currDiff = Math.abs(safeParseDate(curr.timestamp).getTime() - eventDate.getTime());
       return currDiff < prevDiff ? curr : prev;
     });
 
     // Find the travel data point closest to this event
     const closestTravel = travelData.reduce((prev, curr) => {
-      const prevDiff = Math.abs(new Date(prev.timestamp) - eventDate);
-      const currDiff = Math.abs(new Date(curr.timestamp) - eventDate);
+      const prevDiff = Math.abs(safeParseDate(prev.timestamp).getTime() - eventDate.getTime());
+      const currDiff = Math.abs(safeParseDate(curr.timestamp).getTime() - eventDate.getTime());
       return currDiff < prevDiff ? curr : prev;
     });
 
@@ -158,17 +194,19 @@ const StoryTab = ({ pixel }) => {
       dateRange.start.getTime() + (dateRange.end.getTime() - dateRange.start.getTime()) * timelinePosition
     );
 
-    // Find nearest emission data point
+    // Find nearest emission data point using consistent date parsing
     const emission = emissionsData.reduce((prev, curr) => {
-      const prevDiff = Math.abs(new Date(prev.timestamp) - currentDate);
-      const currDiff = Math.abs(new Date(curr.timestamp) - currentDate);
+      // Use safeParseDate and getTime() for consistent numeric comparison
+      const prevDiff = Math.abs(safeParseDate(prev.timestamp).getTime() - currentDate.getTime());
+      const currDiff = Math.abs(safeParseDate(curr.timestamp).getTime() - currentDate.getTime());
       return currDiff < prevDiff ? curr : prev;
     });
 
-    // Find nearest travel data point
+    // Find nearest travel data point using consistent date parsing
     const travel = travelData.reduce((prev, curr) => {
-      const prevDiff = Math.abs(new Date(prev.timestamp) - currentDate);
-      const currDiff = Math.abs(new Date(curr.timestamp) - currentDate);
+      // Use safeParseDate and getTime() for consistent numeric comparison
+      const prevDiff = Math.abs(safeParseDate(prev.timestamp).getTime() - currentDate.getTime());
+      const currDiff = Math.abs(safeParseDate(curr.timestamp).getTime() - currentDate.getTime());
       return currDiff < prevDiff ? curr : prev;
     });
 

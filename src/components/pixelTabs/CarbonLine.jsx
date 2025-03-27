@@ -1,32 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import styles from "./CarbonLine.module.css";
-
-// Helper function to safely parse dates (Safari-compatible)
-const safeParseDate = (dateString) => {
-  if (!dateString) return new Date();
-
-  // Handle ISO strings in a Safari-compatible way
-  if (typeof dateString === "string") {
-    // Replace any hyphens with slashes for better Safari compatibility
-    const safeDateString = dateString.replace(/-/g, "/");
-
-    // For ISO strings with time and timezone info
-    if (dateString.includes("T")) {
-      return new Date(dateString); // Keep original format for ISO strings with time
-    }
-
-    return new Date(safeDateString);
-  }
-
-  // If it's already a Date object
-  if (dateString instanceof Date) {
-    return dateString;
-  }
-
-  // Fallback
-  return new Date();
-};
+import { safeParseDate, getTickCount, createTimeScale } from "../../utils/dateUtils";
 
 // Update the createXScale function to use the safe date parsing
 const createXScale = (startDate, endDate, width) => {
@@ -50,30 +25,7 @@ const createXScale = (startDate, endDate, width) => {
   return d3.scaleTime().domain([paddedStartDate, paddedEndDate]).range([0, width]);
 };
 
-// Update getTickCount to use safe date parsing
-const getTickCount = (startDate, endDate) => {
-  if (!startDate || !endDate) return 6;
-
-  const start = safeParseDate(startDate);
-  const end = safeParseDate(endDate);
-  const years = (end - start) / (1000 * 60 * 60 * 24 * 365);
-
-  if (years > 10) return Math.ceil(years / 2); // One tick every 2 years
-  if (years > 5) return years + 1; // One tick per year
-  if (years > 2) return years * 2; // Two ticks per year
-  return years * 4; // Quarterly ticks for shorter spans
-};
-
-const CarbonLine = ({
-  emissionsData,
-  currentDate,
-  minValue,
-  maxValue,
-  dateRange,
-  onEventChange,
-  currentEventIndex,
-  isActive,
-}) => {
+const CarbonLine = ({ emissionsData, minValue, maxValue, dateRange, onEventChange, currentEventIndex, isActive }) => {
   const containerRef = useRef(null);
   const svgRef = useRef(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
@@ -164,7 +116,7 @@ const CarbonLine = ({
         const innerWidth = dimensions.width - margin.left - margin.right;
 
         // Use the helper function to create xScale with safe date parsing
-        const xScale = createXScale(dateRange?.start, dateRange?.end, innerWidth);
+        const xScale = createTimeScale(dateRange?.start, dateRange?.end, innerWidth, d3);
 
         // Calculate position for the first event
         const firstEventDate = safeParseDate(emissionsData[0].timestamp);
@@ -194,7 +146,7 @@ const CarbonLine = ({
     const innerWidth = dimensions.width - margin.left - margin.right;
 
     // Use the helper function to create xScale with safe date parsing
-    const xScale = createXScale(dateRange?.start, dateRange?.end, innerWidth);
+    const xScale = createTimeScale(dateRange?.start, dateRange?.end, innerWidth, d3);
 
     // Get the date for the current event index
     if (emissionsData[currentEventIndex]) {
@@ -221,7 +173,6 @@ const CarbonLine = ({
     const svg = d3.select(svgRef.current);
     const margin = { top: 60, right: 4, bottom: 60, left: 4 };
     const innerWidth = dimensions.width - margin.left - margin.right;
-    const innerHeight = dimensions.height - margin.top - margin.bottom;
 
     const svgBounds = svgRef.current.getBoundingClientRect();
     const clientX = event.type.includes("touch") ? event.touches[0].clientX : event.clientX;
@@ -231,14 +182,14 @@ const CarbonLine = ({
     setTimeIndicatorPosition(constrainedX + margin.left);
 
     // Use the helper function to create xScale with safe date parsing
-    const xScale = createXScale(dateRange?.start, dateRange?.end, innerWidth);
+    const xScale = createTimeScale(dateRange?.start, dateRange?.end, innerWidth, d3);
 
     const cursorDate = xScale.invert(constrainedX);
 
-    // Sort data points by timestamp
+    // Sort data points by timestamp using safeParseDate for consistent behavior across browsers
     const sortedPoints = [...emissionsData].sort((a, b) => safeParseDate(a.timestamp) - safeParseDate(b.timestamp));
 
-    // Find all points that are before or at the cursor position
+    // Find all points that are before or at the cursor position using safeParseDate
     const pointsBeforeCursor = sortedPoints.filter((point) => safeParseDate(point.timestamp) <= cursorDate);
 
     // If no points are before the cursor, select the first point
@@ -295,10 +246,10 @@ const CarbonLine = ({
     const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
 
     // Use dateRange instead of hard-coded dates
-    const startDate = new Date(dateRange?.start);
+    const startDate = safeParseDate(dateRange?.start);
+    const endDate = safeParseDate(dateRange?.end);
 
     // Ensure the end date is at least 3 months after today to position today closer to the end
-    const endDate = new Date(dateRange?.end);
     const minEndDate = new Date(today);
 
     // Add padding to dates for better visualization
@@ -309,7 +260,7 @@ const CarbonLine = ({
     paddedEndDate.setMonth(paddedEndDate.getMonth() + 1);
 
     // Use the helper function to create xScale with safe date parsing
-    const xScale = createXScale(dateRange?.start, dateRange?.end, innerWidth);
+    const xScale = createTimeScale(dateRange?.start, dateRange?.end, innerWidth, d3);
 
     // Adjust y-scale domain padding to account for point size
     const yMin = 0; // Always start at 0
@@ -322,9 +273,10 @@ const CarbonLine = ({
       .domain([yMin - bottomPadding, yMax + topPadding]) // Add padding to both top and bottom
       .range([innerHeight, 0]);
 
+    // IMPORTANT FIX: Make sure we're using safeParseDate consistently in the line generator
     const line = d3
       .line()
-      .x((d) => xScale(new Date(d.timestamp)))
+      .x((d) => xScale(safeParseDate(d.timestamp)))
       .y((d) => yScale(d.value))
       .curve(d3.curveStepAfter);
 
@@ -350,11 +302,12 @@ const CarbonLine = ({
       .attr("opacity", 0.7);
 
     // Find the last data point before today
-    const pastData = emissionsData.filter((d) => new Date(d.timestamp) <= today);
+    // IMPORTANT FIX: Use safeParseDate for consistent date comparison
+    const pastData = emissionsData.filter((d) => safeParseDate(d.timestamp) <= today);
     const lastPoint = pastData.length > 0 ? pastData[pastData.length - 1] : null;
 
     // Check if the last data point is before today
-    if (lastPoint && new Date(lastPoint.timestamp) < today) {
+    if (lastPoint && safeParseDate(lastPoint.timestamp) < today) {
       // Create a horizontal line from the last point to today
       const extendedData = [
         lastPoint,
@@ -366,7 +319,7 @@ const CarbonLine = ({
         const cursorDate = xScale.invert(timeIndicatorPosition - margin.left);
 
         // If cursor is before the last point, the extension is entirely in the future (dashed)
-        if (cursorDate <= new Date(lastPoint.timestamp)) {
+        if (cursorDate <= safeParseDate(lastPoint.timestamp)) {
           g.append("path").datum(extendedData).attr("class", styles.futurePath).attr("d", line);
         }
         // If cursor is after today, the extension is entirely in the past (solid)
@@ -418,7 +371,7 @@ const CarbonLine = ({
       const cursorDate = xScale.invert(timeIndicatorPosition - margin.left);
 
       // Calculate emissions up to the cursor position
-      const pointsUpToCursor = emissionsData.filter((d) => new Date(d.timestamp) <= cursorDate);
+      const pointsUpToCursor = emissionsData.filter((d) => safeParseDate(d.timestamp) <= cursorDate);
       const latestValue = pointsUpToCursor.length > 0 ? pointsUpToCursor[pointsUpToCursor.length - 1].value : 0;
 
       // Determine if the cursor date is in the future
@@ -439,8 +392,8 @@ const CarbonLine = ({
       emissionsInfoGroup.attr("transform", `translate(${margin.left + textX}, 20)`);
 
       // Find the segments ensuring we include the connecting points
-      const beforeCursor = emissionsData.filter((d) => new Date(d.timestamp) <= cursorDate);
-      const afterCursor = emissionsData.filter((d) => new Date(d.timestamp) >= cursorDate);
+      const beforeCursor = emissionsData.filter((d) => safeParseDate(d.timestamp) <= cursorDate);
+      const afterCursor = emissionsData.filter((d) => safeParseDate(d.timestamp) >= cursorDate);
 
       // If we have a point exactly at the cursor, it will be in both arrays
       // If not, we need to add an interpolated point to both arrays
@@ -454,9 +407,6 @@ const CarbonLine = ({
         const nextPoint = afterCursor[0];
 
         if (prevPoint && nextPoint) {
-          const prevDate = new Date(prevPoint.timestamp);
-          const nextDate = new Date(nextPoint.timestamp);
-
           // Calculate interpolated value using step-after behavior
           // In step-after, the y-value stays at the previous point's value until the next point
           const interpolatedValue = prevPoint.value;
@@ -474,7 +424,7 @@ const CarbonLine = ({
       // Add vertical line from 0 to first point if there are points before cursor
       if (beforeCursor.length > 0) {
         const firstPoint = beforeCursor[0];
-        const firstX = xScale(new Date(firstPoint.timestamp));
+        const firstX = xScale(safeParseDate(firstPoint.timestamp));
 
         // Create a zero-point at the same x-coordinate
         const zeroPoint = {
@@ -490,7 +440,7 @@ const CarbonLine = ({
             "d",
             d3
               .line()
-              .x((d) => xScale(new Date(d.timestamp)))
+              .x((d) => xScale(safeParseDate(d.timestamp)))
               .y((d) => yScale(d.value))
               .curve(d3.curveLinear)
           ); // Use linear curve for vertical line
@@ -506,7 +456,6 @@ const CarbonLine = ({
         // Add vertical line from 0 to first point after cursor if needed
         if (afterCursor.length > 0 && beforeCursor.length === 0) {
           const firstPoint = afterCursor[0];
-          const firstX = xScale(new Date(firstPoint.timestamp));
 
           // Create a zero-point at the same x-coordinate
           const zeroPoint = {
@@ -522,7 +471,7 @@ const CarbonLine = ({
               "d",
               d3
                 .line()
-                .x((d) => xScale(new Date(d.timestamp)))
+                .x((d) => xScale(safeParseDate(d.timestamp)))
                 .y((d) => yScale(d.value))
                 .curve(d3.curveLinear)
             ); // Use linear curve for vertical line
@@ -546,7 +495,6 @@ const CarbonLine = ({
       if (emissionsData.length > 0) {
         // Add vertical line from 0 to first point
         const firstPoint = emissionsData[0];
-        const firstX = xScale(new Date(firstPoint.timestamp));
 
         // Create a zero-point at the same x-coordinate
         const zeroPoint = {
@@ -562,7 +510,7 @@ const CarbonLine = ({
             "d",
             d3
               .line()
-              .x((d) => xScale(new Date(d.timestamp)))
+              .x((d) => xScale(safeParseDate(d.timestamp)))
               .y((d) => yScale(d.value))
               .curve(d3.curveLinear)
           ); // Use linear curve for vertical line
@@ -579,10 +527,10 @@ const CarbonLine = ({
       .enter()
       .append("g")
       .attr("class", styles.emissionPoint)
-      .attr("transform", (d) => `translate(${xScale(new Date(d.timestamp))},${yScale(d.value)})`);
+      .attr("transform", (d) => `translate(${xScale(safeParseDate(d.timestamp))},${yScale(d.value)})`);
 
     pointGroups.each(function (d) {
-      const isPast = new Date(d.timestamp) <= today;
+      const isPast = safeParseDate(d.timestamp) <= today;
 
       // Add small square at the exact data point
       d3.select(this)
@@ -748,9 +696,9 @@ const CarbonLine = ({
     const xRangeWidth = 0; // Consider markers within 50px of each other as potentially overlapping
 
     emissionsData.forEach((d) => {
-      const x = xScale(new Date(d.timestamp));
+      const x = xScale(safeParseDate(d.timestamp));
       const y = yScale(d.value);
-      const isPast = new Date(d.timestamp) <= today;
+      const isPast = safeParseDate(d.timestamp) <= today;
 
       // Add small square at the exact data point
       g.append("rect")
@@ -800,7 +748,7 @@ const CarbonLine = ({
         let isBeforeCursor = true;
         if (timeIndicatorPosition !== null) {
           const cursorDate = xScale.invert(timeIndicatorPosition - margin.left);
-          isBeforeCursor = new Date(d.timestamp) <= cursorDate;
+          isBeforeCursor = safeParseDate(d.timestamp) <= cursorDate;
         }
 
         // Draw the event box with different styling based on cursor position

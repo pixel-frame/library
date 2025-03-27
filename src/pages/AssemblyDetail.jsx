@@ -223,13 +223,6 @@ const AssemblyDetail = ({ assemblyId, assembly: passedAssembly, fullData: passed
             ))}
           </div>
         </div>
-
-        <div className={styles["media-section"]}>
-          <h2 className={styles["section-title"]}>JSON Data</h2>
-          <div className={styles["json-display"]}>
-            <pre>{JSON.stringify(fullData, null, 2)}</pre>
-          </div>
-        </div>
       </div>
 
       {fullscreenImage && (

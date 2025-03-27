@@ -15,9 +15,13 @@ const Emissions = () => {
     setIsListExpanded(scrollTop > 10);
   }, []);
 
-  const handleSelectionChange = (points) => {
+  const handleSelectionChange = useCallback((points) => {
     setSelectedPoints(points);
-  };
+  }, []);
+
+  const handleHighlight = useCallback((point) => {
+    setHighlightedPoint(point);
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -32,11 +36,7 @@ const Emissions = () => {
           />
         </div>
         <div className={`${styles.listingContainer} ${isListExpanded ? styles.expanded : ""}`}>
-          <SelectedPixels
-            selectedPoints={selectedPoints}
-            onScroll={handleScroll}
-            onHighlight={(point) => setHighlightedPoint(point)}
-          />
+          <SelectedPixels selectedPoints={selectedPoints} onScroll={handleScroll} onHighlight={handleHighlight} />
         </div>
       </div>
     </div>

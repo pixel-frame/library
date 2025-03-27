@@ -29,6 +29,19 @@ const SelectedAssemblies = ({ assemblies = [], onScroll, onHighlight, onExpand }
     onScroll(event);
   };
 
+  const handleExpandClick = () => {
+    // Get the currently selected assembly
+    const selectedAssembly = enhancedAssemblies[highlightedIndex];
+
+    // Don't expand if it's the "ALL ASSEMBLIES" option
+    if (selectedAssembly.isAllOption) return;
+
+    // Call the onExpand function with the selected assembly
+    if (onExpand) {
+      onExpand(selectedAssembly);
+    }
+  };
+
   // Custom formatter for assemblies
   const assemblyFormatter = (assembly, index) => {
     // Special case for "ALL ASSEMBLIES" option
@@ -69,6 +82,9 @@ const SelectedAssemblies = ({ assemblies = [], onScroll, onHighlight, onExpand }
     );
   }
 
+  // Determine if we should show the expand button (not for ALL ASSEMBLIES)
+  const showExpandButton = highlightedIndex > 0 && onExpand;
+
   return (
     <div className={styles.container}>
       <div ref={scrollRef} className={styles.scrollableList} onScroll={handleScroll}>
@@ -79,6 +95,8 @@ const SelectedAssemblies = ({ assemblies = [], onScroll, onHighlight, onExpand }
           perspective="center"
           initialIndex={highlightedIndex}
           renderCustomContent={renderCustomContent}
+          buttonText={showExpandButton ? "[VIEW ASSEMBLY DETAILS]" : null}
+          onButtonClick={showExpandButton ? handleExpandClick : null}
         />
       </div>
     </div>

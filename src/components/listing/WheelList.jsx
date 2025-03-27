@@ -55,7 +55,7 @@ export default function Wheel(props) {
     }
   }, [sliderState, props.onIndexChange]);
 
-  function slideValues() {
+  function slideValues(idx, distance) {
     if (!sliderState) return [];
     const offset = props.loop ? 1 / 2 - 1 / slidesPerView / 2 : 0;
 

@@ -7,7 +7,7 @@ import WheelListHandler from "../listing/WheelListHandler";
 
 const SelectedPixels = ({ selectedPoints, onScroll, onHighlight }) => {
   const [allPixels, setAllPixels] = useState([]);
-  const [highlightedIndex, setHighlightedIndex] = useState(null);
+  const [highlightedIndex, setHighlightedIndex] = useState(0); // Default to first item (ALL PIXELS)
   const scrollRef = useRef(null);
   const lastScrollPosition = useRef(0);
   const [selectedPixelId, setSelectedPixelId] = useState(null);
@@ -36,68 +36,29 @@ const SelectedPixels = ({ selectedPoints, onScroll, onHighlight }) => {
     fetchPixels();
   }, []);
 
-  // Preserve scroll position when selection changes
-  useEffect(() => {
-    if (scrollRef.current && lastScrollPosition.current > 10) {
-      scrollRef.current.scrollTop = lastScrollPosition.current;
+  // Create a modified list with "ALL PIXELS" as the first option
+  const enhancedPixels = [
+    {
+      pixel_number: "ALL",
+      serial: "ALL",
+      isAllOption: true,
+      total_emissions: 0,
+      distanceTraveled: 0,
+      emissions_over_time: {},
+      distance: 0, // Add this to prevent the error
+    },
+    ...(selectedPoints?.length > 0 ? selectedPoints : allPixels),
+  ];
+
+  const handleSelectionChange = (pixel, index) => {
+    setHighlightedIndex(index);
+
+    // If the "ALL PIXELS" option is selected, pass null to onHighlight
+    if (index === 0 && pixel.isAllOption) {
+      onHighlight(null);
+    } else {
+      onHighlight(pixel);
     }
-  }, [selectedPoints]);
-
-  // Update useEffect for highlighting to include onHighlight callback
-  useEffect(() => {
-    if (!scrollRef.current || !onHighlight) return;
-
-    const handleVisibilityCheck = () => {
-      const container = scrollRef.current;
-      const items = container.querySelectorAll(`.${styles.listItem}`);
-      const containerRect = container.getBoundingClientRect();
-      const containerCenter = containerRect.top + containerRect.height / 2;
-
-      let closestItem = null;
-      let minDistance = Infinity;
-
-      items.forEach((item, index) => {
-        const rect = item.getBoundingClientRect();
-        const itemCenter = rect.top + rect.height / 2;
-        const distance = Math.abs(containerCenter - itemCenter);
-
-        if (distance < minDistance) {
-          minDistance = distance;
-          closestItem = index;
-        }
-      });
-
-      setHighlightedIndex(closestItem);
-
-      // Call onHighlight with the actual pixel data
-      const pixelsToShow = selectedPoints?.length > 0 ? selectedPoints : allPixels;
-      if (closestItem !== null && pixelsToShow[closestItem]) {
-        onHighlight(pixelsToShow[closestItem]);
-      }
-    };
-
-    const scrollContainer = scrollRef.current;
-    const debouncedCheck = debounce(handleVisibilityCheck, 100); // Add debounce for performance
-
-    scrollContainer.addEventListener("scroll", debouncedCheck);
-    handleVisibilityCheck(); // Initial check
-
-    return () => {
-      scrollContainer.removeEventListener("scroll", debouncedCheck);
-    };
-  }, [selectedPoints, allPixels, onHighlight]);
-
-  // Add debounce utility function
-  const debounce = (func, wait) => {
-    let timeout;
-    return function executedFunction(...args) {
-      const later = () => {
-        clearTimeout(timeout);
-        func(...args);
-      };
-      clearTimeout(timeout);
-      timeout = setTimeout(later, wait);
-    };
   };
 
   const handleScroll = (event) => {
@@ -105,23 +66,28 @@ const SelectedPixels = ({ selectedPoints, onScroll, onHighlight }) => {
     onScroll(event);
   };
 
-  const pixelsToShow = selectedPoints?.length > 0 ? selectedPoints : allPixels;
+  const handlePixelClick = () => {
+    // Get the currently selected pixel
+    const selectedPixel = enhancedPixels[highlightedIndex];
 
-  // Handle pixel selection from the wheel
-  const handlePixelSelection = (pixel) => {
-    setHighlightedIndex(
-      pixelsToShow.findIndex((p) => p.serial === pixel.serial || p.pixel_number === pixel.pixel_number)
-    );
-    onHighlight(pixel);
+    // Don't show details if it's the "ALL PIXELS" option
+    if (selectedPixel.isAllOption) return;
+
+    // Set the selected pixel ID
+    setSelectedPixelId(selectedPixel.serial || selectedPixel.pixel_number);
   };
 
-  // Handle pixel click to show details
-  const handlePixelClick = (pixel) => {
-    setSelectedPixelId(pixel.serial || pixel.pixel_number);
-  };
-
-  // Custom formatter for pixels in the wheel
+  // Custom formatter for pixels
   const pixelFormatter = (pixel, index) => {
+    // Special case for "ALL PIXELS" option
+    if (pixel.isAllOption) {
+      return {
+        left: "ALL PIXELS",
+        right: "",
+      };
+    }
+
+    // Format regular pixels
     const emissions = typeof pixel.total_emissions === "number" ? pixel.total_emissions : 0;
     const pixelNumber = pixel.pixel_number || pixel.serial || `Unknown-${index}`;
 
@@ -131,23 +97,30 @@ const SelectedPixels = ({ selectedPoints, onScroll, onHighlight }) => {
     };
   };
 
+  if (!allPixels || allPixels.length === 0) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.emptyState}>No pixels available</div>
+      </div>
+    );
+  }
+
+  // Determine if we should show the view details button (not for ALL PIXELS)
+  const showDetailsButton = highlightedIndex > 0;
+
   return (
     <div className={styles.container}>
-      <div className={styles.titleContainer}>
-        {/* <div className={styles.title}>
-          {selectedPoints?.length > 0
-            ? `Selected Pixels (${selectedPoints.length})`
-            : `All Pixels (${allPixels.length})`}
-        </div> */}
+      <div ref={scrollRef} className={styles.scrollableList} onScroll={handleScroll}>
+        <WheelListHandler
+          items={enhancedPixels}
+          onSelectionChange={handleSelectionChange}
+          valueFormatter={pixelFormatter}
+          perspective="left"
+          initialIndex={highlightedIndex}
+          buttonText={showDetailsButton ? "View Details" : null}
+          onButtonClick={showDetailsButton ? handlePixelClick : null}
+        />
       </div>
-
-      {/* Replace scrollable list with WheelListHandler */}
-      <WheelListHandler
-        items={pixelsToShow}
-        onSelectionChange={handlePixelSelection}
-        valueFormatter={pixelFormatter}
-        initialIndex={highlightedIndex || 0}
-      />
 
       {selectedPixelId && (
         <Card>

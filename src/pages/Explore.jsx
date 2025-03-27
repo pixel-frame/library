@@ -5,6 +5,7 @@ import AssemblyDetail from "./AssemblyDetail";
 import PageHeader from "../components/common/PageHeader";
 import styles from "./Explore.module.css";
 import Card from "../components/buttons/Card";
+
 const Explore = () => {
   const [isListExpanded, setIsListExpanded] = useState(false);
   const [highlightedAssembly, setHighlightedAssembly] = useState(null);
@@ -58,7 +59,7 @@ const Explore = () => {
               assemblies={assemblies}
               onScroll={handleScroll}
               onHighlight={setHighlightedAssembly}
-              onExpand={() => {}}
+              onExpand={handleExpand}
             />
           ) : (
             <Card>

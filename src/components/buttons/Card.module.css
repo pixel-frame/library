@@ -1,15 +1,32 @@
+/* Override react-modal-sheet styles to match your design */
+:global(.react-modal-sheet-container) {
+  background-color: white !important;
+  border-top: 1px solid #000 !important;
+  border-radius: 12px 12px 0 0 !important;
+  height: 95vh !important;
+}
+
+:global(.react-modal-sheet-backdrop) {
+  background-color: rgba(0, 0, 0, 0.3) !important;
+}
+
+:global(.react-modal-sheet-content) {
+  padding: 16px !important;
+  padding-top: 32px !important;
+}
+
+:global(.react-modal-sheet-header) {
+  height: auto !important;
+  padding: 0 !important;
+}
+
+/* Keep your existing styles but adjust as needed */
 .card {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: white;
-  border-top: 1px solid #000;
+  /* Remove fixed positioning as Sheet handles this */
+  position: relative;
   overflow-y: auto;
-  transition: height 0.3s ease-in-out;
   width: 100%;
   z-index: 1000;
-  height: 95vh;
   animation: slideIn 0.3s ease-out;
 }
 

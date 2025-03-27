@@ -11,6 +11,7 @@ const Explore = () => {
   const [highlightedAssembly, setHighlightedAssembly] = useState(null);
   const [focusedAssembly, setFocusedAssembly] = useState(null);
   const [assemblies, setAssemblies] = useState([]);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
 
   // Fetch assemblies data when component mounts
   useEffect(() => {
@@ -38,11 +39,13 @@ const Explore = () => {
 
   const handleExpand = useCallback((assembly) => {
     setFocusedAssembly(assembly);
+    setIsSheetOpen(true);
     setIsListExpanded(false);
   }, []);
 
   const handleBack = useCallback(() => {
     setFocusedAssembly(null);
+    setIsSheetOpen(false);
   }, []);
 
   return (
@@ -54,20 +57,20 @@ const Explore = () => {
           <InteractiveGlobe highlightedAssembly={highlightedAssembly} focusedAssembly={highlightedAssembly} />
         </div>
         <div className={`${styles.sideContainer} ${isListExpanded ? styles.expanded : ""}`}>
-          {!focusedAssembly ? (
-            <SelectedAssemblies
-              assemblies={assemblies}
-              onScroll={handleScroll}
-              onHighlight={setHighlightedAssembly}
-              onExpand={handleExpand}
-            />
-          ) : (
-            <Card>
-              <AssemblyDetail assemblyId={focusedAssembly.serial} onBack={handleBack} />
-            </Card>
-          )}
+          <SelectedAssemblies
+            assemblies={assemblies}
+            onScroll={handleScroll}
+            onHighlight={setHighlightedAssembly}
+            onExpand={handleExpand}
+          />
         </div>
       </div>
+
+      {focusedAssembly && (
+        <Card isOpen={isSheetOpen} onClose={handleBack}>
+          <AssemblyDetail assemblyId={focusedAssembly.serial} onBack={handleBack} />
+        </Card>
+      )}
     </div>
   );
 };

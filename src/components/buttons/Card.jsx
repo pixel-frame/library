@@ -1,44 +1,27 @@
 import { useEffect, useRef, useState } from "react";
+import { Sheet } from "react-modal-sheet";
 import styles from "./Card.module.css";
 
-const Card = ({ children }) => {
+const SheetModal = ({ children, isOpen, onClose }) => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const cardRef = useRef(null);
   const contentRef = useRef(null);
 
-  const handleScroll = () => {
-    if (cardRef.current) {
-      const isAtTop = cardRef.current.scrollTop === 0;
-      setIsScrolled(!isAtTop);
-    }
+  const handleScroll = (e) => {
+    const isAtTop = e.target.scrollTop === 0;
+    setIsScrolled(!isAtTop);
   };
 
-  useEffect(() => {
-    const currentCard = cardRef.current;
-    if (currentCard) {
-      currentCard.addEventListener("scroll", handleScroll);
-    }
-
-    return () => {
-      if (currentCard) {
-        currentCard.removeEventListener("scroll", handleScroll);
-      }
-    };
-  }, []);
-
   return (
-    <div
-      ref={cardRef}
-      className={`${styles.card} ${isScrolled ? styles.expanded : ""}`}
-      role="dialog"
-      aria-modal="true"
-    >
-      <div className={styles.handle} aria-hidden="true" />
-      <div ref={contentRef} className={styles.content}>
-        {children}
-      </div>
-    </div>
+    <Sheet isOpen={isOpen} onClose={onClose} detent="content-height">
+      <Sheet.Container className={`${styles.card} ${isScrolled ? styles.expanded : ""}`}>
+        <Sheet.Header className={styles.handle} />
+        <Sheet.Content className={styles.content} onScroll={handleScroll} ref={contentRef}>
+          {children}
+        </Sheet.Content>
+      </Sheet.Container>
+      {/* <Sheet.Backdrop /> */}
+    </Sheet>
   );
 };
 
-export default Card;
+export default SheetModal;

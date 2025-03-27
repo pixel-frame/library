@@ -382,23 +382,50 @@ const InteractiveGlobe = ({ highlightedAssembly, focusedAssembly }) => {
     const svg = d3.select(svgRef.current);
     const zoom = d3.zoom().scaleExtent([0.7, 8]);
 
+    // Get current rotation
+    const currentRotation = projectionRef.current.rotate();
+
+    // Target rotation for the focused assembly
     const targetRotation = [
       -focusedAssembly.location.coordinates.longitude,
       -focusedAssembly.location.coordinates.latitude,
       0,
     ];
-    projectionRef.current.rotate(targetRotation);
-    rotationRef.current = targetRotation;
 
-    // Increased zoom level to 8
-    const transform = d3.zoomIdentity.scale(8);
-    svg.transition().duration(1000).call(zoom.transform, transform);
-    transformRef.current = transform;
+    // Animation duration in milliseconds
+    const duration = 1500;
 
-    updateGlobe();
+    // Create interpolator for smooth rotation transition
+    const rotationInterpolator = d3.interpolate(currentRotation, targetRotation);
 
+    // Get current transform or create default if none exists
+    const currentTransform = transformRef.current || d3.zoomIdentity;
+
+    // Target zoom level (increased to 8)
+    const targetTransform = d3.zoomIdentity.scale(8);
+
+    // Start animation
+    d3.transition()
+      .duration(duration)
+      .ease(d3.easeCubicInOut) // Add easing for more natural motion
+      .tween("rotate", () => {
+        return (t) => {
+          // Update rotation gradually
+          const newRotation = rotationInterpolator(t);
+          projectionRef.current.rotate(newRotation);
+          rotationRef.current = newRotation;
+
+          // Update globe at each step
+          updateGlobe();
+        };
+      });
+
+    // Animate the zoom separately
+    svg.transition().duration(duration).ease(d3.easeCubicInOut).call(zoom.transform, targetTransform);
+
+    transformRef.current = targetTransform;
     setUserInteracted(true);
-  }, [focusedAssembly]);
+  }, [focusedAssembly, updateGlobe]);
 
   return (
     <div className={styles.interactiveGlobeContainer}>

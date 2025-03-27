@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import styles from "./Pixels.module.css";
 import PixelList from "./PixelList";
 import PixelDetailView from "./PixelPreview";
+import PixelSpaceView from "./PixelSpace";
 import Button from "../../widgets/Button";
 import PageHeader from "../common/PageHeader";
 
@@ -105,13 +106,22 @@ const Pixels = () => {
         viewToggle={
           <div className={styles.viewToggle}>
             <Button
+              className={`${styles.viewButton} ${selectedView === "space" ? styles.selected : ""}`}
+              onClick={() => handleViewChange("space")}
+              aria-label="Compact view"
+              tabIndex="0"
+              onKeyDown={(e) => e.key === "Enter" && handleViewChange("space")}
+            >
+              [SPACE]
+            </Button>
+            <Button
               className={`${styles.viewButton} ${selectedView === "compact" ? styles.selected : ""}`}
               onClick={() => handleViewChange("compact")}
               aria-label="Compact view"
               tabIndex="0"
               onKeyDown={(e) => e.key === "Enter" && handleViewChange("compact")}
             >
-              [DETAILED
+              [DETAILED]
             </Button>
             <Button
               className={`${styles.viewButton} ${selectedView === "detailed" ? styles.selected : ""}`}
@@ -120,7 +130,7 @@ const Pixels = () => {
               tabIndex="0"
               onKeyDown={(e) => e.key === "Enter" && handleViewChange("detailed")}
             >
-              COMPACT]
+              [COMPACT]
             </Button>
           </div>
         }
@@ -128,7 +138,7 @@ const Pixels = () => {
 
       <div className={styles.mainPixelContent}>
         {viewMode !== "grid" && (
-          <PixelDetailView
+          <PixelSpaceView
             selectedPixel={stablePixel}
             previousPixel={previousPixel}
             transitionDirection={transitionDirection}

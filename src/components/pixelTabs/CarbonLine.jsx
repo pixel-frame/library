@@ -2,72 +2,176 @@ import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import styles from "./CarbonLine.module.css";
 
-const CarbonLine = ({ emissionsData, currentDate, minValue, maxValue, dateRange }) => {
+const CarbonLine = ({
+  emissionsData,
+  currentDate,
+  minValue,
+  maxValue,
+  dateRange,
+  onEventChange,
+  currentEventIndex,
+  isActive,
+}) => {
   const containerRef = useRef(null);
   const svgRef = useRef(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [timeIndicatorPosition, setTimeIndicatorPosition] = useState(null);
+  const initialRenderRef = useRef(true);
+  const userInteractingRef = useRef(false);
+  const lastInteractionTimeRef = useRef(0);
+  const [forceRender, setForceRender] = useState(0);
+  const resizeObserverRef = useRef(null);
 
-  // Handle resize and initial sizing
+  // Handle resize and initial sizing with ResizeObserver for more reliable dimension detection
   useEffect(() => {
+    if (!containerRef.current) return;
+
     const updateDimensions = () => {
       if (!containerRef.current) return;
 
       const { width } = containerRef.current.getBoundingClientRect();
-      // Set height to match parent container height instead of calculating based on width
       const height = containerRef.current.getBoundingClientRect().height;
 
-      setDimensions({ width, height });
+      // Only update if dimensions actually changed or are zero
+      if (dimensions.width !== width || dimensions.height !== height || width === 0 || height === 0) {
+        setDimensions({ width, height });
+      }
     };
 
+    // Initial update
     updateDimensions();
+
+    // Set up ResizeObserver for more reliable dimension detection
+    resizeObserverRef.current = new ResizeObserver(updateDimensions);
+    resizeObserverRef.current.observe(containerRef.current);
+
+    // Also keep the window resize listener as a fallback
     window.addEventListener("resize", updateDimensions);
 
-    return () => window.removeEventListener("resize", updateDimensions);
+    return () => {
+      if (resizeObserverRef.current) {
+        resizeObserverRef.current.disconnect();
+      }
+      window.removeEventListener("resize", updateDimensions);
+    };
   }, []);
 
-  // Add a new useEffect that responds to visibility changes
+  // Improved tab activation handling
   useEffect(() => {
-    // This will trigger a re-calculation of dimensions when the component becomes visible
-    const updateDimensions = () => {
-      if (!containerRef.current) return;
+    if (isActive) {
+      // Immediately check dimensions when tab becomes active
+      if (containerRef.current) {
+        const { width } = containerRef.current.getBoundingClientRect();
+        const height = containerRef.current.getBoundingClientRect().height;
 
-      const { width } = containerRef.current.getBoundingClientRect();
-      const height = containerRef.current.getBoundingClientRect().height;
-
-      setDimensions({ width, height });
-    };
-
-    // Use MutationObserver to detect when the component becomes visible
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.attributeName === "aria-hidden") {
-          const isHidden = containerRef.current.closest('[aria-hidden="true"]');
-          if (!isHidden) {
-            // Component is now visible, update dimensions
-            updateDimensions();
-          }
+        // Force dimensions update if container has valid size
+        if (width > 0 && height > 0) {
+          setDimensions({ width, height });
         }
-      });
-    });
+      }
 
-    // Start observing the container and its ancestors for aria-hidden changes
-    let element = containerRef.current;
-    while (element) {
-      observer.observe(element, { attributes: true });
-      element = element.parentElement;
+      // Schedule multiple checks to ensure proper rendering
+      const checkTimes = [0, 50, 150, 300, 500];
+
+      const timers = checkTimes.map((delay) =>
+        setTimeout(() => {
+          if (containerRef.current) {
+            const { width } = containerRef.current.getBoundingClientRect();
+            const height = containerRef.current.getBoundingClientRect().height;
+
+            if (width > 0 && height > 0) {
+              setDimensions({ width, height });
+              setForceRender((prev) => prev + 1);
+            }
+          }
+        }, delay)
+      );
+
+      return () => timers.forEach((timer) => clearTimeout(timer));
+    }
+  }, [isActive]);
+
+  // Set initial position on first render
+  useEffect(() => {
+    if (initialRenderRef.current && emissionsData?.length && dimensions.width) {
+      initialRenderRef.current = false;
+
+      // Position the indicator at the first event (index 0)
+      if (emissionsData[0] && svgRef.current) {
+        const margin = { top: 60, right: 4, bottom: 60, left: 4 };
+        const innerWidth = dimensions.width - margin.left - margin.right;
+
+        // Use dateRange to set up the scale
+        const paddedStartDate = new Date(dateRange?.start);
+        paddedStartDate.setMonth(paddedStartDate.getMonth() - 2);
+
+        const today = new Date();
+        const paddedEndDate = new Date(today);
+        paddedEndDate.setMonth(paddedEndDate.getMonth() + 1);
+
+        const xScale = d3.scaleTime().domain([paddedStartDate, paddedEndDate]).range([0, innerWidth]);
+
+        // Calculate position for the first event
+        const firstEventDate = new Date(emissionsData[0].timestamp);
+        const xPos = xScale(firstEventDate);
+
+        // Set the indicator position
+        setTimeIndicatorPosition(xPos + margin.left);
+      }
+    }
+  }, [emissionsData, dimensions, dateRange]);
+
+  // Update indicator position when currentEventIndex changes (from LogCardContainer)
+  useEffect(() => {
+    if (!svgRef.current || !emissionsData?.length || dimensions.width === 0 || currentEventIndex === undefined) return;
+
+    // Don't update during initial render as we handle that separately
+    if (initialRenderRef.current) return;
+
+    // Don't update if user is actively interacting with the chart
+    // or if it's been less than 500ms since the last user interaction
+    const now = Date.now();
+    if (userInteractingRef.current || now - lastInteractionTimeRef.current < 500) {
+      return;
     }
 
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
+    const margin = { top: 60, right: 4, bottom: 60, left: 4 };
+    const innerWidth = dimensions.width - margin.left - margin.right;
+
+    // Use dateRange to set up the scale
+    const paddedStartDate = new Date(dateRange?.start);
+    paddedStartDate.setMonth(paddedStartDate.getMonth() - 2);
+
+    const today = new Date();
+    const paddedEndDate = new Date(today);
+    paddedEndDate.setMonth(paddedEndDate.getMonth() + 1);
+
+    const xScale = d3.scaleTime().domain([paddedStartDate, paddedEndDate]).range([0, innerWidth]);
+
+    // Get the date for the current event index
+    if (emissionsData[currentEventIndex]) {
+      const eventDate = new Date(emissionsData[currentEventIndex].timestamp);
+      const xPos = xScale(eventDate);
+
+      // Update the indicator position
+      setTimeIndicatorPosition(xPos + margin.left);
+    }
+  }, [currentEventIndex, emissionsData, dimensions, dateRange]);
 
   const handleChartInteraction = (event) => {
     if (!svgRef.current || !emissionsData?.length) return;
 
+    // Mark that user is interacting with the chart
+    userInteractingRef.current = true;
+    lastInteractionTimeRef.current = Date.now();
+
+    // Schedule to reset the interaction flag after a short delay
+    setTimeout(() => {
+      userInteractingRef.current = false;
+    }, 100);
+
     const svg = d3.select(svgRef.current);
-    const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+    const margin = { top: 60, right: 4, bottom: 60, left: 4 };
     const innerWidth = dimensions.width - margin.left - margin.right;
     const innerHeight = dimensions.height - margin.top - margin.bottom;
 
@@ -79,29 +183,68 @@ const CarbonLine = ({ emissionsData, currentDate, minValue, maxValue, dateRange 
     setTimeIndicatorPosition(constrainedX + margin.left);
 
     // Get the date at cursor position
-    const xScale = d3
-      .scaleTime()
-      .domain([new Date("2022-07"), new Date("2026-01")])
-      .range([0, innerWidth]);
+    const paddedStartDate = new Date(dateRange?.start);
+    paddedStartDate.setMonth(paddedStartDate.getMonth() - 2);
+
+    const today = new Date();
+    const paddedEndDate = new Date(today);
+    paddedEndDate.setMonth(paddedEndDate.getMonth() + 1);
+
+    const xScale = d3.scaleTime().domain([paddedStartDate, paddedEndDate]).range([0, innerWidth]);
 
     const cursorDate = xScale.invert(constrainedX);
 
-    // Find the nearest data point
-    const nearestPoint = emissionsData.reduce((prev, curr) => {
-      const prevDiff = Math.abs(new Date(prev.timestamp) - cursorDate);
-      const currDiff = Math.abs(new Date(curr.timestamp) - cursorDate);
-      return currDiff < prevDiff ? curr : prev;
-    });
+    // Sort data points by timestamp
+    const sortedPoints = [...emissionsData].sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+
+    // Find all points that are before or at the cursor position
+    const pointsBeforeCursor = sortedPoints.filter((point) => new Date(point.timestamp) <= cursorDate);
+
+    // If no points are before the cursor, select the first point
+    if (pointsBeforeCursor.length === 0) {
+      const firstPointIndex = emissionsData.findIndex((point) => point.timestamp === sortedPoints[0].timestamp);
+      if (onEventChange && firstPointIndex !== -1) {
+        onEventChange(firstPointIndex);
+      }
+      return;
+    }
+
+    // Select the last point that the cursor has passed
+    const lastPassedPoint = pointsBeforeCursor[pointsBeforeCursor.length - 1];
+    const lastPassedPointIndex = emissionsData.findIndex((point) => point.timestamp === lastPassedPoint.timestamp);
+
+    if (onEventChange && lastPassedPointIndex !== -1) {
+      onEventChange(lastPassedPointIndex);
+    }
   };
 
   useEffect(() => {
-    if (!svgRef.current || !emissionsData?.length || !dimensions.width) return;
+    if (!svgRef.current || !emissionsData?.length) return;
+
+    // Don't try to render if dimensions are invalid
+    if (dimensions.width <= 0 || dimensions.height <= 0) {
+      // Schedule a re-check of dimensions
+      const timer = setTimeout(() => {
+        if (containerRef.current) {
+          const { width } = containerRef.current.getBoundingClientRect();
+          const height = containerRef.current.getBoundingClientRect().height;
+          if (width > 0 && height > 0) {
+            setDimensions({ width, height });
+          }
+        }
+      }, 100);
+
+      return () => clearTimeout(timer);
+    }
 
     const svg = d3.select(svgRef.current);
     svg.selectAll("*").remove();
 
+    // Get the actual current date from the browser
+    const today = new Date();
+
     // Reduce horizontal margins to 4px
-    const margin = { top: 60, right: 4, bottom: 60, left: 4 };
+    const margin = { top: 60, right: 4, bottom: 45, left: 4 };
     const innerWidth = dimensions.width - margin.left - margin.right;
     const innerHeight = dimensions.height - margin.top - margin.bottom;
 
@@ -111,26 +254,30 @@ const CarbonLine = ({ emissionsData, currentDate, minValue, maxValue, dateRange 
     const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
 
     // Use dateRange instead of hard-coded dates
-    const startDate = new Date(dateRange?.start || "2022-07");
-    const endDate = new Date(dateRange?.end || "2026-01");
+    const startDate = new Date(dateRange?.start);
+
+    // Ensure the end date is at least 3 months after today to position today closer to the end
+    const endDate = new Date(dateRange?.end);
+    const minEndDate = new Date(today);
 
     // Add padding to dates for better visualization
     const paddedStartDate = new Date(startDate);
     paddedStartDate.setMonth(paddedStartDate.getMonth() - 2);
 
-    const paddedEndDate = new Date(endDate);
+    const paddedEndDate = new Date(minEndDate);
     paddedEndDate.setMonth(paddedEndDate.getMonth() + 1);
 
     const xScale = d3.scaleTime().domain([paddedStartDate, paddedEndDate]).range([0, innerWidth]);
 
     // Adjust y-scale domain padding to account for point size
-    const yMin = Math.min(...emissionsData.map((d) => d.value));
+    const yMin = 0; // Always start at 0
     const yMax = Math.max(...emissionsData.map((d) => d.value));
-    const yPadding = (yMax - yMin) * 0.15; // 15% padding
+    const topPadding = yMax * 0.1; // Reduce top padding to 10%
+    const bottomPadding = yMax * 0.05; // Add 5% padding at bottom to ensure 0 is visible
 
     const yScale = d3
       .scaleLinear()
-      .domain([yMin - yPadding, yMax + yPadding])
+      .domain([yMin - bottomPadding, yMax + topPadding]) // Add padding to both top and bottom
       .range([innerHeight, 0]);
 
     const line = d3
@@ -147,18 +294,64 @@ const CarbonLine = ({ emissionsData, currentDate, minValue, maxValue, dateRange 
     g.append("g").attr("class", styles.grid).call(yGrid);
 
     // Add gray vertical line for current date (positioned behind other elements)
-    if (currentDate) {
-      const currentDateX = xScale(new Date(currentDate));
-      g.append("line")
-        .attr("class", styles.currentDateLine)
-        .attr("x1", currentDateX)
-        .attr("x2", currentDateX)
-        .attr("y1", 0)
-        .attr("y2", innerHeight)
-        .attr("stroke", "#888888")
-        .attr("stroke-width", 1.5)
-        .attr("stroke-dasharray", "5,3")
-        .attr("opacity", 0.7);
+    const currentDateX = xScale(today);
+
+    g.append("line")
+      .attr("class", styles.currentDateLine)
+      .attr("x1", currentDateX)
+      .attr("x2", currentDateX)
+      .attr("y1", 0)
+      .attr("y2", innerHeight)
+      .attr("stroke", "#888888")
+      .attr("stroke-width", 1.5)
+      .attr("stroke-dasharray", "5,3")
+      .attr("opacity", 0.7);
+
+    // Find the last data point before today
+    const pastData = emissionsData.filter((d) => new Date(d.timestamp) <= today);
+    const lastPoint = pastData.length > 0 ? pastData[pastData.length - 1] : null;
+
+    // Check if the last data point is before today
+    if (lastPoint && new Date(lastPoint.timestamp) < today) {
+      // Create a horizontal line from the last point to today
+      const extendedData = [
+        lastPoint,
+        { ...lastPoint, timestamp: today.toISOString() }, // Create a new point at today with the same value
+      ];
+
+      // Draw the horizontal extension line
+      if (timeIndicatorPosition !== null) {
+        const cursorDate = xScale.invert(timeIndicatorPosition - margin.left);
+
+        // If cursor is before the last point, the extension is entirely in the future (dashed)
+        if (cursorDate <= new Date(lastPoint.timestamp)) {
+          g.append("path").datum(extendedData).attr("class", styles.futurePath).attr("d", line);
+        }
+        // If cursor is after today, the extension is entirely in the past (solid)
+        else if (cursorDate >= today) {
+          g.append("path").datum(extendedData).attr("class", styles.pastPath).attr("d", line);
+        }
+        // If cursor is between the last point and today, split the extension
+        else {
+          // Create the split point at cursor position
+          const splitPoint = {
+            ...lastPoint,
+            timestamp: cursorDate.toISOString(),
+          };
+
+          // Draw solid line from last point to cursor
+          g.append("path").datum([lastPoint, splitPoint]).attr("class", styles.pastPath).attr("d", line);
+
+          // Draw dashed line from cursor to today
+          g.append("path")
+            .datum([splitPoint, { ...lastPoint, timestamp: today.toISOString() }])
+            .attr("class", styles.futurePath)
+            .attr("d", line);
+        }
+      } else {
+        // No cursor position, draw the extension as solid (past)
+        g.append("path").datum(extendedData).attr("class", styles.pastPath).attr("d", line);
+      }
     }
 
     // Add emissions info text container at the top
@@ -187,7 +380,7 @@ const CarbonLine = ({ emissionsData, currentDate, minValue, maxValue, dateRange 
       const latestValue = pointsUpToCursor.length > 0 ? pointsUpToCursor[pointsUpToCursor.length - 1].value : 0;
 
       // Determine if the cursor date is in the future
-      const isFuture = currentDate && cursorDate > new Date(currentDate);
+      const isFuture = cursorDate > today;
 
       // Update emissions text
       const textContent = `${latestValue.toFixed(2)} kgCO₂e${isFuture ? " (planned)" : ""}`;
@@ -236,6 +429,31 @@ const CarbonLine = ({ emissionsData, currentDate, minValue, maxValue, dateRange 
         }
       }
 
+      // Add vertical line from 0 to first point if there are points before cursor
+      if (beforeCursor.length > 0) {
+        const firstPoint = beforeCursor[0];
+        const firstX = xScale(new Date(firstPoint.timestamp));
+
+        // Create a zero-point at the same x-coordinate
+        const zeroPoint = {
+          timestamp: firstPoint.timestamp,
+          value: 0,
+        };
+
+        // Draw vertical line from x-axis to first point
+        g.append("path")
+          .datum([zeroPoint, firstPoint])
+          .attr("class", styles.pastPath)
+          .attr(
+            "d",
+            d3
+              .line()
+              .x((d) => xScale(new Date(d.timestamp)))
+              .y((d) => yScale(d.value))
+              .curve(d3.curveLinear)
+          ); // Use linear curve for vertical line
+      }
+
       // Draw solid line before cursor
       if (beforeCursor.length) {
         g.append("path").datum(beforeCursor).attr("class", styles.pastPath).attr("d", line);
@@ -243,6 +461,31 @@ const CarbonLine = ({ emissionsData, currentDate, minValue, maxValue, dateRange 
 
       // Draw dashed line after cursor
       if (afterCursor.length) {
+        // Add vertical line from 0 to first point after cursor if needed
+        if (afterCursor.length > 0 && beforeCursor.length === 0) {
+          const firstPoint = afterCursor[0];
+          const firstX = xScale(new Date(firstPoint.timestamp));
+
+          // Create a zero-point at the same x-coordinate
+          const zeroPoint = {
+            timestamp: firstPoint.timestamp,
+            value: 0,
+          };
+
+          // Draw vertical line from x-axis to first point
+          g.append("path")
+            .datum([zeroPoint, firstPoint])
+            .attr("class", styles.futurePath)
+            .attr(
+              "d",
+              d3
+                .line()
+                .x((d) => xScale(new Date(d.timestamp)))
+                .y((d) => yScale(d.value))
+                .curve(d3.curveLinear)
+            ); // Use linear curve for vertical line
+        }
+
         g.append("path").datum(afterCursor).attr("class", styles.futurePath).attr("d", line);
       }
 
@@ -258,7 +501,33 @@ const CarbonLine = ({ emissionsData, currentDate, minValue, maxValue, dateRange 
       emissionsText.text("");
 
       // If no cursor position, draw entire line as solid
-      g.append("path").datum(emissionsData).attr("class", styles.pastPath).attr("d", line);
+      if (emissionsData.length > 0) {
+        // Add vertical line from 0 to first point
+        const firstPoint = emissionsData[0];
+        const firstX = xScale(new Date(firstPoint.timestamp));
+
+        // Create a zero-point at the same x-coordinate
+        const zeroPoint = {
+          timestamp: firstPoint.timestamp,
+          value: 0,
+        };
+
+        // Draw vertical line from x-axis to first point
+        g.append("path")
+          .datum([zeroPoint, firstPoint])
+          .attr("class", styles.pastPath)
+          .attr(
+            "d",
+            d3
+              .line()
+              .x((d) => xScale(new Date(d.timestamp)))
+              .y((d) => yScale(d.value))
+              .curve(d3.curveLinear)
+          ); // Use linear curve for vertical line
+
+        // Draw the main line
+        g.append("path").datum(emissionsData).attr("class", styles.pastPath).attr("d", line);
+      }
     }
 
     // Update point groups with adjusted positioning
@@ -271,7 +540,7 @@ const CarbonLine = ({ emissionsData, currentDate, minValue, maxValue, dateRange 
       .attr("transform", (d) => `translate(${xScale(new Date(d.timestamp))},${yScale(d.value)})`);
 
     pointGroups.each(function (d) {
-      const isPast = new Date(d.timestamp) <= currentDate;
+      const isPast = new Date(d.timestamp) <= today;
 
       // Add small square at the exact data point
       d3.select(this)
@@ -431,14 +700,15 @@ const CarbonLine = ({ emissionsData, currentDate, minValue, maxValue, dateRange 
       });
 
     // After drawing the lines, add the points and event markers
-    // Keep track of used vertical positions to prevent overlap
-    const usedPositions = [];
-    const minSpacing = 50; // Minimum vertical spacing between event labels
+    // Keep track of used positions by x-coordinate range to prevent overlap
+    const usedPositionsByXRange = {};
+    const minSpacing = 20; // Minimum vertical spacing between event labels
+    const xRangeWidth = 0; // Consider markers within 50px of each other as potentially overlapping
 
     emissionsData.forEach((d) => {
       const x = xScale(new Date(d.timestamp));
       const y = yScale(d.value);
-      const isPast = new Date(d.timestamp) <= currentDate;
+      const isPast = new Date(d.timestamp) <= today;
 
       // Add small square at the exact data point
       g.append("rect")
@@ -458,7 +728,21 @@ const CarbonLine = ({ emissionsData, currentDate, minValue, maxValue, dateRange 
 
         // Event box with asterisk
         const eventBoxSize = 24;
-        let eventBoxY = y - 40; // Initial position
+
+        // Calculate the x-range bucket this marker belongs to
+        const xRangeBucket = Math.floor(x / xRangeWidth) * xRangeWidth;
+
+        // Initialize the array for this x-range if it doesn't exist
+        if (!usedPositionsByXRange[xRangeBucket]) {
+          usedPositionsByXRange[xRangeBucket] = [];
+        }
+
+        let eventBoxY;
+        if (usedPositionsByXRange[xRangeBucket].length === 0) {
+          eventBoxY = y + 30;
+        } else {
+          eventBoxY = y - 30;
+        }
 
         // Check for horizontal bounds - ensure label doesn't go off right edge
         const rightEdge = x + eventBoxSize + labelWidth;
@@ -467,33 +751,23 @@ const CarbonLine = ({ emissionsData, currentDate, minValue, maxValue, dateRange 
         // If label would go off right edge, place it to the left of the point instead
         const labelDirection = rightEdge > chartWidth ? -1 : 1;
 
-        // Adjust vertical position to avoid overlaps
-        let positionFound = false;
-        while (!positionFound) {
-          // Check if this position overlaps with any used positions
-          const overlap = usedPositions.some((pos) => Math.abs(pos - eventBoxY) < minSpacing);
+        // Record this position as used
+        usedPositionsByXRange[xRangeBucket].push(eventBoxY);
 
-          if (!overlap) {
-            positionFound = true;
-            usedPositions.push(eventBoxY);
-          } else {
-            // Try a position higher up
-            eventBoxY -= 20;
-
-            // If we're getting too high, reset and try below the point
-            if (eventBoxY < 0) {
-              eventBoxY = y + 40;
-            }
-          }
+        // Determine if this event is before or after the cursor
+        let isBeforeCursor = true;
+        if (timeIndicatorPosition !== null) {
+          const cursorDate = xScale.invert(timeIndicatorPosition - margin.left);
+          isBeforeCursor = new Date(d.timestamp) <= cursorDate;
         }
 
-        // Draw the event box
+        // Draw the event box with different styling based on cursor position
         g.append("rect")
           .attr("x", x - eventBoxSize / 2)
           .attr("y", eventBoxY - eventBoxSize / 2)
           .attr("width", eventBoxSize)
           .attr("height", eventBoxSize)
-          .attr("fill", "black");
+          .attr("fill", isBeforeCursor ? "black" : "var(--accent)"); // Gray for future events
 
         g.append("text")
           .attr("x", x)
@@ -501,7 +775,7 @@ const CarbonLine = ({ emissionsData, currentDate, minValue, maxValue, dateRange 
           .attr("text-anchor", "middle")
           .attr("dominant-baseline", "middle")
           .attr("font-size", "18px")
-          .attr("fill", "white")
+          .attr("fill", isBeforeCursor ? "white" : "black") // White text on black, black text on gray
           .text("*");
 
         // Event label - position flush with event box
@@ -516,7 +790,8 @@ const CarbonLine = ({ emissionsData, currentDate, minValue, maxValue, dateRange 
           .attr("width", labelWidth)
           .attr("height", 24)
           .attr("fill", "white")
-          .attr("stroke", "black")
+          //   .attr("stroke", isBeforeCursor ? "black" : "var(--accent)") // No black border for future events
+          //GARRETT - ADD BACK IN IF WANTED
           .attr("stroke-width", 1);
 
         g.append("text")
@@ -529,7 +804,15 @@ const CarbonLine = ({ emissionsData, currentDate, minValue, maxValue, dateRange 
           .text(eventType);
       }
     });
-  }, [emissionsData, currentDate, dimensions, minValue, maxValue, timeIndicatorPosition, dateRange]);
+  }, [emissionsData, dimensions, minValue, maxValue, timeIndicatorPosition, dateRange, forceRender]);
+
+  // Add effect to highlight the current event point
+  useEffect(() => {
+    if (!svgRef.current || !emissionsData?.length || currentEventIndex === undefined) return;
+
+    // This effect can be used to highlight the current event point if needed
+    // For now, we'll just ensure the component re-renders when currentEventIndex changes
+  }, [currentEventIndex, emissionsData]);
 
   return (
     <div
@@ -537,14 +820,11 @@ const CarbonLine = ({ emissionsData, currentDate, minValue, maxValue, dateRange 
       className={styles.container}
       onMouseMove={handleChartInteraction}
       onTouchMove={handleChartInteraction}
-      onMouseLeave={() => {
-        setTimeIndicatorPosition(null);
-      }}
     >
       <svg
         ref={svgRef}
-        width={dimensions.width}
-        height={dimensions.height}
+        width={dimensions.width || "100%"}
+        height={dimensions.height || "100%"}
         className={styles.svg}
         preserveAspectRatio="xMidYMid meet"
       />

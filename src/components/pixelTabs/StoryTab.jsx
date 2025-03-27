@@ -11,7 +11,7 @@ const StoryTab = ({ pixel }) => {
     date: new Date(),
     emissionChange: "0.000",
   });
-  const [currentEventIndex, setCurrentEventIndex] = useState(0);
+  const [currentEventIndex, setCurrentEventIndex] = useState(0); // Default to first event
   const timelineRef = useRef(null);
   const isNavigatingRef = useRef(false);
   const containerRef = useRef(null);
@@ -143,6 +143,13 @@ const StoryTab = ({ pixel }) => {
     }, 500);
   };
 
+  // Initialize with the first event when data is loaded
+  useEffect(() => {
+    if (timelineEvents.length > 0 && emissionsData.length > 0 && !isNavigatingRef.current) {
+      navigateToEvent(0);
+    }
+  }, [timelineEvents.length, emissionsData.length]);
+
   // Update useEffect for current data to use dynamic date range
   useEffect(() => {
     if (isNavigatingRef.current) return;
@@ -200,7 +207,18 @@ const StoryTab = ({ pixel }) => {
         </div>
         <div className={styles.graph} aria-describedby="emissions-heading">
           <div className={styles.plotArea}>
-            <CarbonLine emissionsData={emissionsData} currentDate={currentData.date} dateRange={dateRange} />
+            <CarbonLine
+              emissionsData={emissionsData}
+              currentDate={currentData.date}
+              dateRange={dateRange}
+              currentEventIndex={currentEventIndex}
+              isActive={true}
+              onEventChange={(index) => {
+                if (!isNavigatingRef.current) {
+                  navigateToEvent(index);
+                }
+              }}
+            />
           </div>
         </div>
       </div>

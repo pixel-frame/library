@@ -50,7 +50,7 @@ const Explore = () => {
 
       <div className={styles.content}>
         <div className={`${styles.globeContainer} ${isListExpanded ? styles.collapsed : ""}`}>
-          <InteractiveGlobe highlightedAssembly={highlightedAssembly} focusedAssembly={focusedAssembly} />
+          <InteractiveGlobe highlightedAssembly={highlightedAssembly} focusedAssembly={highlightedAssembly} />
         </div>
         <div className={`${styles.sideContainer} ${isListExpanded ? styles.expanded : ""}`}>
           {!focusedAssembly ? (
@@ -58,7 +58,7 @@ const Explore = () => {
               assemblies={assemblies}
               onScroll={handleScroll}
               onHighlight={setHighlightedAssembly}
-              onExpand={handleExpand}
+              onExpand={() => {}}
             />
           ) : (
             <Card>

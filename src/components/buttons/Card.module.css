@@ -7,9 +7,9 @@
   border-top: 1px solid #000;
   overflow-y: auto;
   transition: height 0.3s ease-in-out;
-  height: 50vh;
   width: 100%;
   z-index: 1000;
+  height: 95vh;
   animation: slideIn 0.3s ease-out;
 }
 
@@ -27,10 +27,6 @@
   height: 4px;
   background-color: #e0e0e0;
   border-radius: 2px;
-}
-
-.expanded {
-  height: 95vh;
 }
 
 @keyframes slideIn {

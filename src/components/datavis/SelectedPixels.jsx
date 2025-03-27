@@ -3,6 +3,7 @@ import styles from "./SelectedPixels.module.css";
 import SparkLine from "./SparkLine";
 import Card from "../buttons/Card";
 import PixelDetail from "../../pages/PixelDetail";
+import WheelListHandler from "../listing/WheelListHandler";
 
 const SelectedPixels = ({ selectedPoints, onScroll, onHighlight }) => {
   const [allPixels, setAllPixels] = useState([]);
@@ -106,9 +107,28 @@ const SelectedPixels = ({ selectedPoints, onScroll, onHighlight }) => {
 
   const pixelsToShow = selectedPoints?.length > 0 ? selectedPoints : allPixels;
 
-  // Update click handler to only pass the ID
+  // Handle pixel selection from the wheel
+  const handlePixelSelection = (pixel) => {
+    setHighlightedIndex(
+      pixelsToShow.findIndex((p) => p.serial === pixel.serial || p.pixel_number === pixel.pixel_number)
+    );
+    onHighlight(pixel);
+  };
+
+  // Handle pixel click to show details
   const handlePixelClick = (pixel) => {
     setSelectedPixelId(pixel.serial || pixel.pixel_number);
+  };
+
+  // Custom formatter for pixels in the wheel
+  const pixelFormatter = (pixel, index) => {
+    const emissions = typeof pixel.total_emissions === "number" ? pixel.total_emissions : 0;
+    const pixelNumber = pixel.pixel_number || pixel.serial || `Unknown-${index}`;
+
+    return {
+      left: `PIXEL ${pixelNumber}`,
+      right: `${emissions.toFixed(2)}kg CO2e`,
+    };
   };
 
   return (
@@ -120,35 +140,15 @@ const SelectedPixels = ({ selectedPoints, onScroll, onHighlight }) => {
             : `All Pixels (${allPixels.length})`}
         </div> */}
       </div>
-      <div ref={scrollRef} className={styles.scrollableList} onScroll={handleScroll}>
-        {pixelsToShow.map((pixel, index) => {
-          // Ensure we have valid data for each field
-          const emissions = typeof pixel.total_emissions === "number" ? pixel.total_emissions : 0;
-          const distance = pixel.distanceTraveled ?? 0;
-          const pixelNumber = pixel.pixel_number || pixel.serial || `Unknown-${index}`;
-          const isHighlighted = index === highlightedIndex;
 
-          return (
-            <div
-              key={pixel.serial || index}
-              className={`${styles.listItem} ${isHighlighted ? styles.highlighted : ""}`}
-              onClick={() => handlePixelClick(pixel)}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => e.key === "Enter" && handlePixelClick(pixel)}
-            >
-              <div className={styles.itemInfo}>
-                <div className={styles.itemNumber}>PIXEL {pixelNumber}</div>
-                <div className={styles.itemEmissions}>{emissions.toFixed(2)}kg CO2e</div>
-                <div className={styles.itemState}>{distance.toFixed(0)}km</div>
-                <div className={styles.sparkline}>
-                  <SparkLine data={pixel.emissions_over_time || {}} />
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+      {/* Replace scrollable list with WheelListHandler */}
+      <WheelListHandler
+        items={pixelsToShow}
+        onSelectionChange={handlePixelSelection}
+        valueFormatter={pixelFormatter}
+        initialIndex={highlightedIndex || 0}
+      />
+
       {selectedPixelId && (
         <Card>
           <PixelDetail id={selectedPixelId} initialTab="story" onClose={() => setSelectedPixelId(null)} />

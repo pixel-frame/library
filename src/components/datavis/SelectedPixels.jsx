@@ -11,6 +11,7 @@ const SelectedPixels = ({ selectedPoints, onScroll, onHighlight }) => {
   const scrollRef = useRef(null);
   const lastScrollPosition = useRef(0);
   const [selectedPixelId, setSelectedPixelId] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
 
   // Fetch all pixels when component mounts
   useEffect(() => {
@@ -73,8 +74,9 @@ const SelectedPixels = ({ selectedPoints, onScroll, onHighlight }) => {
     // Don't show details if it's the "ALL PIXELS" option
     if (selectedPixel.isAllOption) return;
 
-    // Set the selected pixel ID
+    // Set the selected pixel ID and open the card
     setSelectedPixelId(selectedPixel.serial || selectedPixel.pixel_number);
+    setIsOpen(true);
   };
 
   // Custom formatter for pixels
@@ -122,9 +124,16 @@ const SelectedPixels = ({ selectedPoints, onScroll, onHighlight }) => {
         />
       </div>
 
-      {selectedPixelId && (
-        <Card>
-          <PixelDetail id={selectedPixelId} initialTab="story" onClose={() => setSelectedPixelId(null)} />
+      {isOpen && selectedPixelId && (
+        <Card isOpen={isOpen}>
+          <PixelDetail
+            id={selectedPixelId}
+            initialTab="story"
+            onClose={() => {
+              setIsOpen(false);
+              setSelectedPixelId(null);
+            }}
+          />
         </Card>
       )}
     </div>

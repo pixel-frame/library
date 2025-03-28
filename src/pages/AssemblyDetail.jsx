@@ -170,6 +170,14 @@ const AssemblyDetail = ({ assemblyId, assembly: passedAssembly, fullData: passed
                 value: new Date(assembly.date).toLocaleDateString(),
               },
               {
+                title: "Generation",
+                value: assembly.generation_name,
+              },
+              {
+                title: "Scale",
+                value: assembly.scale,
+              },
+              {
                 title: "Location",
                 value: assembly.location.name,
               },
@@ -179,17 +187,17 @@ const AssemblyDetail = ({ assemblyId, assembly: passedAssembly, fullData: passed
               },
               {
                 title: "Pixel Weight",
-                value: `${assembly.pixelWeight} kg`,
+                value: `${assembly.pixel_weight} kg`,
                 info: "Total weight of pixels used in assembly",
               },
               {
-                title: "Coefficient",
-                value: assembly.coefficient,
-                info: "Structural performance coefficient",
+                title: "Transport Coefficient",
+                value: assembly.transport.coefficient || "N/A",
+                info: "Carbon emissions per kg per km transported (kgCO₂e/kg)",
               },
               {
                 title: "A1-A3 Emissions",
-                value: `${assembly.a1A3Emissions} kg CO₂e`,
+                value: `${assembly.a1_a3_emissions} kg CO₂e`,
                 info: "Production phase emissions",
               },
               {
@@ -202,7 +210,7 @@ const AssemblyDetail = ({ assemblyId, assembly: passedAssembly, fullData: passed
               },
               {
                 title: "Total Emissions",
-                value: `${assembly.totalEmissions || "Not calculated"} kg CO₂e`,
+                value: `${assembly.total_emissions || "Not calculated"} kg CO₂e`,
                 info: "Combined emissions from production and transport",
               },
             ]}

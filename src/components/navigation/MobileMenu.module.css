@@ -57,8 +57,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   animation: fadeIn 0.3s ease;
+  overflow-y: auto;
+  transition: background-color 0.3s ease;
 }
 
 @keyframes fadeIn {
@@ -96,9 +98,61 @@
   z-index: 1001;
 }
 
+/* Top Section with Dark Mode Toggle and Privacy Policy */
+.topSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-top: var(--space-xl);
+  margin-bottom: var(--space-xl);
+  padding: 0 var(--space-md);
+}
+
+.themeToggle {
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--accent);
+  color: var(--text-on-accent);
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  user-select: none;
+}
+
+.privacyLink {
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+/* Concrete Translations Container */
+.concreteContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+  max-height: 40vh;
+  overflow-y: auto;
+  padding: var(--space-md);
+}
+
+.concreteItem {
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--bg-secondary);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: var(--font-md);
+  text-align: center;
+  min-width: 100px;
+  animation: fadeIn 0.5s ease;
+}
+
 /* Navigation Links */
 .mobileNav {
-  margin-top: var(--space-2xl);
+  margin-top: var(--space-xl);
   width: 100%;
 }
 
@@ -126,31 +180,6 @@
   transition: color 0.2s ease;
 }
 
-.mobileNav a:hover,
 .mobileNav a:focus {
   color: var(--accent);
-}
-
-.themeToggleContainer {
-  margin-top: var(--space-xl);
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-
-.themeStatus {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 85vw;
-  padding: 0.75rem 1.25rem;
-  margin: 2rem 2.75rem;
-  border-radius: var(--radius-sm);
-  text-align: left;
-  background-color: var(--accent);
-  color: var(--text-primary);
-  font-weight: 500;
-  letter-spacing: 0.05em;
-  cursor: pointer;
-  user-select: none;
 }

@@ -13,6 +13,7 @@
   border-top: 0.5px solid var(--text-primary);
   padding-top: 0.33rem;
   margin-bottom: 0.75rem;
+  position: relative;
 }
 
 .fullWidth {
@@ -27,6 +28,7 @@
   display: flex;
   align-items: center;
   gap: 0.33rem;
+  height: 24px;
 }
 
 .title {
@@ -44,14 +46,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: var(--font-sm);
+  font-size: var(--font-md);
   cursor: pointer;
+  position: absolute;
+  right: 0;
+  top: 0.33rem;
 }
 
 .value {
   font-size: var(--font-sm);
   font-weight: 500;
   font-family: monospace;
+  margin-top: 0.25rem;
+  padding-right: 28px;
 }
 
 .fullWidth .value {

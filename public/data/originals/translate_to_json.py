@@ -105,12 +105,23 @@ def convert_carbon_locations_to_json(csv_file, master_csv):
             # Get the network of pixels for this reconfiguration
             pixel_network = extract_pixels_for_reconfiguration(master_csv, number)
             
+            # Calculate total emissions if it's null but we have the necessary values
+            total_emissions = None
+            if row['Total emissions per reconfiguration (kgCO2e/pixel)']:
+                total_emissions = float(row['Total emissions per reconfiguration (kgCO2e/pixel)'])
+            elif row['A1-A3 emissions (kgCO2e)'] and row['Carbon emissions (A4) (kgCO2e/pixel)']:
+                a1_a3 = float(row['A1-A3 emissions (kgCO2e)']) if row['A1-A3 emissions (kgCO2e)'] else 0
+                transport = float(row['Carbon emissions (A4) (kgCO2e/pixel)']) if row['Carbon emissions (A4) (kgCO2e/pixel)'] else 0
+                total_emissions = a1_a3 + transport
+            
             reconfiguration = {
                 "number": number,
                 "serial": f"{number:04d}",  # Add serial field
                 "name": row['Reconfiguration name'],
                 "description": row['Description'], 
                 "date": row['Date'].strip() if row['Date'] else None,
+                "generation_name": row['Generation name'],
+                "scale": row['Scale'],
                 "location": {
                     "name": row['Location name'],
                     "coordinates": {
@@ -127,7 +138,7 @@ def convert_carbon_locations_to_json(csv_file, master_csv):
                     "coefficient": float(row['Transport coefficient (kgCO2e/kg)']) if row['Transport coefficient (kgCO2e/kg)'] else None,
                     "emissions": float(row['Carbon emissions (A4) (kgCO2e/pixel)']) if row['Carbon emissions (A4) (kgCO2e/pixel)'] else 0
                 },
-                "total_emissions": float(row['Total emissions per reconfiguration (kgCO2e/pixel)']) if row['Total emissions per reconfiguration (kgCO2e/pixel)'] else None,
+                "total_emissions": total_emissions,
                 "network": pixel_network  # Add the network of pixels
             }
             reconfigurations.append(reconfiguration)

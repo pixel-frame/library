@@ -24,10 +24,6 @@ export function ThemeProvider({ children }) {
 
     root.classList.remove("light", "dark");
     root.classList.add(theme);
-
-    document.body.style.display = "none";
-    document.body.offsetHeight;
-    document.body.style.display = "";
   }, [theme]);
 
   const toggleTheme = () => {

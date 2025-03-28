@@ -18,6 +18,7 @@ const Pixels = () => {
   const [viewMode, setViewMode] = useState("vertical"); // 'vertical', 'horizontal', or 'grid'
   const [isScrolling, setIsScrolling] = useState(false);
   const [selectedView, setSelectedView] = useState("compact"); // Track which view button is selected
+  const [sortMode, setSortMode] = useState("default"); // Add sort mode state
   const scrollTimeoutRef = useRef(null);
 
   useEffect(() => {
@@ -92,6 +93,11 @@ const Pixels = () => {
     setSelectedIndex(index);
   };
 
+  const handleSortByAssembly = () => {
+    // Toggle between default and assembly sort
+    setSortMode(sortMode === "default" ? "assembly" : "default");
+  };
+
   if (loading) return <div className={styles.loadingIndicator}>LOADING PIXEL BANK...</div>;
   if (error) return <div className={styles.errorMessage}>{error}</div>;
   if (pixels.length === 0) return <div className={styles.noPixels}>NO PIXELS FOUND</div>;
@@ -123,6 +129,15 @@ const Pixels = () => {
             >
               [COMPACT]
             </Button>
+            <Button
+              className={`${styles.viewButton} ${sortMode === "assembly" ? styles.selected : ""}`}
+              onClick={handleSortByAssembly}
+              aria-label="Sort by assembly"
+              tabIndex="0"
+              onKeyDown={(e) => e.key === "Enter" && handleSortByAssembly()}
+            >
+              [SORT BY ASSEMBLY]
+            </Button>
           </div>
         }
       />
@@ -131,9 +146,10 @@ const Pixels = () => {
         <PixelCanvas2
           pixels={pixels}
           selectedIndex={selectedPixel}
-          // onPixelClick={handleItemClick}
+          onPixelClick={handleSelectionChange}
           width="100%"
           height="900px"
+          sortMode={sortMode}
         />
 
         <TestList onSelectionChange={handleSelectionChange} />

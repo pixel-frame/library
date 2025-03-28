@@ -4,7 +4,14 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import styles from "./Pixels.module.css";
 
-const PixelCanvas2 = ({ width = "100%", height = "300px", pixels = [], selectedIndex = null, onPixelClick = null }) => {
+const PixelCanvas2 = ({
+  width = "100%",
+  height = "300px",
+  pixels = [],
+  selectedIndex = null,
+  onPixelClick = null,
+  sortMode = "default",
+}) => {
   const containerRef = useRef(null);
   const sceneRef = useRef(null);
   const cameraRef = useRef(null);
@@ -36,6 +43,40 @@ const PixelCanvas2 = ({ width = "100%", height = "300px", pixels = [], selectedI
     speed: 0.001, // rotation speed in radians per frame
     lastTime: 0,
   }).current;
+
+  // Add a ref to track the current sort mode
+  const currentSortModeRef = useRef("default");
+
+  // Add transition state
+  const transitionRef = useRef({
+    active: false,
+    startTime: 0,
+    duration: 1000, // transition duration in ms
+    pixelPositions: {}, // will store pixel serial -> {start, target} positions
+  }).current;
+
+  // Add a ref to track the previous sort mode
+  const previousSortModeRef = useRef("default");
+
+  // Add a ref to track the previous pixels array
+  const previousPixelsRef = useRef([]);
+
+  // Update the ref when the prop changes
+  useEffect(() => {
+    console.log(`Sort mode changed from ${currentSortModeRef.current} to ${sortMode}`);
+
+    // Only trigger transition if the sort mode actually changed
+    if (currentSortModeRef.current !== sortMode && isInitialized) {
+      console.log("Triggering sort transition");
+      previousSortModeRef.current = currentSortModeRef.current;
+      currentSortModeRef.current = sortMode;
+
+      // Calculate new positions and start transition
+      startSortTransition();
+    } else {
+      currentSortModeRef.current = sortMode;
+    }
+  }, [sortMode, isInitialized]);
 
   // Initialize Three.js scene
   useEffect(() => {
@@ -159,7 +200,12 @@ const PixelCanvas2 = ({ width = "100%", height = "300px", pixels = [], selectedI
 
       // Throttle rendering for better performance
       const elapsed = time - lastTime;
-      if (elapsed < frameInterval && !animateToCenterPixel.active && !modelRotationRef.active) {
+      if (
+        elapsed < frameInterval &&
+        !animateToCenterPixel.active &&
+        !modelRotationRef.active &&
+        !transitionRef.active
+      ) {
         return; // Skip this frame unless we're animating
       }
 
@@ -168,6 +214,47 @@ const PixelCanvas2 = ({ width = "100%", height = "300px", pixels = [], selectedI
       // Handle model rotation
       if (modelRotationRef.active && modelRef.current) {
         modelRef.current.rotation.y += modelRotationRef.speed;
+      }
+
+      // Handle transition animation directly in the main loop
+      if (transitionRef.active) {
+        const transitionElapsed = time - transitionRef.startTime;
+        const progress = Math.min(transitionElapsed / transitionRef.duration, 1);
+
+        // Apply easing function (easeInOutCubic)
+        const eased = progress < 0.5 ? 4 * progress * progress * progress : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+
+        // Update positions of all pixels
+        pixelObjectsRef.current.forEach((pixelObj) => {
+          const serial = pixelObj.userData.pixel.serial;
+          const positions = transitionRef.pixelPositions[serial];
+
+          if (positions) {
+            // Interpolate position
+            pixelObj.position.x = positions.start.x + (positions.target.x - positions.start.x) * eased;
+            pixelObj.position.y = positions.start.y + (positions.target.y - positions.start.y) * eased;
+            pixelObj.position.z = positions.start.z + (positions.target.z - positions.start.z) * eased;
+          }
+        });
+
+        // End animation when complete
+        if (progress >= 1) {
+          // Ensure we end at exactly the target values
+          pixelObjectsRef.current.forEach((pixelObj) => {
+            const serial = pixelObj.userData.pixel.serial;
+            const positions = transitionRef.pixelPositions[serial];
+
+            if (positions) {
+              pixelObj.position.copy(positions.target);
+
+              // Update the original position in userData
+              pixelObj.userData.originalPosition.copy(positions.target);
+            }
+          });
+
+          transitionRef.active = false;
+          console.log("Transition complete");
+        }
       }
 
       controls.update();
@@ -338,9 +425,132 @@ const PixelCanvas2 = ({ width = "100%", height = "300px", pixels = [], selectedI
     }
   };
 
+  // Function to start transition between sort modes
+  const startSortTransition = () => {
+    if (!pixelObjectsRef.current.length) return;
+
+    console.log(`Starting transition from ${previousSortModeRef.current} to ${currentSortModeRef.current}`);
+
+    // Calculate target positions for all pixels based on new sort mode
+    const targetPositions = calculatePixelPositions(pixels.slice(0, Math.min(pixels.length, 140)));
+
+    // Store current positions as starting points
+    transitionRef.pixelPositions = {};
+
+    let positionCount = 0;
+    pixelObjectsRef.current.forEach((pixelObj) => {
+      const serial = pixelObj.userData.pixel.serial;
+
+      // Find index of this pixel in the original pixels array
+      const index = pixels.findIndex((p) => p.serial === serial);
+
+      if (index !== -1 && targetPositions[index]) {
+        transitionRef.pixelPositions[serial] = {
+          start: pixelObj.position.clone(),
+          target: new THREE.Vector3(
+            targetPositions[index].x,
+            targetPositions[index].y - 30, // Apply the same offset as in createPixelObject
+            targetPositions[index].z
+          ),
+        };
+        positionCount++;
+      }
+    });
+
+    console.log(`Set up transition for ${positionCount} pixels`);
+
+    // Start transition animation
+    transitionRef.active = true;
+    transitionRef.startTime = performance.now();
+  };
+
+  // Calculate pixel positions based on current sort mode
+  const calculatePixelPositions = (pixelsToShow) => {
+    let pixelPositions = [];
+
+    if (currentSortModeRef.current === "assembly") {
+      // Sort by assembly (number_of_reconfigurations)
+      // Group pixels by their reconfiguration count
+      const groupedPixels = {};
+      pixelsToShow.forEach((pixel, index) => {
+        const reconfCount = pixel.number_of_reconfigurations || 0;
+        if (!groupedPixels[reconfCount]) {
+          groupedPixels[reconfCount] = [];
+        }
+        groupedPixels[reconfCount].push({ pixel, index });
+      });
+
+      // Arrange pixels in a spiral pattern based on reconfiguration count
+      // Higher reconfiguration counts will be closer to the center
+      const counts = Object.keys(groupedPixels).sort((a, b) => b - a); // Sort descending
+
+      let currentRadius = 50; // Start with a small radius for the center
+      let currentAngle = 0;
+      let pixelIndex = 0;
+
+      counts.forEach((count) => {
+        const pixelsInGroup = groupedPixels[count];
+        const angleIncrement = (2 * Math.PI) / pixelsInGroup.length;
+
+        pixelsInGroup.forEach(({ pixel, index }) => {
+          const x = Math.cos(currentAngle) * currentRadius;
+          const y = Math.sin(currentAngle) * currentRadius;
+          const z = 0;
+
+          pixelPositions[index] = { x, y, z };
+          currentAngle += angleIncrement;
+          pixelIndex++;
+        });
+
+        // Increase radius for next group
+        currentRadius += 100;
+      });
+    } else {
+      // Default grid layout
+      const gridSize = 1000;
+      const maxDepth = 300;
+      const gridDivisions = Math.ceil(Math.sqrt(pixelsToShow.length * 0.7));
+      const cellWidth = gridSize / gridDivisions;
+      const cellHeight = cellWidth;
+      const cellDepth = maxDepth / Math.ceil(pixelsToShow.length / (gridDivisions * gridDivisions));
+
+      pixelsToShow.forEach((pixel, i) => {
+        // Calculate grid position
+        const gridX = i % gridDivisions;
+        const gridY = Math.floor(i / gridDivisions) % gridDivisions;
+        const gridZ = Math.floor(i / (gridDivisions * gridDivisions));
+
+        // Calculate base position with more spacing
+        const baseX = (gridX - gridDivisions / 2) * cellWidth + cellWidth / 2;
+        const baseY = (gridY - gridDivisions / 2) * cellHeight + cellHeight / 2;
+        const baseZ = gridZ * cellDepth;
+
+        // Add some randomness within the cell, but keep it contained
+        const randomX = baseX + (Math.random() - 0.5) * cellWidth * 0.5;
+        const randomY = baseY + (Math.random() - 0.5) * cellHeight * 0.5;
+        const randomZ = baseZ + Math.random() * cellDepth * 0.5;
+
+        pixelPositions[i] = { x: randomX, y: randomY, z: randomZ };
+      });
+    }
+
+    return pixelPositions;
+  };
+
   // Load pixel images with optimizations for mobile
   useEffect(() => {
     if (!isInitialized || !pixels.length) return;
+
+    // Check if pixels have actually changed
+    const pixelsChanged =
+      pixels.length !== previousPixelsRef.current.length ||
+      pixels.some((pixel, index) => pixel.serial !== previousPixelsRef.current[index]?.serial);
+
+    // Only reload pixels if they've actually changed
+    if (!pixelsChanged) return;
+
+    // Update the previous pixels ref
+    previousPixelsRef.current = [...pixels];
 
     const scene = sceneRef.current;
 
@@ -380,18 +590,12 @@ const PixelCanvas2 = ({ width = "100%", height = "300px", pixels = [], selectedI
       // Track loading progress
     };
 
-    // Grid dimensions - significantly increase spacing
-    const gridSize = 1000;
-    const maxDepth = 300;
-
-    // Create a more structured distribution with fewer pixels per row
     // Ensure we're only showing the actual number of pixels
     const pixelsToShow = pixels.slice(0, Math.min(pixels.length, 140));
     console.log(pixels.length);
-    const gridDivisions = Math.ceil(Math.sqrt(pixelsToShow.length * 0.7));
-    const cellWidth = gridSize / gridDivisions;
-    const cellHeight = cellWidth;
-    const cellDepth = maxDepth / Math.ceil(pixelsToShow.length / (gridDivisions * gridDivisions));
+
+    // Determine pixel positions based on sort mode
+    const pixelPositions = calculatePixelPositions(pixelsToShow);
 
     // Shuffle pixels to randomize load order
     const shuffledPixels = [...pixelsToShow].sort(() => Math.random() - 0.5);
@@ -414,20 +618,11 @@ const PixelCanvas2 = ({ width = "100%", height = "300px", pixels = [], selectedI
         const pixelNumber = pixel.number || pixel.serial;
         const url = `data/previews/pixels/model-poster-${pixelNumber}.png`;
 
-        // Calculate grid position
-        const gridX = i % gridDivisions;
-        const gridY = Math.floor(i / gridDivisions) % gridDivisions;
-        const gridZ = Math.floor(i / (gridDivisions * gridDivisions));
+        // Get the original index of this pixel in the pixelsToShow array
+        const originalIndex = pixelsToShow.findIndex((p) => p.serial === pixel.serial);
 
-        // Calculate base position with more spacing
-        const baseX = (gridX - gridDivisions / 2) * cellWidth + cellWidth / 2;
-        const baseY = (gridY - gridDivisions / 2) * cellHeight + cellHeight / 2;
-        const baseZ = gridZ * cellDepth;
-
-        // Add some randomness within the cell, but keep it contained
-        const randomX = baseX + (Math.random() - 0.5) * cellWidth * 0.5;
-        const randomY = baseY + (Math.random() - 0.5) * cellHeight * 0.5;
-        const randomZ = baseZ + Math.random() * cellDepth * 0.5;
+        // Get position from our calculated positions array
+        const position = pixelPositions[originalIndex];
 
         // First loaded: 60px, Last loaded: 80px
         const minSize = 60;
@@ -444,7 +639,7 @@ const PixelCanvas2 = ({ width = "100%", height = "300px", pixels = [], selectedI
             texture.minFilter = THREE.LinearFilter;
             texture.magFilter = THREE.LinearFilter; // Add magFilter for better quality
             texture.generateMipmaps = false; // Disable mipmaps for performance
-            createPixelObject(texture, randomX, randomY, randomZ, baseSize, pixel, i);
+            createPixelObject(texture, position.x, position.y, position.z, baseSize, pixel, i);
           },
           // onProgress
           undefined,
@@ -459,7 +654,7 @@ const PixelCanvas2 = ({ width = "100%", height = "300px", pixels = [], selectedI
               texture.minFilter = THREE.LinearFilter;
               texture.magFilter = THREE.LinearFilter;
               texture.generateMipmaps = false;
-              createPixelObject(texture, randomX, randomY, randomZ, baseSize, pixel, i);
+              createPixelObject(texture, position.x, position.y, position.z, baseSize, pixel, i);
             });
           }
         );

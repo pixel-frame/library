@@ -1,3 +1,9 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
+  "buildCommand": "pip install -r requirements.txt && npm run build",
+  "installCommand": "npm install",
+  "framework": "vite",
+  "env": {
+    "PYTHON_VERSION": "3.9"
+  }
 }

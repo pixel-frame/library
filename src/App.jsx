@@ -5,7 +5,7 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import { ThemeToggle } from "./components/ThemeToggle/ThemeToggle";
 import Layout from "./components/layout/Layout";
 import LoadingPage from "./pages/LoadingPage";
-import DetailsTestPage from "./components/DetailsTestPage";
+import LoadingPagePixel from "./pages/LoadingPagePixel";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import ListingPage from "./pages/ListingPage";
 import AssemblyDetail from "./pages/AssemblyDetail";
@@ -13,18 +13,20 @@ import PixelDetail from "./pages/PixelDetail";
 import { initMobileViewportFix } from "./utils/mobileViewportFix";
 import Explore from "./pages/Explore";
 import Carbon from "./pages/Emissions";
+import Pixels from "./components/listing/Pixels";
 // Wrapper component to handle the loading page logic
 const AppContent = () => {
-  const [hasSeenLoadingPage, setHasSeenLoadingPage] = useState(() => {
-    // This runs only on initial render and properly handles server-side rendering
+  const [showLoadingOverlay, setShowLoadingOverlay] = useState(() => {
     try {
-      return localStorage.getItem("hasSeenLoadingPage") === "true";
+      return localStorage.getItem("hasSeenLoadingPage") !== "true";
     } catch (e) {
-      return false;
+      return true;
     }
   });
 
   const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const isRfidSource = searchParams.get("source") === "rfid";
   const navigate = useNavigate();
 
   const handleProceed = () => {
@@ -33,30 +35,25 @@ const AppContent = () => {
     } catch (e) {
       console.error("Could not save to localStorage:", e);
     }
-    setHasSeenLoadingPage(true);
+    setShowLoadingOverlay(false);
   };
 
-  // If user hasn't seen loading page, show it
-  if (!hasSeenLoadingPage) {
-    return <LoadingPage onProceed={handleProceed} />;
-  }
-
-  // Otherwise show the actual content
   return (
-    <Layout>
-      <Routes>
-        <Route path="/" element={<ListingPage />} />
-        <Route path="/assemblies" element={<ListingPage />} />
-        <Route path="/pixels" element={<ListingPage />} />
-        <Route path="/assembly/:id" element={<AssemblyDetail />} />
-        <Route path="/pixel/:id" element={<PixelDetail />} />
-        <Route path="/details" element={<DetailsTestPage />} />
-        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-        <Route path="*" element={<DetailsTestPage />} />
-        <Route path="/explore" element={<Explore />} />
-        <Route path="/emissions" element={<Carbon />} />
-      </Routes>
-    </Layout>
+    <>
+      {isRfidSource && showLoadingOverlay && <LoadingPagePixel onProceed={handleProceed} />}
+      <Layout>
+        <Routes>
+          <Route path="/test" element={<ListingPage />} />
+          <Route path="/assemblies" element={<ListingPage />} />
+          <Route path="/" element={<Pixels />} />
+          <Route path="/assembly/:id" element={<AssemblyDetail />} />
+          <Route path="/pixel/:id" element={<PixelDetail />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/explore" element={<Explore />} />
+          <Route path="/emissions" element={<Carbon />} />
+        </Routes>
+      </Layout>
+    </>
   );
 };
 

@@ -3,16 +3,19 @@
   min-height: 100vh;
   width: 100%;
   display: flex;
+  z-index: 1000;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
 .ascii-grid {
-  width: 85vw;
-  height: 60vh;
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  bottom: -10rem;
   font-family: monospace;
-  font-size: 5px;
+  font-size: 8px;
   line-height: 1;
   white-space: pre;
   margin: 0 auto;
@@ -47,11 +50,52 @@
   max-width: 200px;
 }
 
+.loading-page .center-text {
+  position: absolute;
+  top: 5rem;
+  left: 30%;
+  transform: translateX(-30%);
+  width: 100%;
+  font-size: var(--font-sm);
+  max-width: 400px;
+  text-align: left;
+}
+
 .loading-page button {
   position: absolute;
   bottom: 1rem;
   right: 1rem;
   font-size: var(--font-xs);
+}
+
+.controls {
+  position: absolute;
+  bottom: 5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 1rem;
+  width: 90%;
+  max-width: 800px;
+}
+
+.control-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: var(--font-xs);
+}
+
+.control-group label {
+  margin-bottom: 0.25rem;
+  white-space: nowrap;
+}
+
+.control-group input[type="range"] {
+  width: 100%;
+  max-width: 150px;
+  height: 2px;
 }
 
 @media (min-width: 768px) {
@@ -60,8 +104,8 @@
   }
 
   .ascii-grid {
-    height: 85vh;
-    font-size: 5px;
+    height: 100vh;
+    font-size: 10px;
   }
 
   .loading-page h1 {
@@ -82,5 +126,14 @@
 
   .loading-page button {
     font-size: var(--font-sm);
+  }
+
+  .loading-page .center-text {
+    font-size: var(--font-sm);
+    max-width: 400px;
+  }
+
+  .controls {
+    bottom: 8rem;
   }
 }

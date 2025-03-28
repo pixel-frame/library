@@ -21,6 +21,31 @@
   "timeline": [
     {
       "step": 1,
+      "reconfiguration_number": 0,
+      "name": "Initial Fabrication",
+      "date": "January 2022",
+      "location": {
+        "name": "Fabrication Site",
+        "coordinates": {
+          "latitude": null,
+          "longitude": null
+        }
+      },
+      "emissions": {
+        "a1_a3": 2.2952,
+        "transport": 0,
+        "step_total": 2.2952,
+        "running_total": 2.2952
+      },
+      "transport": {
+        "type": null,
+        "distance": 0,
+        "cumulative_distance": 0
+      },
+      "description": "Generation 1 pixel fabrication"
+    },
+    {
+      "step": 2,
       "reconfiguration_number": 1,
       "name": "Gen 1 Prototype Beam Assembly and Load Test",
       "date": "7/18/2022",
@@ -32,9 +57,9 @@
         }
       },
       "emissions": {
-        "a1_a3": 2.2952,
+        "a1_a3": 0,
         "transport": 0.0,
-        "step_total": 2.2952,
+        "step_total": 0.0,
         "running_total": 2.2952
       },
       "transport": {
@@ -45,7 +70,7 @@
       "description": "The Gen 1 Prototype Beam Assembly was fabricated as an initial proof of concept for Pixelframe, used to test both the assembly method and structural performance at half scale. Pixels in this configuration were subjected to a three-point bending test which led to minor cracking and spalling as pixels were tested to failure. "
     },
     {
-      "step": 2,
+      "step": 3,
       "reconfiguration_number": 8,
       "name": "Gen 1 Prototype Exhibition Column Assembly",
       "date": "5/17/2024",
@@ -70,7 +95,7 @@
       "description": "The Exhibition Column Assembly was exhibited in Cambridge, MA, in June of 2024. It was used to demonstrate the assemble and disassembly of the system. "
     },
     {
-      "step": 3,
+      "step": 4,
       "reconfiguration_number": 10,
       "name": "Gen 1 Prototype Biennale Column",
       "date": "3/19/2025",

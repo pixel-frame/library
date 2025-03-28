@@ -7,14 +7,18 @@
 }
 
 .emissionsSection {
-  flex: 0.5;
-  min-height: 0;
-  overflow: auto;
+  height: 60vh;
+  min-height: 60vh;
+  max-height: 60vh;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 .logSection {
-  flex: 0.3;
-  min-height: 0;
+  flex: 1;
+  min-height: 25vh;
   overflow: auto;
 }
 

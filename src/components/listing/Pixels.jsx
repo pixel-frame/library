@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import styles from "./Pixels.module.css";
-import PixelList from "./PixelList";
+import TestList from "./TestList";
 import PixelDetailView from "./PixelPreview";
 import PixelSpaceView from "./PixelSpace";
 import PixelCanvas from "./PixelCanvas";
@@ -87,7 +87,7 @@ const Pixels = () => {
     }
   };
 
-  const handleItemClick = (index) => {
+  const handleSelectionChange = (index) => {
     if (index === selectedIndex) return;
     setSelectedIndex(index);
   };
@@ -137,13 +137,7 @@ const Pixels = () => {
           height="300px" 
         />
 
-        <PixelList
-          pixels={pixels}
-          selectedIndex={selectedIndex}
-          viewMode={viewMode}
-          onItemClick={handleItemClick}
-          onViewModeChange={cycleViewMode}
-        />
+        <TestList onSelectionChange={handleSelectionChange} />
       </div>
     </div>
   );

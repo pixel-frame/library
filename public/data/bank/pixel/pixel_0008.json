@@ -18,7 +18,33 @@
   "gif": false,
   "notes": "cut 3/16/2025",
   "serial": "0008",
-  "timeline": [],
+  "timeline": [
+    {
+      "step": 1,
+      "reconfiguration_number": 0,
+      "name": "Initial Fabrication",
+      "date": "January 2022",
+      "location": {
+        "name": "Fabrication Site",
+        "coordinates": {
+          "latitude": null,
+          "longitude": null
+        }
+      },
+      "emissions": {
+        "a1_a3": 0,
+        "transport": 0,
+        "step_total": 0,
+        "running_total": 0
+      },
+      "transport": {
+        "type": null,
+        "distance": 0,
+        "cumulative_distance": 0
+      },
+      "description": "Generation 1 pixel fabrication"
+    }
+  ],
   "total_emissions": 0,
   "total_distance": 0
 }

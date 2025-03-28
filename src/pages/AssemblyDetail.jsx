@@ -8,17 +8,20 @@ import ExpandButton from "../components/buttons/ExpandButton";
 import CloseButton from "../components/buttons/CloseButton";
 import NetworkMatrix from "../components/datavis/NetworkMatrix";
 
-const AssemblyDetail = ({ assemblyId, onBack }) => {
+const AssemblyDetail = ({ assemblyId, assembly: passedAssembly, fullData: passedFullData, onBack, isActive }) => {
   const { id: urlId } = useParams();
   const effectiveId = assemblyId || urlId;
   const location = useLocation();
-  const [assembly, setAssembly] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [assembly, setAssembly] = useState(passedAssembly || null);
+  const [loading, setLoading] = useState(!passedAssembly);
   const [error, setError] = useState(null);
   const [modelPath, setModelPath] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false);
-  const [fullData, setFullData] = useState(null);
+  const [fullData, setFullData] = useState(passedFullData || null);
   const [fullscreenImage, setFullscreenImage] = useState(null);
+
+  // Check if we're being rendered as a tab in PixelDetail
+  const isInPixelDetailTab = isActive !== undefined;
 
   const availableModels = ["0001", "0002", "0003", "0004", "0005", "0009", "0010"];
 
@@ -53,7 +56,49 @@ const AssemblyDetail = ({ assemblyId, onBack }) => {
     }
   };
 
+  const [mediaItems, setMediaItems] = useState([]);
+  const [loadedItems, setLoadedItems] = useState([]);
+
   useEffect(() => {
+    const loadMediaItems = () => {
+      const items = Array.from({ length: 5 }, (_, i) => ({
+        id: i + 1,
+        title: `Assembly ${assembly.serial} - Image ${i + 1}`,
+        url: `/data/media/${assembly.serial}/${i + 1}.JPG`,
+      }));
+
+      setMediaItems(items);
+    };
+
+    if (assembly) {
+      loadMediaItems();
+    }
+  }, [assembly]);
+
+  useEffect(() => {
+    // If we already have the assembly data passed as props, use it
+    if (passedAssembly && passedFullData) {
+      setAssembly(passedAssembly);
+      setFullData(passedFullData);
+
+      const modelSerial = getModelSerial(passedAssembly);
+      setModelPath(modelSerial ? `/data/models/assemblies/${modelSerial}.glb` : null);
+      setLoading(false);
+      return;
+    }
+
+    // Otherwise, if we have location state, use that
+    if (location.state?.assembly) {
+      setAssembly(location.state.assembly);
+      setFullData({ reconfigurations: [location.state.assembly] });
+
+      const modelSerial = getModelSerial(location.state.assembly);
+      setModelPath(modelSerial ? `/data/models/assemblies/${modelSerial}.glb` : null);
+      setLoading(false);
+      return;
+    }
+
+    // As a fallback, fetch the data
     const fetchAssemblyDetail = async () => {
       try {
         const response = await fetch("/data/bank/assembly/assemblies.json");
@@ -63,6 +108,7 @@ const AssemblyDetail = ({ assemblyId, onBack }) => {
         const foundAssembly = data.reconfigurations.find((assembly) => assembly.serial === effectiveId);
         if (!foundAssembly) throw new Error(`Assembly ${effectiveId} not found`);
 
+        console.log("Assembly serial:", foundAssembly.serial);
         setFullData(data);
         setAssembly(foundAssembly);
 
@@ -76,37 +122,21 @@ const AssemblyDetail = ({ assemblyId, onBack }) => {
       }
     };
 
-    if (location.state?.assembly) {
-      setAssembly(location.state.assembly);
-      setFullData({ reconfigurations: [location.state.assembly] });
-
-      const modelSerial = getModelSerial(location.state.assembly);
-      setModelPath(modelSerial ? `/data/models/assemblies/${modelSerial}.glb` : null);
-      setLoading(false);
-    } else {
-      fetchAssemblyDetail();
-    }
-  }, [effectiveId, location.state]);
+    fetchAssemblyDetail();
+  }, [effectiveId, location.state, passedAssembly, passedFullData]);
 
   if (loading) return <div className="loading-indicator">Loading assembly details...</div>;
   if (error) return <div className="error-message">{error}</div>;
   if (!assembly) return <div className="error-message">Assembly not found</div>;
 
-  // Mock media items - replace with actual data when available
-  const mediaItems = [
-    { id: 1, title: "Assembly view 1" },
-    { id: 2, title: "Assembly view 2" },
-    { id: 3, title: "Assembly view 3" },
-    { id: 4, title: "Assembly view 4" },
-    { id: 5, title: "Assembly view 5" },
-  ];
-
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
-        <p className={styles["pixel-title"]}>Assembly {assembly.serial}</p>
-        <CloseButton onClick={onBack} ariaLabel="Back to assemblies list" />
-      </div>
+      {/* Only show header when not in PixelDetail tab */}
+      {!isInPixelDetailTab && (
+        <div className={styles.header}>
+          <p className={styles["pixel-title"]}> {assembly.name}</p>
+        </div>
+      )}
 
       <div className={styles.content}>
         {modelPath && (
@@ -140,6 +170,14 @@ const AssemblyDetail = ({ assemblyId, onBack }) => {
                 value: new Date(assembly.date).toLocaleDateString(),
               },
               {
+                title: "Generation",
+                value: assembly.generation_name,
+              },
+              {
+                title: "Scale",
+                value: assembly.scale,
+              },
+              {
                 title: "Location",
                 value: assembly.location.name,
               },
@@ -149,17 +187,17 @@ const AssemblyDetail = ({ assemblyId, onBack }) => {
               },
               {
                 title: "Pixel Weight",
-                value: `${assembly.pixelWeight} kg`,
+                value: `${assembly.pixel_weight} kg`,
                 info: "Total weight of pixels used in assembly",
               },
               {
-                title: "Coefficient",
-                value: assembly.coefficient,
-                info: "Structural performance coefficient",
+                title: "Transport Coefficient",
+                value: assembly.transport.coefficient || "N/A",
+                info: "Carbon emissions per kg per km transported (kgCO₂e/kg)",
               },
               {
                 title: "A1-A3 Emissions",
-                value: `${assembly.a1A3Emissions} kg CO₂e`,
+                value: `${assembly.a1_a3_emissions} kg CO₂e`,
                 info: "Production phase emissions",
               },
               {
@@ -172,7 +210,7 @@ const AssemblyDetail = ({ assemblyId, onBack }) => {
               },
               {
                 title: "Total Emissions",
-                value: `${assembly.totalEmissions || "Not calculated"} kg CO₂e`,
+                value: `${assembly.total_emissions || "Not calculated"} kg CO₂e`,
                 info: "Combined emissions from production and transport",
               },
             ]}
@@ -183,7 +221,11 @@ const AssemblyDetail = ({ assemblyId, onBack }) => {
           <h2 className={styles["section-title"]}>Media</h2>
           <div className={styles["media-grid"]}>
             {mediaItems.map((item) => (
-              <div key={item.id} className={styles["media-item"]}>
+              <div
+                key={item.id}
+                className={styles["media-item"]}
+                style={{ display: loadedItems.includes(item.id) ? "block" : "none" }}
+              >
                 <div
                   className={styles["expand-icon"]}
                   onClick={() => handleOpenFullscreen(item)}
@@ -194,26 +236,19 @@ const AssemblyDetail = ({ assemblyId, onBack }) => {
                 >
                   ↗
                 </div>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    height: "100%",
-                    color: "#666",
+                <img
+                  src={item.url}
+                  alt={item.title}
+                  className={styles["media-thumbnail"]}
+                  loading="lazy"
+                  onLoad={() => setLoadedItems((prev) => [...prev, item.id])}
+                  onError={(e) => {
+                    e.target.closest(".media-item").style.display = "none";
                   }}
-                >
-                  {item.title}
-                </div>
+                />
               </div>
             ))}
-          </div>
-        </div>
-
-        <div className={styles["media-section"]}>
-          <h2 className={styles["section-title"]}>JSON Data</h2>
-          <div className={styles["json-display"]}>
-            <pre>{JSON.stringify(fullData, null, 2)}</pre>
+            {loadedItems.length === 0 && <div className={styles["no-media"]}>No images available</div>}
           </div>
         </div>
       </div>
@@ -229,20 +264,15 @@ const AssemblyDetail = ({ assemblyId, onBack }) => {
           </button>
           <div className={styles["fullscreen-image"]} onClick={(e) => e.stopPropagation()}>
             <h2>{fullscreenImage.title}</h2>
-            <div
+            <img
+              src={fullscreenImage.url}
+              alt={fullscreenImage.title}
               style={{
-                width: "80vw",
-                height: "60vh",
-                border: "2px solid white",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "white",
-                fontSize: "24px",
+                maxWidth: "90vw",
+                maxHeight: "80vh",
+                objectFit: "contain",
               }}
-            >
-              {fullscreenImage.title} - Fullscreen View
-            </div>
+            />
           </div>
         </div>
       )}

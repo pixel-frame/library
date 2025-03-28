@@ -21,6 +21,31 @@
   "timeline": [
     {
       "step": 1,
+      "reconfiguration_number": 0,
+      "name": "Initial Fabrication",
+      "date": "January 2025",
+      "location": {
+        "name": "Fabrication Site",
+        "coordinates": {
+          "latitude": null,
+          "longitude": null
+        }
+      },
+      "emissions": {
+        "a1_a3": 0.0,
+        "transport": 0,
+        "step_total": 0.0,
+        "running_total": 0.0
+      },
+      "transport": {
+        "type": null,
+        "distance": 0,
+        "cumulative_distance": 0
+      },
+      "description": "Generation 3 pixel fabrication"
+    },
+    {
+      "step": 2,
       "reconfiguration_number": 13,
       "name": "Speculative Reconfiguration - Warehouse",
       "date": "12/4/2025",
@@ -32,7 +57,7 @@
         }
       },
       "emissions": {
-        "a1_a3": 0.0,
+        "a1_a3": 0,
         "transport": 0.93536,
         "step_total": 0.93536,
         "running_total": 0.93536
@@ -45,7 +70,7 @@
       "description": "The warehouse is a speculative future assembly sited in Edmonton, Alberta. The pixels in this configuration are temporarily assembled into a logistics center, a building with a shorter life span than average. After five years in this configuration, the building is disassembled and the pixels are reused. "
     },
     {
-      "step": 2,
+      "step": 3,
       "reconfiguration_number": 14,
       "name": "Speculative Reconfiguration - Pavilion",
       "date": "8/3/2034",
@@ -70,7 +95,7 @@
       "description": "After being used in the warehouse configuration, some pixels are trucked to Chicago, where they are used to construct a demonstrator pavilion that showcases circularity in building applications. The pavilion is dismantled after a few months, and the pixels are returned to the material bank."
     },
     {
-      "step": 3,
+      "step": 4,
       "reconfiguration_number": 15,
       "name": "Speculative Reconfiguration - Tower",
       "date": "4/1/2035",

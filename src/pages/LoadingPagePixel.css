@@ -1,0 +1,30 @@
+.loading-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  gap: 20px;
+  min-height: 100vh;
+  background-color: black;
+  color: white;
+}
+
+.ascii-grid {
+  font-family: monospace;
+  font-size: 8px;
+  line-height: 8px;
+  white-space: pre;
+  text-align: center;
+  margin: 20px 0;
+  max-width: 800px;
+  overflow: hidden;
+}
+
+.scan-results {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}

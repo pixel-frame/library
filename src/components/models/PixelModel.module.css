@@ -1,7 +1,7 @@
 .modelViewer {
   background-image: linear-gradient(var(--accent) 1px, transparent 1px),
     linear-gradient(90deg, var(--accent) 1px, transparent 1px);
-  background-size: 20px 20px;
+  background-size: 15px 15px;
   background-color: var(--accent-light);
   width: 100%;
   height: 100%;
@@ -41,4 +41,22 @@
 .gridPixelModel {
   aspect-ratio: 1/1;
   width: 100%;
+}
+
+.expandButton {
+  position: absolute;
+  bottom: 10px;
+  right: 16px;
+  width: 44px;
+  height: 44px;
+  font-size: 24px !important;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
 }

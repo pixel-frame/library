@@ -45,10 +45,16 @@
   --border-color: var(--color-light-gray);
   --button-bg: var(--color-black);
   --button-text: var(--color-white);
+  --shadow-dark: rgba(255, 255, 255, 0.9);
+  --shadow-medium: rgba(255, 255, 255, 0.5);
+  --border-light: rgba(0, 0, 0, 0.3);
 }
 
 :root[data-theme="dark"] {
   --bg-primary: var(--color-black);
+  --shadow-dark: rgba(0, 0, 0, 0.9);
+  --shadow-medium: rgba(0, 0, 0, 0.5);
+  --border-light: rgba(255, 255, 255, 0.3);
   --text-primary: var(--color-white);
   --accent: var(--color-dark-gray);
   --accent-light: var(--color-darkest-gray);

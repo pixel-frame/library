@@ -47,7 +47,7 @@ const DetailGrid = ({ items }) => {
                 aria-label={`Information about ${item.title}`}
                 tabIndex="0"
               >
-                i
+                i{" "}
               </button>
             )}
           </div>

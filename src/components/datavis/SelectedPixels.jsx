@@ -3,13 +3,20 @@ import styles from "./SelectedPixels.module.css";
 import SparkLine from "./SparkLine";
 import Card from "../buttons/Card";
 import PixelDetail from "../../pages/PixelDetail";
+import WheelListHandler from "../listing/WheelListHandler";
+import { useLocation, useSearchParams } from "react-router-dom";
 
-const SelectedPixels = ({ selectedPoints, onScroll, onHighlight }) => {
+const SelectedPixels = ({ selectedPoints, onScroll, onHighlight, urlPixelId, onPixelSelect }) => {
   const [allPixels, setAllPixels] = useState([]);
-  const [highlightedIndex, setHighlightedIndex] = useState(null);
+  const [highlightedIndex, setHighlightedIndex] = useState(0); // Default to first item (ALL PIXELS)
   const scrollRef = useRef(null);
   const lastScrollPosition = useRef(0);
-  const [selectedPixelId, setSelectedPixelId] = useState(null);
+  const [selectedPixelId, setSelectedPixelId] = useState(urlPixelId || null);
+  const [isOpen, setIsOpen] = useState(!!urlPixelId);
+
+  const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const currentTab = searchParams.get("tab") || "info";
 
   // Fetch all pixels when component mounts
   useEffect(() => {
@@ -35,68 +42,49 @@ const SelectedPixels = ({ selectedPoints, onScroll, onHighlight }) => {
     fetchPixels();
   }, []);
 
-  // Preserve scroll position when selection changes
+  // Handle URL pixel ID changes
   useEffect(() => {
-    if (scrollRef.current && lastScrollPosition.current > 10) {
-      scrollRef.current.scrollTop = lastScrollPosition.current;
-    }
-  }, [selectedPoints]);
+    if (urlPixelId) {
+      setSelectedPixelId(urlPixelId);
+      setIsOpen(true);
 
-  // Update useEffect for highlighting to include onHighlight callback
-  useEffect(() => {
-    if (!scrollRef.current || !onHighlight) return;
-
-    const handleVisibilityCheck = () => {
-      const container = scrollRef.current;
-      const items = container.querySelectorAll(`.${styles.listItem}`);
-      const containerRect = container.getBoundingClientRect();
-      const containerCenter = containerRect.top + containerRect.height / 2;
-
-      let closestItem = null;
-      let minDistance = Infinity;
-
-      items.forEach((item, index) => {
-        const rect = item.getBoundingClientRect();
-        const itemCenter = rect.top + rect.height / 2;
-        const distance = Math.abs(containerCenter - itemCenter);
-
-        if (distance < minDistance) {
-          minDistance = distance;
-          closestItem = index;
+      // Find and highlight the pixel in the list
+      if (allPixels.length > 0) {
+        const pixelIndex = enhancedPixels.findIndex((p) => p.serial === urlPixelId || p.pixel_number === urlPixelId);
+        if (pixelIndex > 0) {
+          setHighlightedIndex(pixelIndex);
+          onHighlight(enhancedPixels[pixelIndex]);
         }
-      });
-
-      setHighlightedIndex(closestItem);
-
-      // Call onHighlight with the actual pixel data
-      const pixelsToShow = selectedPoints?.length > 0 ? selectedPoints : allPixels;
-      if (closestItem !== null && pixelsToShow[closestItem]) {
-        onHighlight(pixelsToShow[closestItem]);
       }
-    };
+    } else {
+      setIsOpen(false);
+      setSelectedPixelId(null);
+    }
+  }, [urlPixelId, allPixels]);
 
-    const scrollContainer = scrollRef.current;
-    const debouncedCheck = debounce(handleVisibilityCheck, 100); // Add debounce for performance
+  // Create a modified list with "ALL PIXELS" as the first option
+  const enhancedPixels = [
+    {
+      pixel_number: "ALL",
+      serial: "ALL",
+      isAllOption: true,
+      total_emissions: 0,
+      distanceTraveled: 0,
+      emissions_over_time: {},
+      distance: 0, // Add this to prevent the error
+    },
+    ...(selectedPoints?.length > 0 ? selectedPoints : allPixels),
+  ];
 
-    scrollContainer.addEventListener("scroll", debouncedCheck);
-    handleVisibilityCheck(); // Initial check
+  const handleSelectionChange = (pixel, index) => {
+    setHighlightedIndex(index);
 
-    return () => {
-      scrollContainer.removeEventListener("scroll", debouncedCheck);
-    };
-  }, [selectedPoints, allPixels, onHighlight]);
-
-  // Add debounce utility function
-  const debounce = (func, wait) => {
-    let timeout;
-    return function executedFunction(...args) {
-      const later = () => {
-        clearTimeout(timeout);
-        func(...args);
-      };
-      clearTimeout(timeout);
-      timeout = setTimeout(later, wait);
-    };
+    // If the "ALL PIXELS" option is selected, pass null to onHighlight
+    if (index === 0 && pixel.isAllOption) {
+      onHighlight(null);
+    } else {
+      onHighlight(pixel);
+    }
   };
 
   const handleScroll = (event) => {
@@ -104,54 +92,107 @@ const SelectedPixels = ({ selectedPoints, onScroll, onHighlight }) => {
     onScroll(event);
   };
 
-  const pixelsToShow = selectedPoints?.length > 0 ? selectedPoints : allPixels;
+  const handlePixelClick = () => {
+    // Get the currently selected pixel
+    const selectedPixel = enhancedPixels[highlightedIndex];
 
-  // Update click handler to only pass the ID
-  const handlePixelClick = (pixel) => {
-    setSelectedPixelId(pixel.serial || pixel.pixel_number);
+    // Don't show details if it's the "ALL PIXELS" option
+    if (selectedPixel.isAllOption) return;
+
+    // Set the selected pixel ID and open the card
+    const pixelId = selectedPixel.serial || selectedPixel.pixel_number;
+    setSelectedPixelId(pixelId);
+    setIsOpen(true);
+
+    // Update URL via parent component
+    const params = new URLSearchParams(searchParams);
+    params.set("pixel", pixelId);
+    if (!params.has("tab")) {
+      params.set("tab", "history"); // Default to history tab when opening
+    }
+    onPixelSelect(pixelId, params.toString());
   };
+
+  const handleCloseCard = () => {
+    setIsOpen(false);
+    setSelectedPixelId(null);
+
+    // Update URL to remove pixel parameter but preserve other parameters
+    onPixelSelect(null);
+  };
+
+  // Handle tab changes from within the PixelDetail component
+  const handleTabChange = (tabId) => {
+    // We don't need to update state here as PixelDetail handles its own state
+    // Just need to ensure the URL is updated correctly
+    const params = new URLSearchParams(searchParams);
+
+    if (tabId === "info") {
+      params.delete("tab");
+    } else {
+      params.set("tab", tabId);
+    }
+
+    // Make sure pixel ID is preserved
+    if (selectedPixelId) {
+      params.set("pixel", selectedPixelId);
+      onPixelSelect(selectedPixelId, params.toString());
+    }
+  };
+
+  // Custom formatter for pixels
+  const pixelFormatter = (pixel, index) => {
+    // Special case for "ALL PIXELS" option
+    if (pixel.isAllOption) {
+      return {
+        left: "ALL PIXELS",
+        right: "",
+      };
+    }
+
+    // Format regular pixels
+    const emissions = typeof pixel.total_emissions === "number" ? pixel.total_emissions : 0;
+    const pixelNumber = pixel.pixel_number || pixel.serial || `Unknown-${index}`;
+
+    return {
+      left: `PIXEL ${pixelNumber}`,
+      right: `${emissions.toFixed(2)}kg CO2e`,
+    };
+  };
+
+  if (!allPixels || allPixels.length === 0) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.emptyState}>No pixels available</div>
+      </div>
+    );
+  }
+
+  // Determine if we should show the view details button (not for ALL PIXELS)
+  const showDetailsButton = highlightedIndex > 0;
 
   return (
     <div className={styles.container}>
-      <div className={styles.titleContainer}>
-        {/* <div className={styles.title}>
-          {selectedPoints?.length > 0
-            ? `Selected Pixels (${selectedPoints.length})`
-            : `All Pixels (${allPixels.length})`}
-        </div> */}
-      </div>
       <div ref={scrollRef} className={styles.scrollableList} onScroll={handleScroll}>
-        {pixelsToShow.map((pixel, index) => {
-          // Ensure we have valid data for each field
-          const emissions = typeof pixel.total_emissions === "number" ? pixel.total_emissions : 0;
-          const distance = pixel.distanceTraveled ?? 0;
-          const pixelNumber = pixel.pixel_number || pixel.serial || `Unknown-${index}`;
-          const isHighlighted = index === highlightedIndex;
-
-          return (
-            <div
-              key={pixel.serial || index}
-              className={`${styles.listItem} ${isHighlighted ? styles.highlighted : ""}`}
-              onClick={() => handlePixelClick(pixel)}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => e.key === "Enter" && handlePixelClick(pixel)}
-            >
-              <div className={styles.itemInfo}>
-                <div className={styles.itemNumber}>PIXEL {pixelNumber}</div>
-                <div className={styles.itemEmissions}>{emissions.toFixed(2)}kg CO2e</div>
-                <div className={styles.itemState}>{distance.toFixed(0)}km</div>
-                <div className={styles.sparkline}>
-                  <SparkLine data={pixel.emissions_over_time || {}} />
-                </div>
-              </div>
-            </div>
-          );
-        })}
+        <WheelListHandler
+          items={enhancedPixels}
+          onSelectionChange={handleSelectionChange}
+          valueFormatter={pixelFormatter}
+          perspective="left"
+          initialIndex={highlightedIndex}
+          buttonText={showDetailsButton ? "View Details" : null}
+          onButtonClick={showDetailsButton ? handlePixelClick : null}
+        />
       </div>
-      {selectedPixelId && (
-        <Card>
-          <PixelDetail id={selectedPixelId} initialTab="story" onClose={() => setSelectedPixelId(null)} />
+
+      {isOpen && selectedPixelId && (
+        <Card isOpen={isOpen} onClose={handleCloseCard}>
+          <PixelDetail
+            id={selectedPixelId}
+            initialTab={currentTab}
+            onClose={handleCloseCard}
+            onTabChange={handleTabChange}
+          />
         </Card>
       )}
     </div>

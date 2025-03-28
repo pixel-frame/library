@@ -65,7 +65,6 @@ const AssemblyDetail = ({ assemblyId, assembly: passedAssembly, fullData: passed
       }));
       
       setMediaItems(items);
-      setLoadedItems([]); // Check if needed still?
     };
 
     if (assembly) {

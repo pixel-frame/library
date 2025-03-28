@@ -9,7 +9,7 @@ export function AnimatedText({ text, delay = 0 }) {
 
   useEffect(() => {
     let currentIteration = 0;
-    const maxIterations = 30;
+    const maxIterations = 20;
     const intervalTime = 20;
 
     const wordAnimation = setInterval(() => {

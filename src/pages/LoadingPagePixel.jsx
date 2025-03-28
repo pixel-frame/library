@@ -1,128 +1,106 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import Button from "@widgets/Button";
 import { AnimatedText } from "../components/text/AnimatedText";
 import styles from "./LoadingPagePixel.module.css";
 
-const ASCII_CHARS = " .:-=+*#%@".split("");
-const ANIMATION_DURATION = 1000;
-const FRAMES_PER_SECOND = 9;
-const WIDTH = 60;
+const ANIMATION_DURATION = 2000;
+const INITIAL_DELAY = 2000; // 1.5 seconds initial delay
+const GRID_ROWS = 60; // Higher definition
+const GRID_COLS = 40; // Higher definition
 
 export default function LoadingPagePixel({ onProceed }) {
   const location = useLocation();
   const pixelNumber = location.pathname.split("/").pop().replace("pixel", "");
   const formattedPixelNumber = parseInt(pixelNumber).toString();
-  const modelPoster = `/data/previews/pixels/model-poster-${formattedPixelNumber}.png`;
-  const gridRef = useRef(null);
-  const animationFrameRef = useRef(null);
-  const [asciiArt, setAsciiArt] = useState([]);
-  const [showScanResults, setShowScanResults] = useState(false);
-  const [isAnimating, setIsAnimating] = useState(true);
-  const [isExiting, setIsExiting] = useState(false);
+  const canvasRef = useRef(null);
 
+  // Canvas animation
   useEffect(() => {
-    const img = new Image();
-    img.src = modelPoster;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
 
-    img.onload = () => {
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d");
 
-      const aspectRatio = img.width / img.height;
-      const height = Math.floor(WIDTH / aspectRatio);
+    // Set canvas size to match viewport
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
-      canvas.width = WIDTH;
-      canvas.height = height;
+    // Calculate square size
+    const squareWidth = Math.ceil(canvas.width / GRID_COLS);
+    const squareHeight = Math.ceil(canvas.height / GRID_ROWS);
 
-      ctx.drawImage(img, 0, 0, WIDTH, height);
-      const imageData = ctx.getImageData(0, 0, WIDTH, height);
+    // Create squares with disappear times
+    const squares = [];
+    for (let y = 0; y < GRID_ROWS; y++) {
+      for (let x = 0; x < GRID_COLS; x++) {
+        // Base timing mostly on row position for top-to-bottom effect
+        const baseDelay = (y / GRID_ROWS) * ANIMATION_DURATION * 0.7;
+        // Add some randomness for noise effect
+        const randomDelay = Math.random() * ANIMATION_DURATION * 0.3;
 
-      const asciiLines = [];
-      for (let y = 0; y < height; y++) {
-        let line = "";
-        for (let x = 0; x < WIDTH; x++) {
-          const idx = (y * WIDTH + x) * 4;
-          const brightness = (imageData.data[idx] + imageData.data[idx + 1] + imageData.data[idx + 2]) / 3;
-          const charIndex = Math.floor((brightness / 255) * (ASCII_CHARS.length - 1));
-          line += ASCII_CHARS[charIndex];
+        squares.push({
+          x: x * squareWidth,
+          y: y * squareHeight,
+          width: squareWidth + 1, // Avoid gaps
+          height: squareHeight + 1, // Avoid gaps
+          disappearTime: INITIAL_DELAY + baseDelay + randomDelay,
+        });
+      }
+    }
+
+    // Animation variables
+    let startTime = null;
+    let animationFrame;
+
+    const render = (timestamp) => {
+      if (!startTime) startTime = timestamp;
+      const elapsed = timestamp - startTime;
+
+      // Clear canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw visible squares
+      let allDisappeared = true;
+
+      for (const square of squares) {
+        if (elapsed < square.disappearTime) {
+          allDisappeared = false;
+          ctx.fillStyle = "black";
+          ctx.fillRect(square.x, square.y, square.width, square.height);
         }
-        asciiLines.push(line);
-      }
-      setAsciiArt(asciiLines);
-    };
-  }, [modelPoster]);
-
-  useEffect(() => {
-    if (!asciiArt.length || !isAnimating) return;
-
-    const totalFrames = (ANIMATION_DURATION / 1000) * FRAMES_PER_SECOND;
-    let currentFrame = 0;
-    let lastFrameTime = 0;
-    const frameInterval = 1000 / FRAMES_PER_SECOND;
-
-    const animate = (timestamp) => {
-      if (!gridRef.current) return;
-
-      if (timestamp - lastFrameTime < frameInterval) {
-        animationFrameRef.current = requestAnimationFrame(animate);
-        return;
       }
 
-      const progress = Math.min(currentFrame / totalFrames, 1);
-
-      if (progress >= 0.7 && !showScanResults) {
-        setShowScanResults(true);
-      }
-
-      const currentLines = asciiArt.map((line) => {
-        const chars = line.split("");
-        return chars
-          .map((char) => {
-            if (char !== " ") {
-              return progress > Math.random() ? char : ASCII_CHARS[Math.floor(Math.random() * ASCII_CHARS.length)];
-            }
-            return " ";
-          })
-          .join("");
-      });
-
-      gridRef.current.textContent = currentLines.join("\n");
-
-      if (currentFrame < totalFrames) {
-        currentFrame++;
-        lastFrameTime = timestamp;
-        animationFrameRef.current = requestAnimationFrame(animate);
+      // Continue animation if not all squares have disappeared
+      if (!allDisappeared) {
+        animationFrame = requestAnimationFrame(render);
       } else {
-        setIsAnimating(false);
-        gridRef.current.textContent = asciiArt.join("\n");
+        // Auto proceed after animation completes
+        setTimeout(() => {
+          onProceed();
+        }, 3000);
       }
     };
 
-    animationFrameRef.current = requestAnimationFrame(animate);
+    // Fill canvas with black initially
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Start animation
+    animationFrame = requestAnimationFrame(render);
 
     return () => {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
+      if (animationFrame) cancelAnimationFrame(animationFrame);
     };
-  }, [asciiArt, isAnimating]);
-
-  const handleProceedClick = () => {
-    setIsExiting(true);
-    setTimeout(onProceed, 1000);
-  };
+  }, [onProceed]);
 
   return (
-    <div className={`${styles.loadingPage} ${isExiting ? styles.fadeOut : ""}`}>
-      <pre ref={gridRef} className={styles.asciiGrid} />
-      {showScanResults && (
-        <div className={styles.scanResults}>
-          <AnimatedText text="SUCCESSFULLY SCANNED" delay={0} />
-          <AnimatedText text={`PIXEL ${formattedPixelNumber}`} delay={500} />
-        </div>
-      )}
-      {!isAnimating && <Button onClick={handleProceedClick}>[TAP HERE TO PROCEED]</Button>}
+    <div className={styles.loadingOverlay}>
+      <canvas ref={canvasRef} className={styles.canvas} />
+
+      <div className={styles.scanResults}>
+        <AnimatedText text="SUCCESSFULLY SCANNED" />
+        <AnimatedText text={`PIXEL ${formattedPixelNumber}`} />
+      </div>
     </div>
   );
 }

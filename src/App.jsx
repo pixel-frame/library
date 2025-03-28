@@ -40,7 +40,7 @@ const AppContent = () => {
 
   return (
     <>
-      {isRfidSource && <LoadingPagePixel onProceed={handleProceed} />}
+      {isRfidSource && showLoadingOverlay && <LoadingPagePixel onProceed={handleProceed} />}
       <Layout>
         <Routes>
           <Route path="/test" element={<ListingPage />} />

@@ -257,12 +257,12 @@ const PixelCanvas2 = ({ width = "100%", height = "300px", pixels = [], selectedI
     const gridMaterial = new THREE.LineBasicMaterial({
       color: 0xb4b4b4,
       transparent: true,
-      opacity: 0.5,
+      opacity: 1, // Increased opacity for better visibility
     });
 
-    // Grid dimensions
-    const gridSize = 400;
-    const cellSize = 20;
+    // Grid dimensions - significantly increased
+    const gridSize = 2000; // Increased from 400 to 2000
+    const cellSize = 10; // Increased from 20 to 40
     const verticalCellSize = cellSize * (3 / 2); // 2:3 ratio
 
     // Create grid lines
@@ -293,7 +293,7 @@ const PixelCanvas2 = ({ width = "100%", height = "300px", pixels = [], selectedI
     const backgroundMaterial = new THREE.MeshBasicMaterial({
       color: 0x323232,
       transparent: true,
-      opacity: 0.1,
+      opacity: 0.1, // Slightly increased opacity
       side: THREE.DoubleSide,
     });
     const backgroundPlane = new THREE.Mesh(backgroundGeometry, backgroundMaterial);
@@ -303,8 +303,8 @@ const PixelCanvas2 = ({ width = "100%", height = "300px", pixels = [], selectedI
     const borderGeometry = new THREE.EdgesGeometry(backgroundGeometry);
     const borderMaterial = new THREE.LineBasicMaterial({
       color: 0xc8c8c8,
-      linewidth: 3,
-      opacity: 0.8,
+      linewidth: 5, // Increased from 3 to 5
+      opacity: 0.9, // Increased opacity
     });
     const border = new THREE.LineSegments(borderGeometry, borderMaterial);
 
@@ -385,13 +385,16 @@ const PixelCanvas2 = ({ width = "100%", height = "300px", pixels = [], selectedI
     const maxDepth = 300;
 
     // Create a more structured distribution with fewer pixels per row
-    const gridDivisions = Math.ceil(Math.sqrt(pixels.length * 0.7));
+    // Ensure we're only showing the actual number of pixels
+    const pixelsToShow = pixels.slice(0, Math.min(pixels.length, 140));
+    console.log(pixels.length);
+    const gridDivisions = Math.ceil(Math.sqrt(pixelsToShow.length * 0.7));
     const cellWidth = gridSize / gridDivisions;
     const cellHeight = cellWidth;
-    const cellDepth = maxDepth / Math.ceil(pixels.length / (gridDivisions * gridDivisions));
+    const cellDepth = maxDepth / Math.ceil(pixelsToShow.length / (gridDivisions * gridDivisions));
 
     // Shuffle pixels to randomize load order
-    const shuffledPixels = [...pixels].sort(() => Math.random() - 0.5);
+    const shuffledPixels = [...pixelsToShow].sort(() => Math.random() - 0.5);
 
     // Batch loading for better performance
     const batchSize = 10; // Load 10 textures at a time
@@ -428,8 +431,8 @@ const PixelCanvas2 = ({ width = "100%", height = "300px", pixels = [], selectedI
 
         // First loaded: 60px, Last loaded: 80px
         const minSize = 60;
-        const maxSize = 80;
-        const loadOrderRatio = i / pixels.length;
+        const maxSize = 60;
+        const loadOrderRatio = i / pixelsToShow.length;
         const baseSize = minSize + (maxSize - minSize) * loadOrderRatio;
 
         // Load texture
@@ -439,6 +442,7 @@ const PixelCanvas2 = ({ width = "100%", height = "300px", pixels = [], selectedI
           (texture) => {
             // Apply texture compression for mobile
             texture.minFilter = THREE.LinearFilter;
+            texture.magFilter = THREE.LinearFilter; // Add magFilter for better quality
             texture.generateMipmaps = false; // Disable mipmaps for performance
             createPixelObject(texture, randomX, randomY, randomZ, baseSize, pixel, i);
           },
@@ -453,6 +457,7 @@ const PixelCanvas2 = ({ width = "100%", height = "300px", pixels = [], selectedI
 
             textureLoader.load(fallbackUrl, (texture) => {
               texture.minFilter = THREE.LinearFilter;
+              texture.magFilter = THREE.LinearFilter;
               texture.generateMipmaps = false;
               createPixelObject(texture, randomX, randomY, randomZ, baseSize, pixel, i);
             });
@@ -490,23 +495,88 @@ const PixelCanvas2 = ({ width = "100%", height = "300px", pixels = [], selectedI
     // Create plane for image - use lower segment count for better performance
     const geometry = new THREE.PlaneGeometry(width, height, 1, 1);
 
-    // Create material with texture
+    // Create material with texture and enhanced contrast
     const isUnavailable = pixel.state === 4;
+
+    // Create a custom shader material for better contrast
     const material = new THREE.MeshBasicMaterial({
       map: texture,
       transparent: true,
       opacity: isUnavailable ? 0.3 : 1.0,
       side: THREE.FrontSide, // Only render front side for performance
-      depthWrite: false, // Improve performance for transparent objects
+      depthWrite: true, // Enable depth writing for proper rendering
     });
+
+    // Enhance texture quality
+    texture.anisotropy = 8; // Increased from 4 to 8 for sharper images
+    texture.minFilter = THREE.LinearFilter;
+    texture.magFilter = THREE.LinearFilter;
+
+    // Apply color correction to the texture to enhance contrast
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    canvas.width = texture.image.width;
+    canvas.height = texture.image.height;
+
+    // Draw the original image
+    ctx.drawImage(texture.image, 0, 0);
+
+    // Apply contrast enhancement
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const data = imageData.data;
+
+    // Contrast factor (1.0 = no change, 2.0 = double contrast)
+    const contrastFactor = 1.3;
+    const brightnessFactor = 10; // Slight brightness boost
+
+    for (let i = 0; i < data.length; i += 4) {
+      // Skip fully transparent pixels
+      if (data[i + 3] === 0) continue;
+
+      // Apply contrast to RGB channels
+      for (let j = 0; j < 3; j++) {
+        let color = data[i + j];
+        // Apply brightness adjustment
+        color += brightnessFactor;
+        // Apply contrast adjustment
+        color = ((color / 255 - 0.5) * contrastFactor + 0.5) * 255;
+        // Clamp to valid range
+        data[i + j] = Math.max(0, Math.min(255, color));
+      }
+    }
+
+    ctx.putImageData(imageData, 0, 0);
+
+    // Create a new texture from the enhanced canvas
+    const enhancedTexture = new THREE.Texture(canvas);
+    enhancedTexture.needsUpdate = true;
+    enhancedTexture.anisotropy = 8;
+    enhancedTexture.minFilter = THREE.LinearFilter;
+    enhancedTexture.magFilter = THREE.LinearFilter;
+
+    // Use the enhanced texture
+    material.map = enhancedTexture;
 
     // Create mesh
     const mesh = new THREE.Mesh(geometry, material);
-    mesh.position.set(x, y, z);
+    mesh.position.set(x, y - 30, z);
     mesh.rotation.set(0, 0, 0);
 
     // Use frustum culling for better performance
     mesh.frustumCulled = true;
+
+    // Create serial number text below the pixel
+    const serialText = createSerialText(pixel.serial, width, height);
+    serialText.position.set(0, -height / 2 - 10, 0); // Position below the pixel
+    mesh.add(serialText);
+
+    // Create outline for selection (initially invisible)
+    const outlineGeometry = new THREE.EdgesGeometry(new THREE.BoxGeometry(width + 2, height + 2, 2));
+    const outlineMaterial = new THREE.LineBasicMaterial({ color: 0xffffff, linewidth: 1 });
+    const outline = new THREE.LineSegments(outlineGeometry, outlineMaterial);
+    outline.position.set(0, 0, 0);
+    outline.visible = false;
+    mesh.add(outline);
 
     mesh.userData = {
       pixel,
@@ -514,13 +584,65 @@ const PixelCanvas2 = ({ width = "100%", height = "300px", pixels = [], selectedI
       height,
       loadOrder,
       isSelected: false,
-      originalPosition: new THREE.Vector3(x, y, z),
+      originalPosition: new THREE.Vector3(x, y - 30, z),
       originalRotation: new THREE.Euler().copy(mesh.rotation),
+      outline, // Store reference to outline
     };
 
     // Add to scene and tracking array
     scene.add(mesh);
     pixelObjectsRef.current.push(mesh);
+  };
+
+  // Create serial text for a pixel
+  const createSerialText = (serial, width, height) => {
+    // Format serial number with leading zeros
+    const formattedSerial = String(serial).padStart(4, "0");
+
+    // Create canvas for text with higher resolution
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+    canvas.width = 256; // Increased from 128 for higher resolution
+    canvas.height = 64; // Increased from 32 and made more proportional
+
+    // Set text properties
+    context.fillStyle = "rgba(0, 0, 0, 0)";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.font = "bold 28px Arial, sans-serif"; // Improved font
+    context.fillStyle = "white";
+    context.textAlign = "center";
+    context.textBaseline = "middle";
+
+    // Apply anti-aliasing for smoother text
+    context.imageSmoothingEnabled = true;
+    context.imageSmoothingQuality = "high";
+
+    // Draw text
+    context.fillText(formattedSerial, canvas.width / 2, canvas.height / 2);
+
+    // Create texture from canvas with proper filtering
+    const texture = new THREE.Texture(canvas);
+    texture.needsUpdate = true;
+    texture.minFilter = THREE.LinearFilter;
+    texture.magFilter = THREE.LinearFilter;
+    texture.generateMipmaps = false; // Disable mipmaps for text
+
+    // Create material and plane with proper aspect ratio
+    const material = new THREE.MeshBasicMaterial({
+      map: texture,
+      transparent: true,
+      depthWrite: false,
+      depthTest: true,
+    });
+
+    // Calculate proper aspect ratio for the text plane
+    const textAspect = canvas.width / canvas.height;
+    const textWidth = Math.min(width, 40); // Limit width to avoid overly wide text
+    const textHeight = textWidth / textAspect;
+
+    const plane = new THREE.Mesh(new THREE.PlaneGeometry(textWidth, textHeight), material);
+
+    return plane;
   };
 
   // Animation function for centering on a pixel
@@ -613,6 +735,11 @@ const PixelCanvas2 = ({ width = "100%", height = "300px", pixels = [], selectedI
 
       pixelObj.userData.isSelected = isSelected;
 
+      // Update outline visibility based on selection
+      if (pixelObj.userData.outline) {
+        pixelObj.userData.outline.visible = isSelected;
+      }
+
       // Update material based on selection and availability
       const isUnavailable = pixelObj.userData.pixel.state === 4;
 
@@ -636,6 +763,14 @@ const PixelCanvas2 = ({ width = "100%", height = "300px", pixels = [], selectedI
         pixelObj.geometry.dispose();
         pixelObj.geometry = new THREE.PlaneGeometry(newWidth, newHeight);
 
+        // Update outline size to match new dimensions
+        if (pixelObj.userData.outline) {
+          pixelObj.userData.outline.geometry.dispose();
+          pixelObj.userData.outline.geometry = new THREE.EdgesGeometry(
+            new THREE.BoxGeometry(newWidth + 2, newHeight + 2, 2)
+          );
+        }
+
         // Load GLTF model for the selected pixel
         const pixelNumber = pixelObj.userData.pixel.number || pixelObj.userData.pixel.serial;
         loadGLTFModel(pixelNumber, pixelObj.position.clone());
@@ -650,11 +785,14 @@ const PixelCanvas2 = ({ width = "100%", height = "300px", pixels = [], selectedI
         animateToCenterPixel.startPosition = new THREE.Vector3().copy(cameraRef.current.position);
 
         // Target position: same X/Y as pixel, but maintain Z distance
-        // We're only changing X and Y to pan to the pixel
-        const targetZ = 400; // Closer zoom for selected pixel
+        const targetZ = 200; // Closer zoom for selected pixel
+
+        // Update the controls target to focus on the pixel's center
+        controlsRef.current.target.set(pixelPos.x, pixelPos.y, 0);
+
+        // Set camera position to look at the pixel from the desired distance
         animateToCenterPixel.targetPosition = new THREE.Vector3(pixelPos.x, pixelPos.y, targetZ);
 
-        // We don't need to store pixel position anymore since we're not using it for targeting
         animateToCenterPixel.startZoom = controlsRef.current.zoom;
         animateToCenterPixel.targetZoom = 1.2;
         animateToCenterPixel.startTime = performance.now();
@@ -671,6 +809,14 @@ const PixelCanvas2 = ({ width = "100%", height = "300px", pixels = [], selectedI
           pixelObj.geometry.dispose();
           pixelObj.geometry = new THREE.PlaneGeometry(pixelObj.userData.width, pixelObj.userData.height);
 
+          // Update outline size to match original dimensions
+          if (pixelObj.userData.outline) {
+            pixelObj.userData.outline.geometry.dispose();
+            pixelObj.userData.outline.geometry = new THREE.EdgesGeometry(
+              new THREE.BoxGeometry(pixelObj.userData.width + 2, pixelObj.userData.height + 2, 2)
+            );
+          }
+
           // Remove the model when deselecting
           if (modelRef.current) {
             disposeModel(modelRef.current);
@@ -683,6 +829,9 @@ const PixelCanvas2 = ({ width = "100%", height = "300px", pixels = [], selectedI
 
           // Only change X and Y to return to center, maintain current Z
           animateToCenterPixel.targetPosition = new THREE.Vector3(0, 0, 800); // Farther zoom to see all pixels
+
+          // Reset controls target to center
+          controlsRef.current.target.set(0, 0, 0);
 
           animateToCenterPixel.startZoom = controlsRef.current.zoom;
           animateToCenterPixel.targetZoom = 0.8;
@@ -740,6 +889,17 @@ const PixelCanvas2 = ({ width = "100%", height = "300px", pixels = [], selectedI
         // Position the model at the same location as the image
         model.position.copy(position);
 
+        // Apply additional 30px downward offset to match the pixel objects
+        model.position.y -= 30;
+
+        // Center the model vertically
+        // Calculate the bounding box to get the model's actual dimensions
+        const boundingBox = new THREE.Box3().setFromObject(model);
+        const modelHeight = boundingBox.max.y - boundingBox.min.y;
+
+        // Adjust the Y position to center the model
+        model.position.y += modelHeight / 2;
+
         // Adjust scale to match the image better - start with a smaller scale
         model.scale.set(250, 250, 250);
 
@@ -749,6 +909,13 @@ const PixelCanvas2 = ({ width = "100%", height = "300px", pixels = [], selectedI
         // Add to scene
         sceneRef.current.add(model);
         modelRef.current = model;
+
+        // Create outline for the model
+        const size = boundingBox.getSize(new THREE.Vector3());
+        const outlineGeometry = new THREE.EdgesGeometry(new THREE.BoxGeometry(size.x + 2, size.y + 2, size.z + 2));
+        const outlineMaterial = new THREE.LineBasicMaterial({ color: 0xffffff, linewidth: 1 });
+        const outline = new THREE.LineSegments(outlineGeometry, outlineMaterial);
+        model.add(outline);
 
         // Start rotation animation
         modelRotationRef.active = true;

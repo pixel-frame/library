@@ -25,52 +25,26 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
+  padding: 0px 18px;
+  border-radius: 2px;
   text-decoration: none;
   color: var(--bg-primary);
   text-align: center;
 }
 
 .navText {
-  margin-top: 6px;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   color: var(--bg-primary);
+  margin: 0;
 }
 
 .active {
-}
-
-/* Brutalist shape styles */
-.square {
-  width: 20px;
-  height: 20px;
   background-color: var(--bg-primary);
 }
 
-.circle {
-  width: 20px;
-  height: 20px;
-  background-color: var(--bg-primary);
-  border-radius: 50%;
-}
-
-.triangle {
-  width: 0;
-  height: 0;
-  border-left: 14px solid transparent;
-  border-right: 14px solid transparent;
-  border-bottom: 20px solid var(--bg-primary);
-}
-
-/* Active state styles */
-.active .square,
-.active .circle,
-.active .triangle {
-  background-color: var(--bg-primary);
-}
-
-.active .triangle {
-  border-bottom-color: var(--bg-primary);
+.active span {
+  color: var(--text-primary);
 }

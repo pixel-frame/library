@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./bottomNav.module.css";
+import Icon from "../Icons";
 
 const BottomNav = () => {
   const [activeTab, setActiveTab] = useState("bank");
@@ -15,6 +16,7 @@ const BottomNav = () => {
   if (isDetailPage) {
     return null;
   }
+
   const handleKeyDown = (e, tabName) => {
     if (e.key === "Enter" || e.key === " ") {
       setActiveTab(tabName);
@@ -33,7 +35,7 @@ const BottomNav = () => {
           aria-label="Bank"
           aria-current={activeTab === "bank" ? "page" : undefined}
         >
-          <div className={styles.square}></div>
+          <Icon name="star" size={24} className={styles.navIcon} active={activeTab === "bank"} />
           <span className={styles.navText}>Bank</span>
         </Link>
 
@@ -46,7 +48,7 @@ const BottomNav = () => {
           aria-label="Emissions"
           aria-current={activeTab === "emissions" ? "page" : undefined}
         >
-          <div className={styles.circle}></div>
+          <Icon name="leaf" size={24} className={styles.navIcon} active={activeTab === "emissions"} />
           <span className={styles.navText}>Emissions</span>
         </Link>
 
@@ -59,7 +61,7 @@ const BottomNav = () => {
           aria-label="Explore"
           aria-current={activeTab === "explore" ? "page" : undefined}
         >
-          <div className={styles.triangle}></div>
+          <Icon name="config" size={24} className={styles.navIcon} active={activeTab === "explore"} />
           <span className={styles.navText}>Explore</span>
         </Link>
       </div>

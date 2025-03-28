@@ -28,7 +28,7 @@ const SheetModal = ({ children, isOpen, onClose }) => {
       <Sheet.Container className={styles.card}>
         <Sheet.Header className={styles.handle} />
         <Sheet.Content onScroll={handleScroll} ref={contentRef}>
-          <Sheet.Scroller draggableAt="top"> {children}</Sheet.Scroller>
+          <Sheet.Scroller> {children}</Sheet.Scroller>
         </Sheet.Content>
       </Sheet.Container>
       {/* <Sheet.Backdrop /> */}

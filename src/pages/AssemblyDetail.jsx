@@ -8,7 +8,7 @@ import ExpandButton from "../components/buttons/ExpandButton";
 import CloseButton from "../components/buttons/CloseButton";
 import NetworkMatrix from "../components/datavis/NetworkMatrix";
 
-const AssemblyDetail = ({ assemblyId, assembly: passedAssembly, fullData: passedFullData, onBack }) => {
+const AssemblyDetail = ({ assemblyId, assembly: passedAssembly, fullData: passedFullData, onBack, isActive }) => {
   const { id: urlId } = useParams();
   const effectiveId = assemblyId || urlId;
   const location = useLocation();
@@ -19,6 +19,9 @@ const AssemblyDetail = ({ assemblyId, assembly: passedAssembly, fullData: passed
   const [isExpanded, setIsExpanded] = useState(false);
   const [fullData, setFullData] = useState(passedFullData || null);
   const [fullscreenImage, setFullscreenImage] = useState(null);
+
+  // Check if we're being rendered as a tab in PixelDetail
+  const isInPixelDetailTab = isActive !== undefined;
 
   const availableModels = ["0001", "0002", "0003", "0004", "0005", "0009", "0010"];
 
@@ -61,9 +64,9 @@ const AssemblyDetail = ({ assemblyId, assembly: passedAssembly, fullData: passed
       const items = Array.from({ length: 5 }, (_, i) => ({
         id: i + 1,
         title: `Assembly ${assembly.serial} - Image ${i + 1}`,
-        url: `/data/media/${assembly.serial}/${i + 1}.JPG`
+        url: `/data/media/${assembly.serial}/${i + 1}.JPG`,
       }));
-      
+
       setMediaItems(items);
     };
 
@@ -105,7 +108,7 @@ const AssemblyDetail = ({ assemblyId, assembly: passedAssembly, fullData: passed
         const foundAssembly = data.reconfigurations.find((assembly) => assembly.serial === effectiveId);
         if (!foundAssembly) throw new Error(`Assembly ${effectiveId} not found`);
 
-        console.log('Assembly serial:', foundAssembly.serial);
+        console.log("Assembly serial:", foundAssembly.serial);
         setFullData(data);
         setAssembly(foundAssembly);
 
@@ -126,21 +129,14 @@ const AssemblyDetail = ({ assemblyId, assembly: passedAssembly, fullData: passed
   if (error) return <div className="error-message">{error}</div>;
   if (!assembly) return <div className="error-message">Assembly not found</div>;
 
-  // Mock media items - replace with actual data when available
-  // const mediaItems = [
-  //   { id: 1, title: "Assembly view 1" },
-  //   { id: 2, title: "Assembly view 2" },
-  //   { id: 3, title: "Assembly view 3" },
-  //   { id: 4, title: "Assembly view 4" },
-  //   { id: 5, title: "Assembly view 5" },
-  // ];
-
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
-        <p className={styles["pixel-title"]}>Assembly {assembly.serial}</p>
-        <CloseButton onClick={onBack} ariaLabel="Back to assemblies list" />
-      </div>
+      {/* Only show header when not in PixelDetail tab */}
+      {!isInPixelDetailTab && (
+        <div className={styles.header}>
+          <p className={styles["pixel-title"]}> {assembly.name}</p>
+        </div>
+      )}
 
       <div className={styles.content}>
         {modelPath && (
@@ -217,10 +213,10 @@ const AssemblyDetail = ({ assemblyId, assembly: passedAssembly, fullData: passed
           <h2 className={styles["section-title"]}>Media</h2>
           <div className={styles["media-grid"]}>
             {mediaItems.map((item) => (
-              <div 
-                key={item.id} 
+              <div
+                key={item.id}
                 className={styles["media-item"]}
-                style={{ display: loadedItems.includes(item.id) ? 'block' : 'none' }}
+                style={{ display: loadedItems.includes(item.id) ? "block" : "none" }}
               >
                 <div
                   className={styles["expand-icon"]}
@@ -232,21 +228,19 @@ const AssemblyDetail = ({ assemblyId, assembly: passedAssembly, fullData: passed
                 >
                   ↗
                 </div>
-                <img 
+                <img
                   src={item.url}
                   alt={item.title}
                   className={styles["media-thumbnail"]}
                   loading="lazy"
-                  onLoad={() => setLoadedItems(prev => [...prev, item.id])}
+                  onLoad={() => setLoadedItems((prev) => [...prev, item.id])}
                   onError={(e) => {
-                    e.target.closest('.media-item').style.display = 'none';
+                    e.target.closest(".media-item").style.display = "none";
                   }}
                 />
               </div>
             ))}
-            {loadedItems.length === 0 && (
-              <div className={styles["no-media"]}>No images available</div>
-            )}
+            {loadedItems.length === 0 && <div className={styles["no-media"]}>No images available</div>}
           </div>
         </div>
       </div>
@@ -266,9 +260,9 @@ const AssemblyDetail = ({ assemblyId, assembly: passedAssembly, fullData: passed
               src={fullscreenImage.url}
               alt={fullscreenImage.title}
               style={{
-                maxWidth: '90vw',
-                maxHeight: '80vh',
-                objectFit: 'contain'
+                maxWidth: "90vw",
+                maxHeight: "80vh",
+                objectFit: "contain",
               }}
             />
           </div>

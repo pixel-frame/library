@@ -62,6 +62,17 @@ const iconPaths = {
       },
     ],
   },
+  arrow: {
+    viewBox: "0 0 17 17",
+    paths: [
+      {
+        d: "M13.7183 5.80864L2.82032 16.7068L0.707008 14.5934L11.6048 3.6955L3.25796 3.6955L3.25796 0.706785L16.707 0.706788L16.707 14.156L13.7183 14.156L13.7183 5.80864Z",
+        fillRule: "evenodd",
+        clipRule: "evenodd",
+        fill: "var(--text-primary)",
+      },
+    ],
+  },
   // Add more icons as needed
 };
 

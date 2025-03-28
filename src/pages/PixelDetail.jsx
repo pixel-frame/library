@@ -7,9 +7,9 @@ import CloseButton from "../components/buttons/CloseButton";
 import AssemblyDetail from "./AssemblyDetail";
 
 const TABS = [
-  { id: "info", label: "[ Details ]", component: InfoTab },
-  { id: "history", label: "[ History ]", component: StoryTab },
-  { id: "assembly", label: "[ Assembly ]", component: AssemblyDetail },
+  { id: "info", label: "DETAIL", component: InfoTab },
+  { id: "history", label: "HISTORY", component: StoryTab },
+  { id: "assembly", label: "ASSEMBLY", component: AssemblyDetail },
 ];
 
 const PixelDetail = ({ id: propId, initialTab = "info", onClose }) => {
@@ -81,6 +81,15 @@ const PixelDetail = ({ id: propId, initialTab = "info", onClose }) => {
 
   return (
     <div className={styles.container}>
+      <div className={styles.pixelHeader}>
+        <h1 className={styles.pixelTitle}>
+          {activeTab === "assembly" && pixelData?.timeline?.length > 0
+            ? `PIXEL-${pixelData.serial}: Part of ${
+                pixelData.timeline[pixelData.timeline.length - 1]?.name || "Assembly"
+              }`
+            : `PIXEL-${pixelData.serial}`}
+        </h1>
+      </div>
       <div className={styles.header}>
         <nav className={styles.navigation} role="tablist">
           {TABS.map(({ id, label }) => (
@@ -95,9 +104,6 @@ const PixelDetail = ({ id: propId, initialTab = "info", onClose }) => {
               {label}
             </button>
           ))}
-          <div className={styles.closeButtonContainer}>
-            <CloseButton onClick={onClose} ariaLabel="Close pixel details" />
-          </div>
         </nav>
       </div>
 

@@ -65,7 +65,6 @@
 .other-data pre {
   white-space: pre-wrap;
   word-wrap: break-word;
-  font-family: monospace;
   font-size: 0.9rem;
   line-height: 1.4;
 }
@@ -81,8 +80,6 @@
   display: flex;
   align-items: center;
   width: 100%;
-  gap: 8px;
-  font-family: inherit;
   overflow-x: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -93,30 +90,20 @@
 }
 
 .tabButton {
+  flex: 1;
   border: none;
   padding: 8px 16px;
   background: none;
-  border: 0px solid var(--text-primary);
+  border: 1px solid var(--text-primary);
   cursor: pointer;
   color: var(--text-secondary);
+  text-align: center;
+  font-family: inherit;
 }
 
 .tabButtonActive {
   color: var(--bg-primary);
-  background: var(--text-primary);
-}
-
-.closeButtonContainer {
-  margin-left: auto;
-  flex-shrink: 0;
-}
-
-.closeButton {
-  text-decoration: none;
-  color: inherit;
-  padding: 8px 16px;
-  font-family: inherit;
-  font-size: inherit;
+  background: #000;
 }
 
 .tabPanel {
@@ -148,4 +135,20 @@
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
   }
+}
+
+.pixelHeader {
+  padding: 4px 16px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--text-primary);
+  color: var(--bg-primary);
+}
+
+.pixelTitle {
+  font-size: 18px;
+  font-weight: 500;
+  margin: 0;
 }

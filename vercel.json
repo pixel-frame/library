@@ -1,9 +1,3 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
-  "buildCommand": "/opt/buildhome/.pyenv/shims/python3 public/data/originals/translate_to_json.py && npm run build",
-  "installCommand": "npm install",
-  "framework": "vite",
-  "env": {
-    "PYTHON_VERSION": "3.8"
-  }
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }

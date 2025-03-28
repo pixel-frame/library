@@ -3,7 +3,7 @@ import styles from "./Pixels.module.css";
 import TestList from "./TestList";
 import PixelDetailView from "./PixelPreview";
 import PixelSpaceView from "./PixelSpace";
-import PixelCanvas from "./PixelCanvas";
+import PixelCanvas2 from "./PixelCanvas2";
 import Button from "../../widgets/Button";
 import PageHeader from "../common/PageHeader";
 
@@ -128,12 +128,12 @@ const Pixels = () => {
       />
 
       <div className={styles.mainPixelContent}>
-        <PixelCanvas 
+        <PixelCanvas2
           pixels={pixels}
           selectedIndex={selectedPixel}
           // onPixelClick={handleItemClick}
-          width="100%" 
-          height="300px" 
+          width="100%"
+          height="900px"
         />
 
         <TestList onSelectionChange={handleSelectionChange} />

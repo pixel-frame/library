@@ -11,8 +11,8 @@ const Pixels = () => {
   const [pixels, setPixels] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const [stableIndex, setStableIndex] = useState(0);
+  const [selectedIndex, setSelectedIndex] = useState(-1); // Set to -1 to select "ALL" by default
+  const [stableIndex, setStableIndex] = useState(-1);
   const [previousIndex, setPreviousIndex] = useState(null);
   const [transitionDirection, setTransitionDirection] = useState("Right");
   const [viewMode, setViewMode] = useState("vertical"); // 'vertical', 'horizontal', or 'grid'
@@ -96,9 +96,8 @@ const Pixels = () => {
   if (error) return <div className={styles.errorMessage}>{error}</div>;
   if (pixels.length === 0) return <div className={styles.noPixels}>NO PIXELS FOUND</div>;
 
-  const selectedPixel = pixels[selectedIndex];
-  const stablePixel = pixels[stableIndex];
-  const previousPixel = previousIndex !== null ? pixels[previousIndex] : null;
+  // Handle the "ALL" case by using null or a special indicator
+  const selectedPixel = selectedIndex >= 0 ? selectedIndex : null;
 
   return (
     <div className={styles.pixelsContainer}>
@@ -131,8 +130,8 @@ const Pixels = () => {
       <div className={styles.mainPixelContent}>
         <PixelCanvas 
           pixels={pixels}
-          selectedIndex={selectedIndex}
-          onPixelClick={handleItemClick}
+          selectedIndex={selectedPixel}
+          // onPixelClick={handleItemClick}
           width="100%" 
           height="300px" 
         />

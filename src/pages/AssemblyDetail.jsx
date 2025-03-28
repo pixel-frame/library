@@ -53,6 +53,26 @@ const AssemblyDetail = ({ assemblyId, onBack }) => {
     }
   };
 
+  const [mediaItems, setMediaItems] = useState([]);
+  const [loadedItems, setLoadedItems] = useState([]);
+
+  useEffect(() => {
+    const loadMediaItems = () => {
+      const items = Array.from({ length: 5 }, (_, i) => ({
+        id: i + 1,
+        title: `Assembly ${assembly.serial} - Image ${i + 1}`,
+        url: `/data/media/${assembly.serial}/${i + 1}.JPG`
+      }));
+      
+      setMediaItems(items);
+      setLoadedItems([]); // Check if needed still?
+    };
+
+    if (assembly) {
+      loadMediaItems();
+    }
+  }, [assembly]);
+
   useEffect(() => {
     const fetchAssemblyDetail = async () => {
       try {
@@ -63,6 +83,7 @@ const AssemblyDetail = ({ assemblyId, onBack }) => {
         const foundAssembly = data.reconfigurations.find((assembly) => assembly.serial === effectiveId);
         if (!foundAssembly) throw new Error(`Assembly ${effectiveId} not found`);
 
+        console.log('Assembly serial:', foundAssembly.serial);
         setFullData(data);
         setAssembly(foundAssembly);
 
@@ -93,13 +114,13 @@ const AssemblyDetail = ({ assemblyId, onBack }) => {
   if (!assembly) return <div className="error-message">Assembly not found</div>;
 
   // Mock media items - replace with actual data when available
-  const mediaItems = [
-    { id: 1, title: "Assembly view 1" },
-    { id: 2, title: "Assembly view 2" },
-    { id: 3, title: "Assembly view 3" },
-    { id: 4, title: "Assembly view 4" },
-    { id: 5, title: "Assembly view 5" },
-  ];
+  // const mediaItems = [
+  //   { id: 1, title: "Assembly view 1" },
+  //   { id: 2, title: "Assembly view 2" },
+  //   { id: 3, title: "Assembly view 3" },
+  //   { id: 4, title: "Assembly view 4" },
+  //   { id: 5, title: "Assembly view 5" },
+  // ];
 
   return (
     <div className={styles.container}>
@@ -183,7 +204,11 @@ const AssemblyDetail = ({ assemblyId, onBack }) => {
           <h2 className={styles["section-title"]}>Media</h2>
           <div className={styles["media-grid"]}>
             {mediaItems.map((item) => (
-              <div key={item.id} className={styles["media-item"]}>
+              <div 
+                key={item.id} 
+                className={styles["media-item"]}
+                style={{ display: loadedItems.includes(item.id) ? 'block' : 'none' }}
+              >
                 <div
                   className={styles["expand-icon"]}
                   onClick={() => handleOpenFullscreen(item)}
@@ -194,19 +219,21 @@ const AssemblyDetail = ({ assemblyId, onBack }) => {
                 >
                   ↗
                 </div>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    height: "100%",
-                    color: "#666",
+                <img 
+                  src={item.url}
+                  alt={item.title}
+                  className={styles["media-thumbnail"]}
+                  loading="lazy"
+                  onLoad={() => setLoadedItems(prev => [...prev, item.id])}
+                  onError={(e) => {
+                    e.target.closest('.media-item').style.display = 'none';
                   }}
-                >
-                  {item.title}
-                </div>
+                />
               </div>
             ))}
+            {loadedItems.length === 0 && (
+              <div className={styles["no-media"]}>No images available</div>
+            )}
           </div>
         </div>
 
@@ -229,20 +256,15 @@ const AssemblyDetail = ({ assemblyId, onBack }) => {
           </button>
           <div className={styles["fullscreen-image"]} onClick={(e) => e.stopPropagation()}>
             <h2>{fullscreenImage.title}</h2>
-            <div
+            <img
+              src={fullscreenImage.url}
+              alt={fullscreenImage.title}
               style={{
-                width: "80vw",
-                height: "60vh",
-                border: "2px solid white",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "white",
-                fontSize: "24px",
+                maxWidth: '90vw',
+                maxHeight: '80vh',
+                objectFit: 'contain'
               }}
-            >
-              {fullscreenImage.title} - Fullscreen View
-            </div>
+            />
           </div>
         </div>
       )}

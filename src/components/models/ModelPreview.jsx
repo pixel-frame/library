@@ -1,42 +1,33 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import "./ModelPreview.css";
 
 const ModelPreview = ({ children, isExpanded, onClose }) => {
+  const modelContainerRef = useRef(null);
+
   const handleCloseExpanded = () => {
-    onClose();
+    onClose(false);
     document.body.style.overflow = "auto";
   };
 
-  return (
-    <>
-      <div className="preview-container">
-        <div className="preview-content">
-          {React.cloneElement(children, {
-            isPreview: true,
-            key: "preview",
-          })}
-        </div>
-      </div>
+  const handleExpand = () => {
+    if (onClose) {
+      onClose(true);
+      document.body.style.overflow = "hidden";
+    }
+  };
 
+  // Use a single container that changes its styling based on expanded state
+  return (
+    <div className={`model-container ${isExpanded ? "expanded" : "preview"}`} ref={modelContainerRef}>
       {isExpanded && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <button
-              className="close-button"
-              onClick={handleCloseExpanded}
-              aria-label="Close expanded view"
-              tabIndex="0"
-            >
-              ×
-            </button>
-            {React.cloneElement(children, {
-              isPreview: false,
-              key: "expanded",
-            })}
-          </div>
-        </div>
+        <button className="close-button" onClick={handleCloseExpanded} aria-label="Close expanded view" tabIndex="0">
+          ×
+        </button>
       )}
-    </>
+
+      {/* Single instance of children that stays mounted */}
+      {children}
+    </div>
   );
 };
 

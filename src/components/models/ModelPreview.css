@@ -65,3 +65,39 @@
   align-items: center;
   justify-content: center;
 }
+
+.model-container {
+  transition: all 0.3s ease-in-out;
+}
+
+.model-container.preview {
+  position: relative;
+  width: 100%;
+  height: auto;
+}
+
+.model-container.expanded {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.close-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: white;
+  background: black;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 1001;
+}

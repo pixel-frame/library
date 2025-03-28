@@ -1,11 +1,16 @@
-import React, { useRef, useEffect } from "react";
+import React from "react";
 import styles from "./PixelModel.module.css";
 
-const PixelModel = ({ modelPath, isPreview = false }) => {
+const PixelModel = ({ modelPath, isPreview = false, isInteractive = false, onExpand = null }) => {
   const [modelError, setModelError] = React.useState(false);
 
   const handleModelError = () => {
     setModelError(true);
+  };
+
+  const handleExpand = (e) => {
+    e.stopPropagation();
+    if (onExpand) onExpand();
   };
 
   if (modelError) {
@@ -28,13 +33,15 @@ const PixelModel = ({ modelPath, isPreview = false }) => {
         poster-image={`data/previews/pixels/model-poster-${modelPath}.png`}
         environment-intensity="1"
         auto-rotate={isPreview}
-        camera-controls={!isPreview}
+        camera-controls={isInteractive}
         interaction-prompt="none"
-        touch-action={isPreview ? "none" : "auto"}
-        pointer-events={isPreview ? "none" : "auto"}
-        disable-pan
-        ar={!isPreview}
-        ar-modes={!isPreview ? "webxr scene-viewer quick-look" : "none"}
+        touch-action="none"
+        disable-zoom={!isInteractive}
+        disable-tap={!isInteractive}
+        disable-pan={!isInteractive}
+        disable-rotate={!isInteractive}
+        ar={!isPreview && isInteractive}
+        ar-modes={!isPreview && isInteractive ? "webxr scene-viewer quick-look" : "none"}
         ar-scale="fixed"
         loading="eager"
         reveal="auto"
@@ -45,8 +52,15 @@ const PixelModel = ({ modelPath, isPreview = false }) => {
           maxWidth: "100%",
           position: "relative",
           zIndex: 1,
+          pointerEvents: isInteractive ? "auto" : "none",
         }}
       />
+
+      {isPreview && onExpand && (
+        <button className={styles.expandButton} onClick={handleExpand} aria-label="Expand model view" tabIndex="0">
+          [+]
+        </button>
+      )}
     </div>
   );
 };

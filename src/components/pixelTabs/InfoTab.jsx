@@ -17,16 +17,14 @@ const InfoTab = ({ pixel }) => {
 
   return (
     <div className="pixel-info-container">
-      <ModelPreview isExpanded={isExpanded} onClose={() => setIsExpanded(false)}>
-        <PixelModel modelPath={pixel.pixel_number} />
+      <ModelPreview isExpanded={isExpanded} onClose={(expand) => setIsExpanded(expand === true)}>
+        <PixelModel
+          modelPath={pixel.pixel_number}
+          isPreview={!isExpanded}
+          isInteractive={isExpanded}
+          onExpand={!isExpanded ? handleExpand : null}
+        />
       </ModelPreview>
-      <div className={styles["pixel-header"]}>
-        <p className={styles["pixel-title"]}>PIXEL {pixel.pixel_number}</p>
-        <div className={styles["pixel-actions"]}>
-          <ExpandButton onClick={handleExpand} />
-          {/* <ARButton onClick={handleARActivation} /> */}
-        </div>
-      </div>
 
       <DetailGrid
         items={[

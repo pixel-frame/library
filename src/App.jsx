@@ -6,7 +6,6 @@ import { ThemeToggle } from "./components/ThemeToggle/ThemeToggle";
 import Layout from "./components/layout/Layout";
 import LoadingPage from "./pages/LoadingPage";
 import LoadingPagePixel from "./pages/LoadingPagePixel";
-import DetailsTestPage from "./components/DetailsTestPage";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import ListingPage from "./pages/ListingPage";
 import AssemblyDetail from "./pages/AssemblyDetail";
@@ -48,9 +47,7 @@ const AppContent = () => {
           <Route path="/pixels" element={<ListingPage />} />
           <Route path="/assembly/:id" element={<AssemblyDetail />} />
           <Route path="/pixel/:id" element={<PixelDetail />} />
-          <Route path="/details" element={<DetailsTestPage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="*" element={<DetailsTestPage />} />
           <Route path="/explore" element={<Explore />} />
           <Route path="/emissions" element={<Carbon />} />
         </Routes>

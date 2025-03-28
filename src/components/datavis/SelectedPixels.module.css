@@ -16,7 +16,6 @@
   flex: 1;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  padding: 16px;
   overscroll-behavior: contain;
   min-height: 0;
 }

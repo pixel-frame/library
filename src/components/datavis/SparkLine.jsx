@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import styles from "./SparkLine.module.css";
 
-const SparkLine = ({ data }) => {
+const SparkLine = ({ data, color = "white" }) => {
   const svgRef = useRef(null);
 
   useEffect(() => {
@@ -53,12 +53,7 @@ const SparkLine = ({ data }) => {
       .y((d) => yScale(d[1]));
 
     // Draw the line
-    g.append("path")
-      .datum(timeData)
-      .attr("fill", "none")
-      .attr("stroke", "var(--text-primary)")
-      .attr("stroke-width", 2)
-      .attr("d", line);
+    g.append("path").datum(timeData).attr("fill", "none").attr("stroke", color).attr("stroke-width", 2).attr("d", line);
 
     // Add dots for data points
     g.selectAll("circle")
@@ -68,8 +63,8 @@ const SparkLine = ({ data }) => {
       .attr("cx", (d) => xScale(d[0]))
       .attr("cy", (d) => yScale(d[1]))
       .attr("r", 3)
-      .attr("fill", "var(--text-primary)");
-  }, [data]);
+      .attr("fill", color);
+  }, [data, color]);
 
   return <svg ref={svgRef} className={styles.sparkline} />;
 };

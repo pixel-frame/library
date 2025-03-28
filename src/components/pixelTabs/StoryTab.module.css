@@ -1,7 +1,7 @@
 .storyTab {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 0px;
   font-family: monospace;
   height: calc(100vh - 120px);
   overflow-x: hidden;
@@ -16,38 +16,7 @@
 .timelineSection {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-}
-
-.timelineContainer {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  border: 1px solid var(--border-color);
-  overflow: hidden;
-}
-
-.timelineScroll {
-  display: flex;
-  overflow-x: auto;
-  gap: 12px;
-  padding: 12px 8px 16px 8px;
-  height: calc(100% - 20px);
-  scrollbar-width: none; /* Firefox */
-  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-}
-
-.timelineScroll::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Edge */
-}
-
-.timelineEvent {
-  flex: 0 0 180px;
-  padding: 8px;
-  display: flex;
-  flex-direction: column;
-  font-size: 11px;
-  border: 1px solid var(--border-color);
+  gap: 0px;
 }
 
 .eventDate {
@@ -94,7 +63,7 @@
 
 .graphContainer {
   border: 1px solid var(--border-color);
-  padding: 12px;
+  padding: 0px;
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -107,7 +76,7 @@
 
 .graph {
   position: relative;
-  margin: 8px 0;
+  margin: 0 0;
   height: calc(100% - 100px);
   width: 100%;
 }
@@ -154,7 +123,6 @@
   flex-direction: column;
   align-items: flex-start;
   min-width: 80px;
-  padding: 4px;
 }
 
 /* Travel log styling */
@@ -217,7 +185,7 @@
 .travelPath {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 0px;
   margin: 8px 0;
   font-size: 12px;
   flex-wrap: nowrap;
@@ -398,5 +366,5 @@ h2 {
 
 .logSection {
   width: 100%;
-  margin-top: 1rem;
+  margin-top: 0rem;
 }

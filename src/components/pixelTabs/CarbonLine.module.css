@@ -72,7 +72,6 @@
   stroke: var(--border-color);
 }
 
-.xAxis text,
 .yAxis text {
   fill: var(--text-primary);
 }

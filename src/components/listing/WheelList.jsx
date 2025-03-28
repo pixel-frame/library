@@ -50,11 +50,12 @@ export default function Wheel(props) {
     if (sliderState && props.onIndexChange) {
       // Get the current centered index
       const currentIndex = sliderState.abs;
+      console.log("WheelList index changed:", currentIndex);
       props.onIndexChange(currentIndex);
     }
   }, [sliderState, props.onIndexChange]);
 
-  function slideValues() {
+  function slideValues(idx, distance) {
     if (!sliderState) return [];
     const offset = props.loop ? 1 / 2 - 1 / slidesPerView / 2 : 0;
 

@@ -321,7 +321,7 @@ const PixelCanvas = ({
     context.fillRect(rectLeft, rectTop, totalWidth, totalHeight);
     
     // Setup for grid lines
-    const gridSize = 20; // Base grid size  
+    const gridSize = 20; // Base grid size for horizontal spacing (X direction)
     context.strokeStyle = "rgba(180, 180, 180, 0.5)";
     context.lineWidth = 0.5 / scale; // Adjust line width for zoom
     
@@ -329,7 +329,7 @@ const PixelCanvas = ({
     const startX = Math.floor(rectLeft / gridSize) * gridSize;
     const endX = Math.ceil((rectLeft + totalWidth) / gridSize) * gridSize;
     
-    // Draw vertical grid lines
+    // Draw vertical grid lines (these define the WIDTH of cells)
     for (let x = startX; x <= endX; x += gridSize) {
       context.beginPath();
       context.moveTo(x, rectTop);
@@ -337,11 +337,14 @@ const PixelCanvas = ({
       context.stroke();
     }
     
-    // Draw horizontal grid lines with 2:3 ratio
-    const verticalGridSize = gridSize * (2/3);
+    // For a 2:3 ratio (width:height), if width is defined by gridSize,
+    // then height should be 1.5 times larger (3/2 = 1.5)
+    // So horizontal lines should be FURTHER apart (not closer)
+    const verticalGridSize = gridSize * (3/2); // Makes cells taller than wide in 2:3 ratio
     const startY = Math.floor(rectTop / verticalGridSize) * verticalGridSize;
     const endY = Math.ceil((rectTop + totalHeight) / verticalGridSize) * verticalGridSize;
     
+    // Draw horizontal grid lines (these define the HEIGHT of cells)
     for (let y = startY; y <= endY; y += verticalGridSize) {
       context.beginPath();
       context.moveTo(rectLeft, y);
@@ -425,7 +428,38 @@ const PixelCanvas = ({
           height
         );
         
-        // selection highlight - comment this block out when not debugging
+        // draw label for selected pixel
+        if (isSelected) {
+          const pixelNumber = pixel.number || pixel.serial;
+          
+          // determine label dimensions
+          const labelPadding = 6;
+          const fontSize = 14 / scale;
+          const labelText = `PIXEL ${pixelNumber}`;
+          const textMetrics = context.measureText(labelText);
+          const labelWidth = textMetrics.width + (labelPadding * 2);
+          const labelHeight = fontSize + (labelPadding * 2);
+          
+          // position label above the image
+          const labelX = pixelItem.x - labelWidth / 2;
+          const labelY = pixelItem.y - height/2 - labelHeight - 5/scale;
+          
+          // draw black background
+          context.fillStyle = "black";
+          context.fillRect(labelX, labelY, labelWidth, labelHeight);
+          
+          // draw white text
+          context.fillStyle = "white";
+          context.textAlign = "center";
+          context.textBaseline = "middle";
+          context.fillText(
+            labelText,
+            pixelItem.x,
+            labelY + labelHeight/2
+          );
+        }
+        
+        // DEBUG: selection highlight - comment this block out when not debugging
         if (isSelected) {
           context.strokeStyle = "red";
           context.lineWidth = 3 / scale;
@@ -460,6 +494,40 @@ const PixelCanvas = ({
           width,
           height
         );
+        
+        // draw label for selected pixel (same as above)
+        if (isSelected) {
+          const pixelNumber = pixel.number || pixel.serial;
+          
+          // determine label dimensions
+          const labelPadding = 6;
+          const fontSize = 14 / scale;
+          const fontFamily = "Arial, sans-serif";
+          
+          context.font = `${fontSize}px ${fontFamily}`;
+          const labelText = `Pixel ${pixelNumber}`;
+          const textMetrics = context.measureText(labelText);
+          const labelWidth = textMetrics.width + (labelPadding * 2);
+          const labelHeight = fontSize + (labelPadding * 2);
+          
+          // position label above the image
+          const labelX = pixelItem.x - labelWidth / 2;
+          const labelY = pixelItem.y - height/2 - labelHeight - 5/scale;
+          
+          // draw black background
+          context.fillStyle = "black";
+          context.fillRect(labelX, labelY, labelWidth, labelHeight);
+          
+          // draw white text
+          context.fillStyle = "white";
+          context.textAlign = "center";
+          context.textBaseline = "middle";
+          context.fillText(
+            labelText,
+            pixelItem.x,
+            labelY + labelHeight/2
+          );
+        }
         
         // selection highlight for placeholders
         if (isSelected) {

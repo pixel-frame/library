@@ -11,6 +11,18 @@ const SheetModal = ({ children, isOpen, onClose }) => {
     setIsScrolled(!isAtTop);
   };
 
+  // Handle browser back button
+  useEffect(() => {
+    const handlePopState = () => {
+      if (isOpen) {
+        onClose();
+      }
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, [isOpen, onClose]);
+
   return (
     <Sheet isOpen={isOpen} onClose={onClose}>
       <Sheet.Container className={styles.card}>

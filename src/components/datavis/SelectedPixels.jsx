@@ -4,14 +4,19 @@ import SparkLine from "./SparkLine";
 import Card from "../buttons/Card";
 import PixelDetail from "../../pages/PixelDetail";
 import WheelListHandler from "../listing/WheelListHandler";
+import { useLocation, useSearchParams } from "react-router-dom";
 
-const SelectedPixels = ({ selectedPoints, onScroll, onHighlight }) => {
+const SelectedPixels = ({ selectedPoints, onScroll, onHighlight, urlPixelId, onPixelSelect }) => {
   const [allPixels, setAllPixels] = useState([]);
   const [highlightedIndex, setHighlightedIndex] = useState(0); // Default to first item (ALL PIXELS)
   const scrollRef = useRef(null);
   const lastScrollPosition = useRef(0);
-  const [selectedPixelId, setSelectedPixelId] = useState(null);
-  const [isOpen, setIsOpen] = useState(false);
+  const [selectedPixelId, setSelectedPixelId] = useState(urlPixelId || null);
+  const [isOpen, setIsOpen] = useState(!!urlPixelId);
+
+  const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const currentTab = searchParams.get("tab") || "info";
 
   // Fetch all pixels when component mounts
   useEffect(() => {
@@ -36,6 +41,26 @@ const SelectedPixels = ({ selectedPoints, onScroll, onHighlight }) => {
 
     fetchPixels();
   }, []);
+
+  // Handle URL pixel ID changes
+  useEffect(() => {
+    if (urlPixelId) {
+      setSelectedPixelId(urlPixelId);
+      setIsOpen(true);
+
+      // Find and highlight the pixel in the list
+      if (allPixels.length > 0) {
+        const pixelIndex = enhancedPixels.findIndex((p) => p.serial === urlPixelId || p.pixel_number === urlPixelId);
+        if (pixelIndex > 0) {
+          setHighlightedIndex(pixelIndex);
+          onHighlight(enhancedPixels[pixelIndex]);
+        }
+      }
+    } else {
+      setIsOpen(false);
+      setSelectedPixelId(null);
+    }
+  }, [urlPixelId, allPixels]);
 
   // Create a modified list with "ALL PIXELS" as the first option
   const enhancedPixels = [
@@ -75,8 +100,44 @@ const SelectedPixels = ({ selectedPoints, onScroll, onHighlight }) => {
     if (selectedPixel.isAllOption) return;
 
     // Set the selected pixel ID and open the card
-    setSelectedPixelId(selectedPixel.serial || selectedPixel.pixel_number);
+    const pixelId = selectedPixel.serial || selectedPixel.pixel_number;
+    setSelectedPixelId(pixelId);
     setIsOpen(true);
+
+    // Update URL via parent component
+    const params = new URLSearchParams(searchParams);
+    params.set("pixel", pixelId);
+    if (!params.has("tab")) {
+      params.set("tab", "history"); // Default to history tab when opening
+    }
+    onPixelSelect(pixelId, params.toString());
+  };
+
+  const handleCloseCard = () => {
+    setIsOpen(false);
+    setSelectedPixelId(null);
+
+    // Update URL to remove pixel parameter but preserve other parameters
+    onPixelSelect(null);
+  };
+
+  // Handle tab changes from within the PixelDetail component
+  const handleTabChange = (tabId) => {
+    // We don't need to update state here as PixelDetail handles its own state
+    // Just need to ensure the URL is updated correctly
+    const params = new URLSearchParams(searchParams);
+
+    if (tabId === "info") {
+      params.delete("tab");
+    } else {
+      params.set("tab", tabId);
+    }
+
+    // Make sure pixel ID is preserved
+    if (selectedPixelId) {
+      params.set("pixel", selectedPixelId);
+      onPixelSelect(selectedPixelId, params.toString());
+    }
   };
 
   // Custom formatter for pixels
@@ -125,14 +186,12 @@ const SelectedPixels = ({ selectedPoints, onScroll, onHighlight }) => {
       </div>
 
       {isOpen && selectedPixelId && (
-        <Card isOpen={isOpen}>
+        <Card isOpen={isOpen} onClose={handleCloseCard}>
           <PixelDetail
             id={selectedPixelId}
-            initialTab="story"
-            onClose={() => {
-              setIsOpen(false);
-              setSelectedPixelId(null);
-            }}
+            initialTab={currentTab}
+            onClose={handleCloseCard}
+            onTabChange={handleTabChange}
           />
         </Card>
       )}

@@ -13,6 +13,7 @@ import PixelDetail from "./pages/PixelDetail";
 import { initMobileViewportFix } from "./utils/mobileViewportFix";
 import Explore from "./pages/Explore";
 import Carbon from "./pages/Emissions";
+import Pixels from "./components/listing/Pixels";
 // Wrapper component to handle the loading page logic
 const AppContent = () => {
   const [showLoadingOverlay, setShowLoadingOverlay] = useState(() => {
@@ -42,9 +43,9 @@ const AppContent = () => {
       {isRfidSource && <LoadingPagePixel onProceed={handleProceed} />}
       <Layout>
         <Routes>
-          <Route path="/" element={<ListingPage />} />
+          <Route path="/test" element={<ListingPage />} />
           <Route path="/assemblies" element={<ListingPage />} />
-          <Route path="/pixels" element={<ListingPage />} />
+          <Route path="/" element={<Pixels />} />
           <Route path="/assembly/:id" element={<AssemblyDetail />} />
           <Route path="/pixel/:id" element={<PixelDetail />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />

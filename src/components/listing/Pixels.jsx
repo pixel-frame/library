@@ -140,7 +140,6 @@ const Pixels = () => {
         )}
 
         <TestList onSelectionChange={handleSelectionChange} />
-        <Button>[GO TO PIXEL DETAILS]</Button>
       </div>
     </div>
   );

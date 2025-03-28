@@ -27,7 +27,7 @@ const BottomNav = () => {
     <nav className={styles.bottomNav}>
       <div className={styles.navContainer}>
         <Link
-          to="/pixels"
+          to="/"
           className={`${styles.navItem} ${activeTab === "bank" ? styles.active : ""}`}
           onClick={() => handleNavClick("bank")}
           onKeyDown={(e) => handleKeyDown(e, "bank")}

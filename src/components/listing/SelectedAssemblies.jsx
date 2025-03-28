@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import styles from "./SelectedAssemblies.module.css";
 import WheelListHandler from "./WheelListHandler";
 
-const SelectedAssemblies = ({ assemblies = [], onScroll, onHighlight, onExpand }) => {
+const SelectedAssemblies = ({ assemblies = [], onScroll, onHighlight, onExpand, urlAssemblyId }) => {
   const [highlightedIndex, setHighlightedIndex] = useState(0); // Default to first item (ALL ASSEMBLIES)
   const scrollRef = useRef(null);
   const lastScrollPosition = useRef(0);
@@ -12,6 +12,18 @@ const SelectedAssemblies = ({ assemblies = [], onScroll, onHighlight, onExpand }
     { name: "ALL ASSEMBLIES", isAllOption: true, location: { name: "Global View" } },
     ...assemblies,
   ];
+
+  // Handle URL assembly ID changes
+  useEffect(() => {
+    if (urlAssemblyId && assemblies.length > 0) {
+      const assemblyIndex = enhancedAssemblies.findIndex((assembly) => assembly.serial === urlAssemblyId);
+
+      if (assemblyIndex > 0) {
+        setHighlightedIndex(assemblyIndex);
+        onHighlight(enhancedAssemblies[assemblyIndex]);
+      }
+    }
+  }, [urlAssemblyId, assemblies, enhancedAssemblies, onHighlight]);
 
   const handleSelectionChange = (assembly, index) => {
     setHighlightedIndex(index);

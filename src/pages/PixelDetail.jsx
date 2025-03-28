@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams, useNavigate } from "react-router-dom";
 import StoryTab from "../components/pixelTabs/StoryTab";
 import InfoTab from "../components/pixelTabs/InfoTab";
 import styles from "./PixelDetail.module.css";
@@ -8,13 +8,16 @@ import AssemblyDetail from "./AssemblyDetail";
 
 const TABS = [
   { id: "info", label: "[ Details ]", component: InfoTab },
-  { id: "story", label: "[ History ]", component: StoryTab },
-  { id: "network", label: "[ Assembly ]", component: AssemblyDetail },
+  { id: "history", label: "[ History ]", component: StoryTab },
+  { id: "assembly", label: "[ Assembly ]", component: AssemblyDetail },
 ];
 
 const PixelDetail = ({ id: propId, initialTab = "info", onClose }) => {
   const { id: urlId } = useParams();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+
+  // Use tab from URL if available, otherwise use initialTab prop
   const tabFromUrl = searchParams.get("tab");
 
   // Use prop ID if provided, otherwise fall back to URL param
@@ -45,8 +48,27 @@ const PixelDetail = ({ id: propId, initialTab = "info", onClose }) => {
     fetchPixelDetail();
   }, [pixelId]);
 
-  const handleTabChange = (tab) => () => {
+  // Update active tab when URL changes
+  useEffect(() => {
+    if (tabFromUrl && TABS.some((tab) => tab.id === tabFromUrl)) {
+      setActiveTab(tabFromUrl);
+    }
+  }, [tabFromUrl]);
+
+  const handleTabChange = (tab) => {
     setActiveTab(tab);
+
+    // Update URL with the new tab
+    const currentParams = Object.fromEntries(searchParams.entries());
+
+    if (tab === initialTab) {
+      // If it's the default tab, remove the tab parameter
+      const { tab, ...restParams } = currentParams;
+      setSearchParams(restParams, { replace: true });
+    } else {
+      // Otherwise, set the tab parameter
+      setSearchParams({ ...currentParams, tab }, { replace: true });
+    }
   };
 
   const handleNavigateBack = () => {
@@ -68,7 +90,7 @@ const PixelDetail = ({ id: propId, initialTab = "info", onClose }) => {
               role="tab"
               aria-selected={activeTab === id}
               aria-controls={`${id}-tab`}
-              onClick={() => setActiveTab(id)}
+              onClick={() => handleTabChange(id)}
             >
               {label}
             </button>
@@ -88,7 +110,7 @@ const PixelDetail = ({ id: propId, initialTab = "info", onClose }) => {
           pixelId,
         };
 
-        if (tabId === "network" && pixelData?.timeline?.length > 0) {
+        if (tabId === "assembly" && pixelData?.timeline?.length > 0) {
           const lastTimelineEntry = pixelData.timeline[pixelData.timeline.length - 1];
           if (lastTimelineEntry?.reconfiguration_number) {
             props.assemblyId = lastTimelineEntry.reconfiguration_number.toString().padStart(4, "0");

@@ -3,6 +3,7 @@ import styles from "./Pixels.module.css";
 import PixelList from "./PixelList";
 import PixelDetailView from "./PixelPreview";
 import PixelSpaceView from "./PixelSpace";
+import PixelCanvas from "./PixelCanvas";
 import Button from "../../widgets/Button";
 import PageHeader from "../common/PageHeader";
 
@@ -79,9 +80,9 @@ const Pixels = () => {
 
   const handleViewChange = (view) => {
     setSelectedView(view);
-    if (view === "compact") {
+    if (view === "space") {
       setViewMode("vertical"); // Set to normal view for compact
-    } else if (view === "detailed") {
+    } else if (view === "compact") {
       setViewMode("grid"); // Set to grid view for detailed
     }
   };
@@ -108,7 +109,7 @@ const Pixels = () => {
             <Button
               className={`${styles.viewButton} ${selectedView === "space" ? styles.selected : ""}`}
               onClick={() => handleViewChange("space")}
-              aria-label="Compact view"
+              aria-label="Detailed view"
               tabIndex="0"
               onKeyDown={(e) => e.key === "Enter" && handleViewChange("space")}
             >
@@ -121,15 +122,6 @@ const Pixels = () => {
               tabIndex="0"
               onKeyDown={(e) => e.key === "Enter" && handleViewChange("compact")}
             >
-              [DETAILED]
-            </Button>
-            <Button
-              className={`${styles.viewButton} ${selectedView === "detailed" ? styles.selected : ""}`}
-              onClick={() => handleViewChange("detailed")}
-              aria-label="Detailed view"
-              tabIndex="0"
-              onKeyDown={(e) => e.key === "Enter" && handleViewChange("detailed")}
-            >
               [COMPACT]
             </Button>
           </div>
@@ -137,17 +129,13 @@ const Pixels = () => {
       />
 
       <div className={styles.mainPixelContent}>
-        {viewMode !== "grid" && (
-          <PixelSpaceView
-            selectedPixel={stablePixel}
-            previousPixel={previousPixel}
-            transitionDirection={transitionDirection}
-            viewMode={viewMode}
-            onViewModeChange={cycleViewMode}
-            isScrolling={isScrolling}
-            targetPixel={selectedPixel}
-          />
-        )}
+        <PixelCanvas 
+          pixels={pixels}
+          selectedIndex={selectedIndex}
+          onPixelClick={handleItemClick}
+          width="100%" 
+          height="300px" 
+        />
 
         <PixelList
           pixels={pixels}

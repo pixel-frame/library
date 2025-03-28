@@ -1,9 +1,6 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Pixels.module.css";
-import PixelModelTransition from "../models/PixelModelTransition";
-import { RollingText } from "../text/RollingText";
-import ViewModeToggle from "./ViewModeToggle";
 
 const PixelSpaceView = ({
   selectedPixel,
@@ -16,44 +13,121 @@ const PixelSpaceView = ({
 }) => {
   const containerRef = useRef(null);
   const selectedPixelRef = useRef(null);
+  const [pan, setPan] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const [pixelPositions, setPixelPositions] = useState({});
 
+  // Initialize pixel positions in a more spread out formation
   useEffect(() => {
-    if (selectedPixelRef.current && containerRef.current) {
+    const totalPixels = 60;
+    const newPositions = {};
+    
+    // Create a more spread out grid-like arrangement
+    const gridSize = Math.ceil(Math.sqrt(totalPixels));
+    const spacing = 300; // Larger spacing between pixels
+    
+    Array.from({ length: totalPixels }, (_, i) => i + 1).forEach((number) => {
+      const row = Math.floor((number - 1) / gridSize);
+      const col = (number - 1) % gridSize;
+      
+      // Add some randomness to make it feel more organic
+      const randomOffset = {
+        x: (Math.random() - 0.5) * 100,
+        y: (Math.random() - 0.5) * 100
+      };
+      
+      newPositions[number] = {
+        x: col * spacing + randomOffset.x,
+        y: row * spacing + randomOffset.y
+      };
+    });
+    
+    setPixelPositions(newPositions);
+  }, []);
+
+  // Auto-center on selected pixel when it changes
+  useEffect(() => {
+    if (selectedPixel && pixelPositions[selectedPixel.number] && containerRef.current) {
+      const position = pixelPositions[selectedPixel.number];
       const container = containerRef.current;
-      const element = selectedPixelRef.current;
       
-      const elementRect = element.getBoundingClientRect();
-      const containerRect = container.getBoundingClientRect();
+      // Center the selected pixel by calculating the appropriate pan
+      const viewportWidth = container.parentElement.offsetWidth;
+      const viewportHeight = container.parentElement.offsetHeight;
       
-      const offsetX = -elementRect.left + (containerRect.width / 2) - (elementRect.width / 2);
-      const offsetY = -elementRect.top + (containerRect.height / 2) - (elementRect.height / 2);
-      
-      container.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+      setPan({
+        x: viewportWidth / 2 - position.x - 100, // 100 is half of pixel width
+        y: viewportHeight / 2 - position.y - 100  // 100 is half of pixel height
+      });
     }
-  }, [selectedPixel]);
+  }, [selectedPixel, pixelPositions]);
 
   if (!selectedPixel) return null;
 
   const totalPixels = 60;
   
-  const getRandomPosition = () => {
-    const PIXEL_WIDTH = 200; // Width of each pixel preview
-    const PADDING = 20; // Padding from container edges
-    
-    return {
-      x: PADDING + Math.random() * (window.innerWidth - PIXEL_WIDTH - PADDING * 2),
-      y: PADDING + Math.random() * (window.innerHeight - PIXEL_WIDTH - PADDING * 2)
+  // Mouse event handlers for panning
+  const handleMouseDown = (e) => {
+    setIsDragging(true);
+    setDragStart({ x: e.clientX - pan.x, y: e.clientY - pan.y });
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDragging) return;
+    const newPan = {
+      x: e.clientX - dragStart.x,
+      y: e.clientY - dragStart.y,
     };
+    setPan(newPan);
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  // Touch event handlers for mobile devices
+  const handleTouchStart = (e) => {
+    e.preventDefault();
+    const touch = e.touches[0];
+    setIsDragging(true);
+    setDragStart({ x: touch.clientX - pan.x, y: touch.clientY - pan.y });
+  };
+
+  const handleTouchMove = (e) => {
+    e.preventDefault();
+    if (!isDragging) return;
+    const touch = e.touches[0];
+    const newPan = {
+      x: touch.clientX - dragStart.x,
+      y: touch.clientY - dragStart.y,
+    };
+    setPan(newPan);
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
   };
 
   return (
     <div className={styles.detailSection}>
       <div className={styles.modelContainer}>
         {viewMode !== "grid" ? (
-          <div className={styles.pixelSpaceViewport}>
-            <div className={styles.pixelSpace} ref={containerRef}>
+          <div className={styles.pixelSpaceViewport}
+               onMouseDown={handleMouseDown}
+               onMouseMove={handleMouseMove}
+               onMouseUp={handleMouseUp}
+               onMouseLeave={handleMouseUp}
+               onTouchStart={handleTouchStart}
+               onTouchMove={handleTouchMove}
+               onTouchEnd={handleTouchEnd}>
+            <div 
+              className={styles.pixelSpace} 
+              ref={containerRef} 
+              style={{ transform: `translate(${pan.x}px, ${pan.y}px)` }}
+            >
               {Array.from({ length: totalPixels }, (_, i) => i + 1).map((number) => {
-                const position = getRandomPosition();
+                const position = pixelPositions[number] || { x: 0, y: 0 };
                 return (
                   <div 
                     key={number}

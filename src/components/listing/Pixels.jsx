@@ -89,8 +89,31 @@ const Pixels = () => {
   };
 
   const handleSelectionChange = (index) => {
-    if (index === selectedIndex) return;
+    console.log("Pixels.jsx - handleSelectionChange called with index:", index);
+
+    if (index === selectedIndex) {
+      console.log("Pixels.jsx - Index unchanged, returning");
+      return;
+    }
+
+    console.log("Pixels.jsx - Updating indices:", {
+      previousStableIndex: stableIndex,
+      newSelectedIndex: index,
+    });
+
+    // Set a flag to indicate this selection came from a direct click
+    const isDirectSelection = true;
+
+    // Immediately update all indices
+    setPreviousIndex(stableIndex);
+    setStableIndex(index);
     setSelectedIndex(index);
+
+    // Clear any existing timeout to prevent reset
+    if (scrollTimeoutRef.current) {
+      clearTimeout(scrollTimeoutRef.current);
+      scrollTimeoutRef.current = null;
+    }
   };
 
   const handleSortByAssembly = () => {
@@ -145,14 +168,22 @@ const Pixels = () => {
       <div className={styles.mainPixelContent}>
         <PixelCanvas2
           pixels={pixels}
-          selectedIndex={selectedPixel}
+          selectedIndex={selectedIndex}
           onPixelClick={handleSelectionChange}
           width="100%"
           height="900px"
           sortMode={sortMode}
         />
 
-        <TestList onSelectionChange={handleSelectionChange} />
+        <TestList
+          onSelectionChange={(index) => {
+            console.log("TestList selection change ignored:", index);
+            // Do nothing for now
+            //TO COME BACK TO
+            //handleSelectionChange(index); broken doesnt respect the index in canvas
+          }}
+          selectedIndex={selectedIndex}
+        />
       </div>
     </div>
   );

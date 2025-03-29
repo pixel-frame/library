@@ -401,7 +401,50 @@ const PixelCanvas2 = ({
     scene.add(gridGroup);
   };
 
-  // Handle touch tap (similar to click)
+  // Add mouse click event listener
+  useEffect(() => {
+    if (!containerRef.current || !isInitialized) return;
+
+    const handleMouseClick = (event) => {
+      if (isDragging || !onPixelClick) return;
+
+      // Get normalized device coordinates
+      const rect = containerRef.current.getBoundingClientRect();
+      const mouseX = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+      const mouseY = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+      // Set up raycaster
+      const raycaster = new THREE.Raycaster();
+      raycaster.setFromCamera(new THREE.Vector2(mouseX, mouseY), cameraRef.current);
+
+      // Find intersections with pixel objects
+      const intersects = raycaster.intersectObjects(pixelObjectsRef.current);
+
+      if (intersects.length > 0) {
+        const clickedObject = intersects[0].object;
+        const clickedPixel = clickedObject.userData.pixel;
+
+        // Find index of this pixel in the original pixels array
+        const index = pixels.findIndex((p) => p.serial === clickedPixel.serial);
+        if (index !== -1) {
+          // Simply call onPixelClick with the index - this will trigger the same flow
+          // as when selection happens via the scroll wheel
+          onPixelClick(index);
+        }
+      }
+    };
+
+    // Add mouse event listener
+    containerRef.current.addEventListener("click", handleMouseClick);
+
+    return () => {
+      if (containerRef.current) {
+        containerRef.current.removeEventListener("click", handleMouseClick);
+      }
+    };
+  }, [isInitialized, pixels, onPixelClick, isDragging]);
+
+  // Update handleTouchTap to use the same simple approach
   const handleTouchTap = (mouseX, mouseY) => {
     if (isDragging || !isInitialized || !onPixelClick) return;
 
@@ -420,6 +463,7 @@ const PixelCanvas2 = ({
       // Find index of this pixel in the original pixels array
       const index = pixels.findIndex((p) => p.serial === clickedPixel.serial);
       if (index !== -1) {
+        // Simply call onPixelClick with the index
         onPixelClick(index);
       }
     }

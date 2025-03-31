@@ -61,6 +61,9 @@ const PixelCanvas2 = ({
   // Add a ref to track the previous pixels array
   const previousPixelsRef = useRef([]);
 
+  // Add jitter state
+  const [showJitter, setShowJitter] = useState(true);
+
   // Update the ref when the prop changes
   useEffect(() => {
     console.log(`Sort mode changed from ${currentSortModeRef.current} to ${sortMode}`);
@@ -549,6 +552,215 @@ const PixelCanvas2 = ({
         // Increase radius for next group
         currentRadius += 100;
       });
+    } else if (currentSortModeRef.current === "carbon") {
+      // Create a scatter plot with:
+      // X-axis: distance_traveled
+      // Y-axis: total_emissions
+
+      // Find min/max values for normalization
+      let maxDistance = 0;
+      let maxEmissions = 0;
+
+      pixelsToShow.forEach((pixel) => {
+        maxDistance = Math.max(maxDistance, pixel.distance_traveled || 0);
+        maxEmissions = Math.max(maxEmissions, pixel.total_emissions || 0);
+      });
+
+      // Add a small buffer to prevent edge cases
+      maxDistance = maxDistance * 1.1 || 1;
+      maxEmissions = maxEmissions * 1.1 || 1;
+
+      // Plot each pixel on the graph
+      const plotWidth = 1000;
+      const plotHeight = 1000;
+
+      if (showJitter) {
+        // Implement jitter logic from Carbon.jsx
+
+        // Define grid dimensions
+        const gridCellsX = 21;
+        const gridCellsY = 18;
+        const cellSize = Math.min(plotWidth / gridCellsX, plotHeight / gridCellsY);
+
+        // Group data points by their position on the grid
+        const groupedData = {};
+
+        pixelsToShow.forEach((pixel, index) => {
+          // Calculate normalized position
+          const x = ((pixel.distance_traveled || 0) / maxDistance) * plotWidth - plotWidth / 2;
+          const y = ((pixel.total_emissions || 0) / maxEmissions) * plotHeight - plotHeight / 2;
+
+          // Snap to grid - find the nearest grid cell
+          const gridX = Math.floor((x + plotWidth / 2) / cellSize);
+          const gridY = Math.floor((y + plotHeight / 2) / cellSize);
+
+          // Calculate the center of the grid cell
+          const cellCenterX = gridX * cellSize + cellSize / 2 - plotWidth / 2;
+          const cellCenterY = gridY * cellSize + cellSize / 2 - plotHeight / 2;
+
+          // Create a grid cell identifier
+          const cellId = `${gridX}-${gridY}`;
+
+          if (!groupedData[cellId]) {
+            groupedData[cellId] = {
+              x: cellCenterX,
+              y: cellCenterY,
+              gridX: gridX,
+              gridY: gridY,
+              points: [],
+            };
+          }
+
+          groupedData[cellId].points.push({ pixel, index });
+        });
+
+        // Keep track of all occupied grid cells
+        const globalOccupiedCells = new Set();
+
+        // Mark cells as occupied from all groups
+        Object.values(groupedData).forEach((g) => {
+          globalOccupiedCells.add(`${g.gridX}-${g.gridY}`);
+        });
+
+        // Process each group to position points
+        Object.values(groupedData).forEach((group) => {
+          const { x, y, gridX, gridY, points } = group;
+
+          // Position the first point at the center of the cell
+          pixelPositions[points[0].index] = { x, y, z: 0, isCircle: true };
+
+          // If there are additional points, find neighboring cells
+          if (points.length > 1) {
+            // Calculate how many points we need to position
+            const pointsToPositionCount = points.length - 1;
+
+            // Find valid grid cells using cellular automata expansion
+            const validCells = [];
+
+            // Start with the center cell's neighbors
+            let frontierCells = [
+              [gridX - 1, gridY - 1],
+              [gridX, gridY - 1],
+              [gridX + 1, gridY - 1],
+              [gridX - 1, gridY],
+              [gridX + 1, gridY],
+              [gridX - 1, gridY + 1],
+              [gridX, gridY + 1],
+              [gridX + 1, gridY + 1],
+            ];
+
+            // Keep expanding until we have enough cells or no more frontier
+            while (validCells.length < pointsToPositionCount && frontierCells.length > 0) {
+              const newFrontier = [];
+
+              // Process current frontier
+              frontierCells.forEach((cell) => {
+                const [cellX, cellY] = cell;
+
+                // Check if the cell is within bounds
+                if (cellX >= 0 && cellX < gridCellsX && cellY >= 0 && cellY < gridCellsY) {
+                  const cellId = `${cellX}-${cellY}`;
+
+                  // Check if the cell is not already occupied
+                  if (!globalOccupiedCells.has(cellId)) {
+                    validCells.push({
+                      gridX: cellX,
+                      gridY: cellY,
+                      cellId: cellId,
+                    });
+
+                    // Mark as occupied
+                    globalOccupiedCells.add(cellId);
+
+                    // Add neighbors to new frontier (4-connected)
+                    newFrontier.push([cellX - 1, cellY], [cellX + 1, cellY], [cellX, cellY - 1], [cellX, cellY + 1]);
+
+                    // Also add diagonals (8-connected)
+                    newFrontier.push(
+                      [cellX - 1, cellY - 1],
+                      [cellX + 1, cellY - 1],
+                      [cellX - 1, cellY + 1],
+                      [cellX + 1, cellY + 1]
+                    );
+                  }
+                }
+              });
+
+              // Update frontier for next iteration
+              frontierCells = newFrontier;
+
+              // Break if we have enough cells
+              if (validCells.length >= pointsToPositionCount) {
+                break;
+              }
+            }
+
+            // If we still don't have enough cells, search the entire grid
+            if (validCells.length < pointsToPositionCount) {
+              // Scan the entire grid for any available cells
+              for (let i = 0; i < gridCellsX; i++) {
+                for (let j = 0; j < gridCellsY; j++) {
+                  const cellId = `${i}-${j}`;
+
+                  if (!globalOccupiedCells.has(cellId)) {
+                    validCells.push({
+                      gridX: i,
+                      gridY: j,
+                      cellId: cellId,
+                    });
+
+                    globalOccupiedCells.add(cellId);
+
+                    // Break if we have enough cells
+                    if (validCells.length >= pointsToPositionCount) {
+                      break;
+                    }
+                  }
+                }
+
+                if (validCells.length >= pointsToPositionCount) {
+                  break;
+                }
+              }
+            }
+
+            // Sort valid cells by distance from the center cell
+            validCells.sort((a, b) => {
+              const distA = Math.sqrt(Math.pow(a.gridX - gridX, 2) + Math.pow(a.gridY - gridY, 2));
+              const distB = Math.sqrt(Math.pow(b.gridX - gridX, 2) + Math.pow(b.gridY - gridY, 2));
+              return distA - distB;
+            });
+
+            // Position additional points in valid grid cells
+            validCells.slice(0, pointsToPositionCount).forEach((cell, i) => {
+              if (i < points.length - 1) {
+                const pointIndex = i + 1;
+                const point = points[pointIndex];
+
+                const cellCenterX = cell.gridX * cellSize + cellSize / 2 - plotWidth / 2;
+                const cellCenterY = cell.gridY * cellSize + cellSize / 2 - plotHeight / 2;
+
+                pixelPositions[point.index] = {
+                  x: cellCenterX,
+                  y: cellCenterY,
+                  z: 0,
+                  isSquare: true,
+                };
+              }
+            });
+          }
+        });
+      } else {
+        // Original non-jittered positioning
+        pixelsToShow.forEach((pixel, index) => {
+          // Normalize values to our desired plot size
+          const x = ((pixel.distance_traveled || 0) / maxDistance) * plotWidth - plotWidth / 2;
+          const y = ((pixel.total_emissions || 0) / maxEmissions) * plotHeight - plotHeight / 2;
+          const z = 0; // Keep all points on the same plane
+
+          pixelPositions[index] = { x, y, z };
+        });
+      }
     } else {
       // Default grid layout
       const gridSize = 1000;
@@ -1223,6 +1435,14 @@ const PixelCanvas2 = ({
     const optimalDistance = (maxDistance * padding) / Math.tan(fov / 2);
 
     return Math.max(optimalDistance, 800); // Ensure minimum distance
+  };
+
+  // Add a toggle function for jitter
+  const toggleJitter = () => {
+    setShowJitter((prev) => !prev);
+
+    // Recalculate positions and start transition
+    startSortTransition();
   };
 
   return <div ref={containerRef} className={styles.canvasContainer} style={{ width, height }} />;

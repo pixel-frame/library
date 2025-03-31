@@ -35,6 +35,8 @@ const Pixels = () => {
           state: pixel.state,
           state_description: pixel.state_description || "Available",
           number_of_reconfigurations: pixel.number_of_reconfigurations,
+          distance_traveled: pixel.distance_traveled || 0,
+          total_emissions: pixel.total_emissions || 0,
         }));
 
         setPixels(mappedPixels);
@@ -121,6 +123,11 @@ const Pixels = () => {
     setSortMode(sortMode === "default" ? "assembly" : "default");
   };
 
+  const handleSortByCarbon = () => {
+    // Toggle between default and carbon sort
+    setSortMode(sortMode === "default" ? "carbon" : "default");
+  };
+
   if (loading) return <div className={styles.loadingIndicator}>LOADING PIXEL BANK...</div>;
   if (error) return <div className={styles.errorMessage}>{error}</div>;
   if (pixels.length === 0) return <div className={styles.noPixels}>NO PIXELS FOUND</div>;
@@ -160,6 +167,15 @@ const Pixels = () => {
               onKeyDown={(e) => e.key === "Enter" && handleSortByAssembly()}
             >
               [SORT BY ASSEMBLY]
+            </Button>
+            <Button
+              className={`${styles.viewButton} ${sortMode === "carbon" ? styles.selected : ""}`}
+              onClick={handleSortByCarbon}
+              aria-label="Sort by carbon"
+              tabIndex="0"
+              onKeyDown={(e) => e.key === "Enter" && handleSortByCarbon()}
+            >
+              [SORT BY CARBON]
             </Button>
           </div>
         }

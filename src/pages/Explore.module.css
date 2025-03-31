@@ -12,12 +12,8 @@
 }
 
 .globeContainer {
-  height: calc(87vh - 280px);
+  height: calc(85vh - 280px);
   transition: height 0.3s ease;
-}
-
-.globeContainer.collapsed {
-  height: calc(100vh - 340px);
 }
 
 .breaker {

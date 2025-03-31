@@ -16,7 +16,7 @@
 .navContainer {
   display: flex;
   justify-content: space-around;
-  padding: 8px 0 8px;
+  padding: 8px 0 0px;
 }
 
 .navItem {
@@ -24,12 +24,22 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  width: 100%;
   gap: 8px;
   padding: 0px 18px;
-  border-radius: 2px;
+  border-radius: 0px;
   text-decoration: none;
   color: var(--bg-primary);
   text-align: center;
+  position: relative;
+
+  /* Small squares in corners */
+  background-image: linear-gradient(var(--bg-primary) 2px, transparent 2px),
+    linear-gradient(var(--bg-primary) 2px, transparent 2px), linear-gradient(var(--bg-primary) 2px, transparent 2px),
+    linear-gradient(var(--bg-primary) 2px, transparent 2px);
+  background-size: 2px 2px, 2px 2px, 2px 2px, 2px 2px;
+  background-position: 0 0, 100% 0, 0 100%, 100% 100%;
+  background-repeat: no-repeat;
 }
 
 .navText {
@@ -43,8 +53,12 @@
 
 .active {
   background-color: var(--bg-primary);
-}
-
-.active span {
   color: var(--text-primary);
+  /* Small squares in corners for active state - using inverted colors */
+  background-image: linear-gradient(var(--text-primary) 2px, transparent 2px),
+    linear-gradient(var(--text-primary) 2px, transparent 2px), linear-gradient(var(--text-primary) 2px, transparent 2px),
+    linear-gradient(var(--text-primary) 2px, transparent 2px);
+  background-size: 2px 2px, 2px 2px, 2px 2px, 2px 2px;
+  background-position: 0 0, 100% 0, 0 100%, 100% 100%;
+  background-repeat: no-repeat;
 }

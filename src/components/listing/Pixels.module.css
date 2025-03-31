@@ -91,12 +91,10 @@
 }
 
 .scrollableList {
-  flex: 1;
-  overflow: auto;
+  overflow-y: auto;
+  height: 100%;
+  width: 100%;
   -webkit-overflow-scrolling: touch;
-  overscroll-behavior: contain;
-  background-color: #fff;
-  border-top: 1px solid #000;
 }
 
 .vertical {
@@ -119,10 +117,8 @@
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 1rem;
-  padding: 1rem;
-  overflow-y: auto;
-  height: 100%;
+  gap: 16px;
+  padding: 16px;
 }
 
 .listItem {
@@ -173,6 +169,15 @@
   grid-template-columns: 3fr 1fr 2fr;
   gap: 1rem;
   flex: 1;
+}
+
+.breaker {
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  display: flex;
+  justify-content: space-between;
+  padding: 0rem 1.5rem;
+  font-size: var(--font-sm);
 }
 
 .horizontal .listItem {

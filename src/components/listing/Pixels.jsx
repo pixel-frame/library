@@ -4,7 +4,8 @@ import TestList from "./TestList";
 import PixelDetailView from "./PixelPreview";
 import Button from "../../widgets/Button";
 import PageHeader from "../common/PageHeader";
-
+import WheelListHandler from "./WheelListHandler";
+import PixelList from "./PixelList";
 const Pixels = () => {
   const [pixels, setPixels] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -128,18 +129,47 @@ const Pixels = () => {
 
       <div className={styles.mainPixelContent}>
         {viewMode !== "grid" && (
-          <PixelDetailView
-            selectedPixel={stablePixel}
-            previousPixel={previousPixel}
-            transitionDirection={transitionDirection}
-            viewMode={viewMode}
-            onViewModeChange={cycleViewMode}
-            isScrolling={isScrolling}
-            targetPixel={selectedPixel}
-          />
+          <>
+            {" "}
+            <PixelDetailView
+              selectedPixel={stablePixel}
+              previousPixel={previousPixel}
+              transitionDirection={transitionDirection}
+              viewMode={viewMode}
+              onViewModeChange={cycleViewMode}
+              isScrolling={isScrolling}
+              targetPixel={selectedPixel}
+            />
+            <div className={styles.breaker}>
+              <span>PIXEL</span>
+              <span>A1-A5 EMISSIONS</span>
+            </div>
+            <WheelListHandler
+              items={pixels}
+              onSelectionChange={(item, index) => {
+                handleSelectionChange(index);
+              }}
+              perspective="left"
+              initialIndex={selectedIndex >= 0 ? selectedIndex : 0}
+              valueFormatter={(item) => ({
+                left: `Pixel ${item.number || item.serial}`,
+                right: item.state_description || "Available",
+              })}
+            />
+          </>
         )}
-
-        <TestList onSelectionChange={handleSelectionChange} />
+        {viewMode == "grid" && (
+          <>
+            <div>
+              <PixelList
+                pixels={pixels}
+                selectedIndex={selectedIndex}
+                viewMode={viewMode}
+                onItemClick={handleSelectionChange}
+              />
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

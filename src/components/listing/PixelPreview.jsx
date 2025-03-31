@@ -30,11 +30,11 @@ const PixelDetailView = ({
             targetPixel={targetPixel?.number}
           />
         ) : (
-          <div className={styles.modelPlaceholder}>App cannot handle model load</div>
+          <div className={styles.modelPlaceholder}>HIIII!! App cannot handle model load</div>
         )}
       </div>
 
-      <div className={styles.moreInfoLink}>
+      {/* <div className={styles.moreInfoLink}>
         <Link
           to={`/pixel/${selectedPixel.serial}`}
           className={styles.pixelDetailLink}
@@ -43,7 +43,7 @@ const PixelDetailView = ({
         >
           <RollingText text="MORE INFORMATION →  MORE INFORMATION → MORE INFORMATION →  " />
         </Link>
-      </div>
+      </div> */}
     </div>
   );
 };

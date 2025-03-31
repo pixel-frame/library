@@ -16,9 +16,15 @@ const AssemblyDetail = ({ assemblyId, assembly: passedAssembly, fullData: passed
   const [loading, setLoading] = useState(!passedAssembly);
   const [error, setError] = useState(null);
   const [modelPath, setModelPath] = useState(null);
-  const [isExpanded, setIsExpanded] = useState(false);
   const [fullData, setFullData] = useState(passedFullData || null);
   const [fullscreenImage, setFullscreenImage] = useState(null);
+
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const handleExpand = () => {
+    setIsExpanded(true);
+    document.body.style.overflow = "hidden";
+  };
 
   // Check if we're being rendered as a tab in PixelDetail
   const isInPixelDetailTab = isActive !== undefined;
@@ -31,10 +37,6 @@ const AssemblyDetail = ({ assemblyId, assembly: passedAssembly, fullData: passed
     };
     const mappedSerial = modelMappings[assembly.serial] || assembly.serial;
     return availableModels.includes(mappedSerial) ? mappedSerial : null;
-  };
-
-  const handleExpand = () => {
-    setIsExpanded(!isExpanded);
   };
 
   const handleNavigateBack = () => {
@@ -141,18 +143,19 @@ const AssemblyDetail = ({ assemblyId, assembly: passedAssembly, fullData: passed
       <div className={styles.content}>
         {modelPath && (
           <div className={styles["assembly-model-container"]}>
-            <ModelPreview isExpanded={isExpanded} onClose={() => setIsExpanded(false)}>
+            <ModelPreview isExpanded={isExpanded} onClose={(expand) => setIsExpanded(expand === true)}>
               {modelPath ? (
-                <AssemblyModel modelPath={modelPath} />
+                <AssemblyModel
+                  isExpanded={isExpanded}
+                  isPreview={!isExpanded}
+                  isInteractive={isExpanded}
+                  modelPath={modelPath}
+                  onExpand={!isExpanded ? handleExpand : null}
+                />
               ) : (
                 <div className={styles["no-model-message"]}>No 3D model available</div>
               )}
             </ModelPreview>
-            <div className={styles["pixel-header"]}>
-              <div className={styles["pixel-actions"]}>
-                <ExpandButton onClick={handleExpand} />
-              </div>
-            </div>
           </div>
         )}
 

@@ -35,7 +35,7 @@ const BottomNav = () => {
           aria-label="Bank"
           aria-current={activeTab === "bank" ? "page" : undefined}
         >
-          <Icon name="star" size={24} className={styles.navIcon} active={activeTab === "bank"} />
+          <Icon name="star" size={14} className={styles.navIcon} active={activeTab === "bank"} />
           <span className={styles.navText}>Bank</span>
         </Link>
 
@@ -48,7 +48,7 @@ const BottomNav = () => {
           aria-label="Emissions"
           aria-current={activeTab === "emissions" ? "page" : undefined}
         >
-          <Icon name="leaf" size={24} className={styles.navIcon} active={activeTab === "emissions"} />
+          <Icon name="leaf" size={15} className={styles.navIcon} active={activeTab === "emissions"} />
           <span className={styles.navText}>Emissions</span>
         </Link>
 
@@ -61,7 +61,7 @@ const BottomNav = () => {
           aria-label="Explore"
           aria-current={activeTab === "explore" ? "page" : undefined}
         >
-          <Icon name="config" size={24} className={styles.navIcon} active={activeTab === "explore"} />
+          <Icon name="config" size={16} className={styles.navIcon} active={activeTab === "explore"} />
           <span className={styles.navText}>Explore</span>
         </Link>
       </div>

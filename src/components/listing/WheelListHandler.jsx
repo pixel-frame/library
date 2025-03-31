@@ -119,7 +119,7 @@ const WheelListHandler = ({
     <div className={styles.wheelContainer}>
       {isButtonVisible && (
         <button className={styles.actionButton} onClick={handleButtonClick} aria-label={buttonText} tabIndex="0">
-          {buttonText}
+          <div className={styles.actionButtonInner}>{buttonText}</div>
         </button>
       )}
       <div className={styles.smallWheelWrapper}>

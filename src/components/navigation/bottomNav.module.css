@@ -24,17 +24,17 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 6px;
   padding: 0px 18px;
-  border-radius: 2px;
   text-decoration: none;
   color: var(--bg-primary);
   text-align: center;
 }
 
 .navText {
-  font-size: 12px;
-  font-weight: bold;
+  font-size: 14px;
+  font-weight: 500;
+  font-variation-settings: "MONO" 0.5;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   color: var(--bg-primary);
@@ -43,6 +43,17 @@
 
 .active {
   background-color: var(--bg-primary);
+  /* Base background color */
+  /* Base background color */
+
+  /* Corner squares effect - increased to 8px size with 3px thickness */
+  background-image: conic-gradient(from 90deg at top 1px left 1px, transparent 90deg, white 0),
+    conic-gradient(from 180deg at top 1px right 1px, transparent 90deg, white 0),
+    conic-gradient(from 0deg at bottom 1px left 1px, transparent 90deg, white 0),
+    conic-gradient(from -90deg at bottom 1px right 1px, transparent 90deg, white 0);
+  background-size: 8px 8px, 8px 8px, 8px 8px, 8px 8px;
+  background-position: 0 0, 100% 0, 0 100%, 100% 100%;
+  background-repeat: no-repeat;
 }
 
 .active span {

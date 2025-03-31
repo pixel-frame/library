@@ -90,12 +90,14 @@ export default function Wheel(props) {
           {slideValues().map(({ style, value }, idx) => (
             <div className={styles.wheelSlide} style={style} key={idx}>
               <span className={styles.leftText}>
-                <AnimatedText text={value.left} />
+                {/* <AnimatedText text={value.left} /> */}
+                {value.left}
               </span>
 
               {value.customContent && <div className={styles.customContent}>{value.customContent}</div>}
               <span className={styles.rightText}>
-                <AnimatedText text={value.right} />
+                {/* <AnimatedText text={value.right} /> */}
+                {value.right}
               </span>
             </div>
           ))}

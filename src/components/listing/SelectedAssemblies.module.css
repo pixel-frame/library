@@ -3,12 +3,7 @@
   flex-direction: column;
   height: 100%;
   background: var(--background);
-}
-
-.scrollableList {
-  flex: 1;
-  overflow-y: auto;
-  position: relative;
+  overflow: hidden;
 }
 
 .listItem {

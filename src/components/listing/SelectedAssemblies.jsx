@@ -37,8 +37,12 @@ const SelectedAssemblies = ({ assemblies = [], onScroll, onHighlight, onExpand, 
   };
 
   const handleScroll = (event) => {
+    // We can keep this for any internal scrolling needs
     lastScrollPosition.current = event.target.scrollTop;
-    onScroll(event);
+    // Only call onScroll if it exists
+    if (onScroll) {
+      onScroll(event);
+    }
   };
 
   const handleExpandClick = () => {
@@ -66,8 +70,6 @@ const SelectedAssemblies = ({ assemblies = [], onScroll, onHighlight, onExpand, 
 
     // Safely access nested properties for regular assemblies
     const locationName = assembly?.location?.name || "Unknown Location";
-    const timestamp = assembly?.timestamp ? new Date(assembly.timestamp).toLocaleDateString() : "No date";
-    const pixelCount = Array.isArray(assembly?.pixels) ? assembly.pixels.length : 0;
     const assemblyName = assembly?.name || `Assembly ${index}`;
 
     return {
@@ -107,7 +109,7 @@ const SelectedAssemblies = ({ assemblies = [], onScroll, onHighlight, onExpand, 
           perspective="center"
           initialIndex={highlightedIndex}
           renderCustomContent={renderCustomContent}
-          buttonText={showExpandButton ? "[VIEW ASSEMBLY DETAILS]" : null}
+          buttonText={showExpandButton ? "VIEW ASSEMBLY DETAILS " : null}
           onButtonClick={showExpandButton ? handleExpandClick : null}
         />
       </div>

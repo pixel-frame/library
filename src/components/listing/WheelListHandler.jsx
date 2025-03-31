@@ -78,6 +78,15 @@ const WheelListHandler = ({
       const item = items[i];
       const formattedValue = formatter(item, i);
 
+      // Check if the item has a sparklineComponent property
+      if (item.sparklineComponent) {
+        return {
+          ...formattedValue,
+          customContent: item.sparklineComponent,
+        };
+      }
+
+      // Support for custom content from renderCustomContent prop
       if (renderCustomContent) {
         return {
           ...formattedValue,
@@ -115,7 +124,7 @@ const WheelListHandler = ({
       )}
       <div className={styles.smallWheelWrapper}>
         <WheelList
-          loop={false}
+          loop={true}
           length={items.length}
           width="100%"
           perspective={perspective}

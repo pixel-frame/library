@@ -50,7 +50,7 @@ const Carbon = ({ onSelectionChange, selectedPoints, highlightedPoint }) => {
     // Clear any existing SVG content
     d3.select(svgRef.current).selectAll("*").remove();
     const containerWidth = svgRef.current.parentElement.clientWidth;
-    const margin = { top: 20, right: 30, bottom: 60, left: 30 };
+    const margin = { top: 0, right: 15, bottom: 4, left: 15 };
     const width = containerWidth - margin.left - margin.right;
     // Adjust height calculation for mobile
     const height = Math.min(window.innerHeight * 0.5, width * 1.2);

@@ -6,7 +6,7 @@ import AssemblyDetail from "./AssemblyDetail";
 import PageHeader from "../components/common/PageHeader";
 import styles from "./Explore.module.css";
 import Card from "../components/buttons/Card";
-
+import { RollingText } from "../components/text/RollingText";
 const Explore = () => {
   const [isListExpanded, setIsListExpanded] = useState(false);
   const [highlightedAssembly, setHighlightedAssembly] = useState(null);
@@ -52,7 +52,6 @@ const Explore = () => {
 
   const handleScroll = useCallback((event) => {
     const scrollTop = event.target.scrollTop;
-    setIsListExpanded(scrollTop > 10);
   }, []);
 
   const handleHighlight = useCallback((assembly) => {
@@ -83,13 +82,18 @@ const Explore = () => {
 
   return (
     <div className={styles.container}>
-      <PageHeader title="Explore Assemblies" />
+      {/* <PageHeader title="Explore Assemblies" /> */}
 
       <div className={styles.content}>
-        <div className={`${styles.globeContainer} ${isListExpanded ? styles.collapsed : ""}`}>
+        <div className={styles.globeContainer}>
           <InteractiveGlobe highlightedAssembly={highlightedAssembly} focusedAssembly={highlightedAssembly} />
         </div>
-        <div className={`${styles.sideContainer} ${isListExpanded ? styles.expanded : ""}`}>
+        <div className={styles.breaker}>
+          <span>ASSEMBLY</span>
+          <span>LOCATION</span>
+        </div>
+
+        <div className={styles.sideContainer}>
           <SelectedAssemblies
             assemblies={assemblies}
             onScroll={handleScroll}
@@ -99,7 +103,6 @@ const Explore = () => {
           />
         </div>
       </div>
-
       {focusedAssembly && (
         <Card isOpen={isSheetOpen} onClose={handleBack}>
           <AssemblyDetail

@@ -1,7 +1,6 @@
 .container {
   display: flex;
   flex-direction: column;
-  height: 100vh;
   overflow: hidden;
 }
 
@@ -31,4 +30,13 @@
 
 .listingContainer.expanded {
   height: 60vh;
+}
+
+.breaker {
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  display: flex;
+  justify-content: space-between;
+  padding: 0rem 1.5rem;
+  font-size: var(--font-sm);
 }

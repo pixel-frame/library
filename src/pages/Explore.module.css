@@ -1,7 +1,6 @@
 .container {
   display: flex;
   flex-direction: column;
-  height: 100vh;
   overflow: hidden;
 }
 
@@ -13,20 +12,28 @@
 }
 
 .globeContainer {
-  height: 40vh;
+  height: calc(87vh - 280px);
   transition: height 0.3s ease;
 }
 
 .globeContainer.collapsed {
-  height: 25vh;
+  height: calc(100vh - 340px);
+}
+
+.breaker {
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  display: flex;
+  justify-content: space-between;
+  padding: 0rem 1.5rem;
+  font-size: var(--font-sm);
 }
 
 .sideContainer {
-  flex: 1;
   overflow: hidden;
+
   display: flex;
   flex-direction: column;
-  transition: height 0.3s ease;
 }
 
 .detailCard {

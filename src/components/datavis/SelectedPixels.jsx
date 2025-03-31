@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useMemo } from "react";
 import styles from "./SelectedPixels.module.css";
 import SparkLine from "./SparkLine";
 import Card from "../buttons/Card";
@@ -62,19 +62,39 @@ const SelectedPixels = ({ selectedPoints, onScroll, onHighlight, urlPixelId, onP
     }
   }, [urlPixelId, allPixels]);
 
-  // Create a modified list with "ALL PIXELS" as the first option
-  const enhancedPixels = [
-    {
+  // Create a modified list with "ALL PIXELS" as the first option and embed sparklines
+  const enhancedPixels = useMemo(() => {
+    const basePixels = selectedPoints?.length > 0 ? selectedPoints : allPixels;
+
+    // Create the ALL option
+    const allOption = {
       pixel_number: "ALL",
       serial: "ALL",
       isAllOption: true,
       total_emissions: 0,
       distanceTraveled: 0,
       emissions_over_time: {},
-      distance: 0, // Add this to prevent the error
-    },
-    ...(selectedPoints?.length > 0 ? selectedPoints : allPixels),
-  ];
+      distance: 0,
+    };
+
+    // Process the regular pixels to include sparkline components
+    const processedPixels = basePixels.map((pixel) => {
+      const hasEmissionsData = pixel.emissions_over_time && Object.keys(pixel.emissions_over_time).length > 0;
+
+      // Create a copy of the pixel with the sparkline component
+      return {
+        ...pixel,
+        // Add a sparklineComponent property that WheelListHandler can use
+        sparklineComponent: hasEmissionsData ? (
+          <div className={styles.sparklineContainer}>
+            <SparkLine data={pixel.emissions_over_time} color={"var(--text-primary)"} height={20} width={80} />
+          </div>
+        ) : null,
+      };
+    });
+
+    return [allOption, ...processedPixels];
+  }, [selectedPoints, allPixels]);
 
   const handleSelectionChange = (pixel, index) => {
     setHighlightedIndex(index);
@@ -140,7 +160,7 @@ const SelectedPixels = ({ selectedPoints, onScroll, onHighlight, urlPixelId, onP
     }
   };
 
-  // Custom formatter for pixels
+  // Custom formatter for pixels that includes the sparkline component
   const pixelFormatter = (pixel, index) => {
     // Special case for "ALL PIXELS" option
     if (pixel.isAllOption) {
@@ -154,9 +174,11 @@ const SelectedPixels = ({ selectedPoints, onScroll, onHighlight, urlPixelId, onP
     const emissions = typeof pixel.total_emissions === "number" ? pixel.total_emissions : 0;
     const pixelNumber = pixel.pixel_number || pixel.serial || `Unknown-${index}`;
 
+    // Return formatted value with sparkline component
     return {
       left: `PIXEL ${pixelNumber}`,
       right: `${emissions.toFixed(2)}kg CO2e`,
+      customContent: pixel.sparklineComponent,
     };
   };
 

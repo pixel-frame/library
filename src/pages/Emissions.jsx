@@ -61,7 +61,7 @@ const Emissions = () => {
 
   return (
     <div className={styles.container}>
-      <PageHeader title="Carbon Emissions" />
+      {/* <PageHeader title="Carbon Emissions" /> */}
 
       <div className={styles.content}>
         <div className={`${styles.visualizationContainer} ${isListExpanded ? styles.collapsed : ""}`}>
@@ -70,6 +70,10 @@ const Emissions = () => {
             selectedPoints={selectedPoints}
             highlightedPoint={highlightedPoint}
           />
+        </div>
+        <div className={styles.breaker}>
+          <span>PIXEL</span>
+          <span>A1-A5 EMISSIONS</span>
         </div>
         <div className={`${styles.listingContainer} ${isListExpanded ? styles.expanded : ""}`}>
           <SelectedPixels

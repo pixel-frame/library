@@ -90,7 +90,7 @@ body {
 }
 
 .wheelContainer {
-  height: 300px;
+  height: 280px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -133,21 +133,31 @@ body {
 .actionButton {
   position: absolute;
   left: 0;
-  bottom: 6.2rem;
+  bottom: 3rem;
   width: 100%;
-  padding: 12px;
-  height: 50px;
-  background-color: var(--primary-color, #000);
-  border-bottom: 1px solid var(--bg-primary);
+  padding: 0px 12px;
+  height: 40px;
   color: white;
-  border: none;
-  border-radius: 4px;
+  border: 1px solid transparent;
+  border-radius: 0px;
   font-weight: 500;
-  font-size: 18px;
+  font-size: 16px;
   z-index: 10;
   text-align: center;
   cursor: pointer;
   animation: slideUp 0.3s ease-out forwards;
+
+  /* Base background color */
+  background-color: var(--primary-color, #000);
+
+  /* Corner squares effect - increased to 8px size with 3px thickness */
+  background-image: conic-gradient(from 90deg at top 3px left 3px, transparent 90deg, white 0),
+    conic-gradient(from 180deg at top 3px right 3px, transparent 90deg, white 0),
+    conic-gradient(from 0deg at bottom 3px left 3px, transparent 90deg, white 0),
+    conic-gradient(from -90deg at bottom 3px right 3px, transparent 90deg, white 0);
+  background-size: 8px 8px, 8px 8px, 8px 8px, 8px 8px;
+  background-position: 0 0, 100% 0, 0 100%, 100% 100%;
+  background-repeat: no-repeat;
 }
 
 .actionButtonExit {

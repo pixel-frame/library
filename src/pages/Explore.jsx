@@ -7,6 +7,7 @@ import PageHeader from "../components/common/PageHeader";
 import styles from "./Explore.module.css";
 import Card from "../components/buttons/Card";
 import { RollingText } from "../components/text/RollingText";
+import { AnimatedText } from "../components/text/AnimatedText";
 const Explore = () => {
   const [isListExpanded, setIsListExpanded] = useState(false);
   const [highlightedAssembly, setHighlightedAssembly] = useState(null);
@@ -89,8 +90,8 @@ const Explore = () => {
           <InteractiveGlobe highlightedAssembly={highlightedAssembly} focusedAssembly={highlightedAssembly} />
         </div>
         <div className={styles.breaker}>
-          <span>ASSEMBLY</span>
-          <span>LOCATION</span>
+          <AnimatedText text="ASSEMBLY" />
+          <AnimatedText text="LOCATION" />
         </div>
 
         <div className={styles.sideContainer}>

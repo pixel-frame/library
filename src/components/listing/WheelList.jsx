@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import { useKeenSlider } from "keen-slider/react";
 import styles from "./WheelList.module.css";
+import { AnimatedText } from "../text/AnimatedText";
 
 export default function Wheel(props) {
   const perspective = props.perspective || "center";
@@ -88,9 +89,14 @@ export default function Wheel(props) {
         <div className={styles.wheelSlides} style={{ width: props.width + "px" }}>
           {slideValues().map(({ style, value }, idx) => (
             <div className={styles.wheelSlide} style={style} key={idx}>
-              <span className={styles.leftText}>{value.left}</span>
+              <span className={styles.leftText}>
+                <AnimatedText text={value.left} />
+              </span>
+
               {value.customContent && <div className={styles.customContent}>{value.customContent}</div>}
-              <span className={styles.rightText}>{value.right}</span>
+              <span className={styles.rightText}>
+                <AnimatedText text={value.right} />
+              </span>
             </div>
           ))}
         </div>

@@ -61,7 +61,7 @@ body {
 
 .wheelLabel {
   font-weight: 500;
-  font-size: 15px;
+  font-size: 1px;
   line-height: 1;
   margin-top: 1px;
   margin-left: 5px;
@@ -83,10 +83,12 @@ body {
 
 .leftText {
   text-align: left;
+  font-variation-settings: "MONO" 1;
 }
 
 .rightText {
   text-align: right;
+  font-variation-settings: "MONO" 1;
 }
 
 .wheelContainer {

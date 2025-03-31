@@ -6,6 +6,7 @@ import Button from "../../widgets/Button";
 import PageHeader from "../common/PageHeader";
 import WheelListHandler from "./WheelListHandler";
 import PixelList from "./PixelList";
+import { AnimatedText } from "../text/AnimatedText";
 const Pixels = () => {
   const [pixels, setPixels] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -141,8 +142,8 @@ const Pixels = () => {
               targetPixel={selectedPixel}
             />
             <div className={styles.breaker}>
-              <span>PIXEL</span>
-              <span>A1-A5 EMISSIONS</span>
+              <AnimatedText text="PIXELS" />
+              <AnimatedText text="STATUS" />
             </div>
             <WheelListHandler
               items={pixels}

@@ -138,7 +138,7 @@ const Pixels = () => {
   return (
     <div className={styles.pixelsContainer}>
       <PageHeader
-        title="Material Bank"
+        title=""
         viewToggle={
           <div className={styles.viewToggle}>
             <Button
@@ -191,7 +191,7 @@ const Pixels = () => {
           sortMode={sortMode}
         />
 
-        <TestList
+        {/* <TestList
           onSelectionChange={(index) => {
             console.log("TestList selection change ignored:", index);
             // Do nothing for now
@@ -199,7 +199,7 @@ const Pixels = () => {
             //handleSelectionChange(index); broken doesnt respect the index in canvas
           }}
           selectedIndex={selectedIndex}
-        />
+        /> */}
       </div>
     </div>
   );

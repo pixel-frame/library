@@ -95,9 +95,9 @@ const PixelCanvas2 = ({
       60, // field of view
       containerRef.current.clientWidth / containerRef.current.clientHeight,
       0.1,
-      5000 // Increased far plane to accommodate larger view
+      10000 // Increased far plane to accommodate larger view
     );
-    camera.position.set(0, 0, 2400); // Start with a farther view
+    camera.position.set(0, 0, 5000); // Significantly increased starting distance
     camera.up.set(0, 1, 0); // Ensure up vector is fixed
     camera.lookAt(0, 0, 0); // Look at center
     cameraRef.current = camera;
@@ -763,9 +763,9 @@ const PixelCanvas2 = ({
       }
     } else {
       // Default grid layout
-      const gridSize = 1000;
+      const gridSize = 700;
       const maxDepth = 300;
-      const gridDivisions = Math.ceil(Math.sqrt(pixelsToShow.length * 0.7));
+      const gridDivisions = Math.ceil(Math.sqrt(pixelsToShow.length * 0.5));
       const cellWidth = gridSize / gridDivisions;
       const cellHeight = cellWidth;
       const cellDepth = maxDepth / Math.ceil(pixelsToShow.length / (gridDivisions * gridDivisions));
@@ -784,7 +784,7 @@ const PixelCanvas2 = ({
         // Add some randomness within the cell, but keep it contained
         const randomX = baseX + (Math.random() - 0.5) * cellWidth * 0.5;
         const randomY = baseY + (Math.random() - 0.5) * cellHeight * 0.5;
-        const randomZ = baseZ + Math.random() * cellDepth * 0.5;
+        const randomZ = baseZ + Math.random() * cellDepth * 0.1;
 
         pixelPositions[i] = { x: randomX, y: randomY, z: randomZ };
       });
@@ -881,8 +881,8 @@ const PixelCanvas2 = ({
         const position = pixelPositions[originalIndex];
 
         // First loaded: 60px, Last loaded: 80px
-        const minSize = 60;
-        const maxSize = 60;
+        const minSize = 40;
+        const maxSize = 40;
         const loadOrderRatio = i / pixelsToShow.length;
         const baseSize = minSize + (maxSize - minSize) * loadOrderRatio;
 
@@ -1279,7 +1279,7 @@ const PixelCanvas2 = ({
           animateToCenterPixel.startPosition = new THREE.Vector3().copy(cameraRef.current.position);
 
           // Only change X and Y to return to center, maintain current Z
-          animateToCenterPixel.targetPosition = new THREE.Vector3(0, 0, 800); // Farther zoom to see all pixels
+          animateToCenterPixel.targetPosition = new THREE.Vector3(0, 0, 3000); // Increased zoom distance
 
           // Reset controls target to center
           controlsRef.current.target.set(0, 0, 0);
@@ -1420,7 +1420,7 @@ const PixelCanvas2 = ({
 
   // Add a function to calculate the optimal camera distance to see all pixels
   const calculateOptimalCameraDistance = () => {
-    if (!pixelObjectsRef.current.length) return 800; // Default distance
+    if (!pixelObjectsRef.current.length) return 3000; // Increased default distance
 
     // Find the furthest pixel from center
     let maxDistance = 0;
@@ -1430,11 +1430,11 @@ const PixelCanvas2 = ({
     });
 
     // Add padding and calculate optimal distance based on field of view
-    const padding = 1.2; // 20% padding
+    const padding = 2.0; // Increased padding from 1.2 to 2.0
     const fov = cameraRef.current.fov * (Math.PI / 180); // Convert to radians
     const optimalDistance = (maxDistance * padding) / Math.tan(fov / 2);
 
-    return Math.max(optimalDistance, 800); // Ensure minimum distance
+    return Math.max(optimalDistance, 3000); // Increased minimum distance
   };
 
   // Add a toggle function for jitter

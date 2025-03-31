@@ -107,7 +107,7 @@ const Pixels = () => {
 
   return (
     <div className={styles.pixelsContainer}>
-      <PageHeader
+      {/* <PageHeader
         title="Material Bank"
         viewToggle={
           <div className={styles.viewToggle}>
@@ -140,7 +140,7 @@ const Pixels = () => {
             </Button>
           </div>
         }
-      />
+      /> */}
 
       <div className={styles.mainPixelContent}>
         <PixelCanvas2
@@ -148,7 +148,7 @@ const Pixels = () => {
           selectedIndex={selectedPixel}
           onPixelClick={handleSelectionChange}
           width="100%"
-          height="900px"
+          height="350px"
           sortMode={sortMode}
         />
 

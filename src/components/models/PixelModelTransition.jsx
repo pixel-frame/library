@@ -15,6 +15,10 @@ const PixelModelTransition = ({
   const [showPrevious, setShowPrevious] = useState(false);
   const [displayedPixel, setDisplayedPixel] = useState(currentSerial);
   const [pendingPixel, setPendingPixel] = useState(null);
+  
+  // State key counters to force re-render of models
+  const [currentModelKey, setCurrentModelKey] = useState(0);
+  const [previousModelKey, setPreviousModelKey] = useState(0);
 
   // Determine the animation direction based on viewMode and direction
   const getAnimationDirection = () => {
@@ -40,6 +44,10 @@ const PixelModelTransition = ({
     if (!isScrolling && pendingPixel && pendingPixel !== displayedPixel) {
       setShowPrevious(true);
       setIsTransitioning(true);
+      
+      // Force re-render of both models
+      setPreviousModelKey(prev => prev + 1);
+      setCurrentModelKey(prev => prev + 1);
 
       // After animation completes, hide the previous model
       const timer = setTimeout(() => {
@@ -57,6 +65,8 @@ const PixelModelTransition = ({
   useEffect(() => {
     if (!previousSerial) {
       setDisplayedPixel(currentSerial);
+      // Force re-render when serial changes directly
+      setCurrentModelKey(prev => prev + 1);
     }
   }, [currentSerial, previousSerial]);
 
@@ -64,7 +74,11 @@ const PixelModelTransition = ({
     <div className={styles.transitionContainer}>
       {showPrevious && (
         <div className={`${styles.modelSlide} ${styles.slideOut} ${styles[`slideOut${animationDirection}`]}`}>
-          <PixelModel modelPath={displayedPixel} isPreview={true} />
+          <PixelModel 
+            key={`previous-${displayedPixel}-${previousModelKey}`} 
+            modelPath={displayedPixel} 
+            isPreview={true} 
+          />
           <div className={styles.pixelOverlay}>
             <button className={styles.expandButton}>[+]</button>
             <div className={styles.pixelLabel}>[PIXEL {displayedPixel}]</div>
@@ -77,7 +91,11 @@ const PixelModelTransition = ({
           isTransitioning ? styles[`slideIn${animationDirection}`] : ""
         }`}
       >
-        <PixelModel modelPath={isTransitioning ? pendingPixel : displayedPixel} isPreview={true} />
+        <PixelModel 
+          key={`current-${isTransitioning ? pendingPixel : displayedPixel}-${currentModelKey}`}
+          modelPath={isTransitioning ? pendingPixel : displayedPixel} 
+          isPreview={true} 
+        />
         <div className={styles.pixelOverlay}>
           <button className={styles.expandButton}>[+]</button>
           <div className={styles.pixelLabel}>[PIXEL {isTransitioning ? pendingPixel : displayedPixel}]</div>

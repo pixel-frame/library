@@ -763,7 +763,7 @@ const PixelCanvas2 = ({
       }
     } else {
       // Default grid layout
-      const gridSize = 700;
+      const gridSize = 800;
       const maxDepth = 300;
       const gridDivisions = Math.ceil(Math.sqrt(pixelsToShow.length * 0.5));
       const cellWidth = gridSize / gridDivisions;
@@ -779,12 +779,12 @@ const PixelCanvas2 = ({
         // Calculate base position with more spacing
         const baseX = (gridX - gridDivisions / 2) * cellWidth + cellWidth / 2;
         const baseY = (gridY - gridDivisions / 2) * cellHeight + cellHeight / 2;
-        const baseZ = gridZ * cellDepth + 20;
+        const baseZ = gridZ + 20;
 
         // Add some randomness within the cell, but keep it contained
-        const randomX = baseX + (Math.random() - 0.5) * cellWidth * 0.5;
+        const randomX = baseX + (Math.random() - 0.5) * cellWidth * 0.85;
         const randomY = baseY + (Math.random() - 0.5) * cellHeight * 0.5;
-        const randomZ = baseZ + Math.random() * 0.5;
+        const randomZ = baseZ + Math.random() * 0.8;
 
         pixelPositions[i] = { x: randomX, y: randomY, z: randomZ };
       });

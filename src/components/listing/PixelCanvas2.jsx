@@ -779,12 +779,12 @@ const PixelCanvas2 = ({
         // Calculate base position with more spacing
         const baseX = (gridX - gridDivisions / 2) * cellWidth + cellWidth / 2;
         const baseY = (gridY - gridDivisions / 2) * cellHeight + cellHeight / 2;
-        const baseZ = gridZ * cellDepth;
+        const baseZ = gridZ * cellDepth + 20;
 
         // Add some randomness within the cell, but keep it contained
         const randomX = baseX + (Math.random() - 0.5) * cellWidth * 0.5;
         const randomY = baseY + (Math.random() - 0.5) * cellHeight * 0.5;
-        const randomZ = baseZ + Math.random() * cellDepth * 0.1;
+        const randomZ = baseZ + Math.random() * 0.5;
 
         pixelPositions[i] = { x: randomX, y: randomY, z: randomZ };
       });
@@ -1236,7 +1236,7 @@ const PixelCanvas2 = ({
         animateToCenterPixel.startPosition = new THREE.Vector3().copy(cameraRef.current.position);
 
         // Target position: same X/Y as pixel, but maintain Z distance
-        const targetZ = 200; // Closer zoom for selected pixel
+        const targetZ = 150; // Closer zoom for selected pixel
 
         // Update the controls target to focus on the pixel's center
         controlsRef.current.target.set(pixelPos.x, pixelPos.y, 0);
@@ -1373,16 +1373,16 @@ const PixelCanvas2 = ({
         modelRotationRef.lastTime = performance.now();
 
         // Add lighting specifically for the model
-        const ambientLight = new THREE.AmbientLight(0xffffff, 2.5);
+        const ambientLight = new THREE.AmbientLight(0xffffff, 3.5);
         model.add(ambientLight);
 
         // Add directional light to create shadows and highlights
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 3.5);
         directionalLight.position.set(1, 1, 1);
         model.add(directionalLight);
 
         // Add another directional light from opposite direction for better coverage
-        const backLight = new THREE.DirectionalLight(0xffffff, 0.5);
+        const backLight = new THREE.DirectionalLight(0xffffff, 3.5);
         backLight.position.set(-1, -1, -1);
         model.add(backLight);
 

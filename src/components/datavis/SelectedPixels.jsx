@@ -202,7 +202,7 @@ const SelectedPixels = ({ selectedPoints, onScroll, onHighlight, urlPixelId, onP
           valueFormatter={pixelFormatter}
           perspective="left"
           initialIndex={highlightedIndex}
-          buttonText={showDetailsButton ? "View Details" : null}
+          buttonText={showDetailsButton ? "VIEW PIXEL DETAILS" : null}
           onButtonClick={showDetailsButton ? handlePixelClick : null}
         />
       </div>

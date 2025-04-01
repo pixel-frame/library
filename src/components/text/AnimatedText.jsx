@@ -2,9 +2,16 @@ import { useState, useEffect } from "react";
 import "./AnimatedText.css";
 
 export function AnimatedText({ text, delay = 0 }) {
-  const glyphs = "@FPESGMORXZABCDEFGHIJKLMNOPQRSTUVWXYZ,/:";
-  const initialGlyph = glyphs[Math.floor(Math.random() * glyphs.length)];
-  const [displayText, setDisplayText] = useState(text.replace(/./g, initialGlyph));
+  const glyphs = "@FPESGMORXZABCDEFGHIJKLMNOPQRSTUVWXYZ/:";
+  
+  // Initialize with random characters for each position
+  const getRandomText = () => {
+    return text.split('').map(() => 
+      glyphs[Math.floor(Math.random() * glyphs.length)]
+    ).join('');
+  };
+  
+  const [displayText, setDisplayText] = useState(getRandomText());
   const [isChanging, setIsChanging] = useState(false);
 
   useEffect(() => {
@@ -15,8 +22,7 @@ export function AnimatedText({ text, delay = 0 }) {
     const wordAnimation = setInterval(() => {
       if (currentIteration < maxIterations) {
         setIsChanging(true);
-        const frameGlyph = glyphs[Math.floor(Math.random() * glyphs.length)];
-        setDisplayText(text.replace(/./g, frameGlyph));
+        setDisplayText(getRandomText());
         setTimeout(() => setIsChanging(false), 0);
         currentIteration++;
       } else {

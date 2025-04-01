@@ -29,7 +29,7 @@ const AssemblyDetail = ({ assemblyId, assembly: passedAssembly, fullData: passed
   // Check if we're being rendered as a tab in PixelDetail
   const isInPixelDetailTab = isActive !== undefined;
 
-  const availableModels = ["0001", "0002", "0003", "0004", "0005", "0009", "0010"];
+  const availableModels = ["0001", "0002", "0003", "0004", "0005", "0006", "0007", "0008", "0009", "0010", "0015"];
 
   const getModelSerial = (assembly) => {
     const modelMappings = {

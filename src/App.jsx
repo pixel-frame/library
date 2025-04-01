@@ -14,6 +14,7 @@ import { initMobileViewportFix } from "./utils/mobileViewportFix";
 import Explore from "./pages/Explore";
 import Carbon from "./pages/Emissions";
 import Pixels from "./components/listing/Pixels";
+import DesktopWarning from "./components/DesktopWarning/DesktopWarning";
 // Wrapper component to handle the loading page logic
 const AppContent = () => {
   const [showLoadingOverlay, setShowLoadingOverlay] = useState(() => {
@@ -23,6 +24,17 @@ const AppContent = () => {
       return true;
     }
   });
+
+  const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobileView(window.innerWidth <= 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -37,6 +49,10 @@ const AppContent = () => {
     }
     setShowLoadingOverlay(false);
   };
+
+  if (!isMobileView) {
+    return <DesktopWarning />;
+  }
 
   return (
     <>

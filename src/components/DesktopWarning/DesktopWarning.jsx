@@ -6,7 +6,7 @@ const DesktopWarning = () => {
   const [animConfig] = useState({
     xFrequency: -50,
     yFrequency: 20,
-    speed: 0.0001,
+    speed: 0.00001,
     amplitude: 10.18,
   });
 
@@ -52,7 +52,7 @@ const DesktopWarning = () => {
           <div className={styles.homeButton}></div>
         </div>
         <h1>From Liquid to Stone</h1>
-        <p>Thanks for visiting. This site is designed for mobile devices. Please view on a mobile device.</p>
+        <p>Please view on a mobile device.</p>
       </div>
     </div>
   );

@@ -6,7 +6,7 @@ import styles from "./Pixels.module.css";
 
 const PixelCanvas2 = ({
   width = "100%",
-  height = "300px",
+  height = "800px",
   pixels = [],
   selectedIndex = null,
   onPixelClick = null,
@@ -21,28 +21,6 @@ const PixelCanvas2 = ({
   const animationFrameRef = useRef(null);
   const [isInitialized, setIsInitialized] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
-
-  // Animation state
-  const animationRef = useRef(null);
-  const animateToCenterPixel = useRef({
-    active: false,
-    startPosition: new THREE.Vector3(),
-    targetPosition: new THREE.Vector3(),
-    startZoom: 1,
-    targetZoom: 1,
-    startTime: 0,
-    duration: 300, // animation duration in ms
-  }).current;
-
-  const modelRef = useRef(null);
-  const gltfLoaderRef = useRef(null);
-
-  // Add model rotation state
-  const modelRotationRef = useRef({
-    active: false,
-    speed: 0.001, // rotation speed in radians per frame
-    lastTime: 0,
-  }).current;
 
   // Add a ref to track the current sort mode
   const currentSortModeRef = useRef("default");
@@ -161,15 +139,16 @@ const PixelCanvas2 = ({
       const wasTap = touchDuration < 300 && touchState.moveDistance < 10;
 
       if (wasTap) {
-        // Handle tap as a click
         const rect = containerRef.current.getBoundingClientRect();
         const touchX = touchState.startPosition.x;
         const touchY = touchState.startPosition.y;
 
-        // Convert touch position to normalized device coordinates
+        // Convert touch position to normalized device coordinates (-1 to +1)
         const mouseX = ((touchX - rect.left) / rect.width) * 2 - 1;
         const mouseY = -((touchY - rect.top) / rect.height) * 2 + 1;
 
+        // Add console.log for debugging
+        console.log("Touch tap detected:", { mouseX, mouseY });
         handleTouchTap(mouseX, mouseY);
       }
 
@@ -200,62 +179,11 @@ const PixelCanvas2 = ({
 
       // Throttle rendering for better performance
       const elapsed = time - lastTime;
-      if (
-        elapsed < frameInterval &&
-        !animateToCenterPixel.active &&
-        !modelRotationRef.active &&
-        !transitionRef.active
-      ) {
+      if (elapsed < frameInterval && !transitionRef.active) {
         return; // Skip this frame unless we're animating
       }
 
       lastTime = time;
-
-      // Handle model rotation
-      if (modelRotationRef.active && modelRef.current) {
-        modelRef.current.rotation.y += modelRotationRef.speed;
-      }
-
-      // Handle transition animation directly in the main loop
-      if (transitionRef.active) {
-        const transitionElapsed = time - transitionRef.startTime;
-        const progress = Math.min(transitionElapsed / transitionRef.duration, 1);
-
-        // Apply easing function (easeInOutCubic)
-        const eased = progress < 0.5 ? 4 * progress * progress * progress : 1 - Math.pow(-2 * progress + 2, 3) / 2;
-
-        // Update positions of all pixels
-        pixelObjectsRef.current.forEach((pixelObj) => {
-          const serial = pixelObj.userData.pixel.serial;
-          const positions = transitionRef.pixelPositions[serial];
-
-          if (positions) {
-            // Interpolate position
-            pixelObj.position.x = positions.start.x + (positions.target.x - positions.start.x) * eased;
-            pixelObj.position.y = positions.start.y + (positions.target.y - positions.start.y) * eased;
-            pixelObj.position.z = positions.start.z + (positions.target.z - positions.start.z) * eased;
-          }
-        });
-
-        // End animation when complete
-        if (progress >= 1) {
-          // Ensure we end at exactly the target values
-          pixelObjectsRef.current.forEach((pixelObj) => {
-            const serial = pixelObj.userData.pixel.serial;
-            const positions = transitionRef.pixelPositions[serial];
-
-            if (positions) {
-              pixelObj.position.copy(positions.target);
-
-              // Update the original position in userData
-              pixelObj.userData.originalPosition.copy(positions.target);
-            }
-          });
-
-          transitionRef.active = false;
-          console.log("Transition complete");
-        }
-      }
 
       controls.update();
       renderer.render(scene, camera);
@@ -293,9 +221,6 @@ const PixelCanvas2 = ({
     // Handle device orientation changes
     window.addEventListener("orientationchange", handleResize);
 
-    // Initialize GLTF loader
-    gltfLoaderRef.current = new GLTFLoader();
-
     return () => {
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("orientationchange", handleResize);
@@ -324,12 +249,6 @@ const PixelCanvas2 = ({
             }
           }
         });
-      }
-
-      // Dispose of model if it exists
-      if (modelRef.current) {
-        disposeModel(modelRef.current);
-        modelRef.current = null;
       }
     };
   }, []);
@@ -401,9 +320,14 @@ const PixelCanvas2 = ({
     scene.add(gridGroup);
   };
 
-  // Handle touch tap (similar to click)
+  // Modify handleTouchTap to include debugging
   const handleTouchTap = (mouseX, mouseY) => {
-    if (isDragging || !isInitialized || !onPixelClick) return;
+    console.log("handleTouchTap called:", { mouseX, mouseY });
+
+    if (isDragging || !isInitialized || !onPixelClick) {
+      console.log("Early return conditions:", { isDragging, isInitialized, hasOnPixelClick: !!onPixelClick });
+      return;
+    }
 
     // Set up raycaster
     const raycaster = new THREE.Raycaster();
@@ -411,16 +335,29 @@ const PixelCanvas2 = ({
     raycaster.setFromCamera(mouse, cameraRef.current);
 
     // Find intersections with pixel objects
-    const intersects = raycaster.intersectObjects(pixelObjectsRef.current);
+    const intersects = raycaster.intersectObjects(pixelObjectsRef.current, true); // Added 'true' for recursive check
+    console.log("Intersections found:", intersects.length);
 
     if (intersects.length > 0) {
       const clickedObject = intersects[0].object;
-      const clickedPixel = clickedObject.userData.pixel;
+      // Traverse up to find the parent object with pixel data if needed
+      let targetObject = clickedObject;
+      while (targetObject && !targetObject.userData?.pixel) {
+        targetObject = targetObject.parent;
+      }
 
-      // Find index of this pixel in the original pixels array
-      const index = pixels.findIndex((p) => p.serial === clickedPixel.serial);
-      if (index !== -1) {
-        onPixelClick(index);
+      if (targetObject && targetObject.userData?.pixel) {
+        const clickedPixel = targetObject.userData.pixel;
+        console.log("Clicked pixel:", clickedPixel);
+
+        // Find index of this pixel in the original pixels array
+        const index = pixels.findIndex((p) => p.serial === clickedPixel.serial);
+        console.log("Found index:", index);
+
+        if (index !== -1) {
+          console.log("Calling onPixelClick with index:", index);
+          onPixelClick(index);
+        }
       }
     }
   };
@@ -481,10 +418,9 @@ const PixelCanvas2 = ({
       });
 
       // Arrange pixels in a spiral pattern based on reconfiguration count
-      // Higher reconfiguration counts will be closer to the center
-      const counts = Object.keys(groupedPixels).sort((a, b) => b - a); // Sort descending
+      const counts = Object.keys(groupedPixels).sort((a, b) => b - a);
 
-      let currentRadius = 50; // Start with a small radius for the center
+      let currentRadius = 50;
       let currentAngle = 0;
       let pixelIndex = 0;
 
@@ -495,42 +431,35 @@ const PixelCanvas2 = ({
         pixelsInGroup.forEach(({ pixel, index }) => {
           const x = Math.cos(currentAngle) * currentRadius;
           const y = Math.sin(currentAngle) * currentRadius;
-          const z = 0;
 
-          pixelPositions[index] = { x, y, z };
+          pixelPositions[index] = { x, y, z: 0 }; // Set z to 0 for all pixels
           currentAngle += angleIncrement;
           pixelIndex++;
         });
 
-        // Increase radius for next group
         currentRadius += 100;
       });
     } else {
       // Default grid layout
-      const gridSize = 1000;
-      const maxDepth = 300;
-      const gridDivisions = Math.ceil(Math.sqrt(pixelsToShow.length * 0.7));
+      const gridSize = 500;
+      const gridDivisions = Math.ceil(Math.sqrt(pixelsToShow.length));
       const cellWidth = gridSize / gridDivisions;
       const cellHeight = cellWidth;
-      const cellDepth = maxDepth / Math.ceil(pixelsToShow.length / (gridDivisions * gridDivisions));
 
       pixelsToShow.forEach((pixel, i) => {
-        // Calculate grid position
+        // Calculate grid position (now only in 2D)
         const gridX = i % gridDivisions;
-        const gridY = Math.floor(i / gridDivisions) % gridDivisions;
-        const gridZ = Math.floor(i / (gridDivisions * gridDivisions));
+        const gridY = Math.floor(i / gridDivisions);
 
-        // Calculate base position with more spacing
+        // Calculate base position with spacing
         const baseX = (gridX - gridDivisions / 2) * cellWidth + cellWidth / 2;
         const baseY = (gridY - gridDivisions / 2) * cellHeight + cellHeight / 2;
-        const baseZ = gridZ * cellDepth;
 
         // Add some randomness within the cell, but keep it contained
         const randomX = baseX + (Math.random() - 0.5) * cellWidth * 0.5;
         const randomY = baseY + (Math.random() - 0.5) * cellHeight * 0.5;
-        const randomZ = baseZ + Math.random() * cellDepth * 0.5;
 
-        pixelPositions[i] = { x: randomX, y: randomY, z: randomZ };
+        pixelPositions[i] = { x: randomX, y: randomY, z: 0 }; // Set z to 0 for all pixels
       });
     }
 
@@ -625,8 +554,8 @@ const PixelCanvas2 = ({
         const position = pixelPositions[originalIndex];
 
         // First loaded: 60px, Last loaded: 80px
-        const minSize = 60;
-        const maxSize = 60;
+        const minSize = 40;
+        const maxSize = 40;
         const loadOrderRatio = i / pixelsToShow.length;
         const baseSize = minSize + (maxSize - minSize) * loadOrderRatio;
 
@@ -767,7 +696,7 @@ const PixelCanvas2 = ({
 
     // Create outline for selection (initially invisible)
     const outlineGeometry = new THREE.EdgesGeometry(new THREE.BoxGeometry(width + 2, height + 2, 2));
-    const outlineMaterial = new THREE.LineBasicMaterial({ color: 0xffffff, linewidth: 1 });
+    const outlineMaterial = new THREE.LineBasicMaterial({ color: 0x000000, linewidth: 1 });
     const outline = new THREE.LineSegments(outlineGeometry, outlineMaterial);
     outline.position.set(0, 0, 0);
     outline.visible = false;
@@ -804,7 +733,7 @@ const PixelCanvas2 = ({
     context.fillStyle = "rgba(0, 0, 0, 0)";
     context.fillRect(0, 0, canvas.width, canvas.height);
     context.font = "bold 28px Arial, sans-serif"; // Improved font
-    context.fillStyle = "white";
+    context.fillStyle = "black";
     context.textAlign = "center";
     context.textBaseline = "middle";
 
@@ -838,328 +767,6 @@ const PixelCanvas2 = ({
     const plane = new THREE.Mesh(new THREE.PlaneGeometry(textWidth, textHeight), material);
 
     return plane;
-  };
-
-  // Animation function for centering on a pixel
-  const animateToPixel = () => {
-    if (!animateToCenterPixel.active) {
-      animationRef.current = null;
-      return;
-    }
-
-    const elapsed = performance.now() - animateToCenterPixel.startTime;
-    const progress = Math.min(elapsed / animateToCenterPixel.duration, 1);
-
-    // Apply easing function (easeInOutCubic)
-    const eased = progress < 0.5 ? 4 * progress * progress * progress : 1 - Math.pow(-2 * progress + 2, 3) / 2;
-
-    // Update camera position
-    if (cameraRef.current && controlsRef.current) {
-      // Interpolate position
-      const newX =
-        animateToCenterPixel.startPosition.x +
-        (animateToCenterPixel.targetPosition.x - animateToCenterPixel.startPosition.x) * eased;
-      const newY =
-        animateToCenterPixel.startPosition.y +
-        (animateToCenterPixel.targetPosition.y - animateToCenterPixel.startPosition.y) * eased;
-      const newZ =
-        animateToCenterPixel.startPosition.z +
-        (animateToCenterPixel.targetPosition.z - animateToCenterPixel.startPosition.z) * eased;
-
-      // Update camera position directly without changing orientation
-      cameraRef.current.position.set(newX, newY, newZ);
-
-      // Important: Keep camera looking straight ahead
-      // This prevents any rotation by keeping the camera's up vector constant
-      cameraRef.current.up.set(0, 1, 0);
-      cameraRef.current.lookAt(newX, newY, 0); // Always look straight ahead
-
-      // Instead of using controls.target which can cause rotation,
-      // we'll manually update the controls position
-      controlsRef.current.target.set(newX, newY, 0);
-
-      // Update zoom
-      const newZoom =
-        animateToCenterPixel.startZoom + (animateToCenterPixel.targetZoom - animateToCenterPixel.startZoom) * eased;
-      controlsRef.current.zoom = newZoom;
-
-      // Update controls without triggering automatic camera changes
-      controlsRef.current.update();
-    }
-
-    // Continue or end animation
-    if (progress < 1) {
-      animationRef.current = requestAnimationFrame(animateToPixel);
-    } else {
-      // Ensure we end at exactly the target values
-      if (cameraRef.current && controlsRef.current) {
-        const targetX = animateToCenterPixel.targetPosition.x;
-        const targetY = animateToCenterPixel.targetPosition.y;
-        const targetZ = animateToCenterPixel.targetPosition.z;
-
-        cameraRef.current.position.set(targetX, targetY, targetZ);
-
-        // Keep camera looking straight ahead at final position
-        cameraRef.current.up.set(0, 1, 0);
-        cameraRef.current.lookAt(targetX, targetY, 0);
-
-        // Update controls target to match camera
-        controlsRef.current.target.set(targetX, targetY, 0);
-        controlsRef.current.zoom = animateToCenterPixel.targetZoom;
-        controlsRef.current.update();
-      }
-
-      animateToCenterPixel.active = false;
-      animationRef.current = null;
-    }
-  };
-
-  // Handle pixel selection
-  useEffect(() => {
-    if (!isInitialized || !pixelObjectsRef.current.length) return;
-
-    // Cancel any existing animation
-    if (animationRef.current) {
-      cancelAnimationFrame(animationRef.current);
-      animationRef.current = null;
-    }
-
-    // Update selection state for all pixels
-    pixelObjectsRef.current.forEach((pixelObj) => {
-      const isSelected = selectedIndex !== null && pixelObj.userData.pixel.serial === pixels[selectedIndex]?.serial;
-
-      pixelObj.userData.isSelected = isSelected;
-
-      // Update outline visibility based on selection
-      if (pixelObj.userData.outline) {
-        pixelObj.userData.outline.visible = isSelected;
-      }
-
-      // Update material based on selection and availability
-      const isUnavailable = pixelObj.userData.pixel.state === 4;
-
-      if (isSelected) {
-        // Hide the poster when selected (model will be shown instead)
-        pixelObj.material.opacity = 0;
-
-        // Calculate new dimensions for selected pixel (scale to 100px width/height)
-        const aspectRatio = pixelObj.userData.width / pixelObj.userData.height;
-        let newWidth, newHeight;
-
-        if (aspectRatio >= 1) {
-          newWidth = 100;
-          newHeight = 100 / aspectRatio;
-        } else {
-          newHeight = 100;
-          newWidth = 100 * aspectRatio;
-        }
-
-        // Update geometry
-        pixelObj.geometry.dispose();
-        pixelObj.geometry = new THREE.PlaneGeometry(newWidth, newHeight);
-
-        // Update outline size to match new dimensions
-        if (pixelObj.userData.outline) {
-          pixelObj.userData.outline.geometry.dispose();
-          pixelObj.userData.outline.geometry = new THREE.EdgesGeometry(
-            new THREE.BoxGeometry(newWidth + 2, newHeight + 2, 2)
-          );
-        }
-
-        // Load GLTF model for the selected pixel
-        const pixelNumber = pixelObj.userData.pixel.number || pixelObj.userData.pixel.serial;
-        loadGLTFModel(pixelNumber, pixelObj.position.clone());
-
-        // Set up animation to move camera to this pixel
-        animateToCenterPixel.active = true;
-
-        // Get pixel position
-        const pixelPos = pixelObj.position.clone();
-
-        // Store current camera position as start
-        animateToCenterPixel.startPosition = new THREE.Vector3().copy(cameraRef.current.position);
-
-        // Target position: same X/Y as pixel, but maintain Z distance
-        const targetZ = 200; // Closer zoom for selected pixel
-
-        // Update the controls target to focus on the pixel's center
-        controlsRef.current.target.set(pixelPos.x, pixelPos.y, 0);
-
-        // Set camera position to look at the pixel from the desired distance
-        animateToCenterPixel.targetPosition = new THREE.Vector3(pixelPos.x, pixelPos.y, targetZ);
-
-        animateToCenterPixel.startZoom = controlsRef.current.zoom;
-        animateToCenterPixel.targetZoom = 1.2;
-        animateToCenterPixel.startTime = performance.now();
-        animateToCenterPixel.duration = 500; // Slightly longer animation for smoother effect
-
-        // Start animation
-        animateToPixel();
-      } else {
-        // Show the poster with appropriate opacity when not selected
-        pixelObj.material.opacity = isUnavailable ? 0.3 : 1.0;
-
-        if (selectedIndex === null && pixelObj.userData.isSelected) {
-          // Reset geometry to original size
-          pixelObj.geometry.dispose();
-          pixelObj.geometry = new THREE.PlaneGeometry(pixelObj.userData.width, pixelObj.userData.height);
-
-          // Update outline size to match original dimensions
-          if (pixelObj.userData.outline) {
-            pixelObj.userData.outline.geometry.dispose();
-            pixelObj.userData.outline.geometry = new THREE.EdgesGeometry(
-              new THREE.BoxGeometry(pixelObj.userData.width + 2, pixelObj.userData.height + 2, 2)
-            );
-          }
-
-          // Remove the model when deselecting
-          if (modelRef.current) {
-            disposeModel(modelRef.current);
-            modelRef.current = null;
-          }
-
-          // Reset camera position if we're deselecting
-          animateToCenterPixel.active = true;
-          animateToCenterPixel.startPosition = new THREE.Vector3().copy(cameraRef.current.position);
-
-          // Only change X and Y to return to center, maintain current Z
-          animateToCenterPixel.targetPosition = new THREE.Vector3(0, 0, 800); // Farther zoom to see all pixels
-
-          // Reset controls target to center
-          controlsRef.current.target.set(0, 0, 0);
-
-          animateToCenterPixel.startZoom = controlsRef.current.zoom;
-          animateToCenterPixel.targetZoom = 0.8;
-          animateToCenterPixel.startTime = performance.now();
-          animateToCenterPixel.duration = 500;
-
-          // Start animation
-          animateToPixel();
-        }
-      }
-    });
-  }, [selectedIndex, isInitialized, pixels]);
-
-  // Function to dispose of a model and free memory
-  const disposeModel = (model) => {
-    if (!model) return;
-
-    // Stop rotation animation
-    modelRotationRef.active = false;
-
-    model.traverse((object) => {
-      if (object.geometry) object.geometry.dispose();
-
-      if (object.material) {
-        if (Array.isArray(object.material)) {
-          object.material.forEach((material) => material.dispose());
-        } else {
-          object.material.dispose();
-        }
-      }
-    });
-
-    if (sceneRef.current) {
-      sceneRef.current.remove(model);
-    }
-  };
-
-  // Load GLTF model
-  const loadGLTFModel = (pixelNumber, position) => {
-    if (!gltfLoaderRef.current || !sceneRef.current) return;
-
-    // Remove any existing model
-    if (modelRef.current) {
-      disposeModel(modelRef.current);
-      modelRef.current = null;
-    }
-
-    const modelUrl = `data/models/pixels/Pixel ${pixelNumber}.glb`;
-
-    gltfLoaderRef.current.load(
-      modelUrl,
-      (gltf) => {
-        const model = gltf.scene;
-
-        // Position the model at the same location as the image
-        model.position.copy(position);
-
-        // Apply additional 30px downward offset to match the pixel objects
-        model.position.y -= 30;
-
-        // Center the model vertically
-        // Calculate the bounding box to get the model's actual dimensions
-        const boundingBox = new THREE.Box3().setFromObject(model);
-        const modelHeight = boundingBox.max.y - boundingBox.min.y;
-
-        // Adjust the Y position to center the model
-        model.position.y += modelHeight / 2;
-
-        // Adjust scale to match the image better - start with a smaller scale
-        model.scale.set(250, 250, 250);
-
-        // Reset rotation to ensure consistent starting position
-        model.rotation.set(0, 0, 0);
-
-        // Add to scene
-        sceneRef.current.add(model);
-        modelRef.current = model;
-
-        // Create outline for the model
-        const size = boundingBox.getSize(new THREE.Vector3());
-        const outlineGeometry = new THREE.EdgesGeometry(new THREE.BoxGeometry(size.x + 2, size.y + 2, size.z + 2));
-        const outlineMaterial = new THREE.LineBasicMaterial({ color: 0xffffff, linewidth: 1 });
-        const outline = new THREE.LineSegments(outlineGeometry, outlineMaterial);
-        model.add(outline);
-
-        // Start rotation animation
-        modelRotationRef.active = true;
-        modelRotationRef.lastTime = performance.now();
-
-        // Add lighting specifically for the model
-        const ambientLight = new THREE.AmbientLight(0xffffff, 2.5);
-        model.add(ambientLight);
-
-        // Add directional light to create shadows and highlights
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
-        directionalLight.position.set(1, 1, 1);
-        model.add(directionalLight);
-
-        // Add another directional light from opposite direction for better coverage
-        const backLight = new THREE.DirectionalLight(0xffffff, 0.5);
-        backLight.position.set(-1, -1, -1);
-        model.add(backLight);
-
-        // Optimize model for mobile but preserve visual quality
-        model.traverse((object) => {
-          if (object.isMesh) {
-            // Disable shadows for performance
-            object.castShadow = false;
-            object.receiveShadow = false;
-
-            // Optimize materials while maintaining visual quality
-            if (object.material) {
-              object.material.precision = "mediump";
-              object.material.depthWrite = true;
-
-              // Enhance material properties for better appearance
-              if (object.material.map) {
-                object.material.map.anisotropy = 4; // Improve texture quality
-              }
-            }
-          }
-        });
-
-        // Adjust model position to be slightly in front of the image
-        model.position.z += 5;
-      },
-      // onProgress
-      undefined,
-      // onError
-      (error) => {
-        console.error("Error loading GLTF model:", error);
-      }
-    );
   };
 
   // Add a function to calculate the optimal camera distance to see all pixels

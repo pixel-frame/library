@@ -26,7 +26,7 @@ const SheetModal = ({ children, isOpen, onClose }) => {
   }, [isOpen, onClose]);
 
   return (
-    <Sheet isOpen={isOpen} onClose={onClose}>
+    <Sheet isOpen={isOpen} disableDrag={true} onClose={onClose}>
       <Sheet.Container className={styles.card}>
         <Sheet.Header className={styles.handle} onClick={onClose} role="button" tabIndex={0} aria-label="Close sheet" />
         <div className={styles.cardHeader}>

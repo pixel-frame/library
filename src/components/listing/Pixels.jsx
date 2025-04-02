@@ -2,24 +2,32 @@ import React, { useState, useEffect, useRef } from "react";
 import styles from "./Pixels.module.css";
 import TestList from "./TestList";
 import PixelDetailView from "./PixelPreview";
-import PixelSpaceView from "./PixelSpace";
-import PixelCanvas2 from "./PixelCanvas2";
 import Button from "../../widgets/Button";
 import PageHeader from "../common/PageHeader";
+import WheelListHandler from "./WheelListHandler";
+import PixelList from "./PixelList";
+import { AnimatedText } from "../text/AnimatedText";
+import { RollingText } from "../text/RollingText";
+import SheetModal from "../buttons/Card";
+import PixelCanvas2 from "./PixelCanvas2";
 
 const Pixels = () => {
   const [pixels, setPixels] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedIndex, setSelectedIndex] = useState(-1); // Set to -1 to select "ALL" by default
-  const [stableIndex, setStableIndex] = useState(-1);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [stableIndex, setStableIndex] = useState(0);
   const [previousIndex, setPreviousIndex] = useState(null);
   const [transitionDirection, setTransitionDirection] = useState("Right");
   const [viewMode, setViewMode] = useState("vertical"); // 'vertical', 'horizontal', or 'grid'
   const [isScrolling, setIsScrolling] = useState(false);
   const [selectedView, setSelectedView] = useState("compact"); // Track which view button is selected
-  const [sortMode, setSortMode] = useState("default"); // Add sort mode state
   const scrollTimeoutRef = useRef(null);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [sortBy, setSortBy] = useState("number");
+  const [filterBy, setFilterBy] = useState("all");
+  const [isFilterDropdownOpen, setIsFilterDropdownOpen] = useState(false);
+  const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
 
   useEffect(() => {
     const fetchPixels = async () => {
@@ -81,78 +89,178 @@ const Pixels = () => {
 
   const handleViewChange = (view) => {
     setSelectedView(view);
-    if (view === "space") {
+    if (view === "compact") {
       setViewMode("vertical"); // Set to normal view for compact
-    } else if (view === "compact") {
+    } else if (view === "detailed") {
       setViewMode("grid"); // Set to grid view for detailed
     }
   };
 
   const handleSelectionChange = (index) => {
     if (index === selectedIndex) return;
-    setSelectedIndex(index);
-  };
 
-  const handleSortByAssembly = () => {
-    // Toggle between default and assembly sort
-    setSortMode(sortMode === "default" ? "assembly" : "default");
+    // Update both selectedIndex and stableIndex immediately
+    setSelectedIndex(index);
+    setStableIndex(index);
+
+    // Close the filter modal if it's open
+    setIsFilterOpen(false);
   };
 
   if (loading) return <div className={styles.loadingIndicator}>LOADING PIXEL BANK...</div>;
   if (error) return <div className={styles.errorMessage}>{error}</div>;
   if (pixels.length === 0) return <div className={styles.noPixels}>NO PIXELS FOUND</div>;
 
-  // Handle the "ALL" case by using null or a special indicator
-  const selectedPixel = selectedIndex >= 0 ? selectedIndex : null;
+  const selectedPixel = pixels[selectedIndex];
+  const stablePixel = pixels[stableIndex];
+  const previousPixel = previousIndex !== null ? pixels[previousIndex] : null;
 
   return (
     <div className={styles.pixelsContainer}>
-      {/* <PageHeader
-        title="Material Bank"
-        viewToggle={
-          <div className={styles.viewToggle}>
-            <Button
-              className={`${styles.viewButton} ${selectedView === "space" ? styles.selected : ""}`}
-              onClick={() => handleViewChange("space")}
-              aria-label="Detailed view"
-              tabIndex="0"
-              onKeyDown={(e) => e.key === "Enter" && handleViewChange("space")}
-            >
-              [SPACE]
-            </Button>
-            <Button
-              className={`${styles.viewButton} ${selectedView === "compact" ? styles.selected : ""}`}
-              onClick={() => handleViewChange("compact")}
-              aria-label="Compact view"
-              tabIndex="0"
-              onKeyDown={(e) => e.key === "Enter" && handleViewChange("compact")}
-            >
-              [COMPACT]
-            </Button>
-            <Button
-              className={`${styles.viewButton} ${sortMode === "assembly" ? styles.selected : ""}`}
-              onClick={handleSortByAssembly}
-              aria-label="Sort by assembly"
-              tabIndex="0"
-              onKeyDown={(e) => e.key === "Enter" && handleSortByAssembly()}
-            >
-              [SORT BY ASSEMBLY]
-            </Button>
+      <div className={styles.viewToggle}>
+        <Button
+          className={`${styles.viewButton} ${selectedView === "compact" ? styles.selected : ""}`}
+          onClick={() => setIsFilterOpen(true)}
+          aria-label="Filter view"
+          tabIndex="0"
+          onKeyDown={(e) => e.key === "Enter" && setIsFilterOpen(true)}
+        >
+          [FILTER / EXPAND / IMAGINE]
+        </Button>
+      </div>
+
+      <SheetModal isOpen={isFilterOpen} onClose={() => setIsFilterOpen(false)}>
+        <div className={styles.filterContent}>
+          <div className={styles.filterControls}>
+            <div className={styles.dropdownContainer}>
+              <Button
+                className={styles.dropdownButton}
+                onClick={() => setIsSortDropdownOpen(!isSortDropdownOpen)}
+                aria-label="Sort options"
+                tabIndex="0"
+                onKeyDown={(e) => e.key === "Enter" && setIsSortDropdownOpen(!isSortDropdownOpen)}
+              >
+                SORT BY
+              </Button>
+              {isSortDropdownOpen && (
+                <div className={styles.dropdownMenu}>
+                  <Button
+                    onClick={() => {
+                      setSortBy("number");
+                      setIsSortDropdownOpen(false);
+                    }}
+                  >
+                    Number
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setSortBy("generation");
+                      setIsSortDropdownOpen(false);
+                    }}
+                  >
+                    Generation
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setSortBy("state");
+                      setIsSortDropdownOpen(false);
+                    }}
+                  >
+                    State
+                  </Button>
+                </div>
+              )}
+            </div>
+
+            <div className={styles.dropdownContainer}>
+              <Button
+                className={styles.dropdownButton}
+                onClick={() => setIsFilterDropdownOpen(!isFilterDropdownOpen)}
+                aria-label="Filter options"
+                tabIndex="0"
+                onKeyDown={(e) => e.key === "Enter" && setIsFilterDropdownOpen(!isFilterDropdownOpen)}
+              >
+                FILTER
+              </Button>
+              {isFilterDropdownOpen && (
+                <div className={styles.dropdownMenu}>
+                  <Button
+                    onClick={() => {
+                      setFilterBy("all");
+                      setIsFilterDropdownOpen(false);
+                    }}
+                  >
+                    All
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setFilterBy("available");
+                      setIsFilterDropdownOpen(false);
+                    }}
+                  >
+                    Available
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setFilterBy("locked");
+                      setIsFilterDropdownOpen(false);
+                    }}
+                  >
+                    Locked
+                  </Button>
+                </div>
+              )}
+            </div>
           </div>
-        }
-      /> */}
+          <PixelCanvas2
+            pixels={pixels}
+            selectedIndex={selectedIndex}
+            onPixelClick={handleSelectionChange}
+            sortMode={sortBy}
+          />
+        </div>
+      </SheetModal>
 
       <div className={styles.mainPixelContent}>
-        <PixelCanvas2
-          pixels={pixels}
-          selectedIndex={selectedPixel}
-          onPixelClick={handleSelectionChange}
-          width="100%"
-          height="350px"
-          sortMode={sortMode}
-        />
-
-        <TestList onSelectionChange={handleSelectionChange} />
+        {viewMode !== "grid" && (
+          <>
+            {" "}
+            <PixelDetailView
+              selectedPixel={stablePixel}
+              previousPixel={previousPixel}
+              transitionDirection={transitionDirection}
+              viewMode={viewMode}
+              onViewModeChange={cycleViewMode}
+              isScrolling={isScrolling}
+              targetPixel={selectedPixel}
+            />
+            <WheelListHandler
+              items={pixels}
+              titleText="PIXEL BANK"
+              onSelectionChange={(item, index) => {
+                handleSelectionChange(index);
+              }}
+              perspective="left"
+              initialIndex={selectedIndex >= 0 ? selectedIndex : 0}
+              valueFormatter={(item) => ({
+                left: `Pixel ${item.number || item.serial}`,
+                right: item.state_description || "Available",
+              })}
+            />
+          </>
+        )}
+        {viewMode == "grid" && (
+          <>
+            <div>
+              <PixelList
+                pixels={pixels}
+                selectedIndex={selectedIndex}
+                viewMode={viewMode}
+                onItemClick={handleSelectionChange}
+              />
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

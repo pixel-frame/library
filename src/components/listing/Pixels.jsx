@@ -7,6 +7,8 @@ import PageHeader from "../common/PageHeader";
 import WheelListHandler from "./WheelListHandler";
 import PixelList from "./PixelList";
 import { AnimatedText } from "../text/AnimatedText";
+import { RollingText } from "../text/RollingText";
+
 const Pixels = () => {
   const [pixels, setPixels] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -142,11 +144,18 @@ const Pixels = () => {
               targetPixel={selectedPixel}
             />
             <div className={styles.breaker}>
-              <AnimatedText text="PIXELS" />
-              <AnimatedText text="STATUS" />
+              {selectedIndex === 0 ? (
+                <RollingText text="SCROLL THE WHEEL TO EXPLORE /////// " />
+              ) : (
+                <>
+                  <AnimatedText text="PIXELS" />
+                  <AnimatedText text="STATUS" />
+                </>
+              )}
             </div>
             <WheelListHandler
               items={pixels}
+              titleText="PIXEL BANK"
               onSelectionChange={(item, index) => {
                 handleSelectionChange(index);
               }}

@@ -1,6 +1,7 @@
 import React, { useCallback, useState, useEffect, useMemo } from "react";
 import WheelList from "./WheelList";
 import styles from "./WheelList.module.css";
+import { AnimatedText } from "../text/AnimatedText";
 
 /**
  * A component that wraps the WheelList to handle selection of items
@@ -14,6 +15,7 @@ import styles from "./WheelList.module.css";
  * @param {Function} props.renderCustomContent - Function to render custom content for each item
  * @param {string} props.buttonText - Text to display on the action button
  * @param {Function} props.onButtonClick - Handler for button click
+ * @param {string} props.titleText - Text to display as the title when the first item is selected
  */
 const WheelListHandler = ({
   items = [],
@@ -24,6 +26,7 @@ const WheelListHandler = ({
   renderCustomContent,
   buttonText,
   onButtonClick,
+  titleText,
 }) => {
   const [selectedIndex, setSelectedIndex] = useState(initialIndex);
   const [isButtonVisible, setIsButtonVisible] = useState(!!buttonText && !!onButtonClick);
@@ -117,6 +120,14 @@ const WheelListHandler = ({
 
   return (
     <div className={styles.wheelContainer}>
+      {selectedIndex <= 1 && titleText && (
+        <h2 className={styles.wheelTitle}>
+          <AnimatedText text={titleText} />
+        </h2>
+      )}
+      {selectedIndex <= 1 && titleText === "PIXEL BANK" && (
+        <p className={styles.wheelDesc}>140 Total, 70 Available, 50 upcoming, 20 retired</p>
+      )}
       {isButtonVisible && (
         <button className={styles.actionButton} onClick={handleButtonClick} aria-label={buttonText} tabIndex="0">
           <div className={styles.actionButtonInner}>{buttonText}</div>
@@ -124,7 +135,7 @@ const WheelListHandler = ({
       )}
       <div className={styles.smallWheelWrapper}>
         <WheelList
-          loop={true}
+          loop={false}
           length={items.length}
           width="100%"
           perspective={perspective}

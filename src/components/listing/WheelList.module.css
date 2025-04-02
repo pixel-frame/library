@@ -93,6 +93,7 @@ body {
 }
 
 .wheelContainer {
+  position: relative;
   height: 280px;
   display: flex;
   justify-content: center;
@@ -165,4 +166,29 @@ body {
 
 .actionButtonExit {
   animation: slideDown 0.3s ease-in forwards;
+}
+
+.wheelTitle {
+  position: absolute;
+  top: 1rem;
+  left: 0;
+  width: 100%;
+  text-align: left;
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  padding: 0 1rem;
+  z-index: 10;
+}
+.wheelDesc {
+  position: absolute;
+  top: 2.5rem;
+  left: 0;
+  width: 100%;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-primary);
+  padding: 0 1rem;
+  z-index: 10;
 }

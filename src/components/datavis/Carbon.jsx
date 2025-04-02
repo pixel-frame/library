@@ -3,11 +3,9 @@ import * as d3 from "d3";
 import styles from "./Carbon.module.css";
 import Button from "../../widgets/Button";
 
-const Carbon = ({ onSelectionChange, selectedPoints, highlightedPoint }) => {
+const Carbon = ({ highlightedPoint }) => {
   const svgRef = useRef(null);
   const [xAxisMetric, setXAxisMetric] = useState("age"); // Default to age
-  const [selection, setSelection] = useState(null); // Track selection coordinates
-  const [isDragging, setIsDragging] = useState(false); // Track if user is dragging
   const [pixelData, setPixelData] = useState([]); // Store the fetched pixel data
   const [showJitter, setShowJitter] = useState(true); // New state to toggle jitter
   const [jitteredPositions, setJitteredPositions] = useState({}); // Store positions of jittered points
@@ -385,24 +383,6 @@ const Carbon = ({ onSelectionChange, selectedPoints, highlightedPoint }) => {
       setJitteredPositions({});
     }
 
-    // Only add text labels for selected points
-    if (selection) {
-      svg
-        .selectAll(".data-label")
-        .data(selectedPoints)
-        .enter()
-        .append("text")
-        .attr("class", "data-label")
-        .attr("x", (d) => xScale(xAxisMetric === "age" ? d.age : d.distanceTraveled) + cellSize / 2)
-        .attr("y", (d) => yScale(d.emissions) - 5) // Position above the square
-        .attr("text-anchor", "middle")
-        .attr("dominant-baseline", "bottom")
-        .attr("fill", "black")
-        .attr("font-size", "12px")
-        .attr("font-weight", "bold")
-        .text((d) => d.serial);
-    }
-
     // Add X axis with fewer ticks
     const xAxis = d3
       .axisBottom(xScale)
@@ -446,41 +426,6 @@ const Carbon = ({ onSelectionChange, selectedPoints, highlightedPoint }) => {
       .attr("font-size", "0.6em")
       .text("Carbon Emissions (kg CO2e)");
 
-    // Draw selection highlight if exists
-    if (selection) {
-      // Use the same cellSize for the selection highlight to ensure squares
-      const selectionSize = cellSize * 3;
-
-      // Position the highlight centered on the selection point
-      const highlightX = selection.x - selectionSize / 2;
-      const highlightY = selection.y - selectionSize / 2;
-
-      svg
-        .append("rect")
-        .attr("class", `selection-highlight ${styles.selectionHighlight}`)
-        .attr("x", highlightX)
-        .attr("y", highlightY)
-        .attr("width", selectionSize)
-        .attr("height", selectionSize)
-        .attr("stroke-width", 2);
-
-      // Update the style of selected points to be white
-      svg.selectAll(".data-point").classed(styles.selectedPoint, function (d) {
-        // Check if d is defined and has a serial property
-        if (!d || typeof d !== "object") return false;
-
-        // For primary visualization without jitter
-        if (!showJitter && d.serial) {
-          return selectedPoints.some((p) => p.serial === d.serial);
-        }
-
-        // For jittered visualization
-        // The data bound to elements might be different depending on how they were created
-        // Try to match by serial if available, otherwise return false
-        return d.serial ? selectedPoints.some((p) => p.serial === d.serial) : false;
-      });
-    }
-
     // Update highlighted point styling
     svg.selectAll(".data-point").classed(styles.highlightedPoint, function (d) {
       if (!d || !highlightedPoint) return false;
@@ -494,19 +439,12 @@ const Carbon = ({ onSelectionChange, selectedPoints, highlightedPoint }) => {
 
     // Helper function to get correct coordinates from event
     const getEventCoordinates = (event) => {
-      event.preventDefault();
       const svgElement = svgRef.current;
       const bbox = svgElement.getBoundingClientRect();
       const point = svgElement.createSVGPoint();
 
-      // Get coordinates based on event type
-      if (event.touches && event.touches[0]) {
-        point.x = event.touches[0].clientX;
-        point.y = event.touches[0].clientY;
-      } else {
-        point.x = event.clientX;
-        point.y = event.clientY;
-      }
+      point.x = event.clientX;
+      point.y = event.clientY;
 
       // Transform point to SVG coordinate system
       const ctm = svgElement.getScreenCTM();
@@ -517,64 +455,6 @@ const Carbon = ({ onSelectionChange, selectedPoints, highlightedPoint }) => {
       return [0, 0];
     };
 
-    // Update selection logic
-    const updateSelection = (x, y) => {
-      // Clamp coordinates to grid bounds
-      const clampedX = Math.max(0, Math.min(x, actualGridWidth));
-      const clampedY = Math.max(0, Math.min(y, actualGridHeight));
-
-      setSelection({ x: clampedX, y: clampedY });
-
-      // Calculate the bounds of the selection area
-      const selectionMinX = clampedX - cellSize * 1.5;
-      const selectionMaxX = clampedX + cellSize * 1.5;
-      const selectionMinY = clampedY - cellSize * 1.5;
-      const selectionMaxY = clampedY + cellSize * 1.5;
-
-      if (showJitter) {
-        // For jittered visualization, check which points have jittered positions in the selection area
-        const pointsInSelection = pixelData.filter((point) => {
-          const jitteredPos = newJitteredPositions[point.serial];
-
-          // If we have a jittered position for this point
-          if (jitteredPos) {
-            return (
-              jitteredPos.x >= selectionMinX &&
-              jitteredPos.x <= selectionMaxX &&
-              jitteredPos.y >= selectionMinY &&
-              jitteredPos.y <= selectionMaxY
-            );
-          }
-
-          // Fallback to original position if no jittered position
-          const pointX = xScale(xAxisMetric === "age" ? point.age : point.distanceTraveled);
-          const pointY = yScale(point.emissions);
-
-          return (
-            pointX >= selectionMinX && pointX <= selectionMaxX && pointY >= selectionMinY && pointY <= selectionMaxY
-          );
-        });
-
-        if (onSelectionChange) {
-          onSelectionChange(pointsInSelection);
-        }
-      } else {
-        // Original selection logic for non-jittered visualization
-        const pointsInSelection = pixelData.filter((d) => {
-          const pointX = xScale(xAxisMetric === "age" ? d.age : d.distanceTraveled);
-          const pointY = yScale(d.emissions);
-
-          return (
-            pointX >= selectionMinX && pointX <= selectionMaxX && pointY >= selectionMinY && pointY <= selectionMaxY
-          );
-        });
-
-        if (onSelectionChange) {
-          onSelectionChange(pointsInSelection);
-        }
-      }
-    };
-
     // Update interaction area event handlers
     const interactionArea = svg
       .append("rect")
@@ -583,64 +463,14 @@ const Carbon = ({ onSelectionChange, selectedPoints, highlightedPoint }) => {
       .attr("y", 0)
       .attr("width", actualGridWidth)
       .attr("height", actualGridHeight)
-      .attr("fill", "transparent")
-      .style("cursor", "pointer")
-      .style("touch-action", "none");
+      .attr("fill", "transparent");
 
-    const handleStart = (event) => {
-      event.preventDefault();
-      const coords = getEventCoordinates(event);
-      setIsDragging(true);
-      updateSelection(coords[0], coords[1]);
-    };
-
-    const handleMove = (event) => {
-      if (!isDragging) return;
-      event.preventDefault();
-      const coords = getEventCoordinates(event);
-      updateSelection(coords[0], coords[1]);
-    };
-
-    const handleEnd = (event) => {
-      if (event) event.preventDefault();
-      setIsDragging(false);
-    };
-
-    // Add direct DOM event listeners for better touch control
-    const element = interactionArea.node();
-    if (element) {
-      element.addEventListener("touchstart", handleStart, { passive: false });
-      element.addEventListener("touchmove", handleMove, { passive: false });
-      element.addEventListener("touchend", handleEnd, { passive: false });
-      element.addEventListener("touchcancel", handleEnd, { passive: false });
-
-      // Keep mouse events for desktop
-      element.addEventListener("mousedown", handleStart);
-      element.addEventListener("mousemove", handleMove);
-      element.addEventListener("mouseup", handleEnd);
-      element.addEventListener("mouseleave", handleEnd);
-    }
-
-    // Cleanup function
-    return () => {
-      if (element) {
-        element.removeEventListener("touchstart", handleStart);
-        element.removeEventListener("touchmove", handleMove);
-        element.removeEventListener("touchend", handleEnd);
-        element.removeEventListener("touchcancel", handleEnd);
-
-        element.removeEventListener("mousedown", handleStart);
-        element.removeEventListener("mousemove", handleMove);
-        element.removeEventListener("mouseup", handleEnd);
-        element.removeEventListener("mouseleave", handleEnd);
-      }
-    };
-  }, [xAxisMetric, selection, isDragging, pixelData, showJitter, onSelectionChange, selectedPoints, highlightedPoint]);
+    // Remove all event handlers and cleanup
+    return () => {};
+  }, [xAxisMetric, pixelData, showJitter, highlightedPoint]);
 
   const handleToggleXAxis = () => {
     setXAxisMetric((prev) => (prev === "age" ? "distance" : "age"));
-    // Clear selection when changing axis
-    setSelection(null);
   };
 
   const handleToggleJitter = () => {

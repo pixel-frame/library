@@ -29,11 +29,12 @@ const AssemblyDetail = ({ assemblyId, assembly: passedAssembly, fullData: passed
   // Check if we're being rendered as a tab in PixelDetail
   const isInPixelDetailTab = isActive !== undefined;
 
-  const availableModels = ["0001", "0002", "0003", "0004", "0005", "0006", "0007", "0008", "0009", "0010", "0015"];
+  const availableModels = ["0001", "0002", "0003", "0004", "0005", "0006", "0008", "0010", "0015"];
 
   const getModelSerial = (assembly) => {
     const modelMappings = {
       "0007": "0004",
+      "0009": "0004",
     };
     const mappedSerial = modelMappings[assembly.serial] || assembly.serial;
     return availableModels.includes(mappedSerial) ? mappedSerial : null;
@@ -83,8 +84,7 @@ const AssemblyDetail = ({ assemblyId, assembly: passedAssembly, fullData: passed
       setAssembly(passedAssembly);
       setFullData(passedFullData);
 
-      const modelSerial = getModelSerial(passedAssembly);
-      setModelPath(modelSerial ? `/data/models/assemblies/${modelSerial}.glb` : null);
+      setModelPath(passedAssembly.serial ? `/data/models/assemblies/${passedAssembly.serial}.glb` : null);
       setLoading(false);
       return;
     }

@@ -13,9 +13,6 @@ const SparkLine = ({ data, color = "white", height = 24, width = 120 }) => {
     // Clear any existing content
     d3.select(svgRef.current).selectAll("*").remove();
 
-    // Debug log the input data
-    console.log("Input data:", data);
-
     // Helper function to parse various date formats
     const parseDate = (dateStr) => {
       // Handle "January 2022" format

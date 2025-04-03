@@ -10,6 +10,8 @@
   align-items: center;
   justify-content: center;
   position: relative;
+  --progress-bar-color: none !important;
+  --progress-bar-height: 0px !important;
 }
 
 .previewMode {

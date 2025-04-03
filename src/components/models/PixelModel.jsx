@@ -6,11 +6,12 @@ const PixelModel = ({ modelPath, isPreview = false, isInteractive = false, onExp
   const [modelError, setModelError] = React.useState(false);
   const modelViewerRef = React.useRef(null);
 
+  console.log("PixelModel", modelPath);
   // Event listeners after the component mounts
   React.useEffect(() => {
     const modelViewer = modelViewerRef.current;
     if (!modelViewer) return;
-    
+
     // Timeout to check if model loads
     const timeoutId = setTimeout(() => {
       if (!useFallback && !modelViewer.loaded) {
@@ -18,19 +19,19 @@ const PixelModel = ({ modelPath, isPreview = false, isInteractive = false, onExp
         setUseFallback(true);
       }
     }, 500); // timeout dur
-    
+
     const handleLoadEvent = () => {
-      console.log(`Model loaded successfully: ${useFallback ? 'fallback' : `Pixel ${modelPath}.glb`}`);
+      console.log(`Model loaded successfully: ${useFallback ? "fallback" : `Pixel ${modelPath}.glb`}`);
     };
-    
-    modelViewer.addEventListener('load', handleLoadEvent);
-    
+
+    modelViewer.addEventListener("load", handleLoadEvent);
+
     return () => {
       clearTimeout(timeoutId);
-      modelViewer.removeEventListener('load', handleLoadEvent);
+      modelViewer.removeEventListener("load", handleLoadEvent);
     };
   }, [modelPath, useFallback]);
-  
+
   const handleModelError = () => {
     if (!useFallback) {
       console.log(`Error loading primary model: Pixel ${modelPath}.glb - switching to fallback`);
@@ -52,21 +53,20 @@ const PixelModel = ({ modelPath, isPreview = false, isInteractive = false, onExp
   }
 
   // Select the appropriate model source
-  const modelSrc = useFallback 
-    ? `/data/models/pixels/gen1_Pixel.glb` 
-    : `/data/models/pixels/Pixel ${modelPath}.glb`;
+  const modelSrc = useFallback ? `/data/models/pixels/gen1_Pixel.glb` : `/data/models/pixels/Pixel ${modelPath}.glb`;
 
   return (
     <div className={`${styles.modelViewer} ${isPreview ? styles.previewMode : ""}`}>
       <model-viewer
         ref={modelViewerRef}
+        id="model"
         src={modelSrc}
         alt="3D pixel model"
         shadow-intensity=".1"
         environment-image="neutral"
         camera-orbit="45deg 55deg 2.5m"
         exposure="1.1"
-        poster-image={`data/previews/pixels/model-poster-${modelPath}.png`}
+        poster={`data/previews/pixels/model-poster-${modelPath}.png`}
         environment-intensity="1"
         auto-rotate={isPreview}
         camera-controls={isInteractive}

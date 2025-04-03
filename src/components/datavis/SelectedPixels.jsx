@@ -78,20 +78,26 @@ const SelectedPixels = ({ selectedPoints, onScroll, onHighlight, urlPixelId, onP
     };
 
     // Process the regular pixels to include sparkline components
-    const processedPixels = basePixels.map((pixel) => {
-      const hasEmissionsData = pixel.emissions_over_time && Object.keys(pixel.emissions_over_time).length > 0;
+    const processedPixels = basePixels
+      .map((pixel) => {
+        const hasEmissionsData = pixel.emissions_over_time && Object.keys(pixel.emissions_over_time).length > 0;
 
-      // Create a copy of the pixel with the sparkline component
-      return {
-        ...pixel,
-        // Add a sparklineComponent property that WheelListHandler can use
-        sparklineComponent: hasEmissionsData ? (
-          <div className={styles.sparklineContainer}>
-            <SparkLine data={pixel.emissions_over_time} color={"var(--text-primary)"} height={20} width={80} />
-          </div>
-        ) : null,
-      };
-    });
+        // Create a copy of the pixel with the sparkline component
+        return {
+          ...pixel,
+          // Add a sparklineComponent property that WheelListHandler can use
+          sparklineComponent: hasEmissionsData ? (
+            <div className={styles.sparklineContainer}>
+              <SparkLine data={pixel.emissions_over_time} color={"var(--text-primary)"} height={20} width={80} />
+            </div>
+          ) : null,
+        };
+      })
+      .sort((a, b) => {
+        const numA = parseInt(a.pixel_number) || parseInt(a.serial) || 0;
+        const numB = parseInt(b.pixel_number) || parseInt(b.serial) || 0;
+        return numA - numB;
+      });
 
     return [allOption, ...processedPixels];
   }, [selectedPoints, allPixels]);

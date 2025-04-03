@@ -55,7 +55,7 @@ const Carbon = ({ highlightedPoint }) => {
 
     // Grid configuration
 
-    const gridCellsX = 21;
+    const gridCellsX = 20;
     const gridCellsY = 18; // Double the number of cells on y-axis (was 15)
 
     // Calculate cell size to ensure squares (use the smaller dimension)
@@ -318,28 +318,36 @@ const Carbon = ({ highlightedPoint }) => {
 
               const cellCenterX = cell.gridX * cellSize + cellSize / 2;
               const cellCenterY = cell.gridY * cellSize + cellSize / 2;
-              const squareSize = cellSize * 0.8;
-              const squareX = cellCenterX - squareSize / 2;
-              const squareY = cellCenterY - squareSize / 2;
 
+              // Add white square background
               svg
                 .append("rect")
-                .attr("class", "data-point secondary")
-                .attr("x", squareX)
-                .attr("y", squareY)
-                .attr("width", squareSize)
-                .attr("height", squareSize)
-                .attr("fill", isHighlighted ? "blue" : "black")
-                .attr("stroke", isHighlighted ? "blue" : "transparent")
-                .attr("stroke-width", isHighlighted ? 2 : 1)
+                .attr("class", "data-point-background")
+                .attr("x", cellCenterX - cellSize * 0.5)
+                .attr("y", cellCenterY - cellSize * 0.5)
+                .attr("width", cellSize * 1)
+                .attr("height", cellSize * 1)
+                .attr("fill", isHighlighted ? "black" : "transparent")
                 .attr("data-serial", point.serial);
 
-              // Store the square position
+              svg
+                .append("text")
+                .attr("class", "data-point secondary")
+                .attr("x", cellCenterX)
+                .attr("y", cellCenterY)
+                .attr("text-anchor", "middle")
+                .attr("dominant-baseline", "central")
+                .attr("font-size", `${cellSize * 0.55}px`)
+                .attr("fill", isHighlighted ? "white" : "black")
+                .attr("data-serial", point.serial)
+                .text(point.pixel_number);
+
+              // Store the text position
               newJitteredPositions[point.serial] = {
                 x: cellCenterX,
                 y: cellCenterY,
-                size: squareSize,
                 isCircle: false,
+                isText: true,
               };
             }
           });

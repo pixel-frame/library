@@ -91,13 +91,14 @@
 
 .close-button {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 10px;
+  right: 10px;
   background: none;
   border: none;
   color: white;
   background: black;
   font-size: 24px;
+  border-radius: 0%;
   cursor: pointer;
   z-index: 1001;
 }

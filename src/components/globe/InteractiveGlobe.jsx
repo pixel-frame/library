@@ -7,15 +7,16 @@ import styles from "./InteractiveGlobe.module.css";
 const InteractiveGlobe = ({ highlightedAssembly, focusedAssembly }) => {
   const svgRef = useRef(null);
   const projectionRef = useRef(null);
-  const [userInteracted, setUserInteracted] = useState(false);
   const [assemblies, setAssemblies] = useState([]);
   const animationRef = useRef(null);
   const rotationRef = useRef([-12, -42, 0]);
-  const transformRef = useRef(null);
   const shouldRotateRef = useRef(true);
+  const scaleRef = useRef(null);
 
   // Add default rotation and scale constants
   const DEFAULT_SCALE = 1;
+  const BASE_SCALE = 140; // width/2 - 10
+  const ZOOMED_SCALE = BASE_SCALE * 8;
 
   // Define updateGlobe at component level
   const updateGlobe = useCallback(() => {
@@ -43,38 +44,22 @@ const InteractiveGlobe = ({ highlightedAssembly, focusedAssembly }) => {
     pointsGroup.selectAll(".routePath").attr("d", path);
   }, []);
 
-  // Load assemblies data
+  // Simplified assemblies data loading
   useEffect(() => {
     fetch("/data/bank/assembly/assemblies.json")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        return response.json();
-      })
+      .then((response) => response.json())
       .then((data) => {
-        console.log("Loaded assemblies data:", data);
-        if (data && data.reconfigurations) {
+        if (data?.reconfigurations) {
           setAssemblies(data.reconfigurations);
-        } else {
-          console.error("Unexpected data structure:", data);
         }
       })
-      .catch((error) => {
-        console.error("Error loading assemblies data:", error);
-      });
+      .catch((error) => console.error("Error loading assemblies:", error));
   }, []);
 
-  // Transform assemblies data into points format
+  // Simplified points transformation
   const transformAssembliesToPoints = () => {
-    console.log("Transforming assemblies:", assemblies);
+    if (!assemblies.length) return [];
 
-    if (!assemblies || assemblies.length === 0) {
-      console.log("No assemblies data available");
-      return [];
-    }
-
-    // Create a map to group assemblies by location
     const locationGroups = assemblies.reduce((acc, assembly) => {
       const key = `${assembly.location.coordinates.latitude},${assembly.location.coordinates.longitude}`;
       if (!acc[key]) {
@@ -89,71 +74,82 @@ const InteractiveGlobe = ({ highlightedAssembly, focusedAssembly }) => {
       return acc;
     }, {});
 
-    // Convert to array of points
-    const points = Object.values(locationGroups).map((location) => ({
+    return Object.values(locationGroups).map((location) => ({
       latitude: location.latitude,
       longitude: location.longitude,
       name: location.name,
       count: location.assemblies.length,
-      transportType: "air",
-      assemblies: location.assemblies, // Include individual assemblies
+      assemblies: location.assemblies,
     }));
-
-    console.log("Transformed points:", points);
-    return points;
   };
 
-  // Simplified autoRotate function - only check shouldRotateRef
+  // Add this function after transformAssembliesToPoints
+  const createRouteLines = () => {
+    const routes = [];
+
+    // Create routes between consecutive assemblies
+    for (let i = 0; i < assemblies.length - 1; i++) {
+      const currentAssembly = assemblies[i];
+      const nextAssembly = assemblies[i + 1];
+
+      if (currentAssembly.location?.coordinates && nextAssembly.location?.coordinates) {
+        const source = [currentAssembly.location.coordinates.longitude, currentAssembly.location.coordinates.latitude];
+        const destination = [nextAssembly.location.coordinates.longitude, nextAssembly.location.coordinates.latitude];
+
+        const route = d3.geoInterpolate(source, destination);
+        const routePoints = [];
+        for (let t = 0; t <= 1; t += 0.01) {
+          routePoints.push(route(t));
+        }
+
+        routes.push({
+          type: "Feature",
+          geometry: {
+            type: "LineString",
+            coordinates: routePoints,
+          },
+        });
+      }
+    }
+
+    return routes;
+  };
+
+  // Simplified autoRotate
   const autoRotate = useCallback(() => {
     if (!shouldRotateRef.current || !projectionRef.current) return;
 
     const rotation = projectionRef.current.rotate();
-    const speed = 0.05;
-    projectionRef.current.rotate([rotation[0] + speed, rotation[1], rotation[2]]);
+    projectionRef.current.rotate([rotation[0] + 0.05, rotation[1], rotation[2]]);
     updateGlobe();
 
     animationRef.current = requestAnimationFrame(autoRotate);
   }, [updateGlobe]);
 
-  // Effect to handle rotation based only on focusedAssembly
+  // Main rendering effect
   useEffect(() => {
-    if (focusedAssembly) {
-      shouldRotateRef.current = false;
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-      }
-    } else {
-      shouldRotateRef.current = true;
-      autoRotate();
-    }
-  }, [focusedAssembly, autoRotate]);
+    if (!svgRef.current || !assemblies.length) return;
 
-  // Main useEffect
-  useEffect(() => {
-    if (!svgRef.current || assemblies.length === 0) return;
-
-    // Cancel any existing animation
     if (animationRef.current) {
       cancelAnimationFrame(animationRef.current);
-      animationRef.current = null;
     }
 
-    // Clear previous content
     d3.select(svgRef.current).selectAll("*").remove();
 
-    // Set dimensions for 3D globe
     const width = 300;
     const height = 300;
+    const initialScale = width / 2 - 10;
 
-    // Create the orthographic projection for 3D globe
     projectionRef.current = geoOrthographic()
-      .scale(width / 2 - 10)
+      .scale(scaleRef.current || initialScale)
       .translate([width / 2, height / 2])
       .clipAngle(90)
-      .precision(0.1)
-      .rotate([12, 42, 0]);
+      .rotate(rotationRef.current);
 
-    const initialScale = projectionRef.current.scale();
+    if (!scaleRef.current) {
+      scaleRef.current = initialScale;
+    }
+
     const path = geoPath().projection(projectionRef.current);
 
     const svg = d3
@@ -167,7 +163,7 @@ const InteractiveGlobe = ({ highlightedAssembly, focusedAssembly }) => {
       .append("circle")
       .attr("cx", width / 2)
       .attr("cy", height / 2)
-      .attr("r", initialScale)
+      .attr("r", scaleRef.current)
       .attr("class", styles.globeOutline);
 
     // Create a container for all the map elements
@@ -176,34 +172,11 @@ const InteractiveGlobe = ({ highlightedAssembly, focusedAssembly }) => {
     // Create a container for the points and lines
     const pointsGroup = svg.append("g");
 
-    // Function to create route path
-    const createRoutePath = (start, end) => {
-      // Create a curved path for 3D globe
-      const route = d3.geoInterpolate([start.longitude, start.latitude], [end.longitude, end.latitude]);
-
-      const routePoints = [];
-      for (let t = 0; t <= 1; t += 0.01) {
-        routePoints.push(route(t));
-      }
-
-      return {
-        type: "LineString",
-        coordinates: routePoints,
-      };
-    };
-
-    // Set initial rotation from stored value
-    if (rotationRef.current) {
-      projectionRef.current.rotate(rotationRef.current);
-      updateGlobe();
-    }
-
-    // Load world map data
+    // Simplified map loading and point rendering
     d3.json("https://unpkg.com/world-atlas@2.0.2/countries-110m.json")
       .then((data) => {
         const countries = topojson.feature(data, data.objects.countries).features;
 
-        // Add countries
         mapGroup
           .selectAll(".country")
           .data(countries)
@@ -212,14 +185,8 @@ const InteractiveGlobe = ({ highlightedAssembly, focusedAssembly }) => {
           .attr("class", styles.landmass)
           .attr("d", path);
 
-        // Add grid lines
-        const graticule = d3.geoGraticule();
-        mapGroup.append("path").datum(graticule).attr("class", styles.gridLine).attr("d", path);
-
-        // Transform assemblies data into points
         const pointsData = transformAssembliesToPoints();
 
-        // Only proceed if we have actual data
         if (pointsData.length > 0) {
           // Draw points with gray squares and assembly counts
           pointsGroup
@@ -230,40 +197,33 @@ const InteractiveGlobe = ({ highlightedAssembly, focusedAssembly }) => {
             .attr("class", "marker")
             .each(function (d) {
               const element = d3.select(this);
-              const isHighlighted =
-                highlightedAssembly &&
-                highlightedAssembly.location.coordinates.latitude === d.latitude &&
-                highlightedAssembly.location.coordinates.longitude === d.longitude;
               const isFocused =
                 focusedAssembly &&
                 focusedAssembly.location.coordinates.latitude === d.latitude &&
                 focusedAssembly.location.coordinates.longitude === d.longitude;
 
               if (isFocused) {
-                // Create larger squares for focused location
                 d.assemblies.forEach((assembly, index) => {
                   const row = Math.floor(index / 3);
                   const col = index % 3;
-                  const isSelected = highlightedAssembly && assembly.id === highlightedAssembly.id;
-                  console.log("buzz" + JSON.stringify(highlightedAssembly));
-                  console.log("guzz" + JSON.stringify(assembly));
+                  const isSelected = highlightedAssembly?.id === assembly.id;
+
                   element
                     .append("rect")
-                    .attr("x", (col - 1) * 20 - 6) // Doubled spacing
-                    .attr("y", row * 20 - 24) // Doubled spacing and offset
-                    .attr("width", 15) // Doubled size
-                    .attr("height", 15) // Doubled size
-                    .attr("class", `${styles.markerSquare}  ${isSelected ? styles.highlighted : ""}`);
+                    .attr("x", (col - 1) * 20 - 6)
+                    .attr("y", row * 20 - 24)
+                    .attr("width", 15)
+                    .attr("height", 15)
+                    .attr("class", `${styles.markerSquare} ${isSelected ? styles.highlighted : ""}`);
                 });
               } else {
-                // Single square for unfocused location
                 element
                   .append("rect")
                   .attr("x", -3)
                   .attr("y", -12)
                   .attr("width", 5)
                   .attr("height", 5)
-                  .attr("class", `${styles.markerSquare} ${isHighlighted ? styles.highlighted : ""}`);
+                  .attr("class", styles.markerSquare);
               }
 
               element
@@ -278,153 +238,103 @@ const InteractiveGlobe = ({ highlightedAssembly, focusedAssembly }) => {
               return coords ? `translate(${coords[0]}, ${coords[1]})` : null;
             });
 
-          // Update to hide points on the back side
+          // Debug route rendering
+          const routes = createRouteLines();
+          console.log("About to render routes:", routes);
+
+          const routePaths = pointsGroup
+            .selectAll(".routePath")
+            .data(routes)
+            .enter()
+            .append("path")
+            .attr("class", `${styles.routeLine} routePath`)
+            .attr("d", path);
+
+          console.log("Route paths created:", routePaths.size());
+
           updateGlobe();
-
-          // Create lines between consecutive points
-          for (let i = 0; i < pointsData.length - 1; i++) {
-            const start = pointsData[i];
-            const end = pointsData[i + 1];
-
-            // Create route
-            const routeLine = createRoutePath(start, end);
-
-            // Add the path with appropriate class
-            pointsGroup
-              .append("path")
-              .datum(routeLine)
-              .attr("class", `${styles.routeLine} ${styles.airRoute} routePath`)
-              .attr("d", path);
-          }
         }
 
-        // 3D specific interactions
-        const dragBehavior = d3
-          .drag()
-          .on("start", function (event) {
-            setUserInteracted(true);
-            event.sourceEvent.stopPropagation();
-            const r = projectionRef.current.rotate();
-            const point = d3.pointer(event, this);
+        // Simplified drag behavior
+        const dragBehavior = d3.drag().on("drag", (event) => {
+          const [x, y] = d3.pointer(event);
+          const rotation = projectionRef.current.rotate();
+          const newRotation = [rotation[0] + event.dx / 5, rotation[1] - event.dy / 5, rotation[2]];
 
-            // Store initial position and rotation
-            this.__rotation = {
-              x0: point[0],
-              y0: point[1],
-              r0: r,
-            };
-          })
-          .on("drag", function (event) {
-            if (!this.__rotation) return;
-
-            const point = d3.pointer(event, this);
-            const rotation = this.__rotation;
-
-            const x1 = point[0];
-            const y1 = point[1];
-
-            const deltaX = (x1 - rotation.x0) / 5;
-            const deltaY = (y1 - rotation.y0) / 5;
-
-            const newRotation = [rotation.r0[0] + deltaX, rotation.r0[1] - deltaY, rotation.r0[2]];
-            projectionRef.current.rotate(newRotation);
-            // Store current rotation
-            rotationRef.current = newRotation;
-
-            updateGlobe();
-          });
+          projectionRef.current.rotate(newRotation);
+          rotationRef.current = newRotation;
+          updateGlobe();
+        });
 
         svg.call(dragBehavior);
 
-        // Start auto-rotation if not focused
         if (!focusedAssembly) {
           shouldRotateRef.current = true;
           autoRotate();
         }
-
-        // Add zoom functionality
-        const zoom = d3
-          .zoom()
-          .scaleExtent([0.7, 8])
-          .on("zoom", (event) => {
-            setUserInteracted(true);
-            // Store current transform
-            transformRef.current = event.transform;
-
-            const newScale = initialScale * event.transform.k;
-            projectionRef.current.scale(newScale);
-            svg.select("circle").attr("r", newScale);
-            updateGlobe();
-          });
-
-        // Apply stored transform if it exists
-        if (transformRef.current) {
-          svg.call(zoom.transform, transformRef.current);
-        }
-
-        svg.call(zoom);
       })
-      .catch((error) => {
-        console.error("Error loading world map data:", error);
-      });
+      .catch((error) => console.error("Error loading map:", error));
 
     return () => {
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [assemblies, highlightedAssembly, focusedAssembly]);
+  }, [assemblies, highlightedAssembly, focusedAssembly, autoRotate]);
 
-  // Add this effect to handle focusing on a specific assembly
+  // Modify the effect that handles focusing
   useEffect(() => {
-    if (!focusedAssembly || !svgRef.current || !projectionRef.current) return;
+    if (!svgRef.current || !projectionRef.current) return;
 
     const svg = d3.select(svgRef.current);
-    const zoom = d3.zoom().scaleExtent([0.7, 8]);
-
-    // Get current rotation
     const currentRotation = projectionRef.current.rotate();
+    const currentScale = projectionRef.current.scale();
+    const duration = 1000;
 
-    // Target rotation for the focused assembly
-    const targetRotation = [
-      -focusedAssembly.location.coordinates.longitude,
-      -focusedAssembly.location.coordinates.latitude,
-      0,
-    ];
+    if (focusedAssembly) {
+      shouldRotateRef.current = false;
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    }
 
-    // Animation duration in milliseconds
-    const duration = 1500;
+    const targetRotation = focusedAssembly
+      ? [-focusedAssembly.location.coordinates.longitude, -focusedAssembly.location.coordinates.latitude, 0]
+      : currentRotation;
 
-    // Create interpolator for smooth rotation transition
+    // Only change scale if transitioning between no selection and selection
+    const targetScale = focusedAssembly
+      ? Math.abs(currentScale - ZOOMED_SCALE) < 0.1
+        ? currentScale
+        : ZOOMED_SCALE // Keep current scale if already zoomed
+      : BASE_SCALE;
+
+    // Check if we actually need to animate
+    const rotationChanged = !currentRotation.every((val, i) => Math.abs(val - targetRotation[i]) < 0.1);
+    const scaleChanged = Math.abs(currentScale - targetScale) > 0.1;
+
+    if (!rotationChanged && !scaleChanged) return;
+
     const rotationInterpolator = d3.interpolate(currentRotation, targetRotation);
+    const scaleInterpolator = d3.interpolate(currentScale, targetScale);
 
-    // Get current transform or create default if none exists
-    const currentTransform = transformRef.current || d3.zoomIdentity;
-
-    // Target zoom level (increased to 8)
-    const targetTransform = d3.zoomIdentity.scale(8);
-
-    // Start animation
     d3.transition()
       .duration(duration)
-      .ease(d3.easeCubicInOut) // Add easing for more natural motion
-      .tween("rotate", () => {
+      .ease(d3.easeLinear)
+      .tween("transform", () => {
         return (t) => {
-          // Update rotation gradually
           const newRotation = rotationInterpolator(t);
           projectionRef.current.rotate(newRotation);
           rotationRef.current = newRotation;
 
-          // Update globe at each step
+          const newScale = scaleInterpolator(t);
+          projectionRef.current.scale(newScale);
+          scaleRef.current = newScale;
+          svg.select("circle").attr("r", newScale);
+
           updateGlobe();
         };
       });
-
-    // Animate the zoom separately
-    svg.transition().duration(duration).ease(d3.easeCubicInOut).call(zoom.transform, targetTransform);
-
-    transformRef.current = targetTransform;
-    setUserInteracted(true);
   }, [focusedAssembly, updateGlobe]);
 
   return (

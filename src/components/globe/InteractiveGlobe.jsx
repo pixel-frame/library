@@ -203,10 +203,21 @@ const InteractiveGlobe = ({ highlightedAssembly, focusedAssembly }) => {
                 focusedAssembly.location.coordinates.longitude === d.longitude;
 
               if (isFocused) {
+                // Debug logs
+                console.log("Highlighted Assembly:", highlightedAssembly);
+                console.log("Location Assemblies:", d.assemblies);
+
                 d.assemblies.forEach((assembly, index) => {
                   const row = Math.floor(index / 3);
                   const col = index % 3;
-                  const isSelected = highlightedAssembly?.id === assembly.id;
+                  // Debug the comparison
+                  console.log("Comparing:", {
+                    highlightedNumber: highlightedAssembly?.number,
+                    currentAssemblyNumber: assembly.number,
+                    isMatch: highlightedAssembly && assembly.number === highlightedAssembly.number,
+                  });
+
+                  const isSelected = highlightedAssembly && assembly.number === highlightedAssembly.number;
 
                   element
                     .append("rect")
@@ -216,7 +227,28 @@ const InteractiveGlobe = ({ highlightedAssembly, focusedAssembly }) => {
                     .attr("height", 15)
                     .attr("class", `${styles.markerSquare} ${isSelected ? styles.highlighted : ""}`);
                 });
+
+                // Calculate the bottom of the last row of squares
+                const lastRow = Math.floor((d.assemblies.length - 1) / 3);
+                const squaresBottom = lastRow * 20;
+
+                // Add count text below the squares
+                element
+                  .append("text")
+                  .attr("y", squaresBottom + 10)
+                  .attr("text-anchor", "middle")
+                  .attr("class", styles.markerText)
+                  .text(`[${d.count}]`);
+
+                // Add location name below the count
+                element
+                  .append("text")
+                  .attr("y", squaresBottom + 25)
+                  .attr("text-anchor", "middle")
+                  .attr("class", styles.locationText)
+                  .text(d.name);
               } else {
+                // Single small square when not focused
                 element
                   .append("rect")
                   .attr("x", -3)
@@ -224,14 +256,15 @@ const InteractiveGlobe = ({ highlightedAssembly, focusedAssembly }) => {
                   .attr("width", 5)
                   .attr("height", 5)
                   .attr("class", styles.markerSquare);
-              }
 
-              element
-                .append("text")
-                .attr("y", 3)
-                .attr("text-anchor", "middle")
-                .attr("class", styles.markerText)
-                .text(`[${d.count}]`);
+                // Count text for unfocused state
+                element
+                  .append("text")
+                  .attr("y", 3)
+                  .attr("text-anchor", "middle")
+                  .attr("class", styles.markerText)
+                  .text(`[${d.count}]`);
+              }
             })
             .attr("transform", (d) => {
               const coords = projectionRef.current([d.longitude, d.latitude]);

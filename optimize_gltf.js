@@ -98,15 +98,15 @@ async function processDirectory(inputDirectory, outputDirectory) {
 
 async function main() {
   try {
-    const pixelsDirectory = path.resolve(__dirname, "public/data/models/pixels/");
-    const optimizedDirectory = path.resolve(__dirname, "public/data/models/pixels_optimized/");
+    const assembliesDirectory = path.resolve(__dirname, "public/data/models/assemblies/");
+    const optimizedDirectory = path.resolve(__dirname, "public/data/models/assemblies_optimized/");
 
-    if (!fs.existsSync(pixelsDirectory)) {
-      console.error(`Input directory not found: ${pixelsDirectory}`);
+    if (!fs.existsSync(assembliesDirectory)) {
+      console.error(`Input directory not found: ${assembliesDirectory}`);
       process.exit(1);
     }
 
-    await processDirectory(pixelsDirectory, optimizedDirectory);
+    await processDirectory(assembliesDirectory, optimizedDirectory);
     console.log(`All models have been optimized and saved to ${optimizedDirectory}`);
   } catch (error) {
     console.error("Error during optimization process:", error);

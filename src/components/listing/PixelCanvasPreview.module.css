@@ -1,0 +1,55 @@
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+  gap: 8px;
+  overflow: auto;
+  padding: 4px;
+  background-color: var(--accent-light);
+  position: relative;
+}
+
+.gridContainer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(var(--accent) 1px, transparent 1px),
+    linear-gradient(90deg, var(--accent) 1px, transparent 1px);
+  background-size: 20px 20px;
+  opacity: 0.2;
+  pointer-events: none;
+}
+
+.posterWrapper {
+  aspect-ratio: 1;
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+.poster {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+  transform: scale(0.9);
+  animation: float 3s ease-in-out infinite;
+  animation-delay: var(--delay);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: scale(0.9) translateY(0);
+  }
+  50% {
+    transform: scale(0.9) translateY(-5px);
+  }
+}

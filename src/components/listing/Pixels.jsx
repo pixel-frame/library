@@ -11,7 +11,6 @@ import { RollingText } from "../text/RollingText";
 import Card from "../buttons/Card";
 import PixelDetail from "../../pages/PixelDetail";
 import PixelCanvas2 from "./PixelCanvas";
-import PixelCanvasPreview from "./PixelCanvasPreview";
 import SheetModal from "../buttons/Card";
 const Pixels = () => {
   const [pixels, setPixels] = useState([]);
@@ -33,7 +32,6 @@ const Pixels = () => {
   const [isFilterDropdownOpen, setIsFilterDropdownOpen] = useState(false);
   const [sortBy, setSortBy] = useState("number");
   const [filterBy, setFilterBy] = useState("all");
-  const [showAllPixels, setShowAllPixels] = useState(false);
 
   useEffect(() => {
     const fetchPixels = async () => {
@@ -103,12 +101,6 @@ const Pixels = () => {
   };
 
   const handleSelectionChange = (index) => {
-    if (index === -1) {
-      // Special case for "ALL PIXELS"
-      setShowAllPixels(true);
-      return;
-    }
-    setShowAllPixels(false);
     if (index === selectedIndex) return;
     setSelectedIndex(index);
   };
@@ -247,19 +239,15 @@ const Pixels = () => {
       <div className={styles.mainPixelContent}>
         {viewMode !== "grid" && (
           <>
-            {!showAllPixels ? (
-              <PixelDetailView
-                selectedPixel={stablePixel}
-                previousPixel={previousPixel}
-                transitionDirection={transitionDirection}
-                viewMode={viewMode}
-                onViewModeChange={cycleViewMode}
-                isScrolling={isScrolling}
-                targetPixel={selectedPixel}
-              />
-            ) : (
-              <PixelCanvasPreview />
-            )}
+            <PixelDetailView
+              selectedPixel={stablePixel}
+              previousPixel={previousPixel}
+              transitionDirection={transitionDirection}
+              viewMode={viewMode}
+              onViewModeChange={cycleViewMode}
+              isScrolling={isScrolling}
+              targetPixel={selectedPixel}
+            />
             <div className={styles.breaker}>
               {selectedIndex === 0 ? (
                 <RollingText text="SCROLL THE WHEEL TO EXPLORE /////// " />
@@ -271,15 +259,16 @@ const Pixels = () => {
               )}
             </div>
             <WheelListHandler
-              items={[{ number: "ALL", state_description: "View All" }, ...pixels]}
-              onSelectionChange={(item, index) => handleSelectionChange(index - 1)}
+              items={pixels}
+              titleText="PIXEL BANK"
+              onSelectionChange={(item, index) => handleSelectionChange(index)}
               perspective="left"
-              initialIndex={showAllPixels ? 0 : selectedIndex + 1}
+              initialIndex={selectedIndex >= 0 ? selectedIndex : 0}
               valueFormatter={(item) => ({
-                left: item.number === "ALL" ? "ALL PIXELS" : `Pixel ${item.number || item.serial}`,
+                left: `Pixel ${item.number || item.serial}`,
                 right: item.state_description || "Available",
               })}
-              buttonText={showAllPixels ? "VIEW ALL DETAILS" : "VIEW PIXEL DETAILS"}
+              buttonText="VIEW PIXEL DETAILS"
               onButtonClick={handleExpandClick}
             />
           </>

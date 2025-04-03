@@ -132,18 +132,6 @@ const Pixels = () => {
 
   return (
     <div className={styles.pixelsContainer}>
-      <div className={styles.viewToggle}>
-        <Button
-          className={`${styles.viewButton} ${selectedView === "compact" ? styles.selected : ""}`}
-          onClick={() => setIsFilterOpen(true)}
-          aria-label="Filter view"
-          tabIndex="0"
-          onKeyDown={(e) => e.key === "Enter" && setIsFilterOpen(true)}
-        >
-          [FILTER / EXPAND / IMAGINE]
-        </Button>
-      </div>
-
       <SheetModal isOpen={isFilterOpen} onClose={() => setIsFilterOpen(false)}>
         <div className={styles.filterContent}>
           <div className={styles.filterControls}>
@@ -250,7 +238,7 @@ const Pixels = () => {
             />
             <div className={styles.breaker}>
               {selectedIndex === 0 ? (
-                <RollingText text="SCROLL THE WHEEL TO EXPLORE /////// " />
+                <RollingText text="SCROLL THE WHEEL TO EXPLORE" />
               ) : (
                 <>
                   <AnimatedText text="PIXELS" />

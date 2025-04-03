@@ -218,6 +218,8 @@
 
 .viewToggle {
   display: flex;
+  border-bottom: 1px solid black;
+  background: white;
   gap: 10px;
 }
 
@@ -227,14 +229,13 @@
   padding: 4px 0;
   font-size: 14px;
   cursor: pointer;
-  color: var(--text-primary);
+  color: black;
+
+  margin: 0 auto;
+  text-align: center;
   text-transform: uppercase;
-  border-bottom: 1.5px solid transparent;
 }
 
-.viewButton.selected {
-  border-bottom: 1.5px solid var(--text-primary);
-}
 .title {
   font-size: 1rem;
 

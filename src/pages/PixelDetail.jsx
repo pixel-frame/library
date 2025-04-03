@@ -5,7 +5,7 @@ import InfoTab from "../components/pixelTabs/InfoTab";
 import styles from "./PixelDetail.module.css";
 import CloseButton from "../components/buttons/CloseButton";
 import AssemblyDetail from "./AssemblyDetail";
-
+import Icon from "../components/Icons";
 const TABS = [
   { id: "info", label: "DETAIL", component: InfoTab },
   { id: "history", label: "HISTORY", component: StoryTab },
@@ -81,6 +81,17 @@ const PixelDetail = ({ id: propId, initialTab = "info", onClose }) => {
 
   return (
     <div className={styles.container}>
+      {urlId && (
+        <button
+          className={styles.bankButton}
+          onClick={() => navigate("/")}
+          role="button"
+          tabIndex={0}
+          aria-label="See overall material bank"
+        >
+          <Icon size={12} name="arrow" /> <span>VIEW MATERIAL BANK</span>
+        </button>
+      )}
       <div className={styles.pixelHeader}>
         <h1 className={styles.pixelTitle}>
           {activeTab === "assembly" && pixelData?.timeline?.length > 0

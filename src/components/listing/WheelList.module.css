@@ -9,6 +9,8 @@ body {
   color: var(--text-primary);
   height: 100%;
   overflow: visible;
+  position: absolute;
+  bottom: 0;
   width: 100%;
 }
 
@@ -137,7 +139,7 @@ body {
 .actionButton {
   position: absolute;
   left: 0;
-  bottom: 3rem;
+  bottom: 0rem;
   width: 100%;
   padding: 0px 12px;
   height: 40px;
@@ -155,13 +157,13 @@ body {
   background-color: var(--primary-color, #000);
 
   /* Corner squares effect - increased to 8px size with 3px thickness */
-  background-image: conic-gradient(from 90deg at top 2px left 2px, transparent 90deg, white 0),
+  /* background-image: conic-gradient(from 90deg at top 2px left 2px, transparent 90deg, white 0),
     conic-gradient(from 180deg at top 2px right 2px, transparent 90deg, white 0),
     conic-gradient(from 0deg at bottom 2px left 2px, transparent 90deg, white 0),
     conic-gradient(from -90deg at bottom 2px right 2px, transparent 90deg, white 0);
   background-size: 8px 8px, 8px 8px, 8px 8px, 8px 8px;
   background-position: 0 0, 100% 0, 0 100%, 100% 100%;
-  background-repeat: no-repeat;
+  background-repeat: no-repeat; */
 }
 
 .actionButtonExit {

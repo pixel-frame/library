@@ -8,7 +8,11 @@ import WheelListHandler from "./WheelListHandler";
 import PixelList from "./PixelList";
 import { AnimatedText } from "../text/AnimatedText";
 import { RollingText } from "../text/RollingText";
-
+import Card from "../buttons/Card";
+import PixelDetail from "../../pages/PixelDetail";
+import PixelCanvas2 from "./PixelCanvas";
+import PixelCanvasPreview from "./PixelCanvasPreview";
+import SheetModal from "../buttons/Card";
 const Pixels = () => {
   const [pixels, setPixels] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -21,6 +25,15 @@ const Pixels = () => {
   const [isScrolling, setIsScrolling] = useState(false);
   const [selectedView, setSelectedView] = useState("compact"); // Track which view button is selected
   const scrollTimeoutRef = useRef(null);
+  const [showExpandButton, setShowExpandButton] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedPixelId, setSelectedPixelId] = useState(null);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
+  const [isFilterDropdownOpen, setIsFilterDropdownOpen] = useState(false);
+  const [sortBy, setSortBy] = useState("number");
+  const [filterBy, setFilterBy] = useState("all");
+  const [showAllPixels, setShowAllPixels] = useState(false);
 
   useEffect(() => {
     const fetchPixels = async () => {
@@ -90,8 +103,31 @@ const Pixels = () => {
   };
 
   const handleSelectionChange = (index) => {
+    if (index === -1) {
+      // Special case for "ALL PIXELS"
+      setShowAllPixels(true);
+      return;
+    }
+    setShowAllPixels(false);
     if (index === selectedIndex) return;
     setSelectedIndex(index);
+  };
+
+  const handleExpandClick = () => {
+    const selectedPixel = pixels[selectedIndex];
+    if (!selectedPixel) return;
+
+    setSelectedPixelId(selectedPixel.serial);
+    setIsOpen(true);
+  };
+
+  const handleCloseCard = () => {
+    setIsOpen(false);
+    setSelectedPixelId(null);
+  };
+
+  const handleTabChange = (tabId) => {
+    // Optional: Handle tab changes if needed
   };
 
   if (loading) return <div className={styles.loadingIndicator}>LOADING PIXEL BANK...</div>;
@@ -104,45 +140,126 @@ const Pixels = () => {
 
   return (
     <div className={styles.pixelsContainer}>
-      <PageHeader
-        title="Material Bank"
-        viewToggle={
-          <div className={styles.viewToggle}>
-            <Button
-              className={`${styles.viewButton} ${selectedView === "compact" ? styles.selected : ""}`}
-              onClick={() => handleViewChange("compact")}
-              aria-label="Compact view"
-              tabIndex="0"
-              onKeyDown={(e) => e.key === "Enter" && handleViewChange("compact")}
-            >
-              [DETAILED
-            </Button>
-            <Button
-              className={`${styles.viewButton} ${selectedView === "detailed" ? styles.selected : ""}`}
-              onClick={() => handleViewChange("detailed")}
-              aria-label="Detailed view"
-              tabIndex="0"
-              onKeyDown={(e) => e.key === "Enter" && handleViewChange("detailed")}
-            >
-              COMPACT]
-            </Button>
+      <div className={styles.viewToggle}>
+        <Button
+          className={`${styles.viewButton} ${selectedView === "compact" ? styles.selected : ""}`}
+          onClick={() => setIsFilterOpen(true)}
+          aria-label="Filter view"
+          tabIndex="0"
+          onKeyDown={(e) => e.key === "Enter" && setIsFilterOpen(true)}
+        >
+          [FILTER / EXPAND / IMAGINE]
+        </Button>
+      </div>
+
+      <SheetModal isOpen={isFilterOpen} onClose={() => setIsFilterOpen(false)}>
+        <div className={styles.filterContent}>
+          <div className={styles.filterControls}>
+            <div className={styles.dropdownContainer}>
+              <Button
+                className={styles.dropdownButton}
+                onClick={() => setIsSortDropdownOpen(!isSortDropdownOpen)}
+                aria-label="Sort options"
+                tabIndex="0"
+                onKeyDown={(e) => e.key === "Enter" && setIsSortDropdownOpen(!isSortDropdownOpen)}
+              >
+                SORT BY
+              </Button>
+              {isSortDropdownOpen && (
+                <div className={styles.dropdownMenu}>
+                  <Button
+                    onClick={() => {
+                      setSortBy("number");
+                      setIsSortDropdownOpen(false);
+                    }}
+                  >
+                    Number
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setSortBy("generation");
+                      setIsSortDropdownOpen(false);
+                    }}
+                  >
+                    Generation
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setSortBy("state");
+                      setIsSortDropdownOpen(false);
+                    }}
+                  >
+                    State
+                  </Button>
+                </div>
+              )}
+            </div>
+
+            <div className={styles.dropdownContainer}>
+              <Button
+                className={styles.dropdownButton}
+                onClick={() => setIsFilterDropdownOpen(!isFilterDropdownOpen)}
+                aria-label="Filter options"
+                tabIndex="0"
+                onKeyDown={(e) => e.key === "Enter" && setIsFilterDropdownOpen(!isFilterDropdownOpen)}
+              >
+                FILTER
+              </Button>
+              {isFilterDropdownOpen && (
+                <div className={styles.dropdownMenu}>
+                  <Button
+                    onClick={() => {
+                      setFilterBy("all");
+                      setIsFilterDropdownOpen(false);
+                    }}
+                  >
+                    All
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setFilterBy("available");
+                      setIsFilterDropdownOpen(false);
+                    }}
+                  >
+                    Available
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setFilterBy("locked");
+                      setIsFilterDropdownOpen(false);
+                    }}
+                  >
+                    Locked
+                  </Button>
+                </div>
+              )}
+            </div>
           </div>
-        }
-      />
+          <PixelCanvas2
+            pixels={pixels}
+            selectedIndex={selectedIndex}
+            onPixelClick={handleSelectionChange}
+            sortMode={sortBy}
+          />
+        </div>
+      </SheetModal>
 
       <div className={styles.mainPixelContent}>
         {viewMode !== "grid" && (
           <>
-            {" "}
-            <PixelDetailView
-              selectedPixel={stablePixel}
-              previousPixel={previousPixel}
-              transitionDirection={transitionDirection}
-              viewMode={viewMode}
-              onViewModeChange={cycleViewMode}
-              isScrolling={isScrolling}
-              targetPixel={selectedPixel}
-            />
+            {!showAllPixels ? (
+              <PixelDetailView
+                selectedPixel={stablePixel}
+                previousPixel={previousPixel}
+                transitionDirection={transitionDirection}
+                viewMode={viewMode}
+                onViewModeChange={cycleViewMode}
+                isScrolling={isScrolling}
+                targetPixel={selectedPixel}
+              />
+            ) : (
+              <PixelCanvasPreview />
+            )}
             <div className={styles.breaker}>
               {selectedIndex === 0 ? (
                 <RollingText text="SCROLL THE WHEEL TO EXPLORE /////// " />
@@ -154,33 +271,34 @@ const Pixels = () => {
               )}
             </div>
             <WheelListHandler
-              items={pixels}
-              titleText="PIXEL BANK"
-              onSelectionChange={(item, index) => {
-                handleSelectionChange(index);
-              }}
+              items={[{ number: "ALL", state_description: "View All" }, ...pixels]}
+              onSelectionChange={(item, index) => handleSelectionChange(index - 1)}
               perspective="left"
-              initialIndex={selectedIndex >= 0 ? selectedIndex : 0}
+              initialIndex={showAllPixels ? 0 : selectedIndex + 1}
               valueFormatter={(item) => ({
-                left: `Pixel ${item.number || item.serial}`,
+                left: item.number === "ALL" ? "ALL PIXELS" : `Pixel ${item.number || item.serial}`,
                 right: item.state_description || "Available",
               })}
+              buttonText={showAllPixels ? "VIEW ALL DETAILS" : "VIEW PIXEL DETAILS"}
+              onButtonClick={handleExpandClick}
             />
           </>
         )}
-        {viewMode == "grid" && (
-          <>
-            <div>
-              <PixelList
-                pixels={pixels}
-                selectedIndex={selectedIndex}
-                viewMode={viewMode}
-                onItemClick={handleSelectionChange}
-              />
-            </div>
-          </>
+        {viewMode === "grid" && (
+          <PixelList
+            pixels={pixels}
+            selectedIndex={selectedIndex}
+            viewMode={viewMode}
+            onItemClick={handleSelectionChange}
+          />
         )}
       </div>
+
+      {isOpen && selectedPixelId && (
+        <Card isOpen={isOpen} onClose={handleCloseCard}>
+          <PixelDetail id={selectedPixelId} initialTab="info" onClose={handleCloseCard} onTabChange={handleTabChange} />
+        </Card>
+      )}
     </div>
   );
 };

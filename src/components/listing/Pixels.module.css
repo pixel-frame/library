@@ -303,6 +303,66 @@
   letter-spacing: 1px;
 }
 
+.filterButton {
+  margin-right: 12px;
+}
+
+.filterControls {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 16px;
+  z-index: 2;
+}
+
+.dropdownContainer {
+  position: relative;
+  flex: 1;
+  max-width: 160px;
+}
+
+.dropdownButton {
+  width: 100%;
+  min-width: 120px;
+  background-color: #000;
+  color: #fff;
+  border: 1px solid #fff;
+  padding: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.dropdownMenu {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  background: #000;
+  border: 1px solid #fff;
+  width: 100%;
+  z-index: 1;
+  margin-bottom: 8px;
+}
+
+.dropdownMenu button {
+  width: 100%;
+  text-align: left;
+  padding: 12px;
+  border: none;
+  background: none;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.filterContent {
+  height: calc(100vh - 80px);
+  padding: 0;
+  padding-bottom: 80px;
+}
+
 @media (max-width: 768px) {
   .vertical .itemInfo {
     grid-template-rows: 1fr;

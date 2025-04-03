@@ -152,3 +152,19 @@
   font-weight: 500;
   margin: 0;
 }
+
+.bankButton {
+  background: none;
+  border: none;
+  color: var(--text-color);
+  padding: 12px;
+  margin-bottom: 0px;
+  display: flex;
+  font-size: 14px;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-family: var(--font-family);
+  letter-spacing: 0.05em;
+  gap: 10px;
+  text-align: left;
+}

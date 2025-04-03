@@ -4,4 +4,8 @@
   margin: 0 4px;
   line-height: 1;
   height: 20px;
+  width: auto;
+  max-width: 100%;
+  shape-rendering: crispEdges;
+  overflow: visible;
 }

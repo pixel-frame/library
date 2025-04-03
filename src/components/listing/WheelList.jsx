@@ -51,7 +51,6 @@ export default function Wheel(props) {
     if (sliderState && props.onIndexChange) {
       // Get the current centered index
       const currentIndex = sliderState.abs;
-      console.log("WheelList index changed:", currentIndex);
       props.onIndexChange(currentIndex);
     }
   }, [sliderState, props.onIndexChange]);

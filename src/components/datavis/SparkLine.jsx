@@ -6,39 +6,63 @@ const SparkLine = ({ data, color = "white", height = 24, width = 120 }) => {
   const svgRef = useRef(null);
 
   useEffect(() => {
-    if (!data || Object.keys(data).length === 0) return;
+    if (!data || Object.keys(data).length < 2) {
+      return;
+    }
 
     // Clear any existing content
     d3.select(svgRef.current).selectAll("*").remove();
 
-    // Convert data to array of [date, value] pairs
-    const timeData = Object.entries(data).map(([dateStr, value]) => [new Date(dateStr), value]);
+    // Debug log the input data
+    console.log("Input data:", data);
 
-    // Sort by date
-    timeData.sort((a, b) => a[0] - b[0]);
+    // Helper function to parse various date formats
+    const parseDate = (dateStr) => {
+      // Handle "January 2022" format
+      if (dateStr.includes(" ")) {
+        const [month, year] = dateStr.split(" ");
+        return new Date(`${month} 1, ${year}`);
+      }
+      // Handle standard date formats
+      return new Date(dateStr);
+    };
 
-    // Set up dimensions with padding to prevent cutting off
+    // Process data once with more robust date parsing
+    const timeData = Object.entries(data)
+      .map(([dateStr, value]) => {
+        const date = parseDate(dateStr);
+        const numValue = typeof value === "string" ? parseFloat(value) : Number(value);
+        return isNaN(date.getTime()) ? null : [date, numValue];
+      })
+      .filter(Boolean)
+      .sort(([a], [b]) => a - b);
+
+    if (timeData.length < 2) {
+      console.warn("SparkLine: Not enough valid data points", {
+        originalData: data,
+        processedData: timeData,
+        dateStrings: Object.keys(data),
+      });
+      return;
+    }
+
     const margin = { left: 3, right: 3, top: 2, bottom: 2 };
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
 
-    // Create scales
-    const xScale = d3
-      .scaleTime()
-      .domain(d3.extent(timeData, (d) => d[0]))
-      .range([0, innerWidth]);
+    const xExtent = d3.extent(timeData, (d) => d[0]);
+    const yExtent = d3.extent(timeData, (d) => d[1]);
 
-    // Calculate the vertical center point
-    const dataMin = d3.min(timeData, (d) => d[1]) || 0;
-    const dataMax = d3.max(timeData, (d) => d[1]) || 1;
-    const dataRange = dataMax - dataMin;
+    const xScale = d3.scaleTime().domain(xExtent).range([0, innerWidth]);
 
-    // Create a centered y-scale with equal padding above and below
-    const yPadding = dataRange * 0.2; // 20% padding
-    const yMin = Math.max(0, dataMin - yPadding); // Don't go below 0 unless data does
-    const yMax = dataMax + yPadding;
+    const yMin = Math.min(0, yExtent[0]);
+    const yMax = yExtent[1];
+    const yPadding = Math.abs(yMax - yMin) * 0.1;
 
-    const yScale = d3.scaleLinear().domain([yMin, yMax]).range([innerHeight, 0]);
+    const yScale = d3
+      .scaleLinear()
+      .domain([yMin - yPadding, yMax + yPadding])
+      .range([innerHeight, 0]);
 
     // Create SVG with explicit height and width
     const svg = d3
@@ -51,15 +75,30 @@ const SparkLine = ({ data, color = "white", height = 24, width = 120 }) => {
     // Create container group with margins to prevent cutting off edges
     const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
 
-    // Create line generator with step interpolation for orthogonal lines
+    // Create line generator and log the generated path
     const line = d3
       .line()
-      .x((d) => xScale(d[0]))
-      .y((d) => yScale(d[1]))
-      .curve(d3.curveStepAfter); // Use step interpolation for orthogonal lines
+      .x((d) => {
+        const scaledX = xScale(d[0]);
+        return scaledX;
+      })
+      .y((d) => {
+        const scaledY = yScale(d[1]);
+        return scaledY;
+      })
+      .curve(d3.curveStepAfter);
+
+    // Log the generated path data
+    const pathData = line(timeData);
 
     // Draw the line
-    g.append("path").datum(timeData).attr("fill", "none").attr("stroke", color).attr("stroke-width", 1).attr("d", line);
+    const path = g
+      .append("path")
+      .datum(timeData)
+      .attr("fill", "none")
+      .attr("stroke", color)
+      .attr("stroke-width", 1)
+      .attr("d", line);
 
     // Add squares for data points instead of circles
     g.selectAll("rect")

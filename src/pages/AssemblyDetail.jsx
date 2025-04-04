@@ -8,7 +8,14 @@ import ExpandButton from "../components/buttons/ExpandButton";
 import CloseButton from "../components/buttons/CloseButton";
 import NetworkMatrix from "../components/datavis/NetworkMatrix";
 
-const AssemblyDetail = ({ assemblyId, assembly: passedAssembly, fullData: passedFullData, onBack, isActive }) => {
+const AssemblyDetail = ({
+  assemblyId,
+  assembly: passedAssembly,
+  fullData: passedFullData,
+  onBack,
+  isActive,
+  pixelId,
+}) => {
   const { id: urlId } = useParams();
   const effectiveId = assemblyId || urlId;
   const location = useLocation();
@@ -64,13 +71,15 @@ const AssemblyDetail = ({ assemblyId, assembly: passedAssembly, fullData: passed
 
   useEffect(() => {
     const loadMediaItems = () => {
-      const items = Array.from({ length: 5 }, (_, i) => ({
-        id: i + 1,
-        title: `Assembly ${assembly.serial} - Image ${i + 1}`,
-        url: `/data/media/${assembly.serial}/${i + 1}.JPG`,
+      const possibleImages = [1, 2, 3, 4, 5];
+      const items = possibleImages.map((i) => ({
+        id: i,
+        title: `Assembly ${assembly.serial} - Image ${i}`,
+        url: `/data/media/${assembly.serial}/${i}.JPG`,
       }));
 
       setMediaItems(items);
+      setLoadedItems([]); // Reset loaded items when assembly changes
     };
 
     if (assembly) {
@@ -158,19 +167,34 @@ const AssemblyDetail = ({ assemblyId, assembly: passedAssembly, fullData: passed
             </ModelPreview>
           </div>
         )}
-
         <div className="assembly-info-container">
-          <NetworkMatrix network={assembly.network} />
           <DetailGrid
             items={[
               {
                 title: "Description",
                 value: assembly.description || "No description available",
-                fullWidth: true,
+                fullSpan: true,
+              },
+            ]}
+          />
+
+          <DetailGrid
+            items={[
+              {
+                title: "Start Date",
+                value: new Date(assembly.date).toLocaleDateString("en-GB", {
+                  day: "numeric",
+                  month: "short",
+                  year: "numeric",
+                }),
               },
               {
-                title: "Date",
-                value: new Date(assembly.date).toLocaleDateString(),
+                title: "End Date",
+                value: new Date(assembly.date).toLocaleDateString("en-GB", {
+                  day: "numeric",
+                  month: "short",
+                  year: "numeric",
+                }),
               },
               {
                 title: "Generation",
@@ -193,67 +217,58 @@ const AssemblyDetail = ({ assemblyId, assembly: passedAssembly, fullData: passed
                 value: `${assembly.pixel_weight} kg`,
                 info: "Total weight of pixels used in assembly",
               },
-              {
-                title: "Transport Coefficient",
-                value: assembly.transport.coefficient || "N/A",
-                info: "Carbon emissions per kg per km transported (kgCO₂e/kg)",
-              },
-              {
-                title: "A1-A3 Emissions",
-                value: `${assembly.a1_a3_emissions} kg CO₂e`,
-                info: "Production phase emissions",
-              },
+
               {
                 title: "Transport",
                 value: `${assembly.transport.distance} km via ${assembly.transport.type || "N/A"}`,
               },
               {
-                title: "Transport Emissions",
+                title: "Carbon Cost",
                 value: `${assembly.transport.emissions} kg CO₂e`,
               },
-              {
-                title: "Total Emissions",
-                value: `${assembly.total_emissions || "Not calculated"} kg CO₂e`,
-                info: "Combined emissions from production and transport",
-              },
+
+              { title: "Associated Pixels", fullSpan: true },
             ]}
           />
         </div>
-
-        <div className={styles["media-section"]}>
-          <h2 className={styles["section-title"]}>Media</h2>
-          <div className={styles["media-grid"]}>
-            {mediaItems.map((item) => (
-              <div
-                key={item.id}
-                className={styles["media-item"]}
-                style={{ display: loadedItems.includes(item.id) ? "block" : "none" }}
-              >
-                <div
-                  className={styles["expand-icon"]}
-                  onClick={() => handleOpenFullscreen(item)}
-                  onKeyDown={(e) => handleKeyDown(e, () => handleOpenFullscreen(item))}
-                  tabIndex="0"
-                  role="button"
-                  aria-label={`Expand ${item.title}`}
-                >
-                  ↗
-                </div>
-                <img
-                  src={item.url}
-                  alt={item.title}
-                  className={styles["media-thumbnail"]}
-                  loading="lazy"
-                  onLoad={() => setLoadedItems((prev) => [...prev, item.id])}
-                  onError={(e) => {
-                    e.target.closest(".media-item").style.display = "none";
-                  }}
-                />
+        <NetworkMatrix network={assembly.network} selectedIndex={parseInt(pixelId)} />
+        {loadedItems.length > 0 && (
+          <>
+            <DetailGrid items={[{ title: "Media" }]} />
+            <div className={styles["media-section"]}>
+              <div className={styles["media-grid"]}>
+                {mediaItems.map((item) => (
+                  <div
+                    key={item.id}
+                    className={styles["media-item"]}
+                    style={{ display: loadedItems.includes(item.id) ? "block" : "none" }}
+                  >
+                    <div
+                      className={styles["expand-icon"]}
+                      onClick={() => handleOpenFullscreen(item)}
+                      onKeyDown={(e) => handleKeyDown(e, () => handleOpenFullscreen(item))}
+                      tabIndex="0"
+                      role="button"
+                      aria-label={`Expand ${item.title}`}
+                    >
+                      ↗
+                    </div>
+                    <img
+                      src={item.url}
+                      alt={item.title}
+                      className={styles["media-thumbnail"]}
+                      loading="lazy"
+                      onLoad={() => setLoadedItems((prev) => [...prev, item.id])}
+                      onError={(e) => {
+                        e.target.closest(`.${styles["media-item"]}`).style.display = "none";
+                      }}
+                    />
+                  </div>
+                ))}
               </div>
-            ))}
-            {loadedItems.length === 0 && <div className={styles["no-media"]}>No images available</div>}
-          </div>
-        </div>
+            </div>
+          </>
+        )}
       </div>
 
       {fullscreenImage && (

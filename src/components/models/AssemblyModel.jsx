@@ -24,12 +24,13 @@ const AssemblyModel = ({ modelPath, isPreview = false, isInteractive = false, on
         shadow-intensity="1"
         environment-image="neutral"
         camera-orbit="45deg 55deg 2.5m"
-        exposure="1.1"
+        exposure="1"
         environment-intensity="1"
         auto-rotate={isPreview}
         camera-controls={isInteractive}
         interaction-prompt="none"
         touch-action="none"
+        zoom="200"
         disable-zoom={!isInteractive}
         disable-tap={!isInteractive}
         disable-pan={!isInteractive}

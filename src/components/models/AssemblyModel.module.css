@@ -45,15 +45,19 @@
 
 .expandButton {
   position: absolute;
-  bottom: 10px;
+  bottom: 16px;
   right: 16px;
   width: 44px;
   height: 44px;
+  line-height: 0;
   font-size: 24px !important;
-  background-color: #000;
-  color: #fff;
+  background-color: var(--text-primary);
+  color: var(--bg-primary);
   border: none;
-  font-size: 16px;
+  font-variation-settings: "mono" 0.5;
+  font-family: inherit;
+  font-weight: 500;
+  font-size: 22px !important;
   display: flex;
   align-items: center;
   justify-content: center;

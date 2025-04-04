@@ -204,18 +204,10 @@ const InteractiveGlobe = ({ highlightedAssembly, focusedAssembly }) => {
 
               if (isFocused) {
                 // Debug logs
-                console.log("Highlighted Assembly:", highlightedAssembly);
-                console.log("Location Assemblies:", d.assemblies);
 
                 d.assemblies.forEach((assembly, index) => {
                   const row = Math.floor(index / 3);
                   const col = index % 3;
-                  // Debug the comparison
-                  console.log("Comparing:", {
-                    highlightedNumber: highlightedAssembly?.number,
-                    currentAssemblyNumber: assembly.number,
-                    isMatch: highlightedAssembly && assembly.number === highlightedAssembly.number,
-                  });
 
                   const isSelected = highlightedAssembly && assembly.number === highlightedAssembly.number;
 
@@ -273,7 +265,6 @@ const InteractiveGlobe = ({ highlightedAssembly, focusedAssembly }) => {
 
           // Debug route rendering
           const routes = createRouteLines();
-          console.log("About to render routes:", routes);
 
           const routePaths = pointsGroup
             .selectAll(".routePath")
@@ -282,8 +273,6 @@ const InteractiveGlobe = ({ highlightedAssembly, focusedAssembly }) => {
             .append("path")
             .attr("class", `${styles.routeLine} routePath`)
             .attr("d", path);
-
-          console.log("Route paths created:", routePaths.size());
 
           updateGlobe();
         }

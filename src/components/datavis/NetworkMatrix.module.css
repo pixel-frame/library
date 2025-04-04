@@ -21,7 +21,8 @@
 }
 
 .greenSquare {
-  color: #4caf50;
+  color: white;
+  background-color: green;
 }
 
 .blueSquare {

@@ -2,8 +2,6 @@ import React from "react";
 import styles from "./NetworkMatrix.module.css";
 
 const NetworkMatrix = ({ network = [], selectedIndex = null }) => {
-  // Create an array of 138 elements (1-138)
-  console.log(network);
   const squares = Array.from({ length: 138 }, (_, i) => i + 1);
 
   const getSquareColor = (index) => {

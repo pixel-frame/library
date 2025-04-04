@@ -95,9 +95,7 @@ const PixelDetail = ({ id: propId, initialTab = "info", onClose }) => {
       <div className={styles.pixelHeader}>
         <h1 className={styles.pixelTitle}>
           {activeTab === "assembly" && pixelData?.timeline?.length > 0
-            ? `PIXEL-${pixelData.serial}: Part of ${
-                pixelData.timeline[pixelData.timeline.length - 1]?.name || "Assembly"
-              }`
+            ? `PIXEL-${pixelData.serial} -> ${pixelData.timeline[pixelData.timeline.length - 1]?.name || "Assembly"}`
             : `PIXEL-${pixelData.serial}`}
         </h1>
       </div>
@@ -124,7 +122,7 @@ const PixelDetail = ({ id: propId, initialTab = "info", onClose }) => {
           isActive: activeTab === tabId,
           loading,
           error,
-          pixelId,
+          pixelId: parseInt(pixelId),
         };
 
         if (tabId === "assembly" && pixelData?.timeline?.length > 0) {

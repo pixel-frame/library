@@ -19,7 +19,7 @@
 }
 
 .visualizationContainer {
-  flex: 0.55;
+  flex: 0.6;
   min-height: 0;
   transition: flex 0.3s ease;
 }

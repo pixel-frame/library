@@ -11,6 +11,7 @@ const PixelModelTransition = ({
   isScrolling,
   targetPixel,
   containerLayout,
+  onExpand,
 }) => {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [showPrevious, setShowPrevious] = useState(false);
@@ -71,6 +72,13 @@ const PixelModelTransition = ({
     }
   }, [currentSerial, previousSerial]);
 
+  const handleExpandClick = (e) => {
+    e.preventDefault();
+    if (onExpand) {
+      onExpand(isTransitioning ? pendingPixel : displayedPixel);
+    }
+  };
+
   return (
     <div className={`${styles.transitionContainer} ${containerLayout ? styles[containerLayout] : ""}`}>
       {showPrevious && (
@@ -98,7 +106,15 @@ const PixelModelTransition = ({
           isPreview={true}
         />
         <div className={styles.pixelOverlay}>
-          <button className={styles.expandButton}>[+]</button>
+          <button
+            className={styles.expandButton}
+            onClick={handleExpandClick}
+            aria-label="Expand pixel details"
+            tabIndex="0"
+            onKeyDown={(e) => e.key === "Enter" && handleExpandClick(e)}
+          >
+            [+]
+          </button>
           <div className={styles.pixelLabel}>[PIXEL {isTransitioning ? pendingPixel : displayedPixel}]</div>
         </div>
       </div>

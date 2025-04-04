@@ -13,6 +13,7 @@ const PixelDetailView = ({
   onViewModeChange,
   isScrolling,
   targetPixel,
+  onExpand,
 }) => {
   if (!selectedPixel) return null;
 
@@ -28,6 +29,7 @@ const PixelDetailView = ({
             pixelNumber={selectedPixel.number}
             isScrolling={isScrolling}
             targetPixel={targetPixel?.number}
+            onExpand={onExpand}
           />
         ) : (
           <div className={styles.modelPlaceholder}>HIIII!! App cannot handle model load</div>

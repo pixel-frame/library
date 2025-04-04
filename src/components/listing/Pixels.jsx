@@ -141,6 +141,7 @@ const Pixels = () => {
       onViewModeChange={cycleViewMode}
       isScrolling={isScrolling}
       targetPixel={selectedPixel}
+      onExpand={handleExpandClick}
     />
   );
 

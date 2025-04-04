@@ -270,6 +270,7 @@ const AssemblyDetail = ({
           </>
         )}
       </div>
+      <div className={styles["buffer"]}></div>
 
       {fullscreenImage && (
         <div className={styles["fullscreen-overlay"]} onClick={handleCloseFullscreen}>

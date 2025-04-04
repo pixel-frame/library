@@ -5,6 +5,17 @@
   overflow: hidden;
 }
 
+/* New class for visualization container layout */
+.visualization {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
 .modelSlide {
   position: absolute;
   top: 0;
@@ -25,6 +36,9 @@
   justify-content: space-between;
   padding: 1rem;
   z-index: 10;
+  /* Make sure it doesn't overflow */
+  max-height: 65%;
+  overflow: hidden;
 }
 
 .expandButton {

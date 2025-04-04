@@ -145,19 +145,20 @@ const Pixels = () => {
   );
 
   const renderListing = () => (
-    <WheelListHandler
-      items={pixels}
-      titleText="PIXEL BANK"
-      onSelectionChange={(item, index) => handleSelectionChange(index)}
-      perspective="left"
-      initialIndex={selectedIndex >= 0 ? selectedIndex : 0}
-      valueFormatter={(item) => ({
-        left: `Pixel ${item.number || item.serial}`,
-        right: item.state_description || "Available",
-      })}
-      buttonText="VIEW PIXEL DETAILS"
-      onButtonClick={handleExpandClick}
-    />
+    <div className={styles.scrollableList}>
+      <WheelListHandler
+        items={pixels}
+        onSelectionChange={(item, index) => handleSelectionChange(index)}
+        perspective="left"
+        initialIndex={selectedIndex >= 0 ? selectedIndex : 0}
+        valueFormatter={(item) => ({
+          left: `Pixel ${item.number || item.serial}`,
+          right: item.state_description || "Available",
+        })}
+        buttonText="VIEW PIXEL DETAILS"
+        onButtonClick={handleExpandClick}
+      />
+    </div>
   );
 
   return (

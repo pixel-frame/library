@@ -8,7 +8,7 @@
   right: 0;
   bottom: 0;
   padding-top: calc(40px); /* Height of Navigation (32px padding + text) + border */
-  padding-bottom: 38px; /* Height of bottom nav */
+  padding-bottom: 45px; /* Height of bottom nav */
 }
 
 .content {
@@ -19,13 +19,13 @@
 }
 
 .visualizationContainer {
-  flex: 0.6;
+  flex: 0.55;
   min-height: 0;
   transition: flex 0.3s ease;
 }
 
 .visualizationContainer.collapsed {
-  flex: 0.4;
+  flex: 0.3;
 }
 
 .breaker {
@@ -39,12 +39,12 @@
 }
 
 .listingContainer {
-  flex: 0.4;
+  flex: 0.5;
   min-height: 0;
   display: flex;
   flex-direction: column;
 }
 
 .listingContainer.expanded {
-  flex: 0.6;
+  flex: 0.7;
 }

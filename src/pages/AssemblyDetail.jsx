@@ -232,7 +232,7 @@ const AssemblyDetail = ({
           />
         </div>
         <NetworkMatrix network={assembly.network} selectedIndex={parseInt(pixelId)} />
-        {loadedItems.length > 0 && (
+        {mediaItems.length > 0 && (
           <>
             <DetailGrid items={[{ title: "Media" }]} />
             <div className={styles["media-section"]}>
@@ -240,13 +240,13 @@ const AssemblyDetail = ({
                 {mediaItems.map((item) => (
                   <div
                     key={item.id}
+                    onClick={() => handleOpenFullscreen(item)}
+                    onKeyDown={(e) => handleKeyDown(e, () => handleOpenFullscreen(item))}
                     className={styles["media-item"]}
                     style={{ display: loadedItems.includes(item.id) ? "block" : "none" }}
                   >
                     <div
                       className={styles["expand-icon"]}
-                      onClick={() => handleOpenFullscreen(item)}
-                      onKeyDown={(e) => handleKeyDown(e, () => handleOpenFullscreen(item))}
                       tabIndex="0"
                       role="button"
                       aria-label={`Expand ${item.title}`}

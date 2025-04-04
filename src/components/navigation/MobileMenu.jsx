@@ -90,7 +90,7 @@ const MobileMenu = ({ links }) => {
 
             {/* Top Section: Dark Mode Toggle and Privacy Policy */}
             <div className={styles.topSection}>
-              <div
+              {/* <div
                 className={styles.themeToggle}
                 onClick={toggleTheme}
                 onKeyDown={(e) => {
@@ -103,7 +103,7 @@ const MobileMenu = ({ links }) => {
                 aria-label="Toggle dark mode"
               >
                 DARK MODE: {theme === "dark" ? "ON" : "OFF"}
-              </div>
+              </div> */}
 
               <a href="/privacy-policy" className={styles.privacyLink} tabIndex="0" aria-label="Privacy Policy">
                 Privacy Policy

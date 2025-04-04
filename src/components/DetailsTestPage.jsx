@@ -7,6 +7,7 @@ function AnimatedText({ text, delay = 0 }) {
   const [displayText, setDisplayText] = useState(text.replace(/./g, initialGlyph));
   const [isChanging, setIsChanging] = useState(false);
 
+  
   useEffect(() => {
     let currentIteration = 0;
     const maxIterations = 30;

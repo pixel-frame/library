@@ -8,6 +8,8 @@ import styles from "./Explore.module.css";
 import Card from "../components/buttons/Card";
 import { RollingText } from "../components/text/RollingText";
 import { AnimatedText } from "../components/text/AnimatedText";
+import VisualizationLayout from "../layouts/VisualizationLayout";
+
 const Explore = () => {
   const [isListExpanded, setIsListExpanded] = useState(false);
   const [highlightedAssembly, setHighlightedAssembly] = useState(null);
@@ -82,19 +84,14 @@ const Explore = () => {
   }, [navigate]);
 
   return (
-    <div className={styles.container}>
-      {/* <PageHeader title="Explore Assemblies" /> */}
-
-      <div className={styles.content}>
-        <div className={styles.globeContainer}>
+    <>
+      <VisualizationLayout
+        visualization={
           <InteractiveGlobe highlightedAssembly={highlightedAssembly} focusedAssembly={highlightedAssembly} />
-        </div>
-        <div className={styles.breaker}>
-          <AnimatedText text="ASSEMBLY" />
-          <AnimatedText text="LOCATION" />
-        </div>
-
-        <div className={styles.sideContainer}>
+        }
+        breakerLeftText="ASSEMBLY"
+        breakerRightText="LOCATION"
+        listingComponent={
           <SelectedAssemblies
             assemblies={assemblies}
             onScroll={handleScroll}
@@ -102,8 +99,9 @@ const Explore = () => {
             onExpand={handleExpand}
             urlAssemblyId={assemblyId}
           />
-        </div>
-      </div>
+        }
+      />
+
       {focusedAssembly && (
         <Card isOpen={isSheetOpen} onClose={handleBack}>
           <AssemblyDetail
@@ -114,7 +112,7 @@ const Explore = () => {
           />
         </Card>
       )}
-    </div>
+    </>
   );
 };
 

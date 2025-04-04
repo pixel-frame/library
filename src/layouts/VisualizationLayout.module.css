@@ -1,0 +1,50 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding-top: calc(40px); /* Height of Navigation (32px padding + text) + border */
+  padding-bottom: 38px; /* Height of bottom nav */
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.visualizationContainer {
+  flex: 0.6;
+  min-height: 0;
+  transition: flex 0.3s ease;
+}
+
+.visualizationContainer.collapsed {
+  flex: 0.4;
+}
+
+.breaker {
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  display: flex;
+  justify-content: space-between;
+  padding: 0.33rem 1rem;
+  font-size: var(--font-sm);
+  flex-shrink: 0;
+}
+
+.listingContainer {
+  flex: 0.4;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.listingContainer.expanded {
+  flex: 0.6;
+}

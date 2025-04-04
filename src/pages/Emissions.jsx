@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import Carbon from "../components/datavis/Carbon";
 import SelectedPixels from "../components/datavis/SelectedPixels";
-import PageHeader from "../components/common/PageHeader";
+import VisualizationLayout from "../layouts/VisualizationLayout";
 import styles from "./Emissions.module.css";
 
 const Emissions = () => {
@@ -64,26 +64,27 @@ const Emissions = () => {
       {/* <PageHeader title="Carbon Emissions" /> */}
 
       <div className={styles.content}>
-        <div className={`${styles.visualizationContainer} ${isListExpanded ? styles.collapsed : ""}`}>
-          <Carbon
-            onSelectionChange={handleSelectionChange}
-            selectedPoints={selectedPoints}
-            highlightedPoint={highlightedPoint}
-          />
-        </div>
-        <div className={styles.breaker}>
-          <span>PIXEL</span>
-          <span>A1-A5 EMISSIONS</span>
-        </div>
-        <div className={`${styles.listingContainer} ${isListExpanded ? styles.expanded : ""}`}>
-          <SelectedPixels
-            selectedPoints={selectedPoints}
-            onScroll={handleScroll}
-            onHighlight={handleHighlight}
-            urlPixelId={pixelId}
-            onPixelSelect={handlePixelSelect}
-          />
-        </div>
+        <VisualizationLayout
+          visualization={
+            <Carbon
+              onSelectionChange={handleSelectionChange}
+              selectedPoints={selectedPoints}
+              highlightedPoint={highlightedPoint}
+            />
+          }
+          breakerLeftText="PIXEL"
+          breakerRightText="A1-A5 EMISSIONS"
+          listingComponent={
+            <SelectedPixels
+              selectedPoints={selectedPoints}
+              onScroll={handleScroll}
+              onHighlight={handleHighlight}
+              urlPixelId={searchParams.get("pixel")}
+              onPixelSelect={handlePixelSelect}
+            />
+          }
+          isCollapsed={isListExpanded}
+        />
       </div>
     </div>
   );

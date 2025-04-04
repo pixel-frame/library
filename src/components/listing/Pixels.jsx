@@ -12,6 +12,8 @@ import Card from "../buttons/Card";
 import PixelDetail from "../../pages/PixelDetail";
 import PixelCanvas2 from "./PixelCanvas";
 import SheetModal from "../buttons/Card";
+import VisualizationLayout from "../../layouts/VisualizationLayout";
+
 const Pixels = () => {
   const [pixels, setPixels] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -130,8 +132,36 @@ const Pixels = () => {
   const stablePixel = pixels[stableIndex];
   const previousPixel = previousIndex !== null ? pixels[previousIndex] : null;
 
+  const renderVisualization = () => (
+    <PixelDetailView
+      selectedPixel={stablePixel}
+      previousPixel={previousPixel}
+      transitionDirection={transitionDirection}
+      viewMode={viewMode}
+      onViewModeChange={cycleViewMode}
+      isScrolling={isScrolling}
+      targetPixel={selectedPixel}
+    />
+  );
+
+  const renderListing = () => (
+    <WheelListHandler
+      items={pixels}
+      titleText="PIXEL BANK"
+      onSelectionChange={(item, index) => handleSelectionChange(index)}
+      perspective="left"
+      initialIndex={selectedIndex >= 0 ? selectedIndex : 0}
+      valueFormatter={(item) => ({
+        left: `Pixel ${item.number || item.serial}`,
+        right: item.state_description || "Available",
+      })}
+      buttonText="VIEW PIXEL DETAILS"
+      onButtonClick={handleExpandClick}
+    />
+  );
+
   return (
-    <div className={styles.pixelsContainer}>
+    <>
       <SheetModal isOpen={isFilterOpen} onClose={() => setIsFilterOpen(false)}>
         <div className={styles.filterContent}>
           <div className={styles.filterControls}>
@@ -224,51 +254,25 @@ const Pixels = () => {
         </div>
       </SheetModal>
 
-      <div className={styles.mainPixelContent}>
-        {viewMode !== "grid" && (
-          <>
-            <PixelDetailView
-              selectedPixel={stablePixel}
-              previousPixel={previousPixel}
-              transitionDirection={transitionDirection}
-              viewMode={viewMode}
-              onViewModeChange={cycleViewMode}
-              isScrolling={isScrolling}
-              targetPixel={selectedPixel}
-            />
-            <div className={styles.breaker}>
-              {selectedIndex === 0 ? (
-                <RollingText text="SCROLL THE WHEEL TO EXPLORE" />
-              ) : (
-                <>
-                  <AnimatedText text="PIXELS" />
-                  <AnimatedText text="STATUS" />
-                </>
-              )}
-            </div>
-            <WheelListHandler
-              items={pixels}
-              titleText="PIXEL BANK"
-              onSelectionChange={(item, index) => handleSelectionChange(index)}
-              perspective="left"
-              initialIndex={selectedIndex >= 0 ? selectedIndex : 0}
-              valueFormatter={(item) => ({
-                left: `Pixel ${item.number || item.serial}`,
-                right: item.state_description || "Available",
-              })}
-              buttonText="VIEW PIXEL DETAILS"
-              onButtonClick={handleExpandClick}
-            />
-          </>
-        )}
-        {viewMode === "grid" && (
-          <PixelList
-            pixels={pixels}
-            selectedIndex={selectedIndex}
-            viewMode={viewMode}
-            onItemClick={handleSelectionChange}
-          />
-        )}
+      <div className={styles.pixelsContainer}>
+        <VisualizationLayout
+          visualization={
+            viewMode !== "grid" ? (
+              renderVisualization()
+            ) : (
+              <PixelList
+                pixels={pixels}
+                selectedIndex={selectedIndex}
+                viewMode={viewMode}
+                onItemClick={handleSelectionChange}
+              />
+            )
+          }
+          breakerLeftText="PIXELS"
+          breakerRightText="STATUS"
+          listingComponent={viewMode !== "grid" ? renderListing() : null}
+          isCollapsed={false}
+        />
       </div>
 
       {isOpen && selectedPixelId && (
@@ -276,7 +280,7 @@ const Pixels = () => {
           <PixelDetail id={selectedPixelId} initialTab="info" onClose={handleCloseCard} onTabChange={handleTabChange} />
         </Card>
       )}
-    </div>
+    </>
   );
 };
 

@@ -128,11 +128,6 @@ const WheelListHandler = ({
       {selectedIndex <= 1 && titleText === "PIXEL BANK" && (
         <p className={styles.wheelDesc}>140 Total, 70 Available, 50 upcoming, 20 retired</p>
       )}
-      {isButtonVisible && (
-        <button className={styles.actionButton} onClick={handleButtonClick} aria-label={buttonText} tabIndex="0">
-          <div className={styles.actionButtonInner}>{buttonText}</div>
-        </button>
-      )}
       <div className={styles.smallWheelWrapper}>
         <WheelList
           loop={false}
@@ -144,6 +139,11 @@ const WheelListHandler = ({
           initIdx={initialIndex}
         />
       </div>
+      {isButtonVisible && (
+        <button className={styles.actionButton} onClick={handleButtonClick} aria-label={buttonText} tabIndex="0">
+          <div className={styles.actionButtonInner}>{buttonText}</div>
+        </button>
+      )}
     </div>
   );
 };

@@ -1,8 +1,14 @@
 .container {
+  height: 100%;
   display: flex;
   flex-direction: column;
-  height: 100%;
-  background: var(--background);
+  overflow: hidden;
+}
+
+.scrollableList {
+  flex: 1;
+  min-height: 0;
+  position: relative;
   overflow: hidden;
 }
 

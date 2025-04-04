@@ -2,7 +2,7 @@ import { useRef, useEffect } from "react";
 import styles from "./LogCardContainer.module.css";
 import LogCard from "./LogCard";
 
-const LogCardContainer = ({ timelineEvents, travelData, currentEventIndex, onNavigate }) => {
+const LogCardContainer = ({ timelineEvents, travelData, currentEventIndex, onNavigate, pixelNumber }) => {
   const containerRef = useRef(null);
 
   // Scroll to the current card when the index changes
@@ -35,14 +35,14 @@ const LogCardContainer = ({ timelineEvents, travelData, currentEventIndex, onNav
 
   return (
     <div className={styles.logCardContainerWrapper}>
-      <button
+      <div
         className={`${styles.navButton} ${styles.leftNavButton} ${isPrevDisabled ? styles.disabledButton : ""}`}
         onClick={() => !isPrevDisabled && onNavigate("prev")}
         aria-label="Previous event"
         disabled={isPrevDisabled}
       >
         ←
-      </button>
+      </div>
 
       <div
         className={styles.logCardScroller}
@@ -69,21 +69,21 @@ const LogCardContainer = ({ timelineEvents, travelData, currentEventIndex, onNav
                 className={`${styles.logCardItem} ${index === currentEventIndex ? styles.activeCard : ""}`}
                 onClick={() => onNavigate(index)}
               >
-                <LogCard travel={eventTravel} event={event} />
+                <LogCard travel={eventTravel} event={event} pixelNumber={pixelNumber} />
               </div>
             );
           })}
         </div>
       </div>
 
-      <button
+      <div
         className={`${styles.navButton} ${styles.rightNavButton} ${isNextDisabled ? styles.disabledButton : ""}`}
         onClick={() => !isNextDisabled && onNavigate("next")}
         aria-label="Next event"
         disabled={isNextDisabled}
       >
         →
-      </button>
+      </div>
     </div>
   );
 };

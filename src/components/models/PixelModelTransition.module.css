@@ -25,7 +25,6 @@
   justify-content: space-between;
   padding: 1rem;
   z-index: 10;
-  font-family: monospace;
 }
 
 .expandButton {
@@ -41,7 +40,6 @@
   font-size: 1.5rem;
   cursor: pointer;
   pointer-events: auto;
-  font-family: monospace;
   z-index: 10;
 }
 

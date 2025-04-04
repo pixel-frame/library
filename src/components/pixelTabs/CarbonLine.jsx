@@ -3,28 +3,6 @@ import * as d3 from "d3";
 import styles from "./CarbonLine.module.css";
 import { safeParseDate, getTickCount, createTimeScale } from "../../utils/dateUtils";
 
-// Update the createXScale function to use the safe date parsing
-const createXScale = (startDate, endDate, width) => {
-  // Safely parse dates
-  const parsedStartDate = safeParseDate(startDate);
-  const parsedEndDate = safeParseDate(endDate);
-
-  // Calculate the time span in years
-  const years = (parsedEndDate - parsedStartDate) / (1000 * 60 * 60 * 24 * 365);
-
-  // For longer time spans, adjust padding proportionally
-  const paddingMonths = years > 5 ? 6 : 2;
-
-  // Create padded dates
-  const paddedStartDate = new Date(parsedStartDate);
-  paddedStartDate.setMonth(paddedStartDate.getMonth() - paddingMonths);
-
-  const paddedEndDate = new Date(parsedEndDate);
-  paddedEndDate.setMonth(paddedEndDate.getMonth() + paddingMonths);
-
-  return d3.scaleTime().domain([paddedStartDate, paddedEndDate]).range([0, width]);
-};
-
 const CarbonLine = ({ emissionsData, minValue, maxValue, dateRange, onEventChange, currentEventIndex, isActive }) => {
   const containerRef = useRef(null);
   const svgRef = useRef(null);
@@ -71,39 +49,6 @@ const CarbonLine = ({ emissionsData, minValue, maxValue, dateRange, onEventChang
   }, []);
 
   // Improved tab activation handling
-  useEffect(() => {
-    if (isActive) {
-      // Immediately check dimensions when tab becomes active
-      if (containerRef.current) {
-        const { width } = containerRef.current.getBoundingClientRect();
-        const height = containerRef.current.getBoundingClientRect().height;
-
-        // Force dimensions update if container has valid size
-        if (width > 0 && height > 0) {
-          setDimensions({ width, height });
-        }
-      }
-
-      // Schedule multiple checks to ensure proper rendering
-      const checkTimes = [0, 50, 150, 300, 500];
-
-      const timers = checkTimes.map((delay) =>
-        setTimeout(() => {
-          if (containerRef.current) {
-            const { width } = containerRef.current.getBoundingClientRect();
-            const height = containerRef.current.getBoundingClientRect().height;
-
-            if (width > 0 && height > 0) {
-              setDimensions({ width, height });
-              setForceRender((prev) => prev + 1);
-            }
-          }
-        }, delay)
-      );
-
-      return () => timers.forEach((timer) => clearTimeout(timer));
-    }
-  }, [isActive]);
 
   // Set initial position on first render
   useEffect(() => {
@@ -235,19 +180,15 @@ const CarbonLine = ({ emissionsData, minValue, maxValue, dateRange, onEventChang
     // Get the actual current date from the browser
     const today = new Date();
 
-    // Reduce horizontal margins to 4px
-    const margin = { top: 60, right: 4, bottom: 45, left: 4 };
+    // Reduce horizontal margins to 4px, but increase left margin for y-axis
+    const margin = { top: 50, right: 4, bottom: 45, left: 40 }; // Increased left margin from 4 to 40
     const innerWidth = dimensions.width - margin.left - margin.right;
     const innerHeight = dimensions.height - margin.top - margin.bottom;
-
-    // Define pointSize here before using it
-    const pointSize = Math.min(Math.max(innerWidth * 0.06, 32), 48); // Minimum 32px, maximum 48px
 
     const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
 
     // Use dateRange instead of hard-coded dates
     const startDate = safeParseDate(dateRange?.start);
-    const endDate = safeParseDate(dateRange?.end);
 
     // Ensure the end date is at least 3 months after today to position today closer to the end
     const minEndDate = new Date(today);
@@ -262,16 +203,16 @@ const CarbonLine = ({ emissionsData, minValue, maxValue, dateRange, onEventChang
     // Use the helper function to create xScale with safe date parsing
     const xScale = createTimeScale(dateRange?.start, dateRange?.end, innerWidth, d3);
 
-    // Adjust y-scale domain padding to account for point size
-    const yMin = 0; // Always start at 0
+    // Adjust y-scale domain padding
+    const yMin = 0;
     const yMax = Math.max(...emissionsData.map((d) => d.value));
-    const topPadding = yMax * 0.1; // Reduce top padding to 10%
-    const bottomPadding = yMax * 0.05; // Add 5% padding at bottom to ensure 0 is visible
+    const topPadding = yMax * 0.1; // Increased top padding to 20% to prevent cutoff
 
     const yScale = d3
       .scaleLinear()
-      .domain([yMin - bottomPadding, yMax + topPadding]) // Add padding to both top and bottom
-      .range([innerHeight, 0]);
+      .domain([yMin, yMax + topPadding])
+      .range([innerHeight, 0])
+      .nice(); // Added .nice() to round to nice numbers
 
     // IMPORTANT FIX: Make sure we're using safeParseDate consistently in the line generator
     const line = d3
@@ -424,7 +365,6 @@ const CarbonLine = ({ emissionsData, minValue, maxValue, dateRange, onEventChang
       // Add vertical line from 0 to first point if there are points before cursor
       if (beforeCursor.length > 0) {
         const firstPoint = beforeCursor[0];
-        const firstX = xScale(safeParseDate(firstPoint.timestamp));
 
         // Create a zero-point at the same x-coordinate
         const zeroPoint = {
@@ -490,34 +430,6 @@ const CarbonLine = ({ emissionsData, minValue, maxValue, dateRange, onEventChang
     } else {
       // Default text when no cursor position
       emissionsText.text("");
-
-      // If no cursor position, draw entire line as solid
-      if (emissionsData.length > 0) {
-        // Add vertical line from 0 to first point
-        const firstPoint = emissionsData[0];
-
-        // Create a zero-point at the same x-coordinate
-        const zeroPoint = {
-          timestamp: firstPoint.timestamp,
-          value: 0,
-        };
-
-        // Draw vertical line from x-axis to first point
-        g.append("path")
-          .datum([zeroPoint, firstPoint])
-          .attr("class", styles.pastPath)
-          .attr(
-            "d",
-            d3
-              .line()
-              .x((d) => xScale(safeParseDate(d.timestamp)))
-              .y((d) => yScale(d.value))
-              .curve(d3.curveLinear)
-          ); // Use linear curve for vertical line
-
-        // Draw the main line
-        g.append("path").datum(emissionsData).attr("class", styles.pastPath).attr("d", line);
-      }
     }
 
     // Update point groups with adjusted positioning
@@ -542,9 +454,7 @@ const CarbonLine = ({ emissionsData, minValue, maxValue, dateRange, onEventChang
         .attr("fill", isPast ? "var(--text-primary)" : "var(--accent)");
 
       // Determine event type based on step name
-      console.log("efknek");
-      console.log(d.name);
-      console.log(d);
+
       let eventType = null;
       if (d.name) {
         if (d.name.includes("Fabrication")) {
@@ -552,53 +462,6 @@ const CarbonLine = ({ emissionsData, minValue, maxValue, dateRange, onEventChang
         } else {
           eventType = "Re-assembly";
         }
-      }
-
-      // Only add event boxes and labels if we have an event type
-      if (eventType) {
-        // Add asterisk box above the point
-        const eventBoxSize = 24; // Smaller event box
-        const eventBoxY = -40; // Position above the point
-
-        d3.select(this)
-          .append("rect")
-          .attr("x", -eventBoxSize / 2)
-          .attr("y", eventBoxY - eventBoxSize / 2)
-          .attr("width", eventBoxSize)
-          .attr("height", eventBoxSize)
-          .attr("fill", isPast ? "black" : "var(--bg-secondary)");
-
-        // Add asterisk inside the box
-        d3.select(this)
-          .append("text")
-          .attr("text-anchor", "middle")
-          .attr("dominant-baseline", "middle")
-          .attr("x", 0)
-          .attr("y", eventBoxY)
-          .attr("font-size", `${eventBoxSize * 0.7}px`)
-          .attr("fill", isPast ? "white" : "black")
-          .text("*");
-
-        // Add event type text to the right of the box
-        d3.select(this)
-          .append("rect")
-          .attr("x", eventBoxSize / 2 + 4)
-          .attr("y", eventBoxY - 12)
-          .attr("width", eventType.length * 8 + 16) // Adjust width based on text length
-          .attr("height", 24)
-          .attr("fill", "white")
-          .attr("stroke", isPast ? "black" : "var(--text-secondary)")
-          .attr("stroke-width", 1);
-
-        d3.select(this)
-          .append("text")
-          .attr("x", eventBoxSize / 2 + 12)
-          .attr("y", eventBoxY)
-          .attr("text-anchor", "start")
-          .attr("dominant-baseline", "middle")
-          .attr("font-size", "12px")
-          .attr("fill", "black")
-          .text(eventType);
       }
     });
 
@@ -627,8 +490,6 @@ const CarbonLine = ({ emissionsData, minValue, maxValue, dateRange, onEventChang
 
     // Call the axis with light-colored ticks and text
     xAxisGroup.call(xAxis).call((g) => {
-      g.select(".domain").attr("stroke", "var(--bg-primary)").attr("stroke-width", 2);
-      g.selectAll(".tick line").attr("stroke", "var(--bg-primary)");
       g.selectAll(".tick text").attr("fill", "var(--bg-primary)");
     });
 
@@ -652,61 +513,38 @@ const CarbonLine = ({ emissionsData, minValue, maxValue, dateRange, onEventChang
         .attr("fill", "var(--text-primary)");
     }
 
-    // Add quarter indicators with light color
-    const years = d3.timeYear.range(paddedStartDate, paddedEndDate);
-    years.forEach((year) => {
-      // For each year, add quarter indicators
-      [3, 6, 9].forEach((month) => {
-        const quarterDate = new Date(year.getFullYear(), month, 1);
-        if (quarterDate >= paddedStartDate && quarterDate <= paddedEndDate) {
-          const quarterX = xScale(quarterDate);
-          xAxisGroup
-            .append("line")
-            .attr("x1", quarterX)
-            .attr("x2", quarterX)
-            .attr("y1", 0)
-            .attr("y2", 5) // Smaller tick for quarters
-            .attr("stroke", "var(--bg-primary)")
-            .attr("stroke-width", 1);
-        }
-      });
-    });
-
     // Update y-axis with more prominent styling
     const yAxis = d3
       .axisLeft(yScale)
       .ticks(5)
-      .tickFormat((d) => d.toFixed(2))
-      .tickSize(6); // Smaller tick size to fit in narrow margin
+      .tickFormat((d) => (d === 0 ? "" : d.toFixed(2))) // Hide zero but keep other values
+      .tickSize(-6);
 
     g.append("g")
       .attr("class", styles.yAxis)
       .call(yAxis)
       .call((g) => {
-        // Remove the axis line since it would overlap with the chart edge
         g.select(".domain").remove();
-        // Adjust tick position to be visible
-        g.selectAll(".tick text").attr("x", 4).style("text-anchor", "start");
+        g.selectAll(".tick text").attr("x", -8).style("text-anchor", "end");
       });
+
+    // Add y-axis label
+    g.append("text")
+      .attr("x", -30) // Position at left edge
+      .attr("y", -30) // Position above chart
+      .attr("fill", "var(--text-primary)")
+      .attr("font-size", "12px")
+      .style("text-anchor", "start")
+      .text("CARBON (kgCO₂)");
 
     // After drawing the lines, add the points and event markers
     // Keep track of used positions by x-coordinate range to prevent overlap
     const usedPositionsByXRange = {};
-    const minSpacing = 20; // Minimum vertical spacing between event labels
     const xRangeWidth = 0; // Consider markers within 50px of each other as potentially overlapping
 
     emissionsData.forEach((d) => {
       const x = xScale(safeParseDate(d.timestamp));
       const y = yScale(d.value);
-      const isPast = safeParseDate(d.timestamp) <= today;
-
-      // Add small square at the exact data point
-      g.append("rect")
-        .attr("x", x - 4)
-        .attr("y", y - 4)
-        .attr("width", 8)
-        .attr("height", 8)
-        .attr("fill", isPast ? "black" : "var(--accent)");
 
       // Only add event markers if there's an event
       if (d.event) {
@@ -759,14 +597,13 @@ const CarbonLine = ({ emissionsData, minValue, maxValue, dateRange, onEventChang
           .attr("height", eventBoxSize)
           .attr("fill", isBeforeCursor ? "black" : "var(--accent)"); // Gray for future events
 
-        g.append("text")
-          .attr("x", x)
-          .attr("y", eventBoxY)
-          .attr("text-anchor", "middle")
-          .attr("dominant-baseline", "middle")
-          .attr("font-size", "18px")
-          .attr("fill", isBeforeCursor ? "white" : "black") // White text on black, black text on gray
-          .text("*");
+        g.append("path")
+          .attr(
+            "d",
+            "M3.05596 13.784L5.88796 9.17602L0.511963 9.22402V6.77602L5.88796 6.82402L3.05596 2.21602L5.16796 0.968018L7.95196 5.76802L10.64 0.968018L12.8 2.21602L9.96796 6.82402L15.344 6.77602V9.22402L9.96796 9.17602L12.8 13.784L10.64 15.032L7.95196 10.232L5.16796 15.032L3.05596 13.784Z"
+          )
+          .attr("transform", `translate(${x - 8},${eventBoxY - 8}) scale(1)`) // Center and scale the icon
+          .attr("fill", isBeforeCursor ? "white" : "black");
 
         // Event label - position flush with event box
         const labelX =
@@ -789,7 +626,7 @@ const CarbonLine = ({ emissionsData, minValue, maxValue, dateRange, onEventChang
           .attr("y", eventBoxY)
           .attr("text-anchor", "middle") // Center text in the label box
           .attr("dominant-baseline", "middle")
-          .attr("font-size", "12px")
+          .attr("font-size", "14px")
           .attr("fill", "black")
           .text(eventType);
       }

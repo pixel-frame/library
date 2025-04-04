@@ -38,24 +38,26 @@
 .navButton {
   width: 30px;
   height: 100%;
-  border: none;
-  background: var(--text-primary);
-  color: var(--bg-primary);
+
+  /* border: none;
+  background: var(--text-primary); */
+  color: var(--text-primary);
+  font-weight: 500;
+  font-variation-settings: "mono" 0.5;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 32px;
   z-index: 2;
-  font-family: monospace;
 }
 
 .leftNavButton {
-  margin-right: 0px;
+  margin-right: 5px;
 }
 
 .rightNavButton {
-  margin-left: 0px;
+  margin-left: 5px;
 }
 
 .disabledButton {

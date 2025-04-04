@@ -93,18 +93,25 @@ const StoryTab = ({ pixel }) => {
   const travelData = useMemo(() => {
     if (!pixel?.timeline) return [];
 
-    return pixel.timeline.map((event) => {
-      // Safely parse the date
-      const parsedDate = safeParseDate(event.date);
+    // First sort the timeline by date to ensure chronological order
+    const sortedTimeline = [...pixel.timeline].sort((a, b) => {
+      const dateA = safeParseDate(a.date).getTime();
+      const dateB = safeParseDate(b.date).getTime();
+      return dateA - dateB;
+    });
 
-      // Check if date is valid before formatting
+    return sortedTimeline.map((event, index) => {
+      const parsedDate = safeParseDate(event.date);
       const formattedDate = !isNaN(parsedDate.getTime())
-        ? parsedDate.toISOString().slice(0, 7) // Format: YYYY-MM
-        : new Date().toISOString().slice(0, 7); // Fallback to current date
+        ? parsedDate.toISOString().slice(0, 7)
+        : new Date().toISOString().slice(0, 7);
+
+      // Get the previous event's location as the "from" location
+      const previousLocation = index > 0 ? sortedTimeline[index - 1].location?.name || "Unknown" : "Unknown";
 
       return {
         timestamp: formattedDate,
-        from: event.transport?.type === "N/A" ? event.location?.name || "Unknown" : "",
+        from: event.transport?.type === "N/A" ? event.location?.name || "Cambridge, MA" : previousLocation,
         to: event.location?.name || "Unknown",
         distance: event.transport?.distance?.toString() || "0",
         mode: (event.transport?.type || "unknown").toLowerCase(),
@@ -228,7 +235,6 @@ const StoryTab = ({ pixel }) => {
 
     return (
       <div className={styles.graphContainer} role="region" aria-label="Pixel emissions graph over time">
-        <p id="emissions-heading">PIXEL EMISSIONS OVER TIME</p>
         <div className={styles.emissionStats}>
           <div>
             <span>EMISSION CHANGE</span>
@@ -239,10 +245,15 @@ const StoryTab = ({ pixel }) => {
             <span className={styles.factoid}>{currentData.emission.value.toFixed(4)} kgCO2</span>
           </div>
           <div>
-            <span>Time</span>
+            <span>DISTANCE TRAVELED</span>
+            <span className={styles.factoid}>TBD..TRAVEL</span>
+          </div>
+          <div>
+            <span>LIFESPAN</span>
             <span className={styles.factoid}>{calculateAge(currentData.date)}</span>
           </div>
         </div>
+
         <div className={styles.graph} aria-describedby="emissions-heading">
           <div className={styles.plotArea}>
             <CarbonLine
@@ -275,6 +286,7 @@ const StoryTab = ({ pixel }) => {
           travelData={travelData}
           currentEventIndex={currentEventIndex}
           onNavigate={navigateToEvent}
+          pixelNumber={pixel?.pixel_number}
         />
       </div>
     </div>

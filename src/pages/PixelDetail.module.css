@@ -92,18 +92,20 @@
 .tabButton {
   flex: 1;
   border: none;
-  padding: 8px 16px;
+  padding: 4px 16px;
   background: none;
+  font-size: 13px;
   border: 1px solid var(--text-primary);
   cursor: pointer;
-  color: var(--text-secondary);
   text-align: center;
+  font-variation-settings: "mono" 0.5;
   font-family: inherit;
 }
 
 .tabButtonActive {
   color: var(--bg-primary);
   background: #000;
+  font-weight: 500;
 }
 
 .tabPanel {

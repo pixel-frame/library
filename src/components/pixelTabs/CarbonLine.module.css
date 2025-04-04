@@ -3,7 +3,9 @@
   height: 60vh;
   min-height: 200px;
   max-height: 400px;
+  background: #f7f7f7;
   position: relative;
+  border-top: 1px solid var(--text-primary);
 }
 
 .svg {
@@ -24,18 +26,18 @@
 .pastPath {
   fill: none;
   stroke: var(--text-primary);
-  stroke-width: 2px;
+
+  stroke-width: 4px;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
 .futurePath {
   fill: none;
-  stroke: var(--text-primary);
-  stroke-width: 1px;
+  stroke: #898989;
+  stroke-width: 2px;
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-dasharray: 4, 4;
 }
 
 .emissionPoint {
@@ -78,8 +80,8 @@
 
 .timeIndicator {
   stroke: var(--text-primary);
-  stroke-width: 2px;
-  /* stroke-dasharray: 2, 2; */
+  stroke-width: 1.5px;
+  stroke-dasharray: 4, 4, 0, 0;
   pointer-events: none;
 }
 

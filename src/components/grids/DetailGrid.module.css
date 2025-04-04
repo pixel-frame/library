@@ -73,7 +73,6 @@
   font-size: var(--font-sm);
   color: var(--text-primary);
   margin-top: var(--space-xs);
-  font-family: monospace;
 }
 
 .modalOverlay {

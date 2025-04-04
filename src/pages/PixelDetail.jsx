@@ -102,7 +102,7 @@ const PixelDetail = ({ id: propId, initialTab = "info", onClose }) => {
       <div className={styles.header}>
         <nav className={styles.navigation} role="tablist">
           {TABS.map(({ id, label }) => (
-            <button
+            <div
               key={id}
               className={`${styles.tabButton} ${activeTab === id ? styles.tabButtonActive : ""}`}
               role="tab"
@@ -111,7 +111,7 @@ const PixelDetail = ({ id: propId, initialTab = "info", onClose }) => {
               onClick={() => handleTabChange(id)}
             >
               {label}
-            </button>
+            </div>
           ))}
         </nav>
       </div>

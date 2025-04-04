@@ -1,6 +1,5 @@
 .container {
   padding: 1rem;
-  font-family: monospace;
   width: 100%;
 }
 
@@ -51,7 +50,6 @@
 .error {
   text-align: center;
   margin-top: 2rem;
-  font-family: monospace;
   border: 1px solid;
   padding: 1rem;
 }

@@ -48,6 +48,9 @@
   --shadow-dark: rgba(255, 255, 255, 0.9);
   --shadow-medium: rgba(255, 255, 255, 0.5);
   --border-light: rgba(0, 0, 0, 0.3);
+  --accent-dark: #545454;
+  --mid: #e0e0e0;
+  --mid-dark: #9b9b9b;
 }
 
 :root[data-theme="dark"] {
@@ -62,6 +65,8 @@
   --border-color: var(--color-dark-gray);
   --button-bg: var(--color-white);
   --button-text: var(--color-black);
+  --mid-dark: #e0e0e0;
+  --mid: #acacac;
 }
 
 @media (max-width: 768px) {

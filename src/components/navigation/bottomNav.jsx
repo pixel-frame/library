@@ -1,14 +1,22 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import styles from "./bottomNav.module.css";
 import Icon from "../Icons";
 
 const BottomNav = () => {
   const [activeTab, setActiveTab] = useState("bank");
+  const location = useLocation();
 
-  const handleNavClick = (tabName) => {
-    setActiveTab(tabName);
-  };
+  useEffect(() => {
+    const path = location.pathname;
+    if (path.startsWith("/emissions")) {
+      setActiveTab("emissions");
+    } else if (path.startsWith("/explore")) {
+      setActiveTab("explore");
+    } else if (path === "/") {
+      setActiveTab("bank");
+    }
+  }, [location.pathname]);
 
   const isDetailPage = location.pathname.includes("/pixel/");
 

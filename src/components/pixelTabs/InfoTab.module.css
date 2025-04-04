@@ -41,9 +41,17 @@
   font-weight: 500;
 }
 
+.pixel-model-container {
+  border-bottom: 1px solid var(--text-primary);
+}
+
 .ar-icon {
   font-size: 16px;
   font-weight: 500;
+}
+
+.spacing-container {
+  margin: 0 1rem;
 }
 
 .expand-button {
@@ -82,4 +90,7 @@
   margin-top: 8px;
   border-radius: 4px;
   overflow: hidden;
+}
+
+.sparkline-container {
 }

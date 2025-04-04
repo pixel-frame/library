@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import styles from "./Carbon.module.css";
 import Button from "../../widgets/Button";
+import SparkLine from "./SparkLine";
 
 const Carbon = ({ highlightedPoint }) => {
   const svgRef = useRef(null);

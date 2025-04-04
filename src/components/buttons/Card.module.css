@@ -11,10 +11,11 @@
 
 .card {
   box-shadow: none !important;
-  border-top: 1px solid #000 !important;
+  border-top: 1px solid var(--text-primary) !important;
   border-radius: 0 0 !important;
   display: flex;
   flex-direction: column;
+  background: var(--bg-primary) !important;
 }
 
 .cardHeader {
@@ -23,7 +24,7 @@
   left: 0;
   right: 0;
   height: 40px;
-  background-color: var(--background-primary);
+  background-color: var(--bg-primary);
   z-index: 100;
   border-bottom: 1px solid var(--border-color);
   display: flex;

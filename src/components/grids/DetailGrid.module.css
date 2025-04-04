@@ -3,17 +3,17 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 0rem;
   width: calc(100% - 2rem);
-  margin: 1rem 1rem;
+  margin: 0;
 }
 
 .gridItem {
   display: flex;
   flex-direction: column;
   gap: 0rem;
-  border-top: 0.5px solid var(--text-primary);
-  padding-top: 0.33rem;
+  padding-top: 0.75rem;
   margin-bottom: 0.75rem;
   position: relative;
+  cursor: pointer;
 }
 
 .fullWidth {
@@ -28,37 +28,36 @@
   display: flex;
   align-items: center;
   gap: 0.33rem;
-  height: 24px;
+  height: 20px;
 }
 
 .title {
   font-size: 0.75rem;
   text-transform: uppercase;
-  color: #666;
+  color: var(--text-primary);
 }
 
 .infoButton {
-  width: 24px;
-  height: 24px;
+  width: 16px;
+  height: 16px;
   background: var(--accent);
   color: var(--text-primary);
   border: none;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: var(--font-md);
+  font-size: 12px;
   cursor: pointer;
-  position: absolute;
-  right: 0;
-  top: 0.33rem;
+  position: static;
+  padding: 0;
 }
 
 .value {
   font-size: var(--font-sm);
   font-weight: 500;
-  font-family: monospace;
+  font-variation-settings: "mono" 0.5;
   margin-top: 0.25rem;
-  padding-right: 28px;
+  padding-right: 0;
 }
 
 .fullWidth .value {
@@ -98,18 +97,47 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-@media (max-width: 480px) {
-  .grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+.statusContainer {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-@media (max-width: 320px) {
-  .grid {
-    grid-template-columns: 1fr;
-  }
+.statusIndicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 0px;
+}
 
-  .globeItem {
-    grid-column: span 1;
+.good {
+  background-color: #4caf50;
+}
+
+.average {
+  background-color: #ff9800;
+}
+
+.poor {
+  background-color: #ffeb3b;
+}
+
+.retired {
+  background-color: #f44336;
+}
+
+.future.fabrication,
+.future {
+  background-color: #9e9e9e;
+}
+
+.notes {
+  grid-column: span 3;
+}
+
+@media (max-width: 480px) {
+  .grid {
+    width: 100%;
+    margin: 0rem 0;
+    gap: 0;
   }
 }

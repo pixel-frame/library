@@ -19,14 +19,14 @@
 }
 
 .globeOutline {
-  fill: white;
+  fill: var(--bg-primary);
   stroke: #333;
   stroke-width: 0.5;
 }
 
 .landmass {
-  fill: #e0e0e0;
-  stroke: #9b9b9b;
+  fill: var(--mid);
+  stroke: var(--mid-dark);
   stroke-width: 0.3;
 }
 
@@ -38,8 +38,8 @@
 }
 
 .locationMarker {
-  fill: #000;
-  stroke: white;
+  fill: var(--text-primary);
+  stroke: var(--bg-primary);
   stroke-width: 0.5;
 }
 
@@ -83,7 +83,7 @@
 }
 
 .markerText {
-  fill: black;
+  fill: var(--text-primary);
   font-size: 10px;
   transition: fill 0.3s ease;
 }
@@ -93,7 +93,7 @@
 }
 
 .locationName {
-  fill: black;
+  fill: var(--text-primary);
   font-size: 7px;
   transition: fill 0.3s ease;
 }

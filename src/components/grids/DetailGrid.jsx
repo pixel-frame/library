@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import SparkLine from "../datavis/SparkLine";
 import styles from "./DetailGrid.module.css";
 
 const DetailGrid = ({ items }) => {
@@ -33,26 +34,36 @@ const DetailGrid = ({ items }) => {
       {items.map((item, index) => (
         <div
           key={index}
-          className={`${styles.gridItem} ${item.fullWidth ? styles.fullWidth : ""} ${
-            item.isGlobe ? styles.globeItem : ""
+          className={`${styles.gridItem} ${item.fullSpan ? styles.notes : ""} ${item.isGlobe ? styles.globeItem : ""} ${
+            item.isSparkline ? styles.sparklineItem : ""
           }`}
+          onClick={(e) => item.info && handleInfoClick(e, index)}
+          onKeyDown={(e) => item.info && handleKeyDown(e, index)}
+          tabIndex={item.info ? "0" : undefined}
+          role={item.info ? "button" : undefined}
+          aria-label={item.info ? `Information about ${item.title}` : undefined}
         >
           <div className={styles.titleRow}>
             <span className={styles.title}>{item.title}</span>
             {item.info && (
-              <button
-                className={styles.infoButton}
-                onClick={(e) => handleInfoClick(e, index)}
-                onKeyDown={(e) => handleKeyDown(e, index)}
-                aria-label={`Information about ${item.title}`}
-                tabIndex="0"
-              >
-                i{" "}
-              </button>
+              <div className={styles.infoButton} aria-hidden="true" tabIndex="-1">
+                i
+              </div>
             )}
           </div>
           <div className={styles.content}>
-            <div className={styles.value}>{item.value}</div>
+            <div className={styles.value}>
+              {item.isSparkline ? (
+                <SparkLine data={item.sparklineData} color="var(--text-primary)" height={24} width={120} />
+              ) : item.title === "Status" ? (
+                <div className={styles.statusContainer}>
+                  <div className={`${styles.statusIndicator} ${styles[item.value.toLowerCase()]}`} />
+                  {item.value}
+                </div>
+              ) : (
+                item.value
+              )}
+            </div>
           </div>
         </div>
       ))}
